@@ -1,0 +1,409 @@
+ALPHAGENOME PRESENTATION — SPEAKER SCRIPT
+BME 234 — ML and AI in Genomics
+=====================================================================
+
+SLIDE 1: TITLE
+---------------------------------------------------------------------
+Today we're presenting AlphaGenome, a paper published in Nature in
+January 2026 by Ziga Avsec and colleagues at Google DeepMind.
+
+AlphaGenome is a unified deep learning model for predicting how DNA
+sequence determines genome function — and specifically, how genetic
+variants affect that function across multiple biological modalities
+simultaneously.
+
+
+SLIDE 2: THE PROBLEM — NON-CODING VARIANTS
+---------------------------------------------------------------------
+More than 98% of human genetic variation falls in non-coding regions.
+These variants don't change protein sequences directly, but they can
+alter chromatin accessibility, histone modifications, 3D chromatin
+structure, gene expression levels, and splicing patterns.
+
+Experimentally characterizing every non-coding variant is impossible —
+there are billions of possible variants. So we need computational
+models that can predict variant effects from DNA sequence alone.
+
+The key question this paper asks is: can we build a single model that
+captures all of these effects simultaneously, rather than needing
+separate models for each one?
+
+
+SLIDE 3: PRIOR WORK — THE TWO TRADE-OFFS
+---------------------------------------------------------------------
+Before AlphaGenome, models in this space faced two fundamental
+trade-offs.
+
+The first is context length versus resolution. Short-context models
+like SpliceAI and BPNet take about 10 kilobases of input and predict
+at single-base resolution — great for fine detail, but they miss distal
+regulatory elements like enhancers that can be hundreds of kilobases
+away. Long-context models like Enformer and Borzoi take 200 to 500
+kilobases but predict at 128 or 32 base-pair bins — which blurs fine
+features like individual splice sites.
+
+AlphaGenome resolves this: it takes 1 megabase of input and predicts
+at 1 base-pair resolution.
+
+The second trade-off is between being multimodal versus specialized.
+Specialized models like SpliceAI for splicing or ChromBPNet for
+chromatin accessibility are very accurate at their one task but can't
+capture cross-modal effects. Multimodal models like Enformer and
+Borzoi cover more ground but tend to lag behind the specialists.
+
+AlphaGenome unifies both — it's multimodal and matches or beats the
+specialists on their own tasks.
+
+
+SLIDE 4: ALPHAGENOME OVERVIEW
+---------------------------------------------------------------------
+Here's the high-level picture. AlphaGenome takes 1 megabase of DNA
+sequence as input and simultaneously predicts 5,930 human genome
+tracks — or 1,128 mouse tracks — across 11 modalities.
+
+These include RNA-seq for gene expression, CAGE and PRO-cap for
+transcription initiation, DNase and ATAC for chromatin accessibility,
+ChIP-seq for histone modifications and transcription factor binding,
+three different splicing outputs, and chromatin contact maps.
+
+Most of these are predicted at single-base-pair resolution. The
+histone and TF binding tracks are at 128 bp, and contact maps are at
+2,048 bp — matching the resolution of the underlying experimental
+assays.
+
+
+SLIDE 5: MODEL ARCHITECTURE
+---------------------------------------------------------------------
+The architecture is inspired by U-Net, which was originally developed
+for biomedical image segmentation. It has three main components.
+
+First, the encoder. This uses convolutional blocks and max pooling to
+progressively downsample the input from 1 base-pair resolution down
+to 128 base-pair resolution. The convolutional layers are ideal for
+detecting local sequence patterns — transcription factor binding
+motifs, splice site signals, things that operate over tens of base
+pairs.
+
+Second, the transformer tower. This operates at the coarsest 128 bp
+resolution and uses self-attention to model long-range dependencies
+across the full 1 megabase input. This is where the model learns
+things like enhancer-promoter interactions that span hundreds of
+kilobases. It also generates 2D pairwise representations that feed
+into contact map prediction. The transformer computation is
+distributed across 8 TPU devices using sequence parallelism.
+
+Third, the decoder. This upsamples back to 1 bp resolution using skip
+connections from corresponding encoder layers. The skip connections
+are critical — they preserve the fine-grained local features that
+would otherwise be lost through the bottleneck.
+
+The key design insight is that each component does what it's best at:
+convolutions handle local patterns, transformers handle long-range
+communication, and skip connections bridge the two.
+
+
+SLIDE 6: TRAINING — PRETRAINING + DISTILLATION
+---------------------------------------------------------------------
+Training happens in two stages.
+
+Stage one is pretraining. They use 4-fold cross-validation on the
+reference genome, with data augmentation including random sequence
+shifts and reverse complement flipping. The model trains against
+observed experimental data — real ChIP-seq, RNA-seq, ATAC-seq tracks.
+This produces fold-specific models for evaluation and all-fold teacher
+models for the next stage.
+
+Stage two is distillation. A single student model learns to reproduce
+the predictions of an ensemble of teacher models. The critical
+innovation here is that during distillation, the input sequences are
+randomly mutated. This forces the student to learn how sequence
+changes affect predictions — essentially training it on millions of
+synthetic variants. The result is a single model that's robust for
+variant effect scoring, running in under 1 second per variant on an
+H100 GPU.
+
+The practical advantage is huge: one distilled model matches the
+performance of a 4-model ensemble at one quarter the compute cost.
+
+
+SLIDE 7: TRACK PREDICTIONS MATCH EXPERIMENTAL DATA
+---------------------------------------------------------------------
+Before we can trust variant predictions, the model needs to
+accurately predict genome tracks on unseen sequences.
+
+This figure shows a full 1-megabase region around chromosome 19 in
+HepG2 cells, with observed experimental tracks on top and
+AlphaGenome predictions below. You can see strand-specific RNA-seq,
+chromatin accessibility from ATAC and DNase, H3K27ac marking active
+enhancers, CTCF binding at insulator elements, and Hi-C contact maps
+showing 3D chromatin interactions. The predictions match closely
+across all modalities.
+
+The zoomed view of the LDLR gene shows the real advantage of 1 bp
+resolution: you can see individual splice donor and acceptor sites,
+splice site usage predictions, and splice junction arcs with read
+counts. This level of detail is simply impossible at 32 or 128 bp
+resolution.
+
+
+SLIDE 8: QUANTITATIVE TRACK PERFORMANCE
+---------------------------------------------------------------------
+Quantitatively, AlphaGenome achieves strong Pearson correlations
+between predicted and observed tracks across all modalities. Splice
+site usage hits r = 0.86, RNA-seq r = 0.81, ATAC r = 0.73.
+
+Raw gene expression prediction is strong at r = 0.82, but capturing
+cell-type-specific expression differences — which genes are higher
+in liver versus brain — remains more challenging, at r = 0.59 to
+0.63. The authors acknowledge this as an ongoing frontier.
+
+
+SLIDE 9: SPLICING — A COMPREHENSIVE VIEW
+---------------------------------------------------------------------
+AlphaGenome is the only model that predicts all four aspects of
+splicing at 1 bp resolution: RNA-seq coverage, splice site
+classification, splice site usage, and splice junction counts.
+
+The DLG1 example is compelling. A 4-base-pair deletion in a patient
+causes exon skipping in tibial artery tissue. AlphaGenome correctly
+predicts the loss of the splice junction flanking the skipped exon,
+the emergence of a new bypass junction that skips over it, and the
+drop in RNA-seq coverage over that exon. It captures the full
+biological consequence from sequence alone.
+
+The COL6A2 example shows the model can also predict gain of function:
+a G-to-C variant creates a new splice donor, and the model predicts
+the resulting new junction and extended exon.
+
+
+SLIDE 10: THE MODEL LEARNS SPLICING BIOLOGY
+---------------------------------------------------------------------
+One of the most interesting results is what the model has learned
+about splicing biology. Using in silico mutagenesis — systematically
+mutating every position around a splice site and measuring the effect
+— the authors show that AlphaGenome independently discovered all the
+canonical splicing signals: the branch point adenine, the
+polypyrimidine tract, the AG acceptor dinucleotide, exonic splicing
+enhancers, and the GT donor dinucleotide.
+
+Nobody told the model these signals exist. It learned them entirely
+from data. And on splicing QTL benchmarks, it beats all specialized
+splicing models including Pangolin, SpliceAI, and DeltaSplice.
+
+
+SLIDE 11: GENE EXPRESSION VARIANT EFFECTS
+---------------------------------------------------------------------
+For expression variants, the scoring strategy is straightforward:
+predict RNA-seq coverage for the reference and alternate alleles,
+average over the target gene's exons, and take the log difference.
+
+On 17,675 eQTLs from GTEx, this gives a Spearman correlation of 0.50
+with observed effect sizes. But the practical payoff is the real
+story: at a 90% sign accuracy threshold — meaning you want to be 90%
+sure you're getting the direction of the effect right — AlphaGenome
+recovers 41% of eQTLs. Borzoi recovers only 19%. That's more than
+double the actionable predictions from a single model.
+
+
+SLIDE 12: CHROMATIN ACCESSIBILITY & TF BINDING
+---------------------------------------------------------------------
+For chromatin accessibility variants, AlphaGenome achieves r = 0.74
+correlation with observed caQTL effect sizes across 2,219 causal
+variants. That's very strong quantitative agreement.
+
+But what's really powerful is the mechanistic interpretation. When a
+G-to-T variant reduces DNase accessibility, in silico mutagenesis
+reveals that the variant disrupts an NF-kB binding motif. The model
+doesn't just tell you that accessibility decreases — it tells you
+why. It identifies the transcription factor whose binding site was
+disrupted. Same for SPI1 binding QTLs, where ISM reveals which SPI1
+motifs are created or destroyed by variants.
+
+
+SLIDE 13: TAL1 ONCOGENE — THE MULTIMODAL CASE STUDY
+---------------------------------------------------------------------
+This is the most important figure in the paper, because it
+demonstrates why a unified multimodal model matters.
+
+Three independent groups of non-coding mutations have been found in
+T-cell acute lymphoblastic leukemia patients, all of which upregulate
+the TAL1 oncogene. The authors tested one of these — a C-to-ACG
+insertion — and from a single inference pass, AlphaGenome predicts
+the full mechanistic cascade: increased H3K27ac and H3K4me1 at the
+variant site, indicating neo-enhancer formation; decreased H3K9me3
+and H3K27me3 near the transcription start site, indicating loss of
+repressive marks; increased H3K36me3 across the gene body, indicating
+active transcription; and increased TAL1 mRNA expression.
+
+In silico mutagenesis reveals that the insertion creates a MYB
+transcription factor binding motif — which is exactly what was
+discovered experimentally by Mansour and colleagues in 2014.
+
+No single-modality model could have captured this story. You need
+histone marks, chromatin state, TF binding, and expression all
+together to see the full mechanism. This is the strongest argument
+for the unified approach.
+
+
+SLIDE 14: ABLATIONS — WHAT DESIGN CHOICES MATTER?
+---------------------------------------------------------------------
+The authors ran extensive ablation studies to understand which design
+choices contribute to performance.
+
+First, resolution: 1 bp training consistently beats coarser
+resolutions, especially for splicing and accessibility tasks.
+
+Second, sequence length: 1 Mb training with 1 Mb inference is
+optimal. Models trained on short sequences perform worse even when
+given long sequences at inference time — the model genuinely learns
+to use long-range regulatory information during training.
+
+Third, distillation: a single distilled student from 64 teachers
+rivals a 4-model ensemble, at a quarter of the compute.
+
+Fourth, multimodal training: the full multimodal model generally
+outperforms single-modality models. Expression and accessibility data
+provide the most benefit to other tasks through cross-modal transfer.
+
+
+SLIDE 15: LIMITATIONS & FUTURE DIRECTIONS
+---------------------------------------------------------------------
+The authors are transparent about limitations.
+
+Distal regulatory elements beyond 100 kilobases are still challenging
+— performance decays with distance. Tissue-specific patterns need
+improvement. The model is only trained on human and mouse. It focuses
+on protein-coding genes, underserving non-coding RNAs like miRNAs.
+It predicts molecular consequences, not phenotype — you can't go
+directly from "this variant reduces expression" to "this variant
+causes disease." And it hasn't been benchmarked on personal genome
+prediction, which is a known weakness of models in this space.
+
+Future directions include more species, single-cell data integration,
+new modalities like DNA methylation, integration with conservation
+scores for clinical use, fine-tuning on perturbational datasets, and
+uncertainty estimation.
+
+
+SLIDE 16: SUMMARY
+---------------------------------------------------------------------
+Six key takeaways.
+
+One: AlphaGenome unifies long-range context, base-pair resolution,
+and multimodal prediction into a single model.
+
+Two: The U-Net plus Transformer architecture, enabled by sequence
+parallelism across 8 TPUs, is what makes this tractable.
+
+Three: The two-stage pretraining plus distillation pipeline produces
+a single robust model for variant scoring.
+
+Four: It achieves state of the art on 25 of 26 variant effect tasks
+and 22 of 24 track prediction tasks.
+
+Five: The TAL1 case study proves that multimodal scoring reveals
+mechanisms invisible to single-modality approaches.
+
+Six: The practical impact is real — 2x more eQTLs at 90% accuracy,
+under 1 second per variant, and publicly available through an API and
+GitHub.
+
+
+SLIDE 18: BEYOND VARIANTS — THE DISTRIBUTED KNOWLEDGE PERSPECTIVE
+---------------------------------------------------------------------
+Now we want to step back and offer a broader critique of AlphaGenome's
+approach — drawing on ideas from Natural Genetic Engineering and
+Austrian economics.
+
+AlphaGenome scores individual variants against a single reference
+genome. But there are fundamental limitations to this framing.
+
+First, variants are not the unit of adaptation. Cells don't evolve
+through isolated point mutations. They adapt through coordinated
+operations — what James Shapiro calls Natural Genetic Engineering:
+domain shuffling, transposon deployment, regulatory element
+mobilization, horizontal gene transfer. These are multi-locus,
+structured events. Scoring one variant at a time is like evaluating
+an economy one transaction at a time — you see the price change but
+miss the market logic.
+
+Second, the reference genome functions as a central plan. Everything
+is compared to one consensus sequence that doesn't represent any
+actual person. Hayek's knowledge problem tells us that no single
+snapshot can contain the distributed knowledge of a complex system.
+The real knowledge is in population diversity — the 150,000 genomes
+in UK Biobank, the haplotype variation across populations. By
+treating the reference as ground truth, variation gets framed as
+deviation rather than as distributed knowledge.
+
+Third, context is flattened. The model uses tissue labels as fixed
+categories, but Hayek's core insight is that knowledge is local —
+the agent on the ground knows things the central planner can't. A
+variant in a liver cell under metabolic stress is a fundamentally
+different event than the same variant in a resting neuron. The cell
+as an active agent determines what a variant means, and AlphaGenome
+has no model of that agency.
+
+
+SLIDE 19: THE GENOME AS READ-WRITE LEDGER
+---------------------------------------------------------------------
+Three more limitations follow from thinking about the genome as a
+distributed, read-write system.
+
+Fourth, AlphaGenome treats the genome as passive and read-only —
+sequence in, prediction out. But Shapiro's Natural Genetic
+Engineering framework shows the genome is read-write. The cell
+actively modifies its own DNA in response to conditions: stress-
+directed mutagenesis, transposon activation, chromatin remodeling.
+When you introduce a variant, the cell doesn't just passively accept
+it. It may compensate, silence, amplify, or repair. AlphaGenome
+predicts the first-order effect but not the second-order cellular
+response.
+
+Fifth, there is no model of distributed validation. In a blockchain,
+a transaction isn't final until the network validates it. In biology,
+a genetic change isn't final until the cell's regulatory network
+integrates it — or rejects it. DNA repair, nonsense-mediated decay,
+chromatin silencing, immune surveillance — these are the cell's
+consensus mechanisms. AlphaGenome predicts what a variant would do
+if the cell passively accepted it, not whether the cell would
+actually let it happen. This is exactly why synthetic biology
+constructs fail — they pass the sequence-level check but get
+rejected by the cell's own validation system.
+
+Sixth, and most fundamentally: this is what Hayek called the fatal
+conceit — the belief that a central authority can possess enough
+knowledge to predict a distributed system. AlphaGenome is a central
+planner with very good data. It gets the broad strokes right. But it
+will always hit a ceiling, because the relevant knowledge isn't only
+in the sequence — it's distributed across the network of cells,
+tissues, and organisms that read that sequence, and that knowledge
+is contextual, dynamic, and cannot be fully centralized into a
+single model.
+
+
+SLIDE 19: DISCUSSION QUESTIONS
+---------------------------------------------------------------------
+We have four questions for the class.
+
+First: AlphaGenome is trained on reference genomes. How might it
+perform on variants from underrepresented populations whose haplotype
+backgrounds differ significantly from the reference?
+
+Second: The model predicts molecular consequences but not phenotype.
+What additional information or models would be needed to go from
+"this variant reduces expression by 30%" to "this variant increases
+disease risk"?
+
+Third: The distillation step uses random mutations to improve variant
+robustness. Could this introduce biases — for example, could the
+model learn to over-predict effects near certain sequence contexts
+like CpG sites?
+
+Fourth: How does AlphaGenome relate to ChromHMM, which we discussed
+earlier in the course? ChromHMM discovers chromatin states from
+observed experimental data; AlphaGenome predicts chromatin states
+from sequence alone. What are the complementary strengths of each
+approach?
+
+Thank you.

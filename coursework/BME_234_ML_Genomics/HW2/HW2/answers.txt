@@ -1,0 +1,162 @@
+BME 234 Homework 2 — Answers
+==============================
+
+Problem 1: Logistic Regression Theory
+--------------------------------------
+
+(a) Prove equations (1) and (2) are equivalent.
+
+Start with equation (1):
+  f(x) = exp(β₀ + β₁x) / [1 + exp(β₀ + β₁x)]
+
+Divide numerator and denominator by exp(β₀ + β₁x):
+  = 1 / [1/exp(β₀ + β₁x) + 1]
+  = 1 / [1 + exp(-β₀ - β₁x)]
+
+This is equation (2). QED.
+
+
+(b) Prove that g'(z) = g(z)[1 - g(z)].
+
+g(z) = 1 / (1 + e^(-z))
+
+Using the quotient rule with u = 1, v = 1 + e^(-z):
+  g'(z) = [0·(1+e^(-z)) - 1·(-e^(-z))] / (1+e^(-z))²
+         = e^(-z) / (1+e^(-z))²
+
+Factor:
+  = [1/(1+e^(-z))] · [e^(-z)/(1+e^(-z))]
+  = g(z) · [(1+e^(-z) - 1)/(1+e^(-z))]
+  = g(z) · [1 - 1/(1+e^(-z))]
+  = g(z) · [1 - g(z)]
+
+QED.
+
+
+(c) Rewrite the logistic regression model using the sigmoid function g.
+
+Let z = β₀ + β₁x. Then:
+  f(x; β₀, β₁) = g(β₀ + β₁x)
+
+
+(d) Derive the log-likelihood.
+
+Since y_i ∈ {0, 1}, the probability of observing y_i given x_i is:
+  P(y_i | x_i) = g(β₀ + β₁x_i)^(y_i) · [1 - g(β₀ + β₁x_i)]^(1-y_i)
+
+This works because when y_i = 1, it gives g(...), and when y_i = 0, it gives 1 - g(...).
+
+Since the data are i.i.d., the likelihood is the product over all observations:
+  L(β₀, β₁) = ∏_{i=1}^{n} g(β₀ + β₁x_i)^(y_i) · [1 - g(β₀ + β₁x_i)]^(1-y_i)
+
+Taking the log converts the product to a sum:
+  log L(β₀, β₁) = Σ_{i=1}^{n} [y_i · log(g(β₀ + β₁x_i)) + (1-y_i) · log(1 - g(β₀ + β₁x_i))]
+
+QED.
+
+
+(e) Why is it ok to maximize the log-likelihood instead of the likelihood?
+
+The logarithm is a monotonically increasing function, so any (β₀, β₁) that
+maximizes log L also maximizes L. The log transformation converts products into
+sums, making differentiation easier and computation more numerically stable
+(avoiding underflow from multiplying many small probabilities).
+
+
+(f) Compute ∂log L/∂β₀ and ∂log L/∂β₁.
+
+Let z_i = β₀ + β₁x_i. Using the chain rule and g'(z) = g(z)[1 - g(z)]:
+
+∂log L/∂β₀ = Σ_{i=1}^{n} [y_i · g'(z_i)/g(z_i) + (1-y_i) · (-g'(z_i))/(1-g(z_i))] · ∂z_i/∂β₀
+
+Since ∂z_i/∂β₀ = 1 and substituting g'(z_i) = g(z_i)(1-g(z_i)):
+
+  = Σ_{i=1}^{n} [y_i(1 - g(z_i)) - (1-y_i)g(z_i)]
+  = Σ_{i=1}^{n} (y_i - g(z_i))
+
+For β₁, ∂z_i/∂β₁ = x_i, so:
+
+∂log L/∂β₁ = Σ_{i=1}^{n} (y_i - g(z_i)) · x_i
+
+
+(g) Write the gradient ascent update rules.
+
+With learning rate α, repeat until convergence:
+
+  β₀ ← β₀ + α · Σ_{i=1}^{n} (y_i - g(β₀ + β₁x_i))
+  β₁ ← β₁ + α · Σ_{i=1}^{n} (y_i - g(β₀ + β₁x_i)) · x_i
+
+
+(h) Why might gradient ascent not converge with perfectly separable data?
+
+If the data is perfectly linearly separable, the logistic regression can achieve
+zero loss by making the sigmoid arbitrarily steep — i.e., pushing β₁ → ∞.
+The decision boundary becomes a step function. The gradients never reach zero
+because the log-likelihood keeps increasing (albeit more and more slowly) as
+the parameters grow. The parameters diverge to infinity, so gradient ascent
+never converges to finite, stable values.
+
+
+(i) Provide a fix for the convergence issue.
+
+Add L2 regularization (ridge penalty). Instead of maximizing log L, maximize:
+
+  log L - λ(β₀² + β₁²)
+
+The regularization term penalizes large parameter values, creating a counterforce
+that prevents the parameters from diverging to infinity. This ensures a finite
+optimum exists even when the data is perfectly separable. The hyperparameter λ
+controls the strength of the penalty.
+
+
+Problem 2: Multiple Hypothesis Testing
+---------------------------------------
+
+See problem_2.py for implementations of:
+(a) Bonferroni correction
+(b) Benjamini-Hochberg correction
+
+
+Problem 3: GWAS
+----------------
+
+(a)-(b) See problem_3.py for the GWAS implementation and Manhattan plots.
+
+(c) Number of significant SNPs:
+
+  Without covariates:
+    Bonferroni correction:       4,008 SNPs
+    Benjamini-Hochberg correction: 24,389 SNPs
+
+  With top 3 PCs as covariates:
+    Bonferroni correction:       258 SNPs
+    Benjamini-Hochberg correction: 520 SNPs
+
+(d) Why are so many SNPs reported as significant when only 5 are causal?
+
+Two main reasons:
+
+1. Linkage disequilibrium (LD): SNPs that are physically close to causal variants
+   on the chromosome tend to be inherited together. These nearby SNPs are
+   correlated with the causal SNPs, so they also show statistically significant
+   associations with the phenotype. This creates clusters of significant hits
+   around each causal locus.
+
+2. Population structure: The 1000 Genomes dataset contains individuals from
+   diverse ancestral populations. Allele frequencies vary systematically between
+   populations (e.g., African vs. European vs. East Asian). If the phenotype
+   prevalence also differs between populations, then any SNP whose frequency
+   differs between populations will appear associated with the phenotype — even
+   though the association is confounded by ancestry, not causality. This inflates
+   the number of false positives across the entire chromosome.
+
+(f) Why does including the top principal components reduce significant SNPs?
+
+The top principal components of the genotype matrix capture the major axes of
+genetic variation between individuals, which correspond to population structure
+(ancestry). By including them as covariates in the logistic regression, the model
+controls for ancestry differences. This removes spurious associations that arose
+because allele frequencies and phenotype prevalence both varied by population.
+After adjusting for population structure, only SNPs with true causal effects
+(and their LD neighbors) remain significant, dramatically reducing the number
+of hits and making it easier to identify the actual causal variants.

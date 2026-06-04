@@ -1,0 +1,52 @@
+# ============================================
+# The Living Age — .gitignore
+# ============================================
+
+# --- Confidential — Gumby/Fox deal documents ---
+Fox Gumby - Letter re Exclusivity Period (12-16-21).docx
+NDA_2021_PV.pdf
+Screenshot_20211221-160244_Docs.jpg
+
+# --- Claude config and memory ---
+.claude/
+
+# --- Large genomics data (re-downloadable) ---
+*.vcf
+*.bw
+
+# --- Archive/zip files (too large for GitHub) ---
+*.zip
+
+# --- Large PDFs (textbooks, lecture slides >50MB) ---
+coursework/BME_234_ML_Genomics/MachineLearningTomMitchell.pdf
+coursework/BME_234_ML_Genomics/s41586-025-10014-0*.pdf
+coursework/BME_80G_Bioethics/**/BME80G-Eugenics-PartI-S26-041526-pdf.pdf
+coursework/BME_80G_Bioethics/**/BME80G-Emerging Technology.Part-I.S26-pdf.pdf
+
+# --- macOS junk ---
+__MACOSX/
+.DS_Store
+._*
+
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+*.egg-info/
+dist/
+build/
+
+# --- Environment ---
+.env
+.venv/
+venv/
+node_modules/
+
+# --- IDE ---
+.vscode/
+.idea/
+
+# --- OS ---
+Thumbs.db
+desktop.ini

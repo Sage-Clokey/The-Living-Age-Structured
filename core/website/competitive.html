@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Competitive Landscape — Living Works by the Word</title>
+<style>
+  :root {
+    --bg:    #07090a;
+    --bg2:   #0c0f0c;
+    --text:  #ddd9cc;
+    --dim:   #6a6860;
+    --green: #7a9e7e;
+    --gold:  #b8973a;
+    --line:  rgba(255,255,255,0.07);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-heading);
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 72vh;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 48px 80px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url("media/graphics/architecture/02_mycelium_network_plan.png");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.12;
+    filter: grayscale(0.6);
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(7,9,10,0.3) 0%, rgba(7,9,10,0.95) 85%);
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 5px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .eyebrow::after {
+    content: '';
+    height: 1px;
+    width: 60px;
+    background: var(--line);
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 5vw, 4.5rem);
+    font-weight: normal;
+    line-height: 1.1;
+    margin-bottom: 28px;
+    letter-spacing: -0.01em;
+  }
+
+  h1 em { color: var(--gold); font-style: normal; }
+
+  .hero-sub {
+    font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+    color: var(--dim);
+    font-style: italic;
+    max-width: 580px;
+    line-height: 1.75;
+    border-top: 1px solid var(--line);
+    padding-top: 24px;
+    font-family: var(--font-body);
+  }
+
+  /* ── SHARED ── */
+  .section {
+    padding: 96px 48px;
+    border-top: 1px solid var(--line);
+  }
+
+  .section.alt { background: var(--bg2); }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 5px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 3vw, 2.4rem);
+    font-weight: normal;
+    line-height: 1.2;
+    margin-bottom: 28px;
+    max-width: 720px;
+  }
+
+  h2 em { color: var(--gold); font-style: normal; }
+
+  p {
+    color: var(--dim);
+    font-size: 0.96rem;
+    line-height: 1.85;
+    max-width: 660px;
+    margin-bottom: 18px;
+    font-family: var(--font-body);
+  }
+
+  p strong { color: var(--text); font-weight: normal; }
+
+  /* ── STAT BAR ── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-top: 48px;
+  }
+
+  @media (max-width: 700px) { .stat-row { grid-template-columns: repeat(2, 1fr); } }
+
+  .stat-card {
+    padding: 28px 24px;
+    border: 1px solid var(--line);
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .stat-card.visible { opacity: 1; transform: translateY(0); }
+
+  .stat-num {
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: normal;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    letter-spacing: 2px;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .stat-card p {
+    font-size: 0.78rem;
+    margin-bottom: 0;
+    line-height: 1.5;
+  }
+
+  /* ── CATEGORY CARDS ── */
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    margin-top: 48px;
+  }
+
+  @media (max-width: 680px) { .category-grid { grid-template-columns: 1fr; } }
+
+  .cat-card {
+    padding: 40px 36px;
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,0.015);
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .cat-card.visible { opacity: 1; transform: translateY(0); }
+
+  .cat-num {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 3px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .cat-card h3 {
+    font-size: 1.05rem;
+    font-weight: normal;
+    color: var(--text);
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+
+  .cat-card p { font-size: 0.85rem; margin-bottom: 14px; }
+
+  .cat-examples {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    color: var(--dim);
+    line-height: 2;
+  }
+
+  .cat-examples span { color: var(--green); margin-right: 12px; }
+
+  /* ── COMPETITOR PROFILES ── */
+  .competitor {
+    padding: 56px 0;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 56px;
+    align-items: start;
+    opacity: 0;
+    transform: translateX(-16px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+
+  .competitor.visible { opacity: 1; transform: translateX(0); }
+
+  @media (max-width: 760px) { .competitor { grid-template-columns: 1fr; gap: 28px; } }
+
+  .comp-meta { padding-top: 4px; }
+
+  .comp-name {
+    font-size: 1.15rem;
+    color: var(--text);
+    margin-bottom: 8px;
+    font-weight: normal;
+  }
+
+  .comp-tag {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 2px;
+    color: var(--dim);
+    text-transform: uppercase;
+    line-height: 2;
+  }
+
+  .comp-funding {
+    margin-top: 16px;
+    font-size: 1.2rem;
+    color: var(--gold);
+  }
+
+  .comp-content h3 {
+    font-size: 0.95rem;
+    font-weight: normal;
+    color: var(--gold);
+    font-family: var(--font-mono);
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    margin-top: 24px;
+  }
+
+  .comp-content h3:first-child { margin-top: 0; }
+
+  .comp-content p {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+    line-height: 1.75;
+  }
+
+  .comp-quote {
+    margin-top: 20px;
+    padding: 20px 24px;
+    border-left: 2px solid var(--gold);
+    background: rgba(184,151,58,0.04);
+  }
+
+  .comp-quote p {
+    font-style: italic;
+    color: var(--dim);
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+  }
+
+  .comp-quote cite {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 2px;
+    color: var(--dim);
+    text-transform: uppercase;
+    font-style: normal;
+  }
+
+  /* ── POSITIONING CHART ── */
+  .chart-wrap {
+    position: relative;
+    margin: 48px auto 0;
+    max-width: 640px;
+  }
+
+  .chart-svg-wrap {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    position: relative;
+  }
+
+  .chart-svg-wrap svg { width: 100%; height: 100%; }
+
+  .chart-axis-label {
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .chart-caption {
+    margin-top: 24px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    color: var(--dim);
+    text-align: center;
+    line-height: 1.8;
+  }
+
+  /* ── WHITESPACE CALLOUT ── */
+  .whitespace-box {
+    margin-top: 48px;
+    padding: 48px 40px;
+    border: 1px solid rgba(122,158,126,0.25);
+    background: rgba(122,158,126,0.04);
+    max-width: 720px;
+  }
+
+  .whitespace-box h3 {
+    font-size: 1.1rem;
+    font-weight: normal;
+    color: var(--green);
+    margin-bottom: 16px;
+    font-family: var(--font-mono);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+  }
+
+  .whitespace-box p { color: var(--text); max-width: none; }
+
+  /* ── CTA ── */
+  .cta-strip {
+    text-align: center;
+    padding: 96px 48px;
+    border-top: 1px solid var(--line);
+  }
+
+  .cta-strip p { margin: 0 auto 32px; text-align: center; }
+
+  .btn {
+    display: inline-block;
+    padding: 13px 30px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.22s;
+    margin: 6px;
+  }
+
+  .btn-gold { background: var(--gold); color: #07090a; border: 1px solid var(--gold); }
+  .btn-gold:hover { background: #c9a227; }
+  .btn-ghost { border: 1px solid rgba(255,255,255,0.14); color: var(--dim); }
+  .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.3); }
+
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="site-nav">
+  <a class="nav-logo" href="living-age.html">Living Works by the Word</a>
+  <ul class="nav-links">
+    <li><a href="living-age.html">The Living Age</a></li>
+    <li><a href="index.html">Architecture</a></li>
+    <li><a href="spiral-steward.html">Spiral Steward</a></li>
+    <li><a href="moral-framework.html">Moral Framework</a></li>
+    <li><a href="sagent.html">The Sagent</a></li>
+    <li><a href="true-republic.html">True Republic</a></li>
+    <li><a href="pitch.html">Investor Hub</a></li>
+    <li><a href="competitive.html" class="active">Competitive</a></li>
+    <li><a href="design-lab.html">Design Lab</a></li>
+    <li><a href="biology-voluntaryism.html">Biology</a></li>
+    <li><a href="spiral steward website/book.html">The Book</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero" style="padding-top:80px;">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-inner">
+    <div class="eyebrow">Competitive Landscape</div>
+    <h1>150+ companies.<br>One <em>unclaimed</em> whitespace.</h1>
+    <p class="hero-sub">
+      The AI-driven biological design market is crowded with protein designers, synthetic biology platforms,
+      and bioinformatics tools. But the category of <strong>morphological BioCAD</strong> — designing
+      whole-organism growth processes — has no dominant player. That is where Living Works operates.
+    </p>
+  </div>
+</div>
+
+<!-- MARKET OVERVIEW -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-label">Market Overview</div>
+    <h2>An emerging ecosystem with<br><em>one critical gap</em>.</h2>
+    <p>
+      The broader competitive landscape spans four technology categories, with a combined addressable market
+      exceeding $45B. Most players operate at the molecular level — genes, proteins, microbes.
+      <strong>No major platform designs growth processes at the morphological scale.</strong>
+    </p>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-num">10–15</div>
+        <div class="stat-label">Direct Competitors</div>
+        <p>AI-driven biological design platforms with overlapping capabilities.</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">50+</div>
+        <div class="stat-label">Synthetic Biology</div>
+        <p>Companies engineering microbes for industrial and medical applications.</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">100+</div>
+        <div class="stat-label">Bioinformatics Tools</div>
+        <p>Genome browsers, pathway analysis, single-cell data, and experiment management.</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">20+</div>
+        <div class="stat-label">Generative Biology</div>
+        <p>Emerging startups applying foundation AI models to biological design problems.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORY CARDS -->
+<section class="section alt">
+  <div class="section-inner">
+    <div class="section-label">Market Segmentation</div>
+    <h2>Four categories.<br><em>Four different problems.</em></h2>
+
+    <div class="category-grid">
+      <div class="cat-card">
+        <div class="cat-num">Category 01</div>
+        <h3>AI Protein &amp; Molecular Design</h3>
+        <p>Companies designing proteins, antibodies, and molecules using AI foundation models.
+          Primarily focused on drug discovery and enzyme engineering. Operate at the <strong>molecular scale</strong>.</p>
+        <div class="cat-examples">
+          <span>—</span> Profluent<br>
+          <span>—</span> Generate Biomedicines<br>
+          <span>—</span> EvolutionaryScale<br>
+          <span>—</span> DeepMind AlphaFold ecosystem
+        </div>
+      </div>
+
+      <div class="cat-card">
+        <div class="cat-num">Category 02</div>
+        <h3>Synthetic Biology Platforms</h3>
+        <p>Engineering microbes for industrial manufacturing: pharmaceuticals, agriculture,
+          chemicals, food. Operate at the <strong>organism scale</strong> but limited to microbial systems.</p>
+        <div class="cat-examples">
+          <span>—</span> Ginkgo Bioworks (NYSE: DNA)<br>
+          <span>—</span> Zymergen (acquired by Ginkgo)<br>
+          <span>—</span> Twist Bioscience<br>
+          <span>—</span> Mammoth Biosciences
+        </div>
+      </div>
+
+      <div class="cat-card">
+        <div class="cat-num">Category 03</div>
+        <h3>Bioinformatics Infrastructure</h3>
+        <p>Managing biological data and research pipelines. The operating system layer for biotech R&amp;D.
+          Strong network effects from data accumulation. Not design tools — <strong>analysis tools</strong>.</p>
+        <div class="cat-examples">
+          <span>—</span> Benchling<br>
+          <span>—</span> DNAnexus<br>
+          <span>—</span> Seven Bridges<br>
+          <span>—</span> Insitro
+        </div>
+      </div>
+
+      <div class="cat-card">
+        <div class="cat-num">Category 04</div>
+        <h3>Living Materials &amp; Biofabrication</h3>
+        <p>Growing physical materials from fungi, cells, or bacteria. Focused on specific products —
+          leather alternatives, packaging, textiles. <strong>No design platform</strong>; each company builds for
+          its own product.</p>
+        <div class="cat-examples">
+          <span>—</span> Ecovative (mycelium)<br>
+          <span>—</span> MycoWorks (leather)<br>
+          <span>—</span> Modern Meadow (biofabrication)<br>
+          <span>—</span> Bolt Threads (silk)
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPETITOR DEEP DIVES -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-label">Competitor Deep Dives</div>
+    <h2>What the strongest players <em>actually</em> say<br>about why they will win.</h2>
+    <p>
+      Understanding competitors honestly — not dismissively — is how you find genuine differentiation.
+      Below: their real strengths, their actual advantages, and the honest argument each CEO would make
+      if they were in the room.
+    </p>
+
+    <!-- Ginkgo Bioworks -->
+    <div class="competitor">
+      <div class="comp-meta">
+        <div class="comp-name">Ginkgo Bioworks</div>
+        <div class="comp-tag">
+          Boston, MA<br>
+          Founded 2008<br>
+          NYSE: DNA
+        </div>
+        <div class="comp-funding">$1B+ raised</div>
+      </div>
+      <div class="comp-content">
+        <h3>Technology</h3>
+        <p>
+          Ginkgo built the largest biological engineering platform in the world. They design organisms
+          for pharmaceuticals, agriculture, chemicals, and food using automation, AI, and genetic engineering
+          at massive throughput. Their "Foundry" automates the design-build-test cycle at scale.
+        </p>
+        <h3>Strengths</h3>
+        <p>
+          Massive automated labs, $1B+ in funding, hundreds of programs with partners including Bayer,
+          Moderna, and Roche. Strong synthetic biology brand and deep regulatory relationships.
+          Public company with long-term capital access.
+        </p>
+        <div class="comp-quote">
+          <p>"Biology is engineering. Whoever builds the infrastructure platform wins. And we already built the largest one."</p>
+          <cite>— How Ginkgo's CEO frames their advantage</cite>
+        </div>
+        <h3>Their Advantage Over Us</h3>
+        <p>
+          Scale. Their wet-lab automation and partner network would take years and hundreds of millions
+          to replicate. They have the data, the throughput, and the brand recognition in synthetic biology.
+          They do not focus on morphological design or living architecture — that is our differentiation.
+        </p>
+      </div>
+    </div>
+
+    <!-- Benchling -->
+    <div class="competitor">
+      <div class="comp-meta">
+        <div class="comp-name">Benchling</div>
+        <div class="comp-tag">
+          San Francisco, CA<br>
+          Founded 2012<br>
+          Private
+        </div>
+        <div class="comp-funding">~$400M raised</div>
+      </div>
+      <div class="comp-content">
+        <h3>Technology</h3>
+        <p>
+          Benchling is the operating system for biotech R&amp;D. It provides DNA design tools, laboratory
+          data management, collaboration software, and experiment tracking. Used by over 1,000 biotech
+          companies including Moderna and Regeneron.
+        </p>
+        <h3>Strengths</h3>
+        <p>
+          Massive user base. Deep integration into research lab workflows. Strong enterprise adoption
+          with significant switching costs. Network effects from accumulated research data.
+        </p>
+        <div class="comp-quote">
+          <p>"Biology companies already run on our platform. The network effect of data makes us impossible to replace."</p>
+          <cite>— How Benchling's CEO frames their advantage</cite>
+        </div>
+        <h3>Their Advantage Over Us</h3>
+        <p>
+          Distribution and stickiness. They are already embedded in 1,000+ research teams.
+          But Benchling is an analysis and management tool — not a design creation engine.
+          They do not generate organisms; they track experiments. That is the gap.
+        </p>
+      </div>
+    </div>
+
+    <!-- Generate Biomedicines -->
+    <div class="competitor">
+      <div class="comp-meta">
+        <div class="comp-name">Generate Biomedicines</div>
+        <div class="comp-tag">
+          Cambridge, MA<br>
+          Founded 2018<br>
+          Private
+        </div>
+        <div class="comp-funding">~$700M raised</div>
+      </div>
+      <div class="comp-content">
+        <h3>Technology</h3>
+        <p>
+          AI foundation models that generate entirely new proteins — like GPT for proteins.
+          Applications in drug discovery: antibodies, enzymes, and therapeutic proteins.
+          Clinical programs beginning. Strong AI research team from top institutions.
+        </p>
+        <h3>Strengths</h3>
+        <p>
+          Massive AI models trained on vast protein databases. Strong investors including Flagship Pioneering.
+          Moving from research to clinical stage, which will demonstrate real-world effectiveness.
+        </p>
+        <div class="comp-quote">
+          <p>"Whoever builds the best biological foundation model will control the future of medicine."</p>
+          <cite>— How Generate's CEO frames their advantage</cite>
+        </div>
+        <h3>Their Advantage Over Us</h3>
+        <p>
+          Molecular-scale AI model depth. Their protein generation capability is state-of-the-art.
+          But proteins are one scale — they design at the molecular level, not the morphological level.
+          Living architecture, tissue structures, and organism growth require a fundamentally different
+          design paradigm.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POSITIONING CHART -->
+<section class="section alt">
+  <div class="section-inner">
+    <div class="section-label">Competitive Positioning</div>
+    <h2>The <em>morphological BioCAD</em> whitespace.</h2>
+    <p>
+      Plotting competitors on two axes — scale of design (molecular vs. morphological) and
+      approach (data management vs. creation engine) — reveals a clear gap in the upper-right quadrant.
+      That is where Living Works operates.
+    </p>
+
+    <div class="chart-wrap">
+      <div class="chart-svg-wrap">
+        <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
+          <!-- Background -->
+          <rect width="500" height="500" fill="none"/>
+
+          <!-- Quadrant lines -->
+          <line x1="250" y1="20" x2="250" y2="480" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+          <line x1="20" y1="250" x2="480" y2="250" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+          <!-- Quadrant shading — top right = Living Works whitespace -->
+          <rect x="255" y="25" width="220" height="220" fill="rgba(122,158,126,0.05)" rx="2"/>
+
+          <!-- Axis labels -->
+          <text x="250" y="14" text-anchor="middle" font-family="'Courier New', monospace" font-size="9" fill="#6a6860" letter-spacing="2">MORPHOLOGICAL</text>
+          <text x="250" y="494" text-anchor="middle" font-family="'Courier New', monospace" font-size="9" fill="#6a6860" letter-spacing="2">MOLECULAR</text>
+          <text x="12" y="252" text-anchor="middle" font-family="'Courier New', monospace" font-size="9" fill="#6a6860" letter-spacing="2" transform="rotate(-90,12,252)">DATA MANAGEMENT</text>
+          <text x="488" y="252" text-anchor="middle" font-family="'Courier New', monospace" font-size="9" fill="#6a6860" letter-spacing="2" transform="rotate(90,488,252)">CREATION ENGINE</text>
+
+          <!-- Competitor dots -->
+          <!-- Benchling: molecular + data management (bottom-left) -->
+          <circle cx="180" cy="340" r="8" fill="#6a6860" opacity="0.7"/>
+          <text x="180" y="360" text-anchor="middle" font-family="'Courier New', monospace" font-size="8" fill="#6a6860">Benchling</text>
+
+          <!-- Ginkgo: molecular + creation (bottom-right) -->
+          <circle cx="380" cy="360" r="10" fill="#6a6860" opacity="0.7"/>
+          <text x="380" y="378" text-anchor="middle" font-family="'Courier New', monospace" font-size="8" fill="#6a6860">Ginkgo</text>
+
+          <!-- Generate Biomedicines: molecular + creation -->
+          <circle cx="360" cy="310" r="8" fill="#6a6860" opacity="0.7"/>
+          <text x="360" y="328" text-anchor="middle" font-family="'Courier New', monospace" font-size="8" fill="#6a6860">Generate</text>
+
+          <!-- Ecovative: slightly morphological, product not platform -->
+          <circle cx="290" cy="180" r="7" fill="#6a6860" opacity="0.55"/>
+          <text x="290" y="197" text-anchor="middle" font-family="'Courier New', monospace" font-size="8" fill="#6a6860">Ecovative</text>
+
+          <!-- DNAnexus: molecular + data -->
+          <circle cx="140" cy="300" r="7" fill="#6a6860" opacity="0.55"/>
+          <text x="140" y="318" text-anchor="middle" font-family="'Courier New', monospace" font-size="8" fill="#6a6860">DNAnexus</text>
+
+          <!-- Living Works: morphological + creation (top-right) -->
+          <circle cx="420" cy="80" r="12" fill="#7a9e7e" opacity="0.9"/>
+          <text x="420" y="65" text-anchor="middle" font-family="'Courier New', monospace" font-size="9" fill="#7a9e7e" font-weight="bold">Living Works</text>
+          <text x="420" y="55" text-anchor="middle" font-family="'Courier New', monospace" font-size="7" fill="#7a9e7e" opacity="0.7">← whitespace</text>
+
+          <!-- Arrow pointing to whitespace -->
+          <rect x="258" y="28" width="215" height="215" fill="none" stroke="rgba(122,158,126,0.2)" stroke-width="1" stroke-dasharray="4 4" rx="2"/>
+        </svg>
+      </div>
+      <div class="chart-caption">
+        X-axis: Molecular Design (bottom) → Morphological Design (top)<br>
+        Y-axis: Data Management (left) → Creation Engine (right)<br>
+        Living Works occupies the upper-right quadrant — morphological creation — essentially uncontested.
+      </div>
+    </div>
+
+    <div style="margin-top:48px;border:1px solid var(--line);overflow:hidden;position:relative;">
+      <img src="media/graphics/architecture/ChatGPT Image Feb 28, 2026, 02_38_41 PM.png" alt="Living Architecture" style="width:100%;height:clamp(200px,28vw,380px);object-fit:cover;object-position:center 40%;display:block;filter:brightness(0.5) saturate(0.85);">
+      <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(7,9,10,0.85) 0%,rgba(7,9,10,0.4) 50%,rgba(7,9,10,0.6) 100%);"></div>
+      <div style="position:absolute;top:50%;left:40px;transform:translateY(-50%);max-width:440px;">
+        <div style="font-family:'Courier New',monospace;font-size:0.56rem;letter-spacing:4px;color:var(--green);text-transform:uppercase;margin-bottom:10px;">The Whitespace</div>
+        <div style="font-size:clamp(1.1rem,2.5vw,2rem);color:var(--text);font-weight:normal;line-height:1.2;font-family:Georgia,serif;">Morphological BioCAD.<br>No dominant player yet.</div>
+      </div>
+      <div style="position:absolute;bottom:16px;right:24px;font-family:'Courier New',monospace;font-size:0.52rem;letter-spacing:2px;color:rgba(221,217,204,0.4);text-transform:uppercase;">Living Architecture — The Market Opportunity</div>
+    </div>
+
+    <div class="whitespace-box">
+      <h3>The Unclaimed Category: Morphological BioCAD</h3>
+      <p>
+        Computer-aided design for organism shape and growth process exists at essentially zero startups today.
+        Almost every competitor designs at the molecular level (proteins, genes, microbes).
+        Living Works designs at the morphological level — how tissues form, how structures branch,
+        how living materials grow. This is a higher level of biological design with no dominant platform.
+      </p>
+      <p style="margin-top:16px;">
+        The existing morphogenesis simulation engine — already built — positions Living Works as the
+        first mover in this whitespace. The natural language interface adds a UX layer that no
+        competitor offers at any scale.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FULL-BLEED IMAGE: CLOSING DOME -->
+<div style="position:relative;overflow:hidden;border-top:1px solid var(--line);">
+  <img src="media/graphics/architecture/ChatGPT Image Feb 28, 2026, 02_33_33 PM.png" alt="Living Works Vision" style="width:100%;height:clamp(180px,24vw,340px);object-fit:cover;object-position:center 35%;display:block;filter:brightness(0.45) saturate(0.8);">
+  <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(7,9,10,0.3) 0%,rgba(7,9,10,0.85) 100%);"></div>
+  <div style="position:absolute;bottom:28px;left:0;right:0;text-align:center;">
+    <div style="font-size:clamp(1rem,2.5vw,1.6rem);color:var(--text);font-style:italic;font-family:Georgia,serif;">"Living Works builds the tools. Spiral Stewards guide their use."</div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <div class="eyebrow reveal" style="justify-content:center;margin-bottom:32px;">Next Steps</div>
+  <h2 class="reveal" style="margin:0 auto 20px;text-align:center;">Ready to go deeper?</h2>
+  <p class="reveal">
+    Review the full business plan, explore the Investor Hub, or view the pitch deck to understand
+    how Living Works enters this market.
+  </p>
+  <div class="reveal">
+    <a href="pitch.html" class="btn btn-gold">Investor Hub →</a>
+    <a href="summary.html" class="btn btn-ghost">Executive Summary</a>
+    <a href="business plan pitch prompts/02_Competitive_Analysis.pdf" class="btn btn-ghost" target="_blank">Download PDF</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="site-footer">
+  <span class="footer-brand">Living Works by the Word &middot; Sage Clokey &middot; 2026</span>
+  <nav class="footer-links">
+    <a href="living-age.html">The Living Age</a>
+    <a href="index.html">Architecture</a>
+    <a href="spiral-steward.html">Spiral Steward</a>
+    <a href="moral-framework.html">Moral Framework</a>
+    <a href="sagent.html">The Sagent</a>
+    <a href="true-republic.html">True Republic</a>
+    <a href="pitch.html">Investor Hub</a>
+    <a href="competitive.html">Competitive</a>
+    <a href="summary.html">Summary</a>
+    <a href="story.html">The Story</a>
+    <a href="design-lab.html">Design Lab</a>
+    <a href="spiral steward website/book.html">The Book</a>
+  </nav>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const siblings = e.target.parentElement
+        ? [...e.target.parentElement.children].indexOf(e.target)
+        : 0;
+      const delay = (e.target.classList.contains('stat-card') || e.target.classList.contains('cat-card'))
+        ? siblings * 90 : 0;
+      setTimeout(() => e.target.classList.add('visible'), delay);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.stat-card, .cat-card, .competitor, .reveal')
+  .forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

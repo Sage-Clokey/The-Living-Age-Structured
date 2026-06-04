@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: living-works-api
+    env: python
+    rootDir: 3D-Model_Living_Design
+    buildCommand: pip install -r requirements-api.txt
+    startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
+    plan: free
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.0"

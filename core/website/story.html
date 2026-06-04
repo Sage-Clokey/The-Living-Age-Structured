@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Story — Living Works by the Word</title>
+<style>
+  :root {
+    --bg:    #07090a;
+    --bg2:   #0c0f0c;
+    --text:  #ddd9cc;
+    --dim:   #6a6860;
+    --green: #7a9e7e;
+    --gold:  #b8973a;
+    --line:  rgba(255,255,255,0.07);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-heading);
+    line-height: 1.85;
+    overflow-x: hidden;
+  }
+
+  /* ── OPENING HERO ── */
+  .opening {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .opening-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url("media/graphics/architecture/ChatGPT Image Feb 28, 2026, 02_33_33 PM.png");
+    background-size: cover;
+    background-position: center 30%;
+    opacity: 0.28;
+    filter: grayscale(0.4) saturate(0.8);
+  }
+
+  .opening-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(7,9,10,0.2) 0%, rgba(7,9,10,0.85) 80%);
+  }
+
+  .opening-text {
+    position: relative;
+    z-index: 2;
+    max-width: 760px;
+    padding: 0 32px;
+  }
+
+  .opening-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 6px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 36px;
+    opacity: 0.8;
+  }
+
+  .opening-h1 {
+    font-size: clamp(2rem, 5.5vw, 4.5rem);
+    font-weight: normal;
+    line-height: 1.15;
+    margin-bottom: 32px;
+    letter-spacing: 0.01em;
+  }
+
+  .opening-h1 em { color: var(--gold); font-style: normal; }
+
+  .opening-sub {
+    font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+    color: var(--dim);
+    font-style: italic;
+    line-height: 1.8;
+    border-top: 1px solid var(--line);
+    padding-top: 28px;
+    font-family: var(--font-body);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 3px;
+    color: var(--dim);
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:0.8} }
+
+  /* ── NARRATIVE CHAPTER ── */
+  .chapter {
+    padding: 100px 48px;
+    border-top: 1px solid var(--line);
+  }
+
+  .chapter.alt { background: var(--bg2); }
+
+  .chapter-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .chapter-num {
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    letter-spacing: 4px;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .chapter-num::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .chapter h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+    font-weight: normal;
+    line-height: 1.2;
+    margin-bottom: 40px;
+    max-width: 640px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .chapter h2.visible { opacity: 1; transform: translateY(0); }
+  .chapter h2 em { color: var(--gold); font-style: normal; }
+
+  .prose {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s ease 0.15s, transform 0.7s ease 0.15s;
+  }
+
+  .prose.visible { opacity: 1; transform: translateY(0); }
+
+  .prose p {
+    font-size: clamp(0.98rem, 1.8vw, 1.08rem);
+    color: var(--text);
+    line-height: 1.9;
+    margin-bottom: 24px;
+    max-width: 660px;
+  }
+
+  .prose p.dim { color: var(--dim); font-style: italic; font-family: var(--font-body); }
+  .prose p em { color: var(--gold); font-style: normal; }
+
+  /* ── FULL-WIDTH IMAGE BREAK ── */
+  .image-break {
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .image-break img {
+    width: 100%;
+    height: clamp(300px, 45vw, 600px);
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    filter: brightness(0.55) saturate(0.75);
+    transition: transform 0.8s ease;
+  }
+
+  .image-break:hover img { transform: scale(1.02); }
+
+  .image-caption {
+    position: absolute;
+    bottom: 24px;
+    right: 32px;
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    letter-spacing: 2px;
+    color: rgba(221,217,204,0.5);
+    text-transform: uppercase;
+  }
+
+  /* ── SPLIT LAYOUT ── */
+  .split {
+    padding: 100px 48px;
+    border-top: 1px solid var(--line);
+  }
+
+  .split.alt { background: var(--bg2); }
+
+  .split-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  @media (max-width: 800px) { .split-inner { grid-template-columns: 1fr; gap: 48px; } }
+
+  .split-text .chapter-num { max-width: 500px; }
+
+  .split-text h2 {
+    font-size: clamp(1.4rem, 3vw, 2.4rem);
+    font-weight: normal;
+    line-height: 1.25;
+    margin-bottom: 32px;
+    max-width: 500px;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .split-text h2.visible { opacity: 1; transform: translateY(0); }
+  .split-text h2 em { color: var(--gold); font-style: normal; }
+
+  .split-text .prose p { max-width: 480px; }
+
+  .split-img {
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+  }
+
+  .split-img.visible { opacity: 1; transform: translateX(0); }
+
+  .split-img img {
+    width: 100%;
+    display: block;
+    border: 1px solid var(--line);
+    filter: brightness(0.65) saturate(0.7);
+  }
+
+  /* ── PRINCIPLE LINES ── */
+  .principle-lines {
+    padding: 96px 48px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--bg2);
+    text-align: center;
+  }
+
+  .principle {
+    max-width: 720px;
+    margin: 0 auto 64px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .principle:last-child { margin-bottom: 0; }
+  .principle.visible { opacity: 1; transform: translateY(0); }
+
+  .principle-label {
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    letter-spacing: 4px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .principle-text {
+    font-size: clamp(1.1rem, 2.5vw, 1.7rem);
+    line-height: 1.55;
+    color: var(--text);
+    font-style: italic;
+  }
+
+  .principle-text em { color: var(--gold); font-style: normal; }
+
+  /* ── CLOSE CTA ── */
+  .story-close {
+    padding: 120px 48px;
+    text-align: center;
+    border-top: 1px solid var(--line);
+  }
+
+  .story-close h2 {
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: normal;
+    line-height: 1.1;
+    margin-bottom: 32px;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+
+  .story-close h2.visible { opacity: 1; transform: translateY(0); }
+  .story-close h2 em { color: var(--gold); font-style: normal; }
+
+  .story-close p {
+    font-size: 1rem;
+    color: var(--dim);
+    max-width: 520px;
+    margin: 0 auto 48px;
+    font-family: var(--font-body);
+    opacity: 0;
+    transition: opacity 0.8s ease 0.2s;
+  }
+
+  .story-close p.visible { opacity: 1; }
+
+  .btn-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  .btn {
+    display: inline-block;
+    padding: 13px 30px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.22s;
+  }
+
+  .btn-gold { background: var(--gold); color: #07090a; border: 1px solid var(--gold); }
+  .btn-gold:hover { background: #c9a227; }
+  .btn-ghost { border: 1px solid rgba(255,255,255,0.14); color: var(--dim); }
+  .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.3); }
+</style>
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="site-nav">
+  <a class="nav-logo" href="living-age.html">Living Works by the Word</a>
+  <ul class="nav-links">
+    <li><a href="living-age.html">The Living Age</a></li>
+    <li><a href="index.html">Architecture</a></li>
+    <li><a href="spiral-steward.html">Spiral Steward</a></li>
+    <li><a href="moral-framework.html">Moral Framework</a></li>
+    <li><a href="sagent.html">The Sagent</a></li>
+    <li><a href="true-republic.html">True Republic</a></li>
+    <li><a href="channel.html">Channel</a></li>
+    <li><a href="pitch.html">Investor Hub</a></li>
+    <li><a href="competitive.html">Competitive</a></li>
+    <li><a href="design-lab.html">Design Lab</a></li>
+    <li><a href="biology-voluntaryism.html">Biology</a></li>
+    <li><a href="spiral steward website/book.html">The Book</a></li>
+  </ul>
+</nav>
+
+<!-- OPENING HERO -->
+<div class="opening">
+  <div class="opening-bg"></div>
+  <div class="opening-overlay"></div>
+  <div class="opening-text">
+    <div class="opening-label">The Living Age — A Narrative</div>
+    <h1 class="opening-h1">
+      The world builds<br>with <em>blocks</em>.<br>
+      Living systems already<br>solved every problem.
+    </h1>
+    <p class="opening-sub">
+      A scrolling narrative through the idea that will reshape how civilization builds —
+      from rigid mechanical systems to adaptive biological ones.
+    </p>
+  </div>
+  <div class="scroll-hint">scroll ↓</div>
+</div>
+
+<!-- CHAPTER 1: THE AGE OF BLOCKS -->
+<div class="chapter">
+  <div class="chapter-inner">
+    <div class="chapter-num">Chapter One</div>
+    <h2>We inherited a world<br>built of <em>blocks</em>.</h2>
+    <div class="prose">
+      <p>
+        Every city built in the last two centuries follows the same grammar: cut, cast, assemble, fix.
+        Stone to brick. Brick to concrete. Concrete to glass and steel. The forms change, but the logic
+        is identical — impose shape on dead matter through force.
+      </p>
+      <p>
+        Industrial civilization mastered this grammar. It built factories, highways, skyscrapers,
+        semiconductors. The block-world gave us extraordinary things. But it extracted everything it built
+        from the systems that sustain life — soil, water, atmosphere, biological complexity —
+        and treated them as raw material to be consumed.
+      </p>
+      <p class="dim">
+        Rigid systems. Centralized control. Industrial production. Mechanical design.
+        These are the hallmarks of block thinking.
+      </p>
+      <p>
+        The problem is not that the block-world failed. The problem is that we never asked whether
+        there was another way.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- IMAGE BREAK 1 -->
+<div class="image-break">
+  <img src="media/graphics/architecture/06_block_vs_spiral_manifesto.png" alt="Block vs Spiral">
+  <div class="image-caption">Block vs. Spiral — The Core Argument</div>
+</div>
+
+<!-- CHAPTER 2: WHAT LIFE KNOWS -->
+<div class="chapter alt">
+  <div class="chapter-inner">
+    <div class="chapter-num">Chapter Two</div>
+    <h2>Living systems already solved<br>every problem we struggle with.</h2>
+    <div class="prose">
+      <p>
+        Consider a tree. No architect designed it. No engineer drew its load paths. Yet it solves
+        structural problems that confound our best designers: it distributes stress perfectly through every
+        branching joint, adjusts its form in response to wind loads over decades, repairs damage without
+        external intervention, and absorbs carbon as it grows.
+      </p>
+      <p>
+        Consider coral. Building mineral architecture from seawater and sunlight, it creates structures
+        of extraordinary complexity across thousands of square kilometers, without a blueprint,
+        without a central controller, without a manufacturing plant.
+      </p>
+      <p>
+        Consider fungal networks. They distribute nutrients and information through a mycelium web
+        using no centralized logic — just local rules and feedback. The network is more efficient
+        than any supply chain we have designed.
+      </p>
+      <p class="dim">
+        Decentralized intelligence. Growth. Emergence. Cooperation with natural systems.
+        These are the hallmarks of spiral thinking.
+      </p>
+      <p>
+        Living systems already know how to build with no waste, no degradation, and increasing
+        complexity over time. We just do not have the tools to <em>design with them</em> yet.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- IMAGE BREAK 2 -->
+<div class="image-break">
+  <img src="media/graphics/architecture/01_fibonacci_spiral_house.png" alt="Fibonacci Spiral House">
+  <div class="image-caption">Fibonacci Spiral House — Form From Growth Rules</div>
+</div>
+
+<!-- CHAPTER 3: THE DESIGN GAP -->
+<div class="chapter">
+  <div class="chapter-inner">
+    <div class="chapter-num">Chapter Three</div>
+    <h2>Our tools let us analyze life.<br>Not <em>design with it</em>.</h2>
+    <div class="prose">
+      <p>
+        Bioinformatics — the science of reading and analyzing biological data — has matured into a
+        vast toolkit. We can sequence genomes, model protein folding, track gene expression across
+        single cells, map metabolic networks.
+      </p>
+      <p>
+        But analysis is not design. Knowing how a coral reef grows is not the same as being able
+        to design with coral morphology. Understanding how mycelium networks form is not the same
+        as being able to use those growth rules to create architecture.
+      </p>
+      <p>
+        The design interface between human intention and biological growth does not exist yet.
+        No tool today lets an architect type "grow a self-supporting structure from fungal mycelium
+        optimized for humidity resistance" and receive a growth model, structural simulation,
+        and biological pathway suggestion in return.
+      </p>
+      <p class="dim">
+        That gap is the market. That gap is the mission.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- SPLIT: MORPHOGENESIS ENGINE -->
+<div class="split">
+  <div class="split-inner">
+    <div class="split-text">
+      <div class="chapter-num">The Solution</div>
+      <h2>Design growth rules.<br>Let the form <em>emerge</em>.</h2>
+      <div class="prose">
+        <p>
+          Traditional 3D modeling requires direct vertex manipulation — you control every point in space.
+          The morphogenesis engine works differently: define growth rules, let the geometry emerge
+          from simulation.
+        </p>
+        <p>
+          Cells grow, interact physically, and divide, producing complex 3D forms — the same way
+          biological organisms develop from a handful of cells into branching, folding,
+          asymmetric structures. Unrepeatable. Alive.
+        </p>
+        <p>
+          Natural language prompts translate into physics parameters. The interpreter reads intention
+          and generates a growth program. The simulation runs. The form appears.
+        </p>
+      </div>
+    </div>
+    <div class="split-img">
+      <img src="media/graphics/architecture/04_branching_tree_structure.png" alt="Branching Structure">
+    </div>
+  </div>
+</div>
+
+<!-- IMAGE BREAK 3 -->
+<div class="image-break">
+  <img src="media/graphics/architecture/07_mycelium_dome_3d.png" alt="Mycelium Dome">
+  <div class="image-caption">Mycelium Dome — Grown, Not Built</div>
+</div>
+
+<!-- CHAPTER 4: THE SPIRAL STEWARD -->
+<div class="chapter alt">
+  <div class="chapter-inner">
+    <div class="chapter-num">Chapter Four</div>
+    <h2>A new kind of leader<br>for a <em>living world</em>.</h2>
+    <div class="prose">
+      <p>
+        The technology needs a philosophy to guide its use.
+      </p>
+      <p>
+        The Spiral Steward is not a manager or a machine operator. A Spiral Steward is a gardener —
+        someone who creates the conditions for health rather than imposing rigid outcomes.
+        Someone who works with the intelligence already present in living systems rather than
+        overriding it with central control.
+      </p>
+      <p>
+        Stewardship instead of control. Emergence instead of prescription.
+        Decentralization instead of hierarchy. Adaptation instead of rigidity.
+        Long-term thinking instead of quarterly extraction.
+      </p>
+      <p class="dim">
+        "To learn the language of life so we can stop treating it like dead matter —
+        and start designing like gardeners, not rulers."
+      </p>
+      <p>
+        Living Works builds the tools. Spiral Stewards guide how they are used.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- PRINCIPLES -->
+<div class="principle-lines">
+  <div class="principle">
+    <div class="principle-label">Principle 01 — Stewardship</div>
+    <p class="principle-text">
+      "The goal is not domination but <em>guidance</em>.<br>
+      Like a gardener rather than a machine operator."
+    </p>
+  </div>
+  <div class="principle">
+    <div class="principle-label">Principle 02 — Emergence</div>
+    <p class="principle-text">
+      "Complex systems arise from simple rules.<br>
+      A Spiral Steward designs <em>conditions</em>, not outcomes."
+    </p>
+  </div>
+  <div class="principle">
+    <div class="principle-label">Principle 03 — Adaptation</div>
+    <p class="principle-text">
+      "Living systems respond to change.<br>
+      <em>Rigid systems break.</em>"
+    </p>
+  </div>
+  <div class="principle">
+    <div class="principle-label">Principle 04 — Long-Term Thinking</div>
+    <p class="principle-text">
+      "Growth unfolds across time.<br>
+      Stewards work with <em>generations</em>, not quarters."
+    </p>
+  </div>
+</div>
+
+<!-- IMAGE BREAK: DOME WITH ENTRANCE -->
+<div class="image-break">
+  <img src="media/graphics/architecture/ChatGPT Image Feb 28, 2026, 02_35_31 PM.png" alt="Living Structure — Arched Entry">
+  <div class="image-caption">A Structure Grown, Not Built</div>
+</div>
+
+<!-- CHAPTER 5: THE LIVING AGE -->
+<div class="chapter">
+  <div class="chapter-inner">
+    <div class="chapter-num">Chapter Five</div>
+    <h2>The Living Age<br>is beginning <em>now</em>.</h2>
+    <div class="prose">
+      <p>
+        The next era of civilization will be built on living materials, decentralized systems,
+        and biological design. Not because it is idealistic — because it is the direction of
+        technology, markets, and ecological necessity simultaneously.
+      </p>
+      <p>
+        Programmable living materials are becoming manufacturable. Synthetic biology is moving
+        from laboratory curiosity to industrial platform. AI models are learning to generate
+        biological structures with the same fluency they generate text and images.
+      </p>
+      <p>
+        The infrastructure for the Living Age is forming. What has been missing is the
+        design platform — the tool that sits between human intention and biological growth,
+        that makes living systems as designable as circuits, buildings, or software.
+      </p>
+      <p class="dim">
+        That is what Living Works is building.
+      </p>
+      <p>
+        Instead of controlling nature, we design with it.
+        Instead of rigid blocks, spirals.
+        Instead of manufactured, grown.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- IMAGE BREAK 4: LIVING AGE PLATFORM -->
+<div class="image-break">
+  <img src="media/graphics/living-age/ChatGPT Image Mar 6, 2026, 02_34_47 PM.png" alt="The Living Age">
+  <div class="image-caption">The Living Age — A World Built With Life</div>
+</div>
+
+<!-- IMAGE BREAK 5: VILLAGE OF DOMES -->
+<div class="image-break">
+  <img src="media/graphics/architecture/ChatGPT Image Feb 28, 2026, 02_38_41 PM.png" alt="Living Architecture Village">
+  <div class="image-caption">Living Architecture — Grown Structures, Not Built Ones</div>
+</div>
+
+<!-- CLOSE -->
+<div class="story-close">
+  <h2>Not blocks.<br><em>Spirals.</em></h2>
+  <p>
+    Living Works by the Word is a life-based design initiative exploring how biological
+    principles — morphogenesis, emergence, stewardship — can reshape architecture,
+    manufacturing, and the built environment.
+  </p>
+  <div class="btn-row">
+    <a href="pitch.html" class="btn btn-gold">Investor Hub →</a>
+    <a href="competitive.html" class="btn btn-ghost">Competitive Landscape</a>
+    <a href="summary.html" class="btn btn-ghost">Executive Summary</a>
+    <a href="index.html" class="btn btn-ghost">The Architecture</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="site-footer">
+  <span class="footer-brand">Living Works by the Word &middot; Sage Clokey &middot; 2026</span>
+  <nav class="footer-links">
+    <a href="living-age.html">The Living Age</a>
+    <a href="index.html">Architecture</a>
+    <a href="spiral-steward.html">Spiral Steward</a>
+    <a href="moral-framework.html">Moral Framework</a>
+    <a href="sagent.html">The Sagent</a>
+    <a href="true-republic.html">True Republic</a>
+    <a href="pitch.html">Investor Hub</a>
+    <a href="competitive.html">Competitive</a>
+    <a href="summary.html">Summary</a>
+    <a href="story.html">The Story</a>
+    <a href="design-lab.html">Design Lab</a>
+    <a href="spiral steward website/book.html">The Book</a>
+  </nav>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('h2, .prose, .split-img, .principle, .story-close h2, .story-close p')
+  .forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

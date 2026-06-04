@@ -1,0 +1,61 @@
+Living works by the word.
+design living things by Living principles use AI to design living things by natural language and visualizing the design in 3d modeling tools. create ways to create living architecture.
+
+the vision is creating the living age;
+    create sagent creed videos 
+    true republic videos and podcast
+    8 pillar video series
+    technology for how we can design with life not against it.
+    
+Part 1: Market Overview (1 slide)
+Identify and quantify the competitive landscape:
+
+Total number of competitors (estimate with ranges: e.g., "15-20 direct competitors, 30+ indirect")
+Market segmentation: How do you categorize them? (e.g., by technology platform, target indication, stage of development, market segment)
+Brief competitive dynamics: Is this a crowded/emerging/consolidating market?
+Part 2: Deep Dive on Top 3 Competitors (1 slide per competitor)
+For each competitor, provide:
+
+Company name, location, founding year
+Spiral steward 
+Product/technology description (be technically accurate and fair)
+Stage of development (preclinical, clinical trials Phase I/II/III, marketed product)
+Funding/revenue: Total raised, recent rounds, revenue if public
+Key strengths that make them formidable (technology, IP, partnerships, market position, team)
+Market traction: Customer base, installations, patients treated, publications, etc.
+Critical framing: Write as if their CEO is in the room. What would they say about why they will win and you won't? Be honest about their advantages.
+
+Part 3: Competitive Positioning (1 slide)
+Positioning matrix or table: Place all competitors (including yours) on 2-3 key axes (e.g., cost vs. performance, speed vs. accuracy, platform breadth vs. depth)
+Your differentiation: What is genuinely different about your approach?
+Your unfair advantage: Why is this difference defensible? Consider:
+Novel technology/IP that's hard to replicate
+Unique team expertise or relationships
+Better business model or cost structure
+Regulatory pathway advantages
+First-mover or fast-follower timing
+Avoid: Generic claims like "better quality" or "superior service" without specifics
+
+Resources for Competitive Intelligence
+Company & Product Information:
+Crunchbase (crunchbase.com) - Funding, investors, company basics
+PitchBook (pitchbook.com) - Private company data (check if UCSC has access)
+LinkedIn - Company size, employee growth, key hires
+Company websites - Products, pipeline, news/press releases
+AngelList/Wellfound - Startup profiles, funding, team
+Biotech-Specific Resources:
+ClinicalTrials.gov - Clinical trial status for therapeutics
+BioPharmCatalyst - Pipeline tracking for biopharma
+Fierce Biotech/MedTech - Industry news and analysis
+FDA approval databases - 510(k) clearances, PMA approvals, drug approvals
+Nature Biotechnology/Science Translational Medicine - Research publications from competitors
+Market & Financial Data:
+SEC EDGAR (sec.gov) - Public company filings (10-K, 10-Q, S-1 for IPOs)
+Google Patents - Competitor patent portfolios (continuation of earlier work)
+Grand View Research, MarketsandMarkets - Market reports (often have free summaries)
+PubMed - Scientific publications showing competitor progress
+Industry Analysis:
+CB Insights - Industry trends, market maps
+StartUs Insights - Startup discovery platform
+Trade associations - BIO, MassBio, etc. (member directories)
+Conference proceedings - ASCO, ASH, JP Morgan Healthcare (presentation archives)

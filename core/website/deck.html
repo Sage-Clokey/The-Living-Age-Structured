@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pitch Deck — Living Works by the Word</title>
+<style>
+  :root {
+    --bg:    #07090a;
+    --bg2:   #0c0f0c;
+    --text:  #ddd9cc;
+    --dim:   #6a6860;
+    --green: #7a9e7e;
+    --gold:  #b8973a;
+    --line:  rgba(255,255,255,0.07);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-heading);
+    overflow-x: hidden;
+  }
+
+  /* ── SLIDE SYSTEM ── */
+  .slide {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 48px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide-inner {
+    max-width: 960px;
+    width: 100%;
+    z-index: 2;
+    position: relative;
+  }
+
+  /* Slide number indicator */
+  .slide-num {
+    font-family: var(--font-mono);
+    font-size: 0.54rem;
+    letter-spacing: 4px;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 52px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .slide-num .n { color: var(--green); font-size: 0.65rem; }
+
+  .slide-num::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* ── SHARED SLIDE TYPOGRAPHY ── */
+  .slide-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 5px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .slide h2 {
+    font-size: clamp(1.8rem, 4vw, 3.5rem);
+    font-weight: normal;
+    line-height: 1.1;
+    margin-bottom: 36px;
+    max-width: 800px;
+  }
+
+  .slide h2 em { color: var(--gold); font-style: normal; }
+
+  .slide p {
+    font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+    color: var(--dim);
+    line-height: 1.85;
+    max-width: 640px;
+    margin-bottom: 20px;
+    font-family: var(--font-body);
+  }
+
+  .slide p strong { color: var(--text); font-weight: normal; }
+
+  /* ── SLIDE BACKGROUNDS ── */
+  .slide-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    filter: grayscale(0.5) saturate(0.7);
+    transition: opacity 0.6s ease;
+  }
+
+  .slide.has-bg .slide-bg { opacity: 0.09; }
+
+  .slide-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(7,9,10,0.95) 40%, rgba(7,9,10,0.7) 100%);
+  }
+
+  /* ── SLIDE 1: THESIS ── */
+  #s1 { background: var(--bg); text-align: center; }
+  #s1 .slide-inner { text-align: center; }
+
+  #s1 h2 {
+    font-size: clamp(2.4rem, 6vw, 5rem);
+    margin-bottom: 32px;
+  }
+
+  #s1 p { margin: 0 auto 40px; max-width: 560px; text-align: center; }
+
+  #s1 canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── TWO-COL ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+    margin-top: 16px;
+  }
+
+  @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; gap: 36px; } }
+
+  /* ── DATA TABLE ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--line);
+    margin-top: 8px;
+  }
+
+  .data-table th {
+    font-family: var(--font-mono);
+    font-size: 0.54rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--dim);
+    padding: 11px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    background: rgba(255,255,255,0.02);
+  }
+
+  .data-table td {
+    padding: 12px 18px;
+    font-size: 0.87rem;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-body);
+    color: var(--dim);
+    line-height: 1.4;
+  }
+
+  .data-table td:first-child { color: var(--text); }
+  .data-table td.hi { color: var(--green); }
+  .data-table tr:last-child td { border-bottom: none; }
+
+  /* ── GRID CARDS ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    margin-top: 32px;
+  }
+
+  @media (max-width: 580px) { .card-grid { grid-template-columns: 1fr; } }
+
+  .card {
+    padding: 30px 28px;
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,0.015);
+  }
+
+  .card-label {
+    font-family: var(--font-mono);
+    font-size: 0.54rem;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .card h3 {
+    font-size: 0.98rem;
+    font-weight: normal;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .card p {
+    font-size: 0.83rem;
+    margin-bottom: 0;
+    line-height: 1.65;
+  }
+
+  /* ── MARKET NUMBERS ── */
+  .market-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 32px;
+  }
+
+  @media (max-width: 600px) { .market-strip { grid-template-columns: 1fr; } }
+
+  .mnum {
+    padding: 28px 24px;
+    border: 1px solid var(--line);
+  }
+
+  .mnum-val {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+
+  .mnum-label {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 2px;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+
+  /* ── POSITIONING CHART (simple SVG) ── */
+  .chart-container {
+    margin-top: 32px;
+    max-width: 500px;
+  }
+
+  /* ── ROADMAP TIMELINE ── */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 32px;
+    max-width: 680px;
+  }
+
+  .tl-item {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 28px;
+    padding: 28px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .tl-phase {
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    padding-top: 4px;
+  }
+
+  .tl-phase span {
+    display: block;
+    color: var(--dim);
+    margin-top: 6px;
+    font-style: italic;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    letter-spacing: 0;
+  }
+
+  .tl-content h3 {
+    font-size: 0.95rem;
+    font-weight: normal;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .tl-content p { font-size: 0.84rem; margin-bottom: 0; }
+
+  /* ── NAV DOTS ── */
+  #deck-nav {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--dim);
+    opacity: 0.4;
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+
+  .dot.active { background: var(--green); opacity: 1; transform: scale(1.4); }
+
+  /* ── SLIDE NAVIGATION BAR ── */
+  #slide-progress {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    padding: 14px 48px;
+    background: rgba(7,9,10,0.9);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .progress-label {
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    letter-spacing: 3px;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+
+  .progress-bar-wrap {
+    flex: 1;
+    max-width: 300px;
+    height: 1px;
+    background: var(--line);
+    margin: 0 24px;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--green);
+    transition: width 0.3s ease;
+  }
+
+  .btn-sm {
+    display: inline-block;
+    padding: 8px 18px;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--dim);
+    transition: all 0.2s;
+  }
+
+  .btn-sm:hover { color: var(--text); border-color: rgba(255,255,255,0.3); }
+
+  @media (max-width: 600px) {
+    #slide-progress { display: none; }
+    #deck-nav { display: none; }
+  }
+</style>
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="site-nav">
+  <a class="nav-logo" href="living-age.html">Living Works by the Word</a>
+  <ul class="nav-links">
+    <li><a href="living-age.html">The Living Age</a></li>
+    <li><a href="index.html">Architecture</a></li>
+    <li><a href="spiral-steward.html">Spiral Steward</a></li>
+    <li><a href="moral-framework.html">Moral Framework</a></li>
+    <li><a href="sagent.html">The Sagent</a></li>
+    <li><a href="true-republic.html">True Republic</a></li>
+    <li><a href="pitch.html">Investor Hub</a></li>
+    <li><a href="competitive.html">Competitive</a></li>
+    <li><a href="design-lab.html">Design Lab</a></li>
+    <li><a href="biology-voluntaryism.html">Biology</a></li>
+    <li><a href="spiral steward website/book.html">The Book</a></li>
+  </ul>
+</nav>
+
+<!-- SIDE NAV DOTS -->
+<div id="deck-nav">
+  <div class="dot active" data-slide="s1" title="Thesis"></div>
+  <div class="dot" data-slide="s2" title="Problem"></div>
+  <div class="dot" data-slide="s3" title="Solution"></div>
+  <div class="dot" data-slide="s4" title="Technology"></div>
+  <div class="dot" data-slide="s5" title="Market"></div>
+  <div class="dot" data-slide="s6" title="Competitive Moat"></div>
+  <div class="dot" data-slide="s7" title="Revenue"></div>
+  <div class="dot" data-slide="s8" title="Roadmap"></div>
+  <div class="dot" data-slide="s9" title="Team"></div>
+  <div class="dot" data-slide="s10" title="Ask"></div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="slide-progress">
+  <span class="progress-label" id="slide-counter">Slide 1 / 10</span>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progress-fill" style="width:10%"></div>
+  </div>
+  <a href="business plan pitch prompts/04_Pitch_Deck.pdf" class="btn-sm" target="_blank">Download PDF</a>
+</div>
+
+<!-- ─────────────────────── SLIDES ─────────────────────────── -->
+
+<!-- SLIDE 1: THESIS -->
+<div class="slide" id="s1">
+  <div style="position:absolute;inset:0;background-image:url('../media/graphics/architecture/ChatGPT Image Feb 28, 2026, 02_33_33 PM.png');background-size:cover;background-position:center 30%;opacity:0.14;filter:grayscale(0.3) saturate(0.75);z-index:0;"></div>
+  <canvas id="hero-canvas"></canvas>
+  <div class="slide-overlay"></div>
+  <div class="slide-inner" style="text-align:center;">
+    <div class="slide-num"><span class="n">01</span> Thesis</div>
+    <div class="slide-eyebrow">The Living Age Initiative</div>
+    <h2>The design software<br>for <em>living systems</em>.</h2>
+    <p>
+      An AI-driven platform for designing biological structures, organisms, and living materials.
+      The Autodesk of biology. Built for the transition from the Age of Blocks to the Living Age.
+    </p>
+    <p style="margin-top:8px;">
+      <strong>Sage Clokey</strong> — Steward · Designer · Bioinformatician
+    </p>
+  </div>
+</div>
+
+<!-- SLIDE 2: PROBLEM -->
+<div class="slide has-bg" id="s2">
+  <div class="slide-bg" style="background-image:url('../media/graphics/architecture/06_block_vs_spiral_manifesto.png')"></div>
+  <div class="slide-overlay"></div>
+  <div class="slide-inner">
+    <div class="slide-num"><span class="n">02</span> Problem</div>
+    <h2>Civilization still builds<br>with <em>blocks</em>.</h2>
+    <div class="two-col">
+      <div>
+        <p>
+          Modern construction, manufacturing, and infrastructure are based on industrial-age engineering:
+          assemble rigid parts, consume massive energy, replace when broken.
+        </p>
+        <p>
+          <strong>Living systems already solved these problems.</strong> Trees build complex load-bearing structures.
+          Coral builds mineral architecture. Fungal networks distribute resources with zero central control.
+        </p>
+      </div>
+      <div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Block System</th><th>Spiral System</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Rigid hierarchy</td><td class="hi">Adaptive growth</td></tr>
+            <tr><td>Central control</td><td class="hi">Distributed intelligence</td></tr>
+            <tr><td>Manufactured</td><td class="hi">Grown</td></tr>
+            <tr><td>Degrades</td><td class="hi">Self-repairs</td></tr>
+            <tr><td>Extracts from nature</td><td class="hi">Works with nature</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3: SOLUTION -->
+<div class="slide has-bg" id="s3" style="background:var(--bg2);">
+  <div class="slide-bg" style="background-image:url('../media/graphics/living-age/ChatGPT Image Mar 6, 2026, 02_34_47 PM.png');opacity:0.08;filter:grayscale(0.3) saturate(0.7);"></div>
+  <div class="slide-inner">
+    <div class="slide-num"><span class="n">03</span> Solution</div>
+    <h2>Living Works — design<br><em>growth rules</em>, not objects.</h2>
+    <p>
+      Living Works is an AI platform that sits between human intention and biological growth.
+      Instead of manipulating vertices, users define growth rules. The biology does the rest.
+    </p>
+    <p>
+      Like Autodesk for buildings, Unity for games, Blender for graphics —
+      <strong>but for biology.</strong>
+    </p>
+    <blockquote style="margin:32px 0;padding:20px 24px;border-left:2px solid var(--gold);background:rgba(184,151,58,0.04);">
+      <p style="font-style:italic;color:var(--text);font-size:1rem;margin:0;">
+        "Grow a self-supporting dome structure using fungal mycelium optimized for humidity resistance."
+      </p>
+      <p style="font-family:'Courier New',monospace;font-size:0.56rem;letter-spacing:2px;color:var(--dim);margin:10px 0 0;text-transform:uppercase;">
+        → Growth model · Gene pathway suggestions · Structural simulation
+      </p>
+    </blockquote>
+  </div>
+</div>
+
+<!-- SLIDE 4: TECHNOLOGY -->
+<div class="slide has-bg" id="s4">
+  <div class="slide-bg" style="background-image:url('../media/graphics/architecture/07_mycelium_dome_3d.png');opacity:0.07;filter:grayscale(0.4) saturate(0.6);background-position:right center;"></div>
+  <div class="slide-inner">
+    <div class="slide-num"><span class="n">04</span> Technology</div>
+    <h2>Four core technologies.<br>One <em>integrated platform</em>.</h2>
+    <div class="card-grid">
+      <div class="card">
+        <img src="media/graphics/architecture/07_mycelium_dome_3d.png" alt="Morphogenesis Engine" style="width:100%;height:110px;object-fit:cover;object-position:center;display:block;margin-bottom:16px;filter:brightness(0.6) saturate(0.75);border-bottom:1px solid var(--line);">
+        <div class="card-label">01 — Core</div>
+        <h3>Morphogenesis Engine</h3>
+        <p>3D simulation of biological growth: branching systems, nutrient gradients,
+          biomechanical forces. Form emerges from physics, not manual modeling.</p>
+      </div>
+      <div class="card">
+        <img src="ai-tools/morphogenesis-engine/outputs/frames/frame_0070.png" alt="Natural Language Bio Design" style="width:100%;height:110px;object-fit:cover;object-position:center;display:block;margin-bottom:16px;filter:brightness(0.65) saturate(0.75);border-bottom:1px solid var(--line);">
+        <div class="card-label">02 — Interface</div>
+        <h3>Natural Language Bio Design</h3>
+        <p>Plain-language prompts → growth algorithms → gene pathway suggestions →
+          structural simulations. Biology as accessible as a text prompt.</p>
+      </div>
+      <div class="card">
+        <img src="media/graphics/architecture/04_branching_tree_structure.png" alt="BioCAD Platform" style="width:100%;height:110px;object-fit:cover;object-position:center 30%;display:block;margin-bottom:16px;filter:brightness(0.6) saturate(0.75);border-bottom:1px solid var(--line);">
+        <div class="card-label">03 — Platform</div>
+        <h3>BioCAD Environment</h3>
+        <p>Unified design workspace: organism blueprinting, gene network visualization,
+          tissue architecture modeling, and ecosystem simulation.</p>
+      </div>
+      <div class="card">
+        <img src="media/graphics/architecture/02_mycelium_network_plan.png" alt="Living Materials Library" style="width:100%;height:110px;object-fit:cover;object-position:center;display:block;margin-bottom:16px;filter:brightness(0.6) saturate(0.75);border-bottom:1px solid var(--line);">
+        <div class="card-label">04 — Library</div>
+        <h3>Living Materials Library</h3>
+        <p>Curated biological building blocks — mycelium, plant scaffolds, bacterial cellulose,
+          coral mineralization — each with growth rules and environment parameters.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5: MARKET -->
+<div class="slide has-bg" id="s5" style="background:var(--bg2);">
+  <div class="slide-bg" style="background-image:url('../media/graphics/architecture/ChatGPT Image Feb 28, 2026, 02_38_41 PM.png');opacity:0.09;filter:grayscale(0.3) saturate(0.7);"></div>
+  <div class="slide-inner">
+    <div class="slide-num"><span class="n">05</span> Market</div>
+    <h2>$45B+ addressable.<br><em>One critical gap.</em></h2>
+    <div class="market-strip">
+      <div class="mnum">
+        <div class="mnum-val">$20B+</div>
+        <div class="mnum-label">Synthetic Biology</div>
+      </div>
+      <div class="mnum">
+        <div class="mnum-val">$10B+</div>
+        <div class="mnum-label">AI Drug Design</div>
+      </div>
+      <div class="mnum">
+        <div class="mnum-val">$15B+</div>
+        <div class="mnum-label">Bioinformatics</div>
+      </div>
+    </div>
+    <p style="margin-top:28px;">
+      No major platform today focuses on <strong>whole-organism morphology</strong>, 3D growth simulation,
+      natural language biological design, or living architecture. 150+ companies in the ecosystem —
+      none in the morphological BioCAD whitespace.
+    </p>
+    <p>
+      <strong>Plus</strong>: the emerging programmable living materials market — bio-grown buildings,
+      carbon-absorbing cities, self-repairing materials — with no dominant design platform yet.
+    </p>
+    <div style="margin-top:28px;border:1px solid var(--line);overflow:hidden;position:relative;">
+      <img src="media/graphics/architecture/ChatGPT Image Feb 28, 2026, 02_38_41 PM.png" alt="Living Architecture — The Vision" style="width:100%;height:180px;object-fit:cover;object-position:center 42%;display:block;filter:brightness(0.6) saturate(0.85);">
+      <div style="position:absolute;bottom:10px;right:16px;font-family:'Courier New',monospace;font-size:0.52rem;letter-spacing:2px;color:rgba(221,217,204,0.55);text-transform:uppercase;">Living Architecture — The Market Vision</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: COMPETITIVE MOAT -->
+<div class="slide has-bg" id="s6">
+  <div class="slide-bg" style="background-image:url('../media/graphics/architecture/02_mycelium_network_plan.png');opacity:0.08;filter:grayscale(0.4) saturate(0.6);background-position:right center;background-size:50% auto;"></div>
+  <div class="slide-inner">
+    <div class="slide-num"><span class="n">06</span> Competitive Moat</div>
+    <h2>Morphological BioCAD —<br>a category with <em>no incumbent</em>.</h2>
+    <div class="two-col">
+      <div>
+        <p>Most competitors design at the molecular level — genes, proteins, microbes
+          (Ginkgo, Generate, Benchling). They are strong there. We are not competing there.</p>
+        <p>
+          Living Works designs at the <strong>morphological level</strong> — growth processes,
+          tissue structures, organism architecture. This is the scale where buildings, materials,
+          and ecosystems live.
+        </p>
+        <p>
+          <a href="competitive.html" style="color:var(--green);font-family:'Courier New',monospace;font-size:0.72rem;letter-spacing:1px;">
+            Full competitive analysis →
+          </a>
+        </p>
+      </div>
+      <div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Unfair Advantage</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Morphogenesis simulation engine</td><td class="hi">Built</td></tr>
+            <tr><td>Natural language bio interface</td><td class="hi">In development</td></tr>
+            <tr><td>Cross-scale design (DNA → architecture)</td><td class="hi">Designed</td></tr>
+            <tr><td>Living materials market</td><td class="hi">First mover</td></tr>
+            <tr><td>Cultural narrative (Spiral Steward)</td><td class="hi">Active</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: REVENUE -->
+<div class="slide has-bg" id="s7" style="background:var(--bg2);">
+  <div class="slide-bg" style="background-image:url('../media/graphics/architecture/01_fibonacci_spiral_house.png');opacity:0.09;filter:grayscale(0.15) saturate(0.5);background-position:right center;background-size:55% auto;"></div>
+  <div class="slide-inner">
+    <div class="slide-num"><span class="n">07</span> Revenue Model</div>
+    <h2>Three streams: SaaS, services,<br><em>IP licensing</em>.</h2>
+    <div class="two-col">
+      <div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Tier</th><th>Price / Month</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Academic</td><td class="hi">$50–$200</td></tr>
+            <tr><td>Startup</td><td class="hi">$500</td></tr>
+            <tr><td>Enterprise</td><td class="hi">$2,000+</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <p><strong>AI Design Services:</strong> Custom organism and material design projects.
+          High-margin, project-based revenue from materials companies, construction firms, and biotech.</p>
+        <p style="margin-top:12px;"><strong>IP Licensing:</strong> Patents on biological growth algorithms,
+          engineered organisms, and living material systems. Long-term recurring royalties.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: ROADMAP -->
+<div class="slide has-bg" id="s8">
+  <div class="slide-bg" style="background-image:url('../media/graphics/architecture/05_sunflower_room_spiral.png');opacity:0.08;filter:grayscale(0.2) saturate(0.5);background-position:right center;background-size:55% auto;"></div>
+  <div class="slide-inner">
+    <div class="slide-num"><span class="n">08</span> Roadmap</div>
+    <h2>From prototype to ecosystem<br>in <em>three phases</em>.</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-phase">Phase 1<span>Years 1–2</span></div>
+        <div class="tl-content">
+          <h3>Build the Foundation</h3>
+          <p>Morphogenesis engine, AI design interface, basic BioCAD. Early adopters: universities
+            and synthetic biology labs. Academic SaaS subscriptions.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-phase">Phase 2<span>Years 3–5</span></div>
+        <div class="tl-content">
+          <h3>Expand to Industry</h3>
+          <p>Living material design, architecture simulation, advanced AI models. Partner with
+            architecture firms and materials companies. Enterprise tier launch.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-phase">Phase 3<span>Years 5–10</span></div>
+        <div class="tl-content">
+          <h3>Enable the Living Age</h3>
+          <p>Programmable ecosystems, organism-scale design, living infrastructure. The platform
+            becomes the standard design environment for biological systems.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: TEAM / FOUNDER -->
+<div class="slide has-bg" id="s9" style="background:var(--bg2);">
+  <div class="slide-bg" style="background-image:url('../media/graphics/architecture/03_living_facade.png');opacity:0.07;filter:grayscale(0.3) saturate(0.6);background-position:right center;background-size:50% auto;"></div>
+  <div class="slide-inner">
+    <div class="slide-num"><span class="n">09</span> Team</div>
+    <h2>Steward · Designer ·<br><em>Bioinformatician</em>.</h2>
+    <div class="two-col">
+      <div>
+        <p>
+          <strong>Sage Clokey</strong> — founder and lead designer of Living Works by the Word.
+          Working at the intersection of computational biology, morphogenetic simulation,
+          architectural theory, and moral philosophy of design.
+        </p>
+        <p>
+          The morphogenesis simulation engine, the BioCAD conceptual framework, the visual design system,
+          and the cultural narrative around Spiral Stewardship were developed through this initiative.
+        </p>
+        <p>
+          Seeking co-founders with complementary strengths: wet-lab biology, enterprise sales,
+          and AI model development.
+        </p>
+      </div>
+      <div>
+        <img src="media/graphics/website/PXL_20250510_211954769.jpg"
+          alt="Sage Clokey"
+          style="width:100%;display:block;border:1px solid var(--line);filter:brightness(0.8) saturate(0.75);">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10: ASK / CTA -->
+<div class="slide has-bg" id="s10" style="text-align:center;">
+  <div class="slide-bg" style="background-image:url('../media/graphics/architecture/ChatGPT Image Feb 28, 2026, 02_37_12 PM.png');opacity:0.28;filter:grayscale(0.1) saturate(0.9);background-position:center 35%;"></div>
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center, rgba(7,9,10,0.45) 0%, rgba(7,9,10,0.92) 75%);z-index:1;"></div>
+  <div class="slide-inner" style="text-align:center;">
+    <div class="slide-num" style="justify-content:center;"><span class="n">10</span> The Ask</div>
+    <h2 style="margin:0 auto 32px;">Building the design layer<br>for the <em>Living Age</em>.</h2>
+    <p style="margin:0 auto 16px;">
+      We are seeking early-stage partnerships with investors, collaborators, and institutions
+      ready to build at the frontier where biology meets design.
+    </p>
+    <p style="margin:0 auto 48px;">
+      The tools exist. The need is real. The market is forming now.
+    </p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+      <a href="business plan pitch prompts/01_Business_Plan_Living_Age_Initiative.pdf" target="_blank"
+        style="display:inline-block;padding:14px 32px;background:var(--gold);color:#07090a;font-family:'Courier New',monospace;font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;border:1px solid var(--gold);">
+        Download Business Plan
+      </a>
+      <a href="pitch.html"
+        style="display:inline-block;padding:14px 32px;border:1px solid rgba(255,255,255,0.15);color:var(--dim);font-family:'Courier New',monospace;font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;">
+        Investor Hub →
+      </a>
+      <a href="competitive.html"
+        style="display:inline-block;padding:14px 32px;border:1px solid rgba(255,255,255,0.15);color:var(--dim);font-family:'Courier New',monospace;font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;">
+        Competitive Analysis →
+      </a>
+    </div>
+
+    <div style="margin-top:80px;padding-top:48px;border-top:1px solid var(--line);">
+      <p style="color:var(--dim);font-family:'Courier New',monospace;font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;">
+        Living Works by the Word &middot; Sage Clokey &middot; 2026
+      </p>
+      <p style="color:var(--dim);font-style:italic;margin-top:12px;">Not blocks. Spirals.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="site-footer">
+  <span class="footer-brand">Living Works by the Word &middot; Sage Clokey &middot; 2026</span>
+  <nav class="footer-links">
+    <a href="living-age.html">The Living Age</a>
+    <a href="index.html">Architecture</a>
+    <a href="spiral-steward.html">Spiral Steward</a>
+    <a href="moral-framework.html">Moral Framework</a>
+    <a href="sagent.html">The Sagent</a>
+    <a href="true-republic.html">True Republic</a>
+    <a href="pitch.html">Investor Hub</a>
+    <a href="competitive.html">Competitive</a>
+    <a href="summary.html">Summary</a>
+    <a href="story.html">The Story</a>
+    <a href="design-lab.html">Design Lab</a>
+    <a href="spiral steward website/book.html">The Book</a>
+  </nav>
+</footer>
+
+<script>
+// ─── SLIDE 1 HERO CANVAS ──────────────────────────────────────────────────────
+const canvas = document.getElementById('hero-canvas');
+const ctx    = canvas.getContext('2d');
+let W, H;
+
+function resize() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  W = canvas.width  = rect.width  || window.innerWidth;
+  H = canvas.height = rect.height || window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+const GA    = Math.PI * (3 - Math.sqrt(5));
+const TOTAL = 500;
+let frame = 0, fa = 0;
+
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+function draw() {
+  ctx.fillStyle = 'rgba(7,9,10,0.2)';
+  ctx.fillRect(0, 0, W, H);
+  const cx = W / 2, cy = H / 2;
+  const scale = Math.min(W, H) / 2 / Math.sqrt(TOTAL) * 0.82;
+  const n = Math.min(Math.floor(frame), TOTAL);
+  for (let i = Math.max(0, n - 25); i <= n; i++) {
+    const angle = i * GA;
+    const r = scale * Math.sqrt(i + 1);
+    const x = cx + r * Math.cos(angle);
+    const y = cy + r * Math.sin(angle);
+    const t = i / TOTAL;
+    const hue  = lerp(42, 140, t);
+    const sat  = lerp(55, 38, t);
+    const lit  = lerp(30, 52, t);
+    const size = lerp(3.5, 1.2, t);
+    ctx.globalAlpha = (i === n ? 0.85 : lerp(0.4, 0.15, t)) * Math.min(1, fa);
+    ctx.fillStyle = `hsl(${hue},${sat}%,${lit}%)`;
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  fa    += 0.012;
+  frame += 0.8;
+  if (frame > TOTAL + 70) frame = 0;
+  requestAnimationFrame(draw);
+}
+draw();
+
+// ─── SCROLL PROGRESS / DOTS ───────────────────────────────────────────────────
+const slides  = Array.from(document.querySelectorAll('.slide'));
+const dots    = Array.from(document.querySelectorAll('.dot'));
+const counter = document.getElementById('slide-counter');
+const fill    = document.getElementById('progress-fill');
+
+const slideObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = slides.indexOf(e.target);
+      if (idx >= 0) {
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+        if (counter) counter.textContent = `Slide ${idx + 1} / ${slides.length}`;
+        if (fill) fill.style.width = `${((idx + 1) / slides.length) * 100}%`;
+      }
+    }
+  });
+}, { threshold: 0.5 });
+
+slides.forEach(s => slideObserver.observe(s));
+
+// Dot click — scroll to slide
+dots.forEach((dot, i) => {
+  dot.addEventListener('click', () => {
+    slides[i]?.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>

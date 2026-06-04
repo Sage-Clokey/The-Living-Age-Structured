@@ -1,0 +1,38 @@
+PATHWAY MAP
+Which organism contributed which capability and why
+=================================================================
+Target chassis: ganoderma
+
+[WUS]
+  Source organism : arabidopsis
+  Capability      : growth
+  Promoter used   : TEF1
+  Terminator used : CYC1_term
+  CDS length      : 0bp
+  CAI             : 0.000
+  Confidence      : 0.55
+
+[XM_069620111.1]
+  Source organism : axolotl
+  Capability      : self-repair
+  Promoter used   : TEF1
+  Terminator used : CYC1_term
+  CDS length      : 0bp
+  CAI             : 0.000
+  Confidence      : 0.40
+
+[XM_074767098.1]
+  Source organism : acropora
+  Capability      : structural
+  Promoter used   : TEF1
+  Terminator used : CYC1_term
+  CDS length      : 0bp
+  CAI             : 0.000
+  Confidence      : 0.40
+
+KNOWN CONFLICTS TO MONITOR
+----------------------------------------
+  [HIGH] substrate_competition
+  Resource: ATP
+  6 pathways compete for ATP: WUS/CLV3 meristem growth, Sonic hedgehog patterning, Piwi regeneration pathway, MMP9 tissue remodeling, HIF1a hypoxia response, Fungal chitin synthesis. High expression of all simultaneously may exhaust this pool.
+  Resolution: Use inducible promoters to run pathways sequentially, or supplement ATP externally. For UDP-sugar competition: consider separate biosynthesis branches.

@@ -1,0 +1,3 @@
+# Spiral and Green Flame
+
+The foundational visual language of the Living Works cosmology. This folder contains images centered on the spiral symbol as a living, growing force — the Fibonacci spiral as metaphor for organic order emerging from mathematical law. The green flame represents the spark of life, the regenerative power of nature asserting itself against entropy and dead structure. Imagery here includes the rise of the Spiral Steward as a figure of emergence, nature reclaiming space, and the burning of the Block Empire — the old regime of rigid, mechanical, grid-locked civilization. These images form the visual core: the symbol that everything else radiates from.

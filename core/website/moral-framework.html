@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Moral Case for Living Architecture — LivingWorks</title>
+<style>
+  :root {
+    --bg:      #07090a;
+    --bg2:     #0c0f0c;
+    --bg3:     #0f1208;
+    --text:    #ddd9cc;
+    --dim:     #6a6860;
+    --green:   #7a9e7e;
+    --gold:    #b8973a;
+    --red:     #9e5a4a;
+    --line:    rgba(255,255,255,0.07);
+    --max:     680px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-heading);
+    line-height: 1.85;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 48px;
+    background: rgba(7,9,10,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-logo {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--green);
+    text-decoration: none;
+  }
+
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: var(--dim);
+    text-decoration: none;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: var(--font-mono);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--text); }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 48px 80px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+
+  #header-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    opacity: 0.35;
+  }
+
+  .header-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+  }
+
+  .header-track {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 4px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    display: flex;
+    gap: 24px;
+  }
+
+  .header-track span { color: var(--gold); }
+
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 4.5rem);
+    font-weight: normal;
+    line-height: 1.15;
+    margin-bottom: 24px;
+    letter-spacing: -0.01em;
+  }
+
+  .header-sub {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--dim);
+    font-style: italic;
+    margin-bottom: 48px;
+    max-width: 640px;
+  }
+
+  .header-meta {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 2px;
+    color: var(--dim);
+    text-transform: uppercase;
+    line-height: 2;
+  }
+
+  .header-opening-quote {
+    margin-top: 48px;
+    padding: 24px 0;
+    border-top: 1px solid var(--line);
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--gold);
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  .header-opening-quote cite {
+    display: block;
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 2px;
+    color: var(--dim);
+    font-style: normal;
+    text-transform: uppercase;
+  }
+
+  /* ── CONTENT LAYOUT ── */
+  .content {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .wide-content {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── PART DIVIDERS ── */
+  .part-header {
+    padding: 100px 48px 60px;
+    border-top: 1px solid var(--line);
+  }
+
+  .part-num {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 5px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .part-title {
+    font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+    font-weight: normal;
+    line-height: 1.2;
+    max-width: 760px;
+    margin: 0 auto 0 0;
+  }
+
+  .part-subtitle {
+    margin-top: 12px;
+    font-size: 1rem;
+    color: var(--dim);
+    font-style: italic;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    padding: 64px 48px;
+    border-top: 1px solid var(--line);
+  }
+
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 3px;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  h2 {
+    font-size: clamp(1.1rem, 2.2vw, 1.55rem);
+    font-weight: normal;
+    line-height: 1.35;
+    margin-bottom: 32px;
+    max-width: var(--max);
+  }
+
+  p {
+    max-width: var(--max);
+    color: var(--text);
+    font-size: 0.98rem;
+    margin-bottom: 20px;
+    line-height: 1.85;
+  }
+
+  /* ── PULL QUOTES ── */
+  blockquote {
+    margin: 48px 0;
+    padding: 0 0 0 28px;
+    border-left: 2px solid var(--gold);
+    max-width: 680px;
+  }
+
+  blockquote p {
+    font-size: 1.05rem;
+    font-style: italic;
+    line-height: 1.75;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  blockquote cite {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 2px;
+    color: var(--dim);
+    text-transform: uppercase;
+    font-style: normal;
+  }
+
+  /* Standout quote — full bleed */
+  .standout-quote {
+    background: var(--bg2);
+    padding: 80px 48px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    text-align: center;
+  }
+
+  .standout-quote p {
+    font-size: clamp(1.3rem, 3vw, 2.2rem);
+    font-style: italic;
+    max-width: 820px;
+    margin: 0 auto 20px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .standout-quote p em { color: var(--gold); font-style: normal; }
+
+  .standout-quote cite {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+
+  /* ── BLOCK VS LIVING TABLE ── */
+  .comparison {
+    padding: 80px 48px;
+    background: var(--bg3);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .comparison-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 5px;
+    color: var(--dim);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 640px) { .comparison-grid { grid-template-columns: 1fr; } }
+
+  .comparison-col {
+    padding: 40px;
+    background: var(--bg);
+  }
+
+  .comparison-col.block { border-top: 3px solid var(--red); }
+  .comparison-col.living { border-top: 3px solid var(--green); }
+
+  .comparison-col h3 {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .comparison-col.block h3 { color: var(--red); }
+  .comparison-col.living h3 { color: var(--green); }
+
+  .comparison-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .comparison-col ul li {
+    font-size: 0.9rem;
+    color: var(--dim);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .comparison-col ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--line);
+  }
+
+  .comparison-col.living ul li { color: var(--text); }
+  .comparison-col.living ul li::before { color: var(--green); opacity: 0.5; }
+
+  /* ── SIX PRINCIPLES ── */
+  .principles {
+    padding: 100px 48px;
+    background: var(--bg2);
+    border-top: 1px solid var(--line);
+  }
+
+  .principles-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 5px;
+    color: var(--green);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .principle-list {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .principle {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    padding: 36px 0;
+    border-top: 1px solid var(--line);
+    gap: 32px;
+    align-items: start;
+    opacity: 0;
+    transform: translateX(-16px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .principle.visible { opacity: 1; transform: translateX(0); }
+
+  .principle-num {
+    font-family: var(--font-mono);
+    font-size: 2.2rem;
+    color: rgba(255,255,255,0.07);
+    line-height: 1;
+    padding-top: 4px;
+    text-align: right;
+  }
+
+  .principle-body h3 {
+    font-size: 1.1rem;
+    font-weight: normal;
+    color: var(--gold);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .principle-body p {
+    font-size: 0.88rem;
+    color: var(--dim);
+    line-height: 1.75;
+    margin: 0;
+    max-width: none;
+  }
+
+  /* ── CONCLUSION ── */
+  .conclusion {
+    padding: 100px 48px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+
+  .final-line {
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    font-style: italic;
+    max-width: 700px;
+    margin: 0 auto 48px;
+    line-height: 1.6;
+    color: var(--text);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+
+  .final-line.visible { opacity: 1; transform: translateY(0); }
+  .final-line em { color: var(--gold); font-style: normal; }
+
+  .final-source {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    color: var(--dim);
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 1s ease 0.4s;
+  }
+
+  .final-source.visible { opacity: 1; }
+
+  /* ── SOURCES ── */
+  .sources-section {
+    padding: 64px 48px;
+    border-top: 1px solid var(--line);
+    background: var(--bg2);
+  }
+
+  .sources-label {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 4px;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+
+  .source-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: var(--max);
+  }
+
+  .source-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+    gap: 16px;
+  }
+
+  .source-item span {
+    font-size: 0.88rem;
+    color: var(--text);
+  }
+
+  .source-item a {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 2px;
+    color: var(--dim);
+    text-decoration: none;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px;
+    white-space: nowrap;
+    transition: color 0.2s;
+  }
+
+  .source-item a:hover { color: var(--green); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 32px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer span {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    color: var(--dim);
+    letter-spacing: 2px;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="site-nav">
+  <a class="nav-logo" href="living-age.html">Living Works by the Word</a>
+  <ul class="nav-links">
+    <li><a href="living-age.html">The Living Age</a></li>
+    <li><a href="index.html">Architecture</a></li>
+    <li><a href="spiral-steward.html">Spiral Steward</a></li>
+    <li><a href="moral-framework.html" class="active">Moral Framework</a></li>
+    <li><a href="sagent.html">The Sagent</a></li>
+    <li><a href="true-republic.html">True Republic</a></li>
+    <li><a href="posters.html">Posters</a></li>
+    <li><a href="biology-voluntaryism.html">Biology</a></li>
+    <li><a href="spiral steward website/book.html">The Book</a></li>
+  </ul>
+</nav>
+
+<!-- HEADER -->
+<header style="background-image:url('../media/graphics/architecture/ChatGPT Image Feb 28, 2026, 02_33_33 PM.png');background-size:cover;background-position:center 35%;">
+  <canvas id="header-canvas"></canvas>
+  <div class="header-inner">
+    <div class="header-track">
+      Track 1 — <span>Bioethics, Equity & Justice</span>
+      &nbsp;·&nbsp;
+      Track 2 — <span>Sustainability</span>
+    </div>
+    <h1>The Moral Case<br>for Living Architecture</h1>
+    <p class="header-sub">Why Houses Must Grow in Living Shape — Not Stand as Dead Blocks</p>
+    <div class="header-meta">
+      Sage Clokey · LivingWorks Initiative · 2026<br>
+      Source texts: Bioinformatics as Stewardship of Living Order ·
+      The Spiral Steward · Cover Letter: Voluntarist Biology
+    </div>
+    <div class="header-opening-quote">
+      "Life is not a resource. Life is a language.
+      And the Steward of Life is learning to speak it."
+      <cite>— The Spiral Steward</cite>
+    </div>
+  </div>
+</header>
+
+<!-- PREAMBLE -->
+<div class="section">
+  <div class="section-num">Preamble</div>
+  <h2>What this document argues</h2>
+  <div class="content reveal">
+    <p>
+      This document lays out the moral case for replacing block-based, industrially manufactured housing
+      with living architecture — structures that grow, adapt, and repair themselves in accord with biological
+      and ecological principles. The argument draws on three original texts written to articulate the ethics of
+      life-based design, interpreted through two justice frameworks.
+    </p>
+    <p>
+      <strong>Bioethics, Equity & Justice:</strong> How dead-matter construction perpetuates social harm,
+      cognitive inequality, and moral failure toward future generations.
+    </p>
+    <p>
+      <strong>Sustainability:</strong> How living architecture restores rather than destroys the ecological
+      systems on which all human flourishing depends.
+    </p>
+  </div>
+</div>
+
+<!-- PART I -->
+<div id="diagnosis" class="part-header">
+  <div class="wide-content">
+    <div class="part-num">Part I</div>
+    <div class="part-title">The Moral Diagnosis: What Block Architecture Does to People and Planet</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-num">1.1</div>
+  <h2>The Industrial Error Is an Ethical Error</h2>
+  <div class="content reveal">
+    <p>
+      Block houses — rectangular, mass-produced, dead-material structures — are not morally neutral.
+      They are the physical residue of an industrial worldview that begins with a single foundational error:
+      the belief that humans are separate from nature.
+    </p>
+    <p>
+      From this lie, all downstream harms follow. When planners and architects treat land as substrate
+      rather than ecosystem, communities as consumer units rather than living organisms, and buildings
+      as manufactured objects rather than cultivated places, they produce environments that injure the
+      people who inhabit them.
+    </p>
+  </div>
+  <blockquote class="reveal">
+    <p>
+      "The industrial age taught humanity a single devastating lie: that humans are separate from nature.
+      From this lie came monoculture agriculture that destroys soil; cities built as dead zones instead of
+      living habitats; homes built from dead matter that nature itself seeks to burn and clear."
+    </p>
+    <cite>— The Spiral Steward</cite>
+  </blockquote>
+  <div class="content reveal">
+    <p>
+      Industrial engineering designs systems that must first kill what is living: trees become lumber,
+      soil becomes substrate, ecosystems become resources. Only once life is stripped away can control
+      be imposed. This is not a failure of technology. It is a failure of design philosophy.
+    </p>
+  </div>
+  <img src="media/graphics/architecture/04_branching_tree_structure.png"
+       alt="Branching Tree Structure — Dead Engineering vs Living Form"
+       style="width:100%;max-width:480px;display:block;margin:48px auto 0;opacity:0.85;border:1px solid rgba(255,255,255,0.06);">
+</div>
+
+<div class="section">
+  <div class="section-num">1.2</div>
+  <h2>Architecture Shapes Thought — And Thought Shapes Justice</h2>
+  <div class="content reveal">
+    <p>
+      The moral harm of block architecture is not only physical or environmental. It is cognitive and
+      political. The built environment teaches the mind how to think about power, relationship, and
+      possibility.
+    </p>
+  </div>
+  <blockquote class="reveal">
+    <p>
+      "When we build a world around blocks, cubes, and rigid hierarchies, we produce people who
+      think in domination, in control, in compliance, in extraction. Empire architecture creates empire
+      minds. Dead spaces create dead thinking. Living systems create living cognition."
+    </p>
+    <cite>— The Spiral Steward</cite>
+  </blockquote>
+  <div class="content reveal">
+    <p>
+      This is a bioethics claim with direct implications for equity and justice. If the physical shape of a
+      home determines the cognitive habits of its inhabitants, then housing policy is brain policy.
+      Consigning low-income communities to identical grid blocks is not merely an aesthetic choice —
+      it is a structural imposition of conformist cognition, limiting the imaginative and political capacity
+      of those least able to resist it.
+    </p>
+  </div>
+  <blockquote class="reveal">
+    <p>"The cube is the shape of slavery. The Fibonacci spiral is the shape of freedom."</p>
+    <cite>— The Spiral Steward</cite>
+  </blockquote>
+  <img src="media/graphics/architecture/05_sunflower_room_spiral.png"
+       alt="Fibonacci Spiral Room Arrangement — The Shape of Freedom"
+       style="width:100%;max-width:520px;display:block;margin:48px auto 0;opacity:0.88;border:1px solid rgba(255,255,255,0.06);">
+</div>
+
+<div class="section">
+  <div class="section-num">1.3</div>
+  <h2>Monoculture Is Violence — Against Ecosystems and Against People</h2>
+  <div class="content reveal">
+    <p>
+      Block construction enforces monoculture at every scale. Ecologically, it replaces biodiversity with
+      uniform substrate. Socially, it replaces cultural variety with standardized units. Both forms of
+      monoculture share the same moral signature: the erasure of difference in order to ease control.
+    </p>
+  </div>
+  <blockquote class="reveal">
+    <p>
+      "Where life grows in spirals, we imposed straight lines. Where ecosystems rely on diversity,
+      we enforced uniformity. Where systems wanted decentralization, we demanded central control.
+      The ancient Amazonian civilizations understood something modern society forgot: abundance
+      emerges from biodiversity; stability comes from relationship; growth follows spirals, not grids."
+    </p>
+    <cite>— The Spiral Steward</cite>
+  </blockquote>
+  <div class="content reveal">
+    <p>
+      Bioinformatics confirms what indigenous wisdom already knew. Computational analysis of living
+      systems — from genomes to ecosystems — consistently shows that resilience emerges from
+      diversity, not uniformity. A design philosophy that imports monoculture logic into the built
+      environment is not just aesthetically impoverished; it is scientifically and morally wrong.
+    </p>
+  </div>
+</div>
+
+<!-- STANDOUT QUOTE -->
+<div class="standout-quote">
+  <p>
+    "Life is not centrally designed, but <em>emergent</em> — a decentralized order created
+    through layers of feedback, adaptation, and symbiosis."
+  </p>
+  <cite>— Bioinformatics as Stewardship of Living Order</cite>
+</div>
+
+<div style="text-align:center;padding:0 48px;background:var(--bg3);border-top:1px solid var(--line);">
+  <img src="media/graphics/architecture/06_block_vs_spiral_manifesto.png"
+       alt="Block vs Spiral — Two Philosophies of Design"
+       style="width:100%;max-width:900px;display:block;margin:0 auto;opacity:0.9;">
+</div>
+
+<!-- PART II -->
+<div id="bioethics" class="part-header">
+  <div class="wide-content">
+    <div class="part-num">Part II · Track 1</div>
+    <div class="part-title">Bioethics, Equity & Justice: The Right to Live in Living Space</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-num">2.1</div>
+  <h2>Housing as a Bioethical Issue</h2>
+  <div class="content reveal">
+    <p>
+      Bioethics traditionally governs decisions about the human body — clinical treatment, genetic
+      privacy, research consent. But the body does not end at the skin. The built environment is a
+      prosthetic extension of the biological organism.
+    </p>
+    <p>
+      Air quality, light cycles, acoustic texture, spatial variety, contact with living systems: these are
+      not luxuries. They are inputs to human biological health. When block housing cuts people off from
+      biodiversity, natural light gradients, and living material, it imposes a medically significant
+      deprivation — one that disproportionately falls on those with the least economic power to escape it.
+      This is a bioethics failure of the same magnitude as inequitable access to clinical care.
+    </p>
+  </div>
+  <img src="media/graphics/architecture/01_fibonacci_spiral_house.png"
+       alt="Fibonacci Spiral House — The Right to Live in Living Space"
+       style="width:100%;max-width:540px;display:block;margin:48px auto 0;opacity:0.88;border:1px solid rgba(255,255,255,0.06);">
+</div>
+
+<div class="section">
+  <div class="section-num">2.2</div>
+  <h2>Equity: Who Bears the Cost of Dead Architecture?</h2>
+  <div class="content reveal">
+    <p>
+      Block construction is cheaper to produce and more profitable to sell at scale. This economic logic
+      determines who gets living space and who gets cubes. Wealthy individuals can afford bespoke,
+      nature-integrated design. Everyone else receives the industrially optimized minimum.
+    </p>
+    <p>
+      This is not a natural market outcome — it is a structural inequity encoded in zoning law, building
+      code, and financial incentive. The stewardship ethic demands we ask: who benefits from this
+      arrangement? The answer is clear: manufacturers, developers, and insurers who profit from
+      standardization. Those who pay the price — in cognitive restriction, ecological disconnection,
+      and long-term health cost — are the communities with the least political voice.
+    </p>
+  </div>
+  <blockquote class="reveal">
+    <p>
+      "To learn the language of life so we can stop treating it like dead matter — and start
+      designing like gardeners, not rulers."
+    </p>
+    <cite>— Bioinformatics as Stewardship of Living Order</cite>
+  </blockquote>
+</div>
+
+<div class="section">
+  <div class="section-num">2.3</div>
+  <h2>Justice: The Obligation to Restore</h2>
+  <div class="content reveal">
+    <p>
+      Justice is not only the prevention of future harm. It is the repair of existing damage. Centuries of
+      industrial block construction have fractured the relationship between human communities and
+      living ecosystems. A justice-oriented approach to housing demands ecological and spatial
+      restoration — rebuilding environments that allow human biological and social systems to
+      re-integrate with the living world.
+    </p>
+    <p>
+      This aligns with the voluntarist biology framework: human systems flourish not under central
+      coercion, but under conditions that support voluntary emergence and self-organization.
+      Living architecture restores those conditions.
+    </p>
+  </div>
+  <blockquote class="reveal">
+    <p>
+      "My long-term goal is not merely to analyze biological data, but to deepen our collective
+      understanding of how living systems organize themselves — and to use that understanding
+      to help humanity become better stewards of life. I hope to contribute to a new paradigm
+      of bio-design — one that works with living systems instead of trying to dominate them."
+    </p>
+    <cite>— Cover Letter: Voluntarist Biology</cite>
+  </blockquote>
+</div>
+
+<!-- BLOCK vs LIVING COMPARISON -->
+<div class="comparison">
+  <div class="comparison-label">The Two Worlds</div>
+  <div class="comparison-grid">
+    <div class="comparison-col block">
+      <h3>Block Housing Produces</h3>
+      <ul>
+        <li>Cognitive conformism and passivity</li>
+        <li>Ecological disconnection</li>
+        <li>Health disparities — light, air, nature-deficit</li>
+        <li>Spatial inequality by income</li>
+        <li>Fragile, non-adaptive structures</li>
+        <li>Cultural homogenization</li>
+        <li>Dead supply chains, dead economies</li>
+        <li>Empire minds shaped by empire shapes</li>
+      </ul>
+    </div>
+    <div class="comparison-col living">
+      <h3>Living Architecture Produces</h3>
+      <ul>
+        <li>Cognitive diversity and agency</li>
+        <li>Ecological integration</li>
+        <li>Biologically supportive environments</li>
+        <li>Adaptive design accessible to all</li>
+        <li>Self-repairing, resilient structures</li>
+        <li>Place-specific cultural expression</li>
+        <li>Decentralized, regenerative production</li>
+        <li>Living minds shaped by living space</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- PART III -->
+<div id="sustainability" class="part-header">
+  <div class="wide-content">
+    <div class="part-num">Part III · Track 2</div>
+    <div class="part-title">Sustainability: Design That Grows Instead of Decays</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-num">3.1</div>
+  <h2>The Ecological Indictment of Block Construction</h2>
+  <div class="content reveal">
+    <p>
+      Block construction is structurally unsustainable because it is extractive by design. It begins with
+      the destruction of living systems — trees cleared, soil compacted, watersheds sealed under
+      concrete — and ends with the manufacture of dead materials that provide no ongoing ecological
+      function and accumulate as waste.
+    </p>
+    <p>
+      Dead materials cannot adapt, self-repair, or respond to changing conditions. They degrade
+      passively, requiring perpetual energy and resource input to maintain. The result is a built
+      environment that is simultaneously an ecological catastrophe and an economic liability.
+    </p>
+  </div>
+  <img src="media/graphics/architecture/ChatGPT Image Feb 28, 2026, 02_38_41 PM.png"
+       alt="Village of Spiral Domes — Living Architecture vs Dead Construction"
+       style="width:100%;max-width:700px;display:block;margin:48px auto 0;opacity:0.82;border:1px solid rgba(255,255,255,0.06);">
+</div>
+
+<div class="section">
+  <div class="section-num">3.2</div>
+  <h2>Living Systems Are Inherently Regenerative</h2>
+  <div class="content reveal">
+    <p>
+      The alternative is not simply "green buildings" with solar panels and recycled materials. It is a
+      fundamentally different ontology of design — one that treats the built environment as a cultivated
+      living system rather than a manufactured product.
+    </p>
+  </div>
+  <blockquote class="reveal">
+    <p>
+      "The next era is not about building objects. It is about cultivating systems. This is the age
+      of symbiotic design, regenerative systems, decentralized biomanufacturing, structures that
+      grow, adapt, repair, and renew. Design no longer means imposing form. It means shaping
+      conditions. You do not command life. You listen to it. You do not force outcomes.
+      You invite emergence."
+    </p>
+    <cite>— The Spiral Steward</cite>
+  </blockquote>
+  <div class="content reveal">
+    <p>
+      Bioinformatics provides the scientific foundation for this shift. Computational models of biological
+      self-organization reveal the mechanisms by which living systems generate structure from local
+      rules, feedback, and environmental responsiveness. Applying these mechanisms to architectural
+      design is not metaphor — it is the literal application of biological knowledge to the problem of
+      sustainable construction.
+    </p>
+  </div>
+  <img src="media/graphics/architecture/02_mycelium_network_plan.png"
+       alt="Mycelium Network Plan — Self-Organizing Living Systems"
+       style="width:100%;max-width:560px;display:block;margin:48px auto 0;opacity:0.88;border:1px solid rgba(255,255,255,0.06);">
+</div>
+
+<div class="section">
+  <div class="section-num">3.3</div>
+  <h2>Stewardship as a Sustainability Ethic</h2>
+  <div class="content reveal">
+    <p>
+      Sustainability is not merely a technical challenge — it is a moral orientation. The stewardship
+      ethic offers a coherent foundation for that orientation: work with life's own principles rather
+      than against them.
+    </p>
+  </div>
+  <blockquote class="reveal">
+    <p>
+      "Stewardship does not mean leave nature alone forever. It means work with life's own
+      principles rather than against them. It means respecting biodiversity as strength, not mess.
+      It means designing not single rigid outcomes, but possibility spaces — resilient sets of
+      options that allow organisms and communities to adapt."
+    </p>
+    <cite>— Bioinformatics as Stewardship of Living Order</cite>
+  </blockquote>
+</div>
+
+<div class="section">
+  <div class="section-num">3.4</div>
+  <h2>The Green Flame: Restoration, Not Destruction</h2>
+  <div class="content reveal">
+    <p>
+      The transition from block to living architecture does not require the violent overthrow of existing
+      systems. It requires what the source documents call the Green Flame — the purifying renewal
+      that replaces what is dead with what can grow.
+    </p>
+  </div>
+  <blockquote class="reveal">
+    <p>
+      "The green flame does not kill life. It kills what is already dead. It purifies. It renews.
+      It returns decay back into growth. The green flame is the backward Fibonacci spiral:
+      Life → Death → Multiplying Rebirth."
+    </p>
+    <cite>— The Spiral Steward</cite>
+  </blockquote>
+  <div class="content reveal">
+    <p>
+      Applied to the built environment: we do not need to demolish all existing housing. We need to
+      change the logic governing what gets built next. Every new structure can be a demonstration
+      that living shape is possible, affordable, and morally required.
+    </p>
+  </div>
+</div>
+
+<!-- SIX PRINCIPLES -->
+<div style="text-align:center;padding:64px 48px;border-top:1px solid var(--line);background:var(--bg2);">
+  <img src="media/graphics/architecture/07_mycelium_dome_3d.png"
+       alt="Mycelium Dome — 3D Living Architecture"
+       style="width:100%;max-width:520px;display:block;margin:0 auto;opacity:0.9;border:1px solid rgba(255,255,255,0.07);">
+</div>
+
+<div id="principles" class="principles">
+  <div class="principles-label">The Moral Framework — Six Interconnected Principles</div>
+  <div class="principle-list">
+
+    <div class="principle">
+      <div class="principle-num">01</div>
+      <div class="principle-body">
+        <h3>Design is moral.</h3>
+        <p>The shape of the built environment is not neutral — it determines cognitive, social, and
+        ecological outcomes. Every structure encodes a worldview. Block or spiral. Domination or
+        relationship. Death or growth.</p>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="principle-num">02</div>
+      <div class="principle-body">
+        <h3>Life's principles are not optional.</h3>
+        <p>Biology reveals the rules by which complex systems sustain themselves. Violating those
+        rules — through monoculture, rigidity, and centralized control — produces fragility and harm.
+        The natural world is not a suggestion.</p>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="principle-num">03</div>
+      <div class="principle-body">
+        <h3>Equity demands living space for all.</h3>
+        <p>The current system concentrates nature-integrated design among the wealthy. Justice
+        requires democratizing access to living architecture. A house that disconnects its inhabitants
+        from life is a house that diminishes them.</p>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="principle-num">04</div>
+      <div class="principle-body">
+        <h3>Sustainability requires regenerative design.</h3>
+        <p>Dead-material construction is structurally extractive. Only living systems can produce the
+        self-repairing, adaptive built environment that ecological reality demands. Efficiency without
+        regeneration is just slower collapse.</p>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="principle-num">05</div>
+      <div class="principle-body">
+        <h3>Stewardship replaces domination.</h3>
+        <p>The appropriate human relationship to the built environment — as to nature — is that of
+        gardener, shepherd, steward: guiding growth rather than commanding form. We were placed
+        in the garden to tend it, not rule it.</p>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="principle-num">06</div>
+      <div class="principle-body">
+        <h3>Spirals over blocks.</h3>
+        <p>The Fibonacci spiral is not merely a beautiful shape. It is the shape of growth, of life, of
+        freedom. The block is the shape of control, of stasis, of decay. We choose which world to
+        build with every structure we raise.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PART IV -->
+<div id="vision" class="part-header">
+  <div class="wide-content">
+    <div class="part-num">Part IV</div>
+    <div class="part-title">The Positive Vision: What Living Architecture Makes Possible</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-num">4.1</div>
+  <h2>From Engineer to Steward</h2>
+  <div class="content reveal">
+    <p>
+      The moral case for living architecture is not only a critique of what exists. It is an affirmation of a
+      different human role in the world — the role of Steward rather than Engineer, Gardener rather
+      than Ruler.
+    </p>
+  </div>
+  <blockquote class="reveal">
+    <p>
+      "We need a new name for the designer of this age. Not Engineer — because engines are dead.
+      This new designer does not work on nature. They work within it. They design like a gardener,
+      not a general. Like a conductor, not a dictator. Like Adam — formed from the soil itself, placed
+      in the garden not to dominate it, but to tend it and keep it in balance."
+    </p>
+    <cite>— The Spiral Steward</cite>
+  </blockquote>
+  <img src="media/graphics/website/file_000000003a2071f5854b20ef9419ced9.png"
+       alt="The Sagent Creed and the True Republic — Nature vs Empire"
+       style="width:100%;max-width:420px;display:block;margin:48px auto 0;opacity:0.88;border:1px solid rgba(201,162,39,0.15);box-shadow:0 0 60px rgba(90,171,77,0.1);">
+</div>
+
+<div class="section">
+  <div class="section-num">4.2</div>
+  <h2>LivingWorks: Design That Emerges</h2>
+  <div class="content reveal">
+    <p>
+      The practical realization of this vision is a design platform that works the way life works —
+      specifying conditions, not shapes; relationships, not objects; flows, not blueprints.
+    </p>
+  </div>
+  <blockquote class="reveal">
+    <p>
+      "Imagine a design platform where you don't specify shapes. Instead, you specify: energy flows,
+      nutrient cycles, structural stresses, growth constraints, environmental context, local variation
+      rules. The system then simulates emergence, not assembly. Design becomes:
+      'If these conditions exist, what wants to grow here?' That is LivingWorks."
+    </p>
+    <cite>— The Spiral Steward</cite>
+  </blockquote>
+  <div class="content reveal">
+    <p>
+      This is not science fiction. It is the direct application of bioinformatics, machine learning, and
+      systems biology to the problem of the built environment. The computational tools already exist.
+      What has been missing is the moral framework to justify using them in this direction.
+    </p>
+    <p>
+      Evolution represents nature's most powerful example of a decentralized, discovery-driven process.
+      In this sense, it functions much like the voluntary coordination described by systems thinkers
+      across economics, biology, and political philosophy: order emerges not from central control, but
+      from countless local interactions, feedback loops, and adaptive experimentation.
+    </p>
+  </div>
+  <img src="media/graphics/website/file_000000002c0c720ca22e87ba9b353e68.png"
+       alt="The Trinity Cycle — Arthur · Joseph · Sage"
+       style="width:100%;max-width:400px;display:block;margin:48px auto 0;opacity:0.88;border:1px solid rgba(201,162,39,0.15);box-shadow:0 0 60px rgba(90,171,77,0.1);">
+</div>
+
+<!-- CONCLUSION QUOTE -->
+<div class="standout-quote">
+  <p>
+    "Life already knows how to build worlds.<br>
+    We <em>forgot</em> how to listen."
+  </p>
+  <cite>— The Spiral Steward</cite>
+</div>
+
+<!-- VISUAL BREAK -->
+<div style="width:100%;overflow:hidden;max-height:480px;border-top:1px solid rgba(255,255,255,0.07);">
+  <img src="media/graphics/architecture/ChatGPT Image Feb 28, 2026, 02_38_41 PM.png"
+       alt="Village of Spiral Domes — The Living Age"
+       style="width:100%;object-fit:cover;object-position:center 35%;opacity:0.7;display:block;">
+</div>
+
+<!-- CONCLUSION -->
+<div class="conclusion">
+  <p class="final-line">
+    "Not blocks. Spirals.<br>
+    Not rulers. Gardeners.<br>
+    Not dead matter. <em>Living order.</em>"
+  </p>
+  <p class="final-source">— Bioinformatics as Stewardship of Living Order</p>
+  <br><br>
+  <div class="content reveal" style="text-align:left; margin-top: 32px;">
+    <p>
+      The moral argument for living architecture is not sentimental. It is grounded in biology, systems
+      theory, and the ethics of equity and stewardship. Block houses are a failure of moral imagination
+      that has become normalized through industrial inertia. They harm the people who live in them,
+      the communities that surround them, and the ecosystems they displace.
+    </p>
+    <p>
+      The alternative is not idealism. It is the application of what bioinformatics has taught us about how
+      life actually works — and the courage to design accordingly. Life does not build in blocks. Life
+      builds in spirals. And humanity, if it remembers its proper role, builds with life.
+    </p>
+  </div>
+</div>
+
+<!-- SOURCES -->
+<div class="sources-section">
+  <div class="sources-label">Source Documents</div>
+  <div class="source-list">
+    <div class="source-item">
+      <span>The Moral Case for Living Architecture</span>
+      <a href="The Moral Case for Living Architecture.pdf" target="_blank">Open PDF →</a>
+    </div>
+    <div class="source-item">
+      <span>The Spiral Steward</span>
+      <a href="moral framework/the spiral steward.pdf" target="_blank">Open PDF →</a>
+    </div>
+    <div class="source-item">
+      <span>Bioinformatics as Stewardship of Living Order</span>
+      <a href="moral framework/Bioinformatics as Stewardship of Living Order.docx" target="_blank">Open Document →</a>
+    </div>
+    <div class="source-item">
+      <span>Cover Letter: Voluntarist Biology</span>
+      <a href="moral framework/Cover Letter voluntarist biology.pdf" target="_blank">Open PDF →</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="site-footer">
+  <span class="footer-brand">Living Works by the Word &middot; Sage Clokey &middot; 2026</span>
+  <nav class="footer-links">
+    <a href="living-age.html">The Living Age</a>
+    <a href="index.html">Architecture</a>
+    <a href="spiral-steward.html">Spiral Steward</a>
+    <a href="moral-framework.html">Moral Framework</a>
+    <a href="sagent.html">The Sagent</a>
+    <a href="true-republic.html">True Republic</a>
+    <a href="posters.html">Posters</a>
+    <a href="spiral steward website/book.html">The Book</a>
+  </nav>
+</footer>
+
+<script>
+// ─── HEADER CANVAS: slow growing spiral ──────────────────────────────────────
+
+const canvas = document.getElementById('header-canvas');
+const ctx    = canvas.getContext('2d');
+let W, H;
+
+function resize() {
+  W = canvas.width  = canvas.offsetWidth;
+  H = canvas.height = canvas.offsetHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
+let frame = 0;
+
+function drawHeader() {
+  ctx.fillStyle = 'rgba(7,9,10,0.12)';
+  ctx.fillRect(0, 0, W, H);
+
+  const cx = W * 0.72;
+  const cy = H * 0.5;
+  const scale = Math.min(W, H) / 2 / Math.sqrt(800) * 1.1;
+  const n = Math.min(Math.floor(frame), 800);
+
+  for (let i = Math.max(0, n - 20); i <= n; i++) {
+    const angle = i * GOLDEN_ANGLE;
+    const r     = scale * Math.sqrt(i + 1);
+    const x     = cx + r * Math.cos(angle);
+    const y     = cy + r * Math.sin(angle);
+    const t     = i / 800;
+    const hue   = 42 + t * 90;
+    const lit   = 25 + t * 30;
+    const size  = 3 - t * 1.5;
+
+    ctx.globalAlpha = (i === n ? 0.9 : 0.2 + t * 0.15);
+    ctx.fillStyle = `hsl(${hue}, 50%, ${lit}%)`;
+    ctx.beginPath();
+    ctx.arc(x, y, Math.max(0.8, size), 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  ctx.globalAlpha = 1;
+  frame += 0.5;
+  if (frame > 860) frame = 0;
+
+  requestAnimationFrame(drawHeader);
+}
+drawHeader();
+
+// ─── SCROLL REVEAL ────────────────────────────────────────────────────────────
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const delay = e.target.dataset.delay || 0;
+      setTimeout(() => e.target.classList.add('visible'), delay);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal, .principle, .final-line, .final-source')
+  .forEach((el, i) => {
+    if (el.classList.contains('principle')) {
+      el.dataset.delay = i * 80;
+    }
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>

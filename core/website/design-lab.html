@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Lab — Living Works by the Word</title>
+
+<!-- Three.js via importmap -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<style>
+  :root {
+    --bg:    #07090a;
+    --bg2:   #0c0f0c;
+    --bg3:   #080d08;
+    --text:  #ddd9cc;
+    --dim:   #6a6860;
+    --green: #7a9e7e;
+    --gold:  #b8973a;
+    --flame: #4aaa5a;
+    --line:  rgba(255,255,255,0.07);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-heading);
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+
+  #hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-text {
+    position: relative;
+    text-align: center;
+    z-index: 2;
+    padding: 0 24px;
+  }
+
+  .hero-label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 6px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    opacity: 0.85;
+  }
+
+  .hero-title {
+    font-size: clamp(2.6rem, 5.5vw, 5rem);
+    font-weight: normal;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    color: var(--dim);
+    font-style: italic;
+    max-width: 520px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 3px;
+    color: var(--dim);
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:0.8} }
+
+  /* ── EYEBROW ── */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .eyebrow::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* ── LAB SECTION ── */
+  #lab {
+    padding: 0;
+    min-height: 100vh;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .lab-header {
+    padding: 80px 48px 48px;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .lab-header h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: normal;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+
+  .lab-header p {
+    color: var(--dim);
+    font-size: 0.95rem;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  .lab-body {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  @media (max-width: 900px) {
+    .lab-body { grid-template-columns: 1fr; }
+  }
+
+  /* ── CONTROLS PANEL ── */
+  .lab-controls {
+    padding: 40px 36px;
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    background: var(--bg3);
+  }
+
+  @media (max-width: 900px) {
+    .lab-controls { border-right: none; border-bottom: 1px solid var(--line); }
+  }
+
+  .lab-controls .eyebrow { margin-bottom: 0; }
+
+  #prompt-input {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    padding: 14px 16px;
+    resize: vertical;
+    min-height: 90px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  #prompt-input:focus { border-color: rgba(122,158,126,0.4); }
+  #prompt-input::placeholder { color: var(--dim); font-style: italic; }
+
+  .examples-label {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 8px;
+  }
+
+  .examples-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .ex-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--dim);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+  }
+
+  .ex-btn:hover {
+    color: var(--green);
+    border-color: rgba(122,158,126,0.4);
+  }
+
+  #gen-btn {
+    display: block;
+    width: 100%;
+    padding: 14px 24px;
+    background: var(--green);
+    color: #07090a;
+    border: none;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  #gen-btn:hover { background: #8fb393; }
+  #gen-btn:disabled { opacity: 0.5; cursor: default; }
+
+  .status-line {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--dim);
+    letter-spacing: 1px;
+    min-height: 18px;
+  }
+
+  .status-line.active { color: var(--green); }
+
+  .params-readout {
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .param-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--dim);
+    letter-spacing: 0.5px;
+  }
+
+  .param-row span:last-child { color: var(--green); }
+
+  /* ── VIEWER ── */
+  .lab-viewer-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #morpho-canvas {
+    display: block;
+    width: 100%;
+    height: 65vh;
+    min-height: 400px;
+    cursor: grab;
+  }
+
+  #morpho-canvas:active { cursor: grabbing; }
+
+  .viewer-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-top: 1px solid var(--line);
+    background: var(--bg);
+  }
+
+  .viewer-hint {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    color: var(--dim);
+    letter-spacing: 1px;
+  }
+
+  .viewer-btns {
+    display: flex;
+    gap: 8px;
+  }
+
+  .viewer-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--dim);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 1px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .viewer-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+  .viewer-btn.active { color: var(--green); border-color: rgba(122,158,126,0.4); }
+
+  /* ── HOW IT WORKS ── */
+  #how {
+    padding: 96px 48px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .how-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .how-inner h2 {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: normal;
+    margin-bottom: 16px;
+  }
+
+  .how-inner > p {
+    color: var(--dim);
+    font-size: 0.95rem;
+    max-width: 620px;
+    margin-bottom: 60px;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+
+  @media (max-width: 900px) { .steps-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .steps-grid { grid-template-columns: 1fr; } }
+
+  .step-card {
+    background: var(--bg2);
+    padding: 32px 28px;
+    border: 1px solid var(--line);
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .step-card.visible { opacity: 1; transform: translateY(0); }
+
+  .step-num {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 3px;
+    color: var(--gold);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  .step-card h3 {
+    font-size: 1rem;
+    font-weight: normal;
+    color: var(--text);
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+
+  .step-card p {
+    font-size: 0.82rem;
+    color: var(--dim);
+    line-height: 1.7;
+  }
+
+  /* ── PIPELINE ── */
+  #pipeline {
+    padding: 96px 48px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .pipeline-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .pipeline-inner h2 {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: normal;
+    margin-bottom: 16px;
+  }
+
+  .pipeline-inner > p {
+    color: var(--dim);
+    font-size: 0.95rem;
+    margin-bottom: 52px;
+  }
+
+  .pipeline-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .flow-node {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 24px;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+    opacity: 0;
+    transform: translateX(-16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .flow-node.visible { opacity: 1; transform: translateX(0); }
+  .flow-node:last-child { border-bottom: none; }
+
+  .flow-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+
+  .flow-desc {
+    font-size: 0.88rem;
+    color: var(--dim);
+    line-height: 1.6;
+  }
+
+  .flow-desc strong { color: var(--text); font-weight: normal; }
+
+  /* ── MODES SECTION ── */
+  #modes {
+    padding: 96px 48px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .modes-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .modes-inner h2 {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: normal;
+    margin-bottom: 16px;
+  }
+
+  .modes-inner > p {
+    color: var(--dim);
+    font-size: 0.95rem;
+    max-width: 560px;
+    margin-bottom: 52px;
+  }
+
+  .modes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  @media (max-width: 700px) { .modes-grid { grid-template-columns: 1fr; } }
+
+  .mode-card {
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    padding: 36px 28px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.2s;
+  }
+
+  .mode-card.visible { opacity: 1; transform: translateY(0); }
+  .mode-card:hover { border-color: rgba(122,158,126,0.35); }
+
+  .mode-tag {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .mode-card h3 {
+    font-size: 1.2rem;
+    font-weight: normal;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+
+  .mode-card p {
+    font-size: 0.84rem;
+    color: var(--dim);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .mode-keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .kw {
+    padding: 3px 8px;
+    border: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    color: var(--dim);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="site-nav">
+  <a class="nav-logo" href="living-age.html">Living Works by the Word</a>
+  <ul class="nav-links">
+    <li><a href="living-age.html">The Living Age</a></li>
+    <li><a href="index.html">Architecture</a></li>
+    <li><a href="spiral-steward.html">Spiral Steward</a></li>
+    <li><a href="moral-framework.html">Moral Framework</a></li>
+    <li><a href="sagent.html">The Sagent</a></li>
+    <li><a href="true-republic.html">True Republic</a></li>
+    <li><a href="pitch.html">Investor Hub</a></li>
+    <li><a href="competitive.html">Competitive</a></li>
+    <li><a href="design-lab.html" class="active">Design Lab</a></li>
+    <li><a href="biology-voluntaryism.html">Biology</a></li>
+    <li><a href="spiral steward website/book.html">The Book</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-text">
+    <div class="hero-label">Living Systems Design Lab</div>
+    <h1 class="hero-title">Grow structures.<br>Not draw them.</h1>
+    <p class="hero-subtitle">
+      Type a prompt. Watch morphogenesis run.
+      Living geometry generated from biological growth rules.
+    </p>
+  </div>
+  <div class="scroll-hint">scroll to lab ↓</div>
+</section>
+
+<!-- LAB -->
+<section id="lab">
+  <div class="lab-header reveal">
+    <div class="eyebrow">Interactive Generator</div>
+    <h2>Describe a living structure</h2>
+    <p>
+      The engine translates natural language into growth parameters —
+      branching probability, upward bias, twist, noise — and simulates
+      the structure in three dimensions.
+    </p>
+  </div>
+
+  <div class="lab-body">
+
+    <!-- Controls -->
+    <div class="lab-controls">
+      <div class="eyebrow">Prompt</div>
+
+      <textarea id="prompt-input" placeholder="grow a spiral coral structure with dense branching..."></textarea>
+
+      <div>
+        <div class="examples-label">Examples</div>
+        <div class="examples-row">
+          <button class="ex-btn">grow a tree</button>
+          <button class="ex-btn">tall tree, sparse</button>
+          <button class="ex-btn">coral reef</button>
+          <button class="ex-btn">dense coral, wild</button>
+          <button class="ex-btn">spiral tower</button>
+          <button class="ex-btn">spiral cathedral, tall</button>
+          <button class="ex-btn">living bridge</button>
+          <button class="ex-btn">wide spreading coral</button>
+          <button class="ex-btn">shelter, dense</button>
+          <button class="ex-btn">living canopy, dense</button>
+          <button class="ex-btn">dome pavilion, dense</button>
+        </div>
+      </div>
+
+      <button id="gen-btn">Generate Structure</button>
+
+      <div class="status-line" id="status-line">ready — enter a prompt above</div>
+
+      <div class="params-readout" id="params-readout"></div>
+    </div>
+
+    <!-- 3D Viewer -->
+    <div class="lab-viewer-wrap">
+      <canvas id="morpho-canvas"></canvas>
+      <div class="viewer-bar">
+        <span class="viewer-hint">drag to rotate &middot; scroll to zoom &middot; right-drag to pan</span>
+        <div class="viewer-btns">
+          <button class="viewer-btn active" id="auto-rotate-btn">auto-rotate</button>
+          <button class="viewer-btn" id="reset-cam-btn">reset view</button>
+          <button class="viewer-btn" id="export-btn">export .obj</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="how-inner">
+    <div class="eyebrow">How it works</div>
+    <h2>Four layers from language to living geometry</h2>
+    <p>
+      The architecture mirrors how biological systems actually work —
+      local rules producing global form through iteration.
+    </p>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">Step 01</div>
+        <h3>Natural language prompt</h3>
+        <p>
+          You describe a structure in plain language.
+          Keywords map to growth mode and parameter modifiers.
+        </p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">Step 02</div>
+        <h3>Parameter translation</h3>
+        <p>
+          The prompt engine extracts mode (tree / coral / spiral),
+          then adjusts branching, bias, noise, and twist based on descriptors.
+        </p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">Step 03</div>
+        <h3>Morphogenesis simulation</h3>
+        <p>
+          Growing tips advance step by step, steered by directional bias,
+          noise, and branching rules — producing emergent 3D geometry.
+        </p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">Step 04</div>
+        <h3>Live 3D render</h3>
+        <p>
+          Three.js renders the structure in the browser.
+          Segments are colored by depth — gold trunk, green canopy.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section id="pipeline">
+  <div class="pipeline-inner">
+    <div class="eyebrow">System architecture</div>
+    <h2>The full pipeline</h2>
+    <p>
+      The generator calls a live Python morphogenesis backend via FastAPI,
+      falling back to the client-side engine if the API is offline.
+      GRN-driven growth is next.
+    </p>
+
+    <div class="pipeline-flow">
+      <div class="flow-node">
+        <div class="flow-label">Browser UI</div>
+        <div class="flow-desc">
+          <strong>Prompt input + Three.js viewer.</strong>
+          User types a description; the rendered structure appears in real time.
+        </div>
+      </div>
+      <div class="flow-node">
+        <div class="flow-label">Prompt Engine</div>
+        <div class="flow-desc">
+          <strong>Language → growth parameters.</strong>
+          Keywords like "coral", "dense", "tall", "spiral", "wild"
+          map to branching probability, upward bias, twist strength, and step count.
+        </div>
+      </div>
+      <div class="flow-node">
+        <div class="flow-label">Growth Engine</div>
+        <div class="flow-desc">
+          <strong>Branching tip simulation.</strong>
+          Each growing tip advances along a direction perturbed by noise,
+          biased by mode, and occasionally splits into child branches.
+        </div>
+      </div>
+      <div class="flow-node">
+        <div class="flow-label">GRN Layer</div>
+        <div class="flow-desc">
+          <strong>Gene regulatory network overlay (planned).</strong>
+          Growth, branching, adhesion, and polarity become outputs of
+          a simplified regulatory state — not fixed constants.
+        </div>
+      </div>
+      <div class="flow-node">
+        <div class="flow-label">3D Geometry</div>
+        <div class="flow-desc">
+          <strong>LineSegments rendered with vertex colors.</strong>
+          Depth-mapped from gold (trunk) to green (canopy tips).
+          Export to OBJ/STL planned for Blender integration.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODES -->
+<section id="modes">
+  <div class="modes-inner">
+    <div class="eyebrow">Growth modes</div>
+    <h2>Three biological archetypes</h2>
+    <p>
+      Each mode encodes a different spatial logic.
+      Modifiers shift parameters within that logic.
+    </p>
+
+    <div class="modes-grid">
+      <div class="mode-card" data-prompt="grow a tree">
+        <div class="mode-tag">Mode 01</div>
+        <h3>Tree</h3>
+        <p>
+          Strong upward bias. Moderate branching angle.
+          Trunk thickens at base and tapers toward canopy.
+          The architecture of phototropism.
+        </p>
+        <div class="mode-keywords">
+          <span class="kw">tree</span>
+          <span class="kw">forest</span>
+          <span class="kw">branches</span>
+          <span class="kw">tall</span>
+          <span class="kw">sparse</span>
+        </div>
+      </div>
+
+      <div class="mode-card" data-prompt="coral reef">
+        <div class="mode-tag">Mode 02</div>
+        <h3>Coral</h3>
+        <p>
+          Outward radial spread with higher noise.
+          Dense, chaotic branching. The structure of reef ecosystems —
+          maximizing surface area.
+        </p>
+        <div class="mode-keywords">
+          <span class="kw">coral</span>
+          <span class="kw">reef</span>
+          <span class="kw">dense</span>
+          <span class="kw">wild</span>
+          <span class="kw">spreading</span>
+        </div>
+      </div>
+
+      <div class="mode-card" data-prompt="spiral tower">
+        <div class="mode-tag">Mode 03</div>
+        <h3>Spiral</h3>
+        <p>
+          Helical upward growth with tangential twist bias.
+          Architectural, minimal, precise. The logic of nautilus
+          shells and plant phyllotaxis.
+        </p>
+        <div class="mode-keywords">
+          <span class="kw">spiral</span>
+          <span class="kw">helix</span>
+          <span class="kw">tower</span>
+          <span class="kw">cathedral</span>
+          <span class="kw">living bridge</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="site-footer">
+  <span class="footer-brand">Living Works by the Word &middot; Sage Clokey &middot; 2026</span>
+  <nav class="footer-links">
+    <a href="living-age.html">The Living Age</a>
+    <a href="index.html">Architecture</a>
+    <a href="spiral-steward.html">Spiral Steward</a>
+    <a href="moral-framework.html">Moral Framework</a>
+    <a href="sagent.html">The Sagent</a>
+    <a href="true-republic.html">True Republic</a>
+    <a href="posters.html">Posters</a>
+    <a href="pitch.html">Investor Hub</a>
+    <a href="competitive.html">Competitive</a>
+    <a href="summary.html">Summary</a>
+    <a href="story.html">The Story</a>
+    <a href="deck.html">Pitch Deck</a>
+    <a href="design-lab.html">Design Lab</a>
+    <a href="spiral steward website/book.html">The Book</a>
+  </nav>
+</footer>
+
+
+<!-- ── HERO CANVAS: FIBONACCI SPIRAL ───────────────────────────────────────── -->
+<script>
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H;
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
+  const TOTAL        = 700;
+  let frame          = 0;
+  let fadeAlpha      = 0;
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function drawSpiral() {
+    ctx.fillStyle = 'rgba(7,9,10,0.18)';
+    ctx.fillRect(0, 0, W, H);
+
+    const cx    = W / 2;
+    const cy    = H / 2;
+    const scale = Math.min(W, H) / 2 / Math.sqrt(TOTAL) * 0.88;
+    const n     = Math.min(Math.floor(frame), TOTAL);
+
+    ctx.globalAlpha = Math.min(1, fadeAlpha);
+
+    for (let i = Math.max(0, n - 30); i <= n; i++) {
+      const angle = i * GOLDEN_ANGLE;
+      const r     = scale * Math.sqrt(i + 1);
+      const x     = cx + r * Math.cos(angle);
+      const y     = cy + r * Math.sin(angle);
+      const t     = i / TOTAL;
+      const hue   = lerp(45, 135, t);
+      const sat   = lerp(55, 40, t);
+      const lit   = lerp(32, 55, t);
+      const size  = lerp(4, 1.5, t);
+      const alpha = i === n ? 0.95 : lerp(0.55, 0.25, t);
+
+      ctx.globalAlpha = alpha * Math.min(1, fadeAlpha);
+      ctx.fillStyle   = `hsl(${hue},${sat}%,${lit}%)`;
+      ctx.beginPath();
+      ctx.arc(x, y, size, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (i > 1) {
+        const pa = (i - 1) * GOLDEN_ANGLE;
+        const pr = scale * Math.sqrt(i);
+        ctx.globalAlpha = 0.06 * Math.min(1, fadeAlpha);
+        ctx.strokeStyle = `hsl(${hue},${sat}%,${lit}%)`;
+        ctx.lineWidth   = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(cx + pr * Math.cos(pa), cy + pr * Math.sin(pa));
+        ctx.lineTo(x, y);
+        ctx.stroke();
+      }
+    }
+
+    ctx.globalAlpha = 1;
+    fadeAlpha += 0.015;
+    frame     += 0.9;
+    if (frame > TOTAL + 90) frame = 0;
+
+    requestAnimationFrame(drawSpiral);
+  }
+
+  drawSpiral();
+})();
+</script>
+
+
+<!-- ── THREE.JS MORPHOGENESIS ENGINE ──────────────────────────────────────── -->
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+// ── Scene ────────────────────────────────────────────────────────────────────
+const canvas   = document.getElementById('morpho-canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0x07090a, 1);
+
+const scene  = new THREE.Scene();
+scene.fog    = new THREE.Fog(0x07090a, 20, 60);
+
+const camera = new THREE.PerspectiveCamera(45, 1, 0.01, 200);
+camera.position.set(4, 3, 4);
+camera.lookAt(0, 2, 0);
+
+const controls           = new OrbitControls(camera, canvas);
+controls.target.set(0, 2, 0);
+controls.enableDamping   = true;
+controls.dampingFactor   = 0.08;
+controls.autoRotate      = true;
+controls.autoRotateSpeed = 0.6;
+controls.minDistance     = 0.5;
+controls.maxDistance     = 40;
+
+// Subtle ground grid
+const grid = new THREE.GridHelper(12, 24, 0x0f1a0f, 0x0c130c);
+scene.add(grid);
+
+// ── Resize ───────────────────────────────────────────────────────────────────
+function onResize() {
+  const w = canvas.clientWidth;
+  const h = canvas.clientHeight;
+  if (canvas.width !== w || canvas.height !== h) {
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+}
+const ro = new ResizeObserver(onResize);
+ro.observe(canvas);
+onResize();
+
+// ── Render loop ──────────────────────────────────────────────────────────────
+let revealAnim = null;
+
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+
+// ── UI controls ──────────────────────────────────────────────────────────────
+const autoRotateBtn = document.getElementById('auto-rotate-btn');
+const resetCamBtn   = document.getElementById('reset-cam-btn');
+const genBtn        = document.getElementById('gen-btn');
+const promptInput   = document.getElementById('prompt-input');
+const statusLine    = document.getElementById('status-line');
+const paramsReadout = document.getElementById('params-readout');
+
+autoRotateBtn.addEventListener('click', () => {
+  controls.autoRotate = !controls.autoRotate;
+  autoRotateBtn.classList.toggle('active', controls.autoRotate);
+});
+
+resetCamBtn.addEventListener('click', () => {
+  camera.position.set(4, 3, 4);
+  controls.target.set(0, 2, 0);
+  controls.update();
+});
+
+// Example prompt buttons
+document.querySelectorAll('.ex-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    promptInput.value = btn.textContent;
+    triggerGenerate();
+  });
+});
+
+// Mode cards in the modes section
+document.querySelectorAll('.mode-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const prompt = card.dataset.prompt;
+    if (prompt) {
+      promptInput.value = prompt;
+      document.getElementById('lab').scrollIntoView({ behavior: 'smooth' });
+      setTimeout(triggerGenerate, 600);
+    }
+  });
+});
+
+genBtn.addEventListener('click', triggerGenerate);
+promptInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) triggerGenerate();
+});
+
+// ── Python API (Render.com) ───────────────────────────────────────────────────
+// After deploying to Render, replace this URL with your live service URL.
+const API_URL = 'https://living-works-by-the-word.onrender.com';
+
+async function tryApiGenerate(prompt) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 9000);
+  try {
+    const res = await fetch(`${API_URL}/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt }),
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    return await res.json();
+  } catch (e) {
+    clearTimeout(timeout);
+    throw e;
+  }
+}
+
+// Convert API segment format {x1,y1,z1,x2,y2,z2,radius,parent_id}
+// into the local format {sx,sy,sz,ex,ey,ez,radius,depth}
+function apiSegsToLocal(apiSegs) {
+  const depths = new Array(apiSegs.length).fill(0);
+  for (let i = 0; i < apiSegs.length; i++) {
+    const pid = apiSegs[i].parent_id;
+    if (pid >= 0 && pid < i) depths[i] = depths[pid] + 1;
+  }
+  return apiSegs.map((s, i) => ({
+    sx: s.x1, sy: s.y1, sz: s.z1,
+    ex: s.x2, ey: s.y2, ez: s.z2,
+    radius: s.radius,
+    depth:  depths[i],
+  }));
+}
+
+function triggerGenerate() {
+  const prompt = promptInput.value.trim() || 'grow a tree';
+  genBtn.disabled = true;
+  statusLine.className = 'status-line active';
+  statusLine.textContent = 'connecting to morphogenesis engine...';
+
+  tryApiGenerate(prompt).then(data => {
+    const segs       = apiSegsToLocal(data.segments);
+    const maxDepth   = Math.max(...segs.map(s => s.depth), 1);
+    const localParams = promptToParams(prompt);
+    showParams(Object.assign(localParams, { mode: data.mode }));
+    displaySegments(segs, { mode: data.mode, max_depth: maxDepth });
+    statusLine.className = 'status-line';
+    statusLine.innerHTML =
+      `api · ${data.segment_count} segments · mode: ${data.mode}`;
+    genBtn.disabled = false;
+  }).catch(() => {
+    // API offline or timed out — fall back to client-side JS engine
+    statusLine.textContent = 'api offline · running local engine...';
+    setTimeout(() => {
+      const params = promptToParams(prompt);
+      showParams(params);
+      const segs = runEngine(params);
+      displaySegments(segs, params);
+      genBtn.disabled = false;
+    }, 30);
+  });
+}
+
+// ── Morphogenesis presets ─────────────────────────────────────────────────────
+function treePreset() {
+  return {
+    mode:                   'tree',
+    steps:                  280,
+    step_size:              0.22,
+    branching_probability:  0.08,
+    max_tips:               80,
+    max_depth:              8,
+    upward_bias:            0.95,
+    radial_bias:            0.08,
+    twist_strength:         0.0,
+    noise_strength:         0.10,
+    branch_angle_deg:       25,
+    split_probability:      0.45,
+    taper:                  0.986,
+    min_radius:             0.012,
+    initial_radius:         0.085,
+  };
+}
+
+function coralPreset() {
+  return {
+    mode:                   'coral',
+    steps:                  340,
+    step_size:              0.16,
+    branching_probability:  0.14,
+    max_tips:               140,
+    max_depth:              10,
+    upward_bias:            0.55,
+    radial_bias:            0.35,
+    twist_strength:         0.0,
+    noise_strength:         0.28,
+    branch_angle_deg:       34,
+    split_probability:      0.65,
+    taper:                  0.989,
+    min_radius:             0.010,
+    initial_radius:         0.055,
+  };
+}
+
+function spiralPreset() {
+  return {
+    mode:                   'spiral',
+    steps:                  340,
+    step_size:              0.18,
+    branching_probability:  0.10,
+    max_tips:               120,
+    max_depth:              9,
+    upward_bias:            0.8,
+    radial_bias:            0.22,
+    twist_strength:         0.72,
+    noise_strength:         0.08,
+    branch_angle_deg:       18,
+    split_probability:      0.45,
+    taper:                  0.992,
+    min_radius:             0.012,
+    initial_radius:         0.070,
+  };
+}
+
+// ── Shelter / canopy preset ───────────────────────────────────────────────────
+function shelterPreset() {
+  return {
+    mode:                   'shelter',
+    steps:                  360,
+    step_size:              0.17,
+    branching_probability:  0.14,
+    max_tips:               240,
+    max_depth:              10,
+    upward_bias:            0.75,
+    radial_bias:            0.35,
+    twist_strength:         0.0,
+    noise_strength:         0.12,
+    branch_angle_deg:       38,
+    split_probability:      0.68,
+    taper:                  0.990,
+    min_radius:             0.009,
+    initial_radius:         0.072,
+  };
+}
+
+// ── Prompt → params ───────────────────────────────────────────────────────────
+function promptToParams(prompt) {
+  const p = prompt.toLowerCase();
+
+  let params;
+  if (
+    p.includes('shelter') || p.includes('canopy') ||
+    p.includes('dome') || p.includes('pavilion') || p.includes('vault')
+  ) {
+    params = shelterPreset();
+  } else if (p.includes('coral') || p.includes('reef')) {
+    params = coralPreset();
+  } else if (
+    p.includes('spiral') || p.includes('helix') ||
+    p.includes('tower') || p.includes('cathedral') || p.includes('bridge')
+  ) {
+    params = spiralPreset();
+  } else {
+    params = treePreset();
+  }
+
+  // Modifiers
+  if (p.includes('dense') || p.includes('thick') || p.includes('bushy') || p.includes('full')) {
+    params.branching_probability = Math.min(0.55, params.branching_probability * 3.0);
+    params.max_tips = Math.min(500, Math.floor(params.max_tips * 4.0));
+    params.split_probability = Math.min(0.95, params.split_probability * 1.8);
+    params.max_depth = Math.min(14, params.max_depth + 3);
+    params.steps = Math.floor(params.steps * 1.4);
+  }
+  if (p.includes('sparse') || p.includes('minimal') || p.includes('thin') || p.includes('bare')) {
+    params.branching_probability *= 0.45;
+    params.max_tips = Math.floor(params.max_tips * 0.5);
+  }
+  if (p.includes('tall') || p.includes('high') || p.includes('towering')) {
+    params.upward_bias = Math.min(1.6, params.upward_bias * 1.3);
+    params.steps = Math.floor(params.steps * 1.3);
+    params.radial_bias *= 0.6;
+  }
+  if (p.includes('wide') || p.includes('spreading') || p.includes('broad') || p.includes('flat')) {
+    params.radial_bias = Math.min(1.2, params.radial_bias * 2.0);
+    params.upward_bias *= 0.55;
+  }
+  if (p.includes('wild') || p.includes('chaotic') || p.includes('random') || p.includes('organic')) {
+    params.noise_strength = Math.min(0.55, params.noise_strength * 1.6);
+    params.branching_probability = Math.min(0.3, params.branching_probability * 1.3);
+    params.branch_angle_deg = Math.min(60, params.branch_angle_deg * 1.2);
+  }
+  if (p.includes('tight') || p.includes('controlled') || p.includes('precise')) {
+    params.noise_strength *= 0.4;
+    params.branch_angle_deg *= 0.7;
+  }
+  if (p.includes('living bridge') || p.includes('bridge')) {
+    params.upward_bias   = 0.05;
+    params.radial_bias   = 1.0;
+    params.twist_strength = 0.3;
+  }
+
+  return params;
+}
+
+// ── Growth engine ─────────────────────────────────────────────────────────────
+class Tip {
+  constructor(pos, dir, radius, depth) {
+    this.pos    = pos.clone();
+    this.dir    = dir.clone().normalize();
+    this.radius = radius;
+    this.depth  = depth;
+    this.alive  = true;
+  }
+}
+
+function randUnit() {
+  const phi   = Math.acos(2 * Math.random() - 1);
+  const theta = 2 * Math.PI * Math.random();
+  return new THREE.Vector3(
+    Math.sin(phi) * Math.cos(theta),
+    Math.sin(phi) * Math.sin(theta),
+    Math.cos(phi)
+  );
+}
+
+function orthogonal(v) {
+  const u = (Math.abs(v.x) < 0.9)
+    ? new THREE.Vector3(1, 0, 0)
+    : new THREE.Vector3(0, 1, 0);
+  return new THREE.Vector3().crossVectors(u, v).normalize();
+}
+
+function adjustDir(pos, dir, p) {
+  const d  = dir.clone();
+  const up = new THREE.Vector3(0, 1, 0);
+
+  if (p.mode === 'tree') {
+    d.addScaledVector(up, p.upward_bias);
+    const radial = new THREE.Vector3(pos.x, 0, pos.z);
+    if (radial.length() > 1e-9) d.addScaledVector(radial.normalize(), p.radial_bias);
+
+  } else if (p.mode === 'coral') {
+    d.addScaledVector(up, 0.6 * p.upward_bias);
+    const radial = pos.clone();
+    if (radial.length() > 1e-9)
+      d.addScaledVector(radial.normalize(), Math.max(p.radial_bias, 0.25));
+
+  } else if (p.mode === 'spiral') {
+    d.addScaledVector(up, p.upward_bias);
+    const xy = new THREE.Vector3(pos.x, 0, pos.z);
+    if (xy.length() > 1e-9) {
+      const tangent = new THREE.Vector3(-xy.z, 0, xy.x).normalize();
+      d.addScaledVector(tangent, Math.max(p.twist_strength, 0.4));
+      d.addScaledVector(xy.clone().normalize(), Math.max(p.radial_bias, 0.15));
+    } else {
+      d.x += 0.15;
+    }
+  } else if (p.mode === 'shelter') {
+    // Grow up, then arc inward — creates vaulted dome with open interior
+    d.addScaledVector(up, p.upward_bias);
+    const inward = new THREE.Vector3(-pos.x, 0, -pos.z);
+    if (inward.length() > 1e-9)
+      d.addScaledVector(inward.normalize(), p.radial_bias);
+  }
+
+  return d.normalize();
+}
+
+function runEngine(params) {
+  const p        = params;
+  const segments = [];
+
+  let initDir;
+  if (p.mode === 'spiral')     initDir = new THREE.Vector3(0.5, 1, 0).normalize();
+  else if (p.mode === 'coral') initDir = new THREE.Vector3(0.15, 1, 0.05).normalize();
+  else                         initDir = new THREE.Vector3(0, 1, 0);
+
+  const tips = [];
+  if (p.mode === 'shelter') {
+    // Start from a ring of 8 points — each grows up and inward, arching over open space
+    const N = 8, baseR = 2.2;
+    for (let i = 0; i < N; i++) {
+      const a = (i / N) * Math.PI * 2;
+      const x = baseR * Math.cos(a), z = baseR * Math.sin(a);
+      const dir = new THREE.Vector3(-x * 0.25, 1.0, -z * 0.25).normalize();
+      tips.push(new Tip(new THREE.Vector3(x, 0, z), dir, p.initial_radius, 0));
+    }
+  } else {
+    tips.push(new Tip(new THREE.Vector3(0, 0, 0), initDir, p.initial_radius, 0));
+  }
+
+  for (let step = 0; step < p.steps; step++) {
+    const alive = tips.filter(t => t.alive);
+    if (alive.length === 0) break;
+
+    const newTips = [];
+
+    for (const tip of alive) {
+      let d = adjustDir(tip.pos, tip.dir, p);
+      d.addScaledVector(randUnit(), p.noise_strength);
+      d.normalize();
+
+      const start     = tip.pos.clone();
+      const end       = start.clone().addScaledVector(d, p.step_size);
+      const newRadius = tip.radius * p.taper;
+
+      if (newRadius < p.min_radius || tip.depth >= p.max_depth) {
+        tip.alive = false;
+        continue;
+      }
+
+      segments.push({
+        sx: start.x, sy: start.y, sz: start.z,
+        ex: end.x,   ey: end.y,   ez: end.z,
+        radius: tip.radius,
+        depth:  tip.depth,
+      });
+
+      tip.pos.copy(end);
+      tip.dir.copy(d);
+      tip.radius = newRadius;
+
+      const liveCount = tips.filter(t => t.alive).length + newTips.length;
+
+      if (
+        tip.depth < p.max_depth &&
+        liveCount < p.max_tips &&
+        Math.random() < p.branching_probability
+      ) {
+        const ortho    = orthogonal(d);
+        const baseAng  = p.branch_angle_deg * Math.PI / 180;
+        const angle    = p.mode === 'coral' ? baseAng * 1.15
+                       : p.mode === 'spiral' ? baseAng * 0.85
+                       : baseAng;
+
+        const q1   = new THREE.Quaternion().setFromAxisAngle(ortho, angle);
+        const dir1 = d.clone().applyQuaternion(q1).normalize();
+        newTips.push(new Tip(end.clone(), dir1,
+          Math.max(newRadius * 0.85, p.min_radius), tip.depth + 1));
+
+        if (Math.random() < p.split_probability) {
+          const q2   = new THREE.Quaternion().setFromAxisAngle(ortho, -angle);
+          const dir2 = d.clone().applyQuaternion(q2).normalize();
+          newTips.push(new Tip(end.clone(), dir2,
+            Math.max(newRadius * 0.82, p.min_radius), tip.depth + 1));
+        }
+      }
+    }
+
+    tips.push(...newTips);
+    if (segments.length > 60000) break;
+  }
+
+  return segments;
+}
+
+// ── Export current segments as OBJ ───────────────────────────────────────────
+let currentSegments = [];
+let currentMode     = 'structure';
+
+const exportBtn = document.getElementById('export-btn');
+exportBtn.addEventListener('click', () => {
+  if (currentSegments.length === 0) return;
+
+  const lines = [
+    '# Living Works by the Word — Morphogenesis Export',
+    `# Mode: ${currentMode}  Segments: ${currentSegments.length}`,
+    '',
+  ];
+  let vi = 1;
+  for (const s of currentSegments) {
+    const sx = s.sx ?? s.x1, sy = s.sy ?? s.y1, sz = s.sz ?? s.z1;
+    const ex = s.ex ?? s.x2, ey = s.ey ?? s.y2, ez = s.ez ?? s.z2;
+    lines.push(`v ${sx.toFixed(5)} ${sy.toFixed(5)} ${sz.toFixed(5)}`);
+    lines.push(`v ${ex.toFixed(5)} ${ey.toFixed(5)} ${ez.toFixed(5)}`);
+    lines.push(`l ${vi} ${vi + 1}`);
+    vi += 2;
+  }
+
+  const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `living_${currentMode}.obj`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+// ── Display segments with animated reveal ────────────────────────────────────
+let currentMesh = null;
+const colorGold  = new THREE.Color(0xb8973a);
+const colorGreen = new THREE.Color(0x7a9e7e);
+const colorTip   = new THREE.Color(0x4aaa5a);
+
+function buildGeometry(segments, count) {
+  const n         = Math.min(count, segments.length);
+  const positions = new Float32Array(n * 6);
+  const colors    = new Float32Array(n * 6);
+  const maxDepth  = Math.max(...segments.slice(0, n).map(s => s.depth), 1);
+
+  for (let i = 0; i < n; i++) {
+    const s = segments[i];
+    const t = s.depth / maxDepth;
+    const c = new THREE.Color().lerpColors(colorGold, colorTip, Math.pow(t, 0.6));
+
+    positions[i*6+0] = s.sx; positions[i*6+1] = s.sy; positions[i*6+2] = s.sz;
+    positions[i*6+3] = s.ex; positions[i*6+4] = s.ey; positions[i*6+5] = s.ez;
+    colors[i*6+0] = c.r; colors[i*6+1] = c.g; colors[i*6+2] = c.b;
+    colors[i*6+3] = c.r; colors[i*6+4] = c.g; colors[i*6+5] = c.b;
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geo.setAttribute('color',    new THREE.BufferAttribute(colors, 3));
+  return geo;
+}
+
+function displaySegments(segments, params) {
+  currentSegments = segments;
+  currentMode     = params.mode || 'structure';
+  if (revealAnim) cancelAnimationFrame(revealAnim);
+
+  if (currentMesh) {
+    scene.remove(currentMesh);
+    currentMesh.geometry.dispose();
+    currentMesh.material.dispose();
+    currentMesh = null;
+  }
+
+  if (segments.length === 0) {
+    statusLine.textContent = 'no segments generated';
+    return;
+  }
+
+  // Build full geometry up front, reveal via drawRange
+  const geo = buildGeometry(segments, segments.length);
+  const mat = new THREE.LineBasicMaterial({ vertexColors: true });
+  currentMesh = new THREE.LineSegments(geo, mat);
+  scene.add(currentMesh);
+
+  // Fit camera to bounding box
+  geo.computeBoundingBox();
+  const box    = geo.boundingBox;
+  const center = new THREE.Vector3();
+  box.getCenter(center);
+  const size   = new THREE.Vector3();
+  box.getSize(size);
+  const maxDim = Math.max(size.x, size.y, size.z);
+
+  controls.target.copy(center);
+  camera.position.set(
+    center.x + maxDim * 1.5,
+    center.y + maxDim * 0.7,
+    center.z + maxDim * 1.5
+  );
+  controls.update();
+
+  // Animated draw range reveal
+  const total    = segments.length;
+  const rate     = Math.max(1, Math.ceil(total / 90));
+  let   revealed = 0;
+
+  function revealStep() {
+    revealed = Math.min(revealed + rate, total);
+    geo.setDrawRange(0, revealed * 2);
+    if (revealed < total) {
+      revealAnim = requestAnimationFrame(revealStep);
+    } else {
+      revealAnim = null;
+      statusLine.className = 'status-line';
+      statusLine.textContent =
+        `${total} segments &middot; mode: ${params.mode} &middot; max depth: ${params.max_depth}`;
+      statusLine.innerHTML = statusLine.textContent;
+    }
+  }
+
+  geo.setDrawRange(0, 0);
+  revealStep();
+}
+
+// ── Params readout ────────────────────────────────────────────────────────────
+function showParams(p) {
+  paramsReadout.innerHTML = `
+    <div class="param-row"><span>mode</span><span>${p.mode}</span></div>
+    <div class="param-row"><span>steps</span><span>${p.steps}</span></div>
+    <div class="param-row"><span>branching</span><span>${(p.branching_probability * 100).toFixed(0)}%</span></div>
+    <div class="param-row"><span>upward bias</span><span>${p.upward_bias.toFixed(2)}</span></div>
+    <div class="param-row"><span>twist</span><span>${p.twist_strength.toFixed(2)}</span></div>
+    <div class="param-row"><span>noise</span><span>${p.noise_strength.toFixed(2)}</span></div>
+    <div class="param-row"><span>max tips</span><span>${p.max_tips}</span></div>
+    <div class="param-row"><span>branch angle</span><span>${p.branch_angle_deg}&deg;</span></div>
+  `;
+}
+
+// ── Auto-generate on load ─────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  promptInput.value = 'spiral tower';
+  triggerGenerate();
+});
+
+</script>
+
+
+<!-- ── SCROLL REVEAL ──────────────────────────────────────────────────────── -->
+<script>
+(function() {
+  const targets = document.querySelectorAll(
+    '.reveal, .step-card, .flow-node, .mode-card'
+  );
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, idx) => {
+      if (e.isIntersecting) {
+        const i = [...(e.target.parentElement?.children || [])].indexOf(e.target);
+        const delay = (e.target.classList.contains('step-card') ||
+                       e.target.classList.contains('mode-card'))
+          ? i * 80 : 0;
+        setTimeout(() => e.target.classList.add('visible'), delay);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  targets.forEach(el => obs.observe(el));
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,801 @@
+"""
+Self-Regulation Analysis — Layer 1: Network Topology
+=====================================================
+Analyzes whether biological networks self-regulate against centralization,
+testing the Weighted Biased Preferential Attachment (WBPA) mechanism
+described in Topirceanu et al., "Weighted Betweenness Preferential
+Attachment: A New Mechanism Explaining Social Network Formation and
+Evolution," Scientific Reports 8, 10871 (2018).
+
+The WBPA insight: In real networks, high-betweenness nodes attract new
+connections (preferential attachment), but as they gain connections,
+alternative shortest paths form around them — reducing their betweenness.
+This creates a self-regulating negative feedback loop that prevents any
+single node from monopolizing information flow.
+
+Austrian economics parallel: This is the network equivalent of the
+invisible hand. Just as market competition erodes monopoly profits by
+attracting competitors, biological networks erode hub dominance by growing
+alternative routes. No central planner redistributes betweenness — the
+topology itself resists centralization through emergent competition.
+
+The key metric: Spearman rank correlation between degree and betweenness.
+In a perfectly centralized network (star graph), this correlation is ~1.0.
+In self-regulating biological networks, it is significantly lower because
+high-degree nodes do NOT proportionally dominate shortest paths — the
+network has grown alternatives around them.
+
+References:
+    - Topirceanu et al., Scientific Reports 2018
+    - Hayek, "The Use of Knowledge in Society," AER 1945
+    - Barabasi & Albert, "Emergence of Scaling in Random Networks," Science 1999
+"""
+
+from __future__ import annotations
+from dataclasses import dataclass, field
+from pathlib import Path
+
+import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
+from scipy.stats import spearmanr, pearsonr
+
+# ---------------------------------------------------------------------------
+# Aesthetic (matches topology_analysis.py palette)
+# ---------------------------------------------------------------------------
+
+SPIRAL_GREEN = "#2d6a4f"
+SPIRAL_MID   = "#52b788"
+SPIRAL_LIGHT = "#95d5b2"
+GOLD         = "#e9c46a"
+RED          = "#e63946"
+BLUE         = "#4361ee"
+BACKGROUND   = "#0d1117"
+PANEL_BG     = "#161b22"
+TEXT_MAIN     = "#e6edf3"
+TEXT_DIM      = "#8b949e"
+
+FIGURES_DIR = Path(__file__).resolve().parent.parent / "paper" / "figures"
+
+
+# ---------------------------------------------------------------------------
+# Gini coefficient (same implementation as topology_analysis.py)
+# ---------------------------------------------------------------------------
+
+def _gini(values: list[float]) -> float:
+    """Compute Gini coefficient. 0 = perfect equality, 1 = one node has everything."""
+    arr = np.array(sorted(values))
+    n = len(arr)
+    if n == 0 or arr.sum() == 0:
+        return 0.0
+    index = np.arange(1, n + 1)
+    return (2 * np.sum(index * arr) - (n + 1) * arr.sum()) / (n * arr.sum())
+
+
+# ---------------------------------------------------------------------------
+# Data structure
+# ---------------------------------------------------------------------------
+
+@dataclass
+class SelfRegulationReport:
+    """Self-regulation analysis for a single network."""
+    name: str
+    n_nodes: int
+    degree_betweenness_spearman: float
+    degree_betweenness_pearson: float
+    betweenness_gini: float
+    degree_gini: float
+    gini_ratio: float
+    top_hub_analysis: list[dict] = field(default_factory=list)
+
+    def summary(self) -> str:
+        sr = "YES" if self.gini_ratio < 1.0 else "no"
+        decorr = "YES" if self.degree_betweenness_spearman < 0.8 else "no"
+        lines = [
+            f"[{self.name}] Self-Regulation Report ({self.n_nodes} nodes)",
+            f"  Spearman(degree, betweenness):  {self.degree_betweenness_spearman:+.4f}  (decorrelated={decorr})",
+            f"  Pearson(degree, betweenness):   {self.degree_betweenness_pearson:+.4f}",
+            f"  Betweenness Gini:  {self.betweenness_gini:.4f}",
+            f"  Degree Gini:       {self.degree_gini:.4f}",
+            f"  Gini ratio (BC/deg): {self.gini_ratio:.4f}  (self-regulating={sr})",
+            f"  Top-10 hubs by degree:",
+        ]
+        for h in self.top_hub_analysis[:10]:
+            lines.append(
+                f"    {str(h['node']):>15s}  deg={h['degree']:4d} (rank {h['degree_rank']:3d})  "
+                f"BC={h['betweenness']:.5f} (rank {h['betweenness_rank']:3d})"
+            )
+        return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# Core analysis
+# ---------------------------------------------------------------------------
+
+def compute_self_regulation(G: nx.Graph, name: str = "network") -> SelfRegulationReport:
+    """
+    Compute self-regulation metrics for a network.
+
+    Tests the WBPA hypothesis (Topirceanu et al. 2018): in self-regulating
+    networks, high-degree nodes do NOT proportionally dominate betweenness
+    centrality because the network grows alternative paths around hubs.
+
+    This is the invisible hand of network topology — decentralization
+    emerges without a central planner.
+
+    Args:
+        G: NetworkX graph (directed or undirected)
+        name: label for reporting
+
+    Returns:
+        SelfRegulationReport with correlation, Gini, and hub analysis
+    """
+    # Work with undirected view for consistent degree/betweenness
+    U = G.to_undirected() if G.is_directed() else G
+    n = U.number_of_nodes()
+
+    if n < 3:
+        return SelfRegulationReport(
+            name=name, n_nodes=n,
+            degree_betweenness_spearman=0.0,
+            degree_betweenness_pearson=0.0,
+            betweenness_gini=0.0,
+            degree_gini=0.0,
+            gini_ratio=1.0,
+        )
+
+    # Compute centrality measures
+    if n > 5000:
+        bc = nx.betweenness_centrality(U, k=min(500, n))
+    else:
+        bc = nx.betweenness_centrality(U)
+
+    degrees = dict(U.degree())
+
+    # Align arrays by node order
+    nodes = list(U.nodes())
+    deg_arr = np.array([degrees[v] for v in nodes], dtype=float)
+    bc_arr = np.array([bc[v] for v in nodes], dtype=float)
+
+    # Correlations
+    if np.std(deg_arr) == 0 or np.std(bc_arr) == 0:
+        spearman_r = 0.0
+        pearson_r = 0.0
+    else:
+        spearman_r, _ = spearmanr(deg_arr, bc_arr)
+        pearson_r, _ = pearsonr(deg_arr, bc_arr)
+
+    # Gini coefficients
+    bg = _gini(bc_arr.tolist())
+    dg = _gini(deg_arr.tolist())
+    gini_ratio = bg / dg if dg > 0 else 1.0
+
+    # Top hub analysis: rank nodes by degree, check betweenness rank
+    deg_ranked = sorted(nodes, key=lambda v: degrees[v], reverse=True)
+    bc_ranked = sorted(nodes, key=lambda v: bc[v], reverse=True)
+
+    # Build rank lookup (1-indexed)
+    bc_rank_map = {v: rank + 1 for rank, v in enumerate(bc_ranked)}
+    deg_rank_map = {v: rank + 1 for rank, v in enumerate(deg_ranked)}
+
+    top_hubs = []
+    for i, v in enumerate(deg_ranked[:10]):
+        top_hubs.append({
+            "node": str(v),
+            "degree": degrees[v],
+            "degree_rank": i + 1,
+            "betweenness": bc[v],
+            "betweenness_rank": bc_rank_map[v],
+        })
+
+    return SelfRegulationReport(
+        name=name,
+        n_nodes=n,
+        degree_betweenness_spearman=float(spearman_r),
+        degree_betweenness_pearson=float(pearson_r),
+        betweenness_gini=bg,
+        degree_gini=dg,
+        gini_ratio=gini_ratio,
+        top_hub_analysis=top_hubs,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Visualization
+# ---------------------------------------------------------------------------
+
+def plot_self_regulation(
+    reports_bio: list[SelfRegulationReport],
+    reports_ref: list[SelfRegulationReport],
+    save: bool = True,
+) -> plt.Figure:
+    """
+    Generate a 3-panel self-regulation figure.
+
+    Panel 1: Betweenness vs Degree scatter (one subplot per network type).
+             In self-regulating networks the curve flattens at high degree.
+    Panel 2: Spearman correlation bar chart (lower = more self-regulation).
+    Panel 3: Gini ratio bar chart (< 1 = betweenness more equal than degree).
+    """
+    FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+
+    fig = plt.figure(figsize=(20, 7), facecolor=BACKGROUND)
+    gs = gridspec.GridSpec(1, 3, wspace=0.35, left=0.06, right=0.96, bottom=0.15)
+
+    # ---------------------------------------------------------------
+    # Panel 1: Betweenness vs Degree scatter
+    # ---------------------------------------------------------------
+    ax1 = fig.add_subplot(gs[0])
+    ax1.set_facecolor(PANEL_BG)
+
+    bio_colors = [SPIRAL_GREEN, SPIRAL_MID, SPIRAL_LIGHT, BLUE, "#a8dadc"]
+    ref_colors = [RED, GOLD, TEXT_DIM, "#f4a261", "#264653"]
+
+    # We need the raw graph data — re-compute lightweight for plotting
+    # Instead, we plot from reports that carry the name, and load graphs
+    # in __main__. For a standalone plot call, accept optional graph dicts.
+    # Here we overlay all networks on the same axes.
+    # Since we don't have raw data in the report, we'll mark this panel
+    # as needing graph data and handle it in the main block.
+    # For now, plot a placeholder message.
+    ax1.text(
+        0.5, 0.5,
+        "See plot_scatter_from_graphs()\nfor degree vs betweenness scatter",
+        transform=ax1.transAxes, ha="center", va="center",
+        color=TEXT_DIM, fontsize=10, style="italic",
+    )
+    ax1.set_xlabel("Degree (k)", color=TEXT_MAIN, fontsize=11)
+    ax1.set_ylabel("Betweenness Centrality", color=TEXT_MAIN, fontsize=11)
+    ax1.set_title("Degree vs Betweenness", color=TEXT_MAIN, fontsize=13, fontweight="bold")
+    ax1.tick_params(colors=TEXT_DIM)
+
+    # ---------------------------------------------------------------
+    # Panel 2: Spearman correlation bar chart
+    # ---------------------------------------------------------------
+    ax2 = fig.add_subplot(gs[1])
+    ax2.set_facecolor(PANEL_BG)
+
+    all_reports = reports_bio + reports_ref
+    labels = [r.name for r in all_reports]
+    spearman_vals = [r.degree_betweenness_spearman for r in all_reports]
+    colors = (
+        [bio_colors[i % len(bio_colors)] for i in range(len(reports_bio))]
+        + [ref_colors[i % len(ref_colors)] for i in range(len(reports_ref))]
+    )
+
+    x = np.arange(len(labels))
+    ax2.bar(x, spearman_vals, color=colors, edgecolor=TEXT_DIM, linewidth=0.5, alpha=0.3)
+    ax2.scatter(x, spearman_vals, c=colors, s=70, zorder=3, edgecolors="white", linewidth=0.8)
+    ax2.set_xticks(x)
+    ax2.set_xticklabels(labels, rotation=35, ha="right", fontsize=7, color=TEXT_MAIN)
+    ax2.set_ylabel("Spearman(degree, betweenness)", color=TEXT_MAIN, fontsize=10)
+    ax2.set_title("Degree-Betweenness Correlation", color=TEXT_MAIN, fontsize=13, fontweight="bold")
+    ax2.tick_params(colors=TEXT_DIM)
+    ax2.set_ylim(0, 1.05)
+
+    # Annotation line at 0.8 threshold
+    ax2.axhline(y=0.8, color=TEXT_DIM, linestyle="--", linewidth=0.8, alpha=0.5)
+    ax2.text(
+        len(labels) - 0.5, 0.82, "high correlation = no self-regulation",
+        color=TEXT_DIM, fontsize=7, ha="right",
+    )
+    ax2.axhline(y=0.5, color=SPIRAL_MID, linestyle=":", linewidth=0.8, alpha=0.4)
+    ax2.text(
+        0.5, 0.42, "self-regulating zone",
+        color=SPIRAL_MID, fontsize=7, ha="left", alpha=0.7,
+    )
+
+    # ---------------------------------------------------------------
+    # Panel 3: Gini ratio bar chart
+    # ---------------------------------------------------------------
+    ax3 = fig.add_subplot(gs[2])
+    ax3.set_facecolor(PANEL_BG)
+
+    gini_ratios = [r.gini_ratio for r in all_reports]
+    ax3.bar(x, gini_ratios, color=colors, edgecolor=TEXT_DIM, linewidth=0.5, alpha=0.3)
+    ax3.scatter(x, gini_ratios, c=colors, s=70, zorder=3, edgecolors="white", linewidth=0.8)
+    ax3.set_xticks(x)
+    ax3.set_xticklabels(labels, rotation=35, ha="right", fontsize=7, color=TEXT_MAIN)
+    ax3.set_ylabel("Gini Ratio (BC_gini / Deg_gini)", color=TEXT_MAIN, fontsize=10)
+    ax3.set_title("Self-Regulation Index", color=TEXT_MAIN, fontsize=13, fontweight="bold")
+    ax3.tick_params(colors=TEXT_DIM)
+
+    # Reference line at 1.0
+    ax3.axhline(y=1.0, color=GOLD, linestyle="--", linewidth=1.2, alpha=0.7)
+    ax3.text(
+        len(labels) - 0.5, 1.05, "ratio = 1.0: no self-regulation",
+        color=GOLD, fontsize=7, ha="right",
+    )
+    ax3.text(
+        0.5, 0.3, "< 1.0 = self-regulating\n(invisible hand active)",
+        color=SPIRAL_MID, fontsize=7, ha="left", alpha=0.7,
+    )
+
+    fig.suptitle(
+        "Self-Regulation: Biological Networks Resist Centralization",
+        color=GOLD, fontsize=15, fontweight="bold", y=0.98,
+    )
+
+    plt.tight_layout(rect=[0, 0, 1, 0.94])
+
+    if save:
+        out = FIGURES_DIR / "layer1_self_regulation.png"
+        fig.savefig(out, dpi=200, bbox_inches="tight", facecolor=BACKGROUND)
+        print(f"[self-regulation] Saved bar charts to {out}")
+
+    return fig
+
+
+def plot_scatter_from_graphs(
+    bio_graphs: dict[str, nx.Graph],
+    ref_graphs: dict[str, nx.Graph],
+    save: bool = True,
+) -> plt.Figure:
+    """
+    Plot betweenness vs degree scatter for each network.
+
+    In self-regulating networks, the scatter should flatten or saturate
+    at high degree — high-degree nodes do NOT have proportionally high
+    betweenness because the network has grown alternative paths.
+
+    In centralized networks (star), the relationship is perfectly linear.
+    """
+    FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+
+    all_graphs = list(bio_graphs.items()) + list(ref_graphs.items())
+    n_nets = len(all_graphs)
+    ncols = min(5, n_nets)
+    nrows = (n_nets + ncols - 1) // ncols
+
+    fig, axes = plt.subplots(
+        nrows, ncols, figsize=(4.5 * ncols, 4 * nrows),
+        facecolor=BACKGROUND, squeeze=False,
+    )
+
+    bio_names = set(bio_graphs.keys())
+    bio_colors_list = [SPIRAL_GREEN, SPIRAL_MID, SPIRAL_LIGHT, BLUE, "#a8dadc"]
+    ref_colors_list = [RED, GOLD, TEXT_DIM, "#f4a261", "#264653"]
+
+    bio_idx = 0
+    ref_idx = 0
+
+    for idx, (name, G) in enumerate(all_graphs):
+        row, col = divmod(idx, ncols)
+        ax = axes[row][col]
+        ax.set_facecolor(PANEL_BG)
+
+        U = G.to_undirected() if G.is_directed() else G
+        n = U.number_of_nodes()
+
+        if n > 5000:
+            bc = nx.betweenness_centrality(U, k=min(500, n))
+        else:
+            bc = nx.betweenness_centrality(U)
+
+        degrees = dict(U.degree())
+        nodes = list(U.nodes())
+        deg_arr = np.array([degrees[v] for v in nodes])
+        bc_arr = np.array([bc[v] for v in nodes])
+
+        if name in bio_names:
+            color = bio_colors_list[bio_idx % len(bio_colors_list)]
+            bio_idx += 1
+        else:
+            color = ref_colors_list[ref_idx % len(ref_colors_list)]
+            ref_idx += 1
+
+        ax.scatter(deg_arr, bc_arr, c=color, s=12, alpha=0.6, edgecolors="none")
+
+        # Compute and display Spearman
+        if np.std(deg_arr) > 0 and np.std(bc_arr) > 0:
+            rho, _ = spearmanr(deg_arr, bc_arr)
+            ax.text(
+                0.95, 0.95, f"rho={rho:.3f}",
+                transform=ax.transAxes, ha="right", va="top",
+                color=TEXT_MAIN, fontsize=9,
+                bbox=dict(boxstyle="round,pad=0.3", facecolor=PANEL_BG, edgecolor=TEXT_DIM, alpha=0.8),
+            )
+
+        ax.set_title(name, color=TEXT_MAIN, fontsize=10, fontweight="bold")
+        ax.set_xlabel("Degree", color=TEXT_DIM, fontsize=8)
+        ax.set_ylabel("Betweenness", color=TEXT_DIM, fontsize=8)
+        ax.tick_params(colors=TEXT_DIM, labelsize=7)
+
+    # Hide unused axes
+    for idx in range(n_nets, nrows * ncols):
+        row, col = divmod(idx, ncols)
+        axes[row][col].set_visible(False)
+
+    fig.suptitle(
+        "Degree vs Betweenness: Self-Regulation in Biological Networks",
+        color=GOLD, fontsize=14, fontweight="bold", y=1.02,
+    )
+    plt.tight_layout()
+
+    if save:
+        out = FIGURES_DIR / "layer1_self_regulation_scatter.png"
+        fig.savefig(out, dpi=200, bbox_inches="tight", facecolor=BACKGROUND)
+        print(f"[self-regulation] Saved scatter plots to {out}")
+
+    return fig
+
+
+# ---------------------------------------------------------------------------
+# Mechanistic test: Hub erosion (WBPA core prediction)
+# ---------------------------------------------------------------------------
+
+@dataclass
+class HubErosionResult:
+    """Results from testing whether connecting to a hub erodes its dominance."""
+    network_name: str
+    hub_node: str
+    initial_betweenness: float
+    final_betweenness: float
+    betweenness_change: float       # negative = erosion (self-regulating)
+    edges_added: int
+    eroded: bool                    # True if betweenness decreased
+
+
+def test_hub_erosion(
+    G: nx.Graph,
+    name: str = "network",
+    n_hubs: int = 5,
+    edges_per_hub: int = 10,
+) -> list[HubErosionResult]:
+    """
+    Directly test the WBPA mechanism: does connecting to a hub erode
+    its betweenness centrality?
+
+    For each of the top-N hubs (by betweenness), add random edges
+    connecting non-neighbors to the hub. Then re-measure betweenness.
+
+    In self-regulating networks (biological), the hub's betweenness
+    should DECREASE — because new edges create alternative shortest
+    paths that bypass the hub. This is the invisible hand: the hub's
+    own attractiveness generates the competition that limits its power.
+
+    In centralized networks (star), adding edges to the hub increases
+    or maintains its betweenness — no alternative paths form.
+
+    Args:
+        G: network to test
+        name: label for reporting
+        n_hubs: how many top hubs to test
+        edges_per_hub: how many edges to add per test
+
+    Returns:
+        list of HubErosionResult for each hub tested
+    """
+    U = G.to_undirected().copy() if G.is_directed() else G.copy()
+    n = U.number_of_nodes()
+    if n < 10:
+        return []
+
+    # Initial betweenness
+    bc_initial = nx.betweenness_centrality(U)
+
+    # Identify top hubs by betweenness
+    top_hubs = sorted(bc_initial, key=bc_initial.get, reverse=True)[:n_hubs]
+
+    results = []
+    for hub in top_hubs:
+        H = U.copy()
+        initial_bc = bc_initial[hub]
+
+        # Find non-neighbors of the hub
+        neighbors = set(H.neighbors(hub))
+        non_neighbors = [v for v in H.nodes() if v != hub and v not in neighbors]
+
+        # Add edges from non-neighbors to the hub
+        added = 0
+        np.random.seed(42)
+        np.random.shuffle(non_neighbors)
+        for v in non_neighbors[:edges_per_hub]:
+            H.add_edge(hub, v)
+            added += 1
+
+        if added == 0:
+            continue
+
+        # Re-measure betweenness
+        bc_after = nx.betweenness_centrality(H)
+        final_bc = bc_after[hub]
+        change = final_bc - initial_bc
+
+        results.append(HubErosionResult(
+            network_name=name,
+            hub_node=str(hub),
+            initial_betweenness=initial_bc,
+            final_betweenness=final_bc,
+            betweenness_change=change,
+            edges_added=added,
+            eroded=change < 0,
+        ))
+
+    return results
+
+
+def simulate_attachment_models(
+    n_nodes: int = 300,
+    m_per_step: int = 2,
+    seed: int = 42,
+) -> dict[str, nx.Graph]:
+    """
+    Grow three networks from scratch under different attachment rules,
+    then compare to biological networks.
+
+    Models:
+        1. Degree-PA (Barabasi-Albert): attach proportional to degree.
+           This is the standard model — hubs accumulate without limit.
+           Rothbard's warning: unchecked concentration of power.
+
+        2. Betweenness-PA (WBPA): attach proportional to betweenness.
+           Hubs attract connections but those connections create
+           alternative paths, reducing the hub's betweenness.
+           Hayek's invisible hand: competition erodes monopoly.
+
+        3. Random: attach uniformly at random. No structure emerges.
+           The null model — coordination without knowledge.
+
+    Returns dict of model_name -> nx.Graph
+    """
+    rng = np.random.default_rng(seed)
+    models = {}
+
+    # --- Degree-PA (Barabasi-Albert) ---
+    models["Degree-PA (Barabasi-Albert)"] = nx.barabasi_albert_graph(
+        n_nodes, m_per_step, seed=seed,
+    )
+
+    # --- Betweenness-PA (WBPA) ---
+    G_wbpa = nx.complete_graph(m_per_step + 1)  # seed graph
+    bc_update_interval = 10  # recompute betweenness every N steps
+    cached_bc = nx.betweenness_centrality(G_wbpa)
+
+    for new_node in range(m_per_step + 1, n_nodes):
+        # Recompute betweenness periodically (expensive otherwise)
+        if new_node % bc_update_interval == 0:
+            cached_bc = nx.betweenness_centrality(G_wbpa)
+
+        existing = list(G_wbpa.nodes())
+        bc_vals = np.array([cached_bc.get(v, 0.001) for v in existing])
+        bc_vals = bc_vals / bc_vals.sum()  # normalize to probabilities
+
+        # Select m_per_step targets weighted by betweenness
+        targets = rng.choice(
+            existing, size=min(m_per_step, len(existing)),
+            replace=False, p=bc_vals,
+        )
+
+        G_wbpa.add_node(new_node)
+        for t in targets:
+            G_wbpa.add_edge(new_node, t)
+
+        # Update cache for new node
+        cached_bc[new_node] = 0.001
+
+    models["Betweenness-PA (WBPA)"] = G_wbpa
+
+    # --- Random attachment ---
+    G_rand = nx.complete_graph(m_per_step + 1)
+    for new_node in range(m_per_step + 1, n_nodes):
+        existing = list(G_rand.nodes())
+        targets = rng.choice(
+            existing, size=min(m_per_step, len(existing)),
+            replace=False,
+        )
+        G_rand.add_node(new_node)
+        for t in targets:
+            G_rand.add_edge(new_node, t)
+
+    models["Random Attachment"] = G_rand
+
+    return models
+
+
+def plot_hub_erosion(
+    bio_results: dict[str, list[HubErosionResult]],
+    ref_results: dict[str, list[HubErosionResult]],
+    save: bool = True,
+) -> plt.Figure:
+    """
+    Plot hub erosion test results.
+
+    Panel 1: Betweenness change per hub — biological networks should show
+             negative change (erosion), centralized should show zero/positive.
+    Panel 2: Erosion rate summary — fraction of hubs that eroded per network.
+    """
+    FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6), facecolor=BACKGROUND)
+
+    # --- Panel 1: Per-hub betweenness change ---
+    ax1.set_facecolor(PANEL_BG)
+
+    all_names = []
+    all_changes = []
+    all_colors = []
+    bio_color_list = [SPIRAL_GREEN, SPIRAL_MID, SPIRAL_LIGHT, BLUE, "#a8dadc"]
+    ref_color_list = [RED, GOLD, TEXT_DIM]
+
+    ci = 0
+    for net_name, results in bio_results.items():
+        color = bio_color_list[ci % len(bio_color_list)]
+        ci += 1
+        for r in results:
+            all_names.append(f"{net_name}\n{r.hub_node}")
+            all_changes.append(r.betweenness_change)
+            all_colors.append(color)
+
+    ci = 0
+    for net_name, results in ref_results.items():
+        color = ref_color_list[ci % len(ref_color_list)]
+        ci += 1
+        for r in results:
+            all_names.append(f"{net_name}\n{r.hub_node}")
+            all_changes.append(r.betweenness_change)
+            all_colors.append(color)
+
+    if all_names:
+        x = np.arange(len(all_names))
+        ax1.scatter(x, all_changes, c=all_colors, s=60, alpha=0.8, edgecolors="white", linewidth=0.5, zorder=3)
+        ax1.set_xticks(x)
+        ax1.set_xticklabels(all_names, rotation=45, ha="right", fontsize=6, color=TEXT_MAIN)
+        ax1.axhline(y=0, color=GOLD, linestyle="--", linewidth=1)
+        ax1.set_ylabel("Betweenness Change After Edge Addition", color=TEXT_MAIN)
+        ax1.text(0.02, 0.98, "Below zero = hub eroded\n(self-regulation active)",
+                 transform=ax1.transAxes, va="top", color=SPIRAL_MID, fontsize=8)
+
+    ax1.set_title("Hub Erosion Test: Does Connecting to a Hub\nReduce Its Dominance?",
+                   color=TEXT_MAIN, fontsize=12, fontweight="bold")
+    ax1.tick_params(colors=TEXT_DIM)
+
+    # --- Panel 2: Individual hub erosion strip plot per network ---
+    ax2.set_facecolor(PANEL_BG)
+
+    all_erosion: dict[str, list[HubErosionResult]] = {}
+    bar_colors = []
+
+    ci = 0
+    for net_name, results in bio_results.items():
+        if results:
+            all_erosion[net_name] = results
+            bar_colors.append(bio_color_list[ci % len(bio_color_list)])
+        ci += 1
+
+    ci = 0
+    for net_name, results in ref_results.items():
+        if results:
+            all_erosion[net_name] = results
+            bar_colors.append(ref_color_list[ci % len(ref_color_list)])
+        ci += 1
+
+    if all_erosion:
+        for i, (net_name, results) in enumerate(all_erosion.items()):
+            changes = [r.betweenness_change for r in results]
+            # Jitter x positions slightly
+            jitter = np.random.default_rng(42).uniform(-0.15, 0.15, len(changes))
+            x_pts = np.full(len(changes), i) + jitter
+            color = bar_colors[i] if i < len(bar_colors) else TEXT_DIM
+            ax2.scatter(x_pts, changes, c=color, s=40, alpha=0.7, edgecolors="white", linewidth=0.5)
+            # Median line
+            if changes:
+                ax2.hlines(np.median(changes), i - 0.3, i + 0.3, color=color, linewidth=2)
+
+        net_names = list(all_erosion.keys())
+        ax2.set_xticks(range(len(net_names)))
+        ax2.set_xticklabels(net_names, rotation=30, ha="right", fontsize=8, color=TEXT_MAIN)
+        ax2.set_ylabel("Betweenness Change per Hub", color=TEXT_MAIN)
+        ax2.axhline(y=0, color=GOLD, linestyle="--", linewidth=1)
+
+    ax2.set_title("Erosion Rate: Self-Regulating Networks\nErode Their Own Hubs",
+                   color=TEXT_MAIN, fontsize=12, fontweight="bold")
+    ax2.tick_params(colors=TEXT_DIM)
+
+    fig.suptitle(
+        "WBPA Mechanism: The Invisible Hand in Network Growth",
+        color=GOLD, fontsize=14, fontweight="bold", y=1.02,
+    )
+    plt.tight_layout()
+
+    if save:
+        out = FIGURES_DIR / "layer1_hub_erosion.png"
+        fig.savefig(out, dpi=200, bbox_inches="tight", facecolor=BACKGROUND)
+        print(f"[self-regulation] Saved hub erosion figure to {out}")
+
+    return fig
+
+
+# ---------------------------------------------------------------------------
+# CLI
+# ---------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    from layer1_topology.network_fetcher import load_all_networks
+    from layer1_topology.centralized_comparison import build_comparison_networks
+
+    print("=" * 70)
+    print("Layer 1: Self-Regulation Analysis")
+    print("Testing the WBPA hypothesis (Topirceanu et al. 2018)")
+    print("Do biological networks self-regulate against centralization?")
+    print("=" * 70)
+    print()
+
+    # Load biological networks
+    print("Loading biological networks...")
+    networks = load_all_networks()
+
+    # Build comparison networks (sized to E. coli GRN)
+    ref_n = networks["ecoli_grn"].number_of_nodes()
+    ref_m = networks["ecoli_grn"].number_of_edges()
+    print(f"\nBuilding comparison networks (n={ref_n}, m={ref_m})...")
+    ref_networks = build_comparison_networks(n_nodes=ref_n, n_edges=ref_m)
+
+    # Analyze biological networks
+    print("\n" + "-" * 70)
+    print("BIOLOGICAL NETWORKS")
+    print("-" * 70)
+    bio_reports = []
+    for name, G in networks.items():
+        print(f"\nAnalyzing {name}...")
+        report = compute_self_regulation(G, name=name)
+        bio_reports.append(report)
+        print(report.summary())
+
+    # Analyze reference networks
+    print("\n" + "-" * 70)
+    print("REFERENCE NETWORKS (centralized / synthetic)")
+    print("-" * 70)
+    ref_reports = []
+    for name, G in ref_networks.items():
+        print(f"\nAnalyzing {name}...")
+        report = compute_self_regulation(G, name=name)
+        ref_reports.append(report)
+        print(report.summary())
+
+    # Summary comparison
+    print("\n" + "=" * 70)
+    print("SUMMARY: Self-Regulation Comparison")
+    print("=" * 70)
+    print(f"{'Network':<30s} {'Spearman':>10s} {'Gini Ratio':>12s} {'Self-Reg?':>10s}")
+    print("-" * 65)
+    for r in bio_reports:
+        sr = "YES" if r.gini_ratio < 1.0 else "no"
+        print(f"{r.name:<30s} {r.degree_betweenness_spearman:>10.4f} {r.gini_ratio:>12.4f} {sr:>10s}")
+    print("-" * 65)
+    for r in ref_reports:
+        sr = "YES" if r.gini_ratio < 1.0 else "no"
+        print(f"{r.name:<30s} {r.degree_betweenness_spearman:>10.4f} {r.gini_ratio:>12.4f} {sr:>10s}")
+
+    # Hub erosion test (WBPA mechanism)
+    print("\n" + "-" * 70)
+    print("HUB EROSION TEST: Does connecting to a hub erode its dominance?")
+    print("-" * 70)
+    bio_erosion = {}
+    for name, G in networks.items():
+        print(f"\nTesting hub erosion: {name}...")
+        results = test_hub_erosion(G, name=name)
+        bio_erosion[name] = results
+        for r in results:
+            arrow = "ERODED" if r.eroded else "held"
+            print(f"  Hub {r.hub_node}: BC {r.initial_betweenness:.5f} → {r.final_betweenness:.5f} "
+                  f"(change={r.betweenness_change:+.5f}) [{arrow}]")
+
+    ref_erosion = {}
+    for name, G in ref_networks.items():
+        print(f"\nTesting hub erosion: {name}...")
+        results = test_hub_erosion(G, name=name)
+        ref_erosion[name] = results
+        for r in results:
+            arrow = "ERODED" if r.eroded else "held"
+            print(f"  Hub {r.hub_node}: BC {r.initial_betweenness:.5f} → {r.final_betweenness:.5f} "
+                  f"(change={r.betweenness_change:+.5f}) [{arrow}]")
+
+    # Generate figures
+    print("\nGenerating figures...")
+    plot_self_regulation(bio_reports, ref_reports)
+    plot_scatter_from_graphs(networks, ref_networks)
+    plot_hub_erosion(bio_erosion, ref_erosion)
+
+    print("\nDone. The invisible hand leaves its fingerprint in the topology.")

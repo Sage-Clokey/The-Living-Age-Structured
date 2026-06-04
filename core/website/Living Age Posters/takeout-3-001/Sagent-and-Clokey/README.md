@@ -1,0 +1,3 @@
+# Sagent and Clokey
+
+Character studies and portraits of the central figures. The Sagent is the archetype of the aligned agent — one who serves not institutions but truth, operating at the intersection of wisdom and action. Sage Clokey is the human face of this archetype: the author and originator, the one who works in the dark, who wears the suit for the world and the cloak for the soul. This folder contains imagery of both the archetypal Sagent figure and the personal identity of Sage Clokey — portraits, symbolic costumes, scenes of solitary work, and the dual nature of public presence and private mission.

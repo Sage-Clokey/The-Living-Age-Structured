@@ -1,0 +1,3 @@
+# Vecna and Truth
+
+Truth versus illusion, the exposed lie versus the hidden corruption. Vecna — the villain of Stranger Things — serves here as a cultural archetype for the deceiver who operates through partial truths, psychological manipulation, and weaponized narrative. This folder contains images exploring the war between truth and its counterfeits: Vecna facing the Sagent, the swastika as a reclaimed or confronted symbol of history's darkest distortions, fire as the purifier that destroys illusion, and chess as the game of strategic truth-telling. These images interrogate what it means to name evil, expose it, and resist it.

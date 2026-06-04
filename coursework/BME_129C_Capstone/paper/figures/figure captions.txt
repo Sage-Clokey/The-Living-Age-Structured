@@ -1,0 +1,283 @@
+Layer 1: Network Topology
+
+    layer1_topology.png (3 panels)
+    1. Degree distribution — shows the E. coli GRN follows a heavy-tailed
+    (scale-free-like) distribution, not a bell curve. No master node controls the
+    network; influence is distributed with a few coordinating hubs, like a market with
+    large firms but no central planner.
+    2. Robustness curves — plots the fraction of the network that stays connected as
+    you remove nodes (random vs targeted attack, Albert et al. 2000 method). Biological
+     networks survive random failure but are vulnerable to targeted hub removal — same
+    as a free market vs a planned economy losing its central bureau.
+    3. Comparison bars — betweenness centrality, Gini coefficient, clustering across
+    bio networks vs reference architectures (star, random, lattice, hub-spoke, BA).
+    Shows biology sits between pure hierarchy and pure randomness — spontaneous order,
+    not design.
+
+    ---
+    Layer 1 Motifs (Alon)
+
+    layer1_motifs.png (2 panels)
+    1. Z-score bar chart — triadic census of real E. coli GRN vs 1,000
+    degree-preserving randomizations. The feed-forward loop (030T) has a massive
+    Z-score, meaning it's statistically over-represented. These are the recurring
+    "grammar" of the network — not accidental, but evolved coordination motifs.
+    2. FFL diagram with Austrian interpretation — shows the feed-forward loop structure
+     (A→B→C, A→C) and labels it as a Hayekian price signal: a fast regulatory shortcut
+    that lets local information propagate without waiting for a central command.
+
+    ---
+    Layer 1 Self-Regulation (WBPA)
+
+    layer1_self_regulation.png (3 panels)
+    1. Degree vs betweenness scatter — for each network, plots node degree against
+    betweenness centrality with Spearman rho annotated. In biological networks, high
+    degree does NOT guarantee high betweenness — hubs don't monopolize information
+    flow. This is the invisible hand in topology.
+    2. Spearman correlation bars — bio networks vs reference architectures. Bio
+    networks show lower degree-betweenness correlation than star or hub-spoke, proving
+    they self-regulate against centralization (Topirceanu's WBPA mechanism).
+    3. Gini ratio bars — betweenness inequality across networks. Biology is more
+    egalitarian than engineered hierarchies.
+
+    layer1_hub_erosion.png (2 panels)
+    1. Per-hub betweenness change — when you artificially connect more edges to a top
+    hub, does its betweenness go up (centralization) or down (self-regulation)? In bio
+    networks, betweenness drops — the network resists monopoly. In star networks, it
+    increases.
+    2. Erosion rate comparison — BA (degree-PA) vs WBPA vs random growth models.
+    WBPA-grown networks show hub erosion like biology; BA networks don't. This is the
+    mechanistic test: biology grows by betweenness-preferential attachment, which
+    automatically punishes hubs that get too powerful.
+
+    ---
+    Layer 1b: Single-Cell Economy
+
+    layer1b_cell_economy.png (multi-panel)
+    - UMAP of pbmc3k cell types, Shannon entropy (specialization), communication
+    network topology. Shows cells are specialized economic agents (division of labor,
+    not interchangeable units).
+
+    layer1b_directed_communication.png
+    - Directed graph of ligand-receptor signaling between cell types, colored by
+    pathway. Arrows show voluntary exchange: A produces a ligand, B acts on it. Both
+    benefit. No cell is forced to participate — Rothbardian voluntary exchange at the
+    molecular level.
+
+    layer1b_comparative_advantage.png
+    - Heatmap: rows = cell types, columns = enriched genes. Each cell type specializes
+    in producing specific gene products at far higher levels than others — Mengerian
+    comparative advantage. T cells don't try to make what monocytes make.
+
+    layer1b_robustness_comparison.png
+    - Grouped bars: distributed (green) vs star/centralized (red) communication
+    networks. Shows what fraction of communication edges survive when you remove each
+    cell type. The distributed biological network is far more robust — Rothbard's
+    argument that centralization creates fragility.
+
+    layer1b_price_signals.png
+    - Radial diagrams showing how the same ligand is received differently by different
+    cell types. This IS Menger's subjective value: the same molecule has different
+    "prices" (biological effects) depending on who receives it. Value is not intrinsic
+    to the signal.
+
+    ---
+    Layer 2: Economic Modeling
+
+    layer2_economy.png (3 panels)
+    1. GDP over time — distributed (green) vs centralized (red) metabolic allocation.
+    Both converge, but distributed reaches equilibrium through price discovery (local
+    feedback), centralized through top-down assignment.
+    2. Perturbation robustness — GDP fraction retained after removing each pathway
+    agent. Distributed retains more GDP across all knockouts — the market adapts, the
+    plan breaks.
+    3. Production rate convergence — individual agent production rates over time in the
+     distributed regime. They start chaotic and converge to stable rates WITHOUT any
+    coordinator — this is spontaneous order, the invisible hand finding equilibrium.
+
+    layer2_perturbation_suite.png (2×2 panels)
+    1. Substrate shock (Hayek) — cut supply of a key substrate by 80% at step 100. GDP
+    curves for distributed vs centralized (dumb) vs centralized (smart). Distributed
+    recovers faster because each agent independently discovers the new equilibrium. The
+     smart planner has perfect information but still re-optimizes backward-looking.
+    2. ATP crisis (Mises) — halve ATP regeneration for 30 steps. Measures trough depth.
+     The calculation problem: even with full metabolite data, the planner can't
+    anticipate which agents should sacrifice first.
+    3. Demand spike (Kirzner) — 3x demand for one product. Measures response time.
+    Distributed agents "discover" the opportunity through local price signals (product
+    level drops → increase production). The planner waits for the next optimization
+    cycle.
+    4. Novel opportunity (Kirzner) — introduce a brand new resource. Measures GDP gain.
+     Distributed agents that can use it start immediately; the planner has no
+    pre-existing allocation rule for something it's never seen.
+
+    ---
+    Layer 2 FBA (just built)
+
+    layer2_fba_analysis.png (3 panels)
+    1. FBA vs Keio knockout scatter — each dot is a gene. X-axis = actual growth after
+    knockout (Keio collection data). Y-axis = FBA-predicted growth. Green dots =
+    correct predictions. Red dots = planner failures. The omniscient planner (FBA)
+    achieves high but NOT 100% accuracy — Mises was right, perfect calculation is
+    impossible.
+    2. Confusion matrix — TP/TN/FP/FN. False positives = planner says essential but
+    cell reroutes (Kirznerian adaptation). False negatives = planner says viable but
+    cell dies (Hayekian local knowledge the LP can't encode). Each error type maps to a
+     specific Austrian failure mode.
+    3. Shadow prices — the dual variables from the LP. These ARE Hayekian price signals
+     computed by the planner. They show the marginal value of each metabolite. The
+    irony: FBA must compute these prices to solve the optimization, proving Hayek's
+    point that prices contain essential information.
+
+    layer2_fba_perturbation.png (3 panels)
+    1. Glucose → Acetate (Hayek) — FBA instantly re-optimizes; real E. coli shows a
+    diauxic lag. The planner assumes instant knowledge; biology must discover the new
+    environment through distributed sensing.
+    2. Aerobic → Anaerobic (Mises) — FBA re-solves; real E. coli uses ArcAB/FNR
+    regulatory cascades. The planner computes the answer; biology grows toward it
+    through local feedback.
+    3. Nitrogen limitation (Kirzner) — FBA predicts the new optimum; real E. coli
+    upregulates high-affinity transporters via NtrBC. Entrepreneurial alertness at the
+    molecular level.
+
+    ---
+    Layer 3: Cross-Species Trade
+
+    layer3_trade_network.png
+    - Network graph of 5 organisms (E. coli, yeast, human, C. elegans, Drosophila)
+    connected by trade links weighted by codon usage distance + regulatory barrier.
+    Shows the cost of "trade" (heterologous expression) between species — Ricardian
+    comparative advantage applied to biology.
+
+    layer3_voluntary_exchange.png (3 panels)
+    1. Trade cost vs success scatter — each dot is a real published gene transfer (GFP,
+     insulin, silk, etc.). Lower trade cost = higher success. Voluntary exchange
+    (compatible organisms) works; forced exchange (high barriers) fails. Rothbard:
+    coercion destroys value.
+    2. Success by compatibility tier — grouped bars. High-compatibility pairs (E.
+    coli↔yeast) succeed more than low-compatibility pairs (bacteria↔human). The
+    market self-selects for viable trades.
+    3. Information destruction — shows that forcing a gene into an incompatible host
+    destroys biological information (misfolding, wrong codon usage, missing
+    chaperones). This is Mises' calculation problem applied to synthetic biology: you
+    can't centrally plan protein folding.
+
+    layer3_trade_blocs.png
+    - Network with convex hulls around Louvain-detected communities. Organisms cluster
+    into "trade blocs" based on phylogenetic compatibility — NOT because anyone planned
+     it, but because compatible partners naturally trade more. Mengerian spontaneous
+    order: institutions (trade relationships) emerge from individual action, not
+    design.
+
+    ---
+    Layer 2 Price System: "The Price System of the Cell"
+
+    price_system_of_the_cell.png (4 panels)
+
+    The central figure of the paper. If prices are ratios of exchange that carry
+    distributed information about scarcity and opportunity cost, then living
+    systems have a real price system — and cancer is specifically its destruction.
+
+    What if the disease isn't the variants — what if it's the system that stopped
+    reading them? Is an elephant diseased because it can't climb a tree? Variants
+    are not diseases. The disease is when you don't help maintain what exists.
+    Anything can be a disease in the wrong environment. It is better to study
+    variants for what will help them thrive than to decide what is a disease and
+    what is not. The differences are a feature, not a bug — they are how
+    adaptation is possible. It is trial and error directed by distributed
+    knowledge. Eugenics is the same fatal conceit: you can't centrally plan life.
+
+    Disease is the central planning, not the variation. Disease is the thorns
+    stepping above instead of within. Disease is the state.
+
+    Panel A: "The Price System of the Cell" — Conceptual diagram showing three
+    tiers of cellular prices:
+        Tier 1 (Intracellular): ATP/ADP ratio (energy budget), NAD+/NADH
+        (redox state), AMP/ATP (scarcity alarm). These are the "cost of
+        capital" — ratios that emerge from the cell's own metabolic activity,
+        not set by any central authority. Each cell reads its own prices and
+        allocates its own resources.
+        Tier 2 (Intercellular): Cytokines (tissue demand), morphogens
+        (positional value), growth factors (investment signal), O₂ tension
+        (resource scarcity). These are "market prices" — signals that carry
+        tissue-level information between cells. A cell reads its local
+        morphogen concentration the way a firm reads the price of steel.
+        Tier 3 (Integrator): mTOR — reads all prices simultaneously (amino
+        acids, growth factors, energy via AMPK, oxygen via HIF) and makes one
+        decision: grow or conserve. This is the entrepreneur reading the full
+        local market picture before deciding whether to invest.
+
+    Panel B: "Shadow Prices Shift With Context" — Heatmap of FBA shadow prices
+    (dual variables from the iML1515 linear program) for key metabolites across
+    four environmental conditions: glucose baseline, acetate carbon switch,
+    anaerobic, nitrogen-limited. The same metabolite has completely different
+    marginal value depending on the environment the cell is in — NADH is cheap
+    on glucose but expensive on acetate; oxygen is nearly free under aerobic
+    conditions but becomes the most valuable metabolite under anaerobic. This is
+    Menger's subjective value computed from real genome-scale metabolic data.
+    The price of a metabolite depends on context, not on the molecule itself.
+    Data source: COBRApy FBA on E. coli iML1515 (Monk et al. 2017; 2,712
+    reactions, 1,877 metabolites, 1,516 genes).
+
+    Panel C: "Price Discovery in the Distributed Economy" — Metabolite pool
+    concentrations over time from the distributed metabolic simulation (13
+    pathway agents, shared metabolite pool, no central allocator). The pools
+    oscillate early (discovery phase) then converge to stable values
+    (equilibrium). When a metabolite overshoots (oversupply), its producers
+    slow down — the price drops. When a metabolite gets scarce, producers speed
+    up — the price rises. This IS supply-and-demand dynamics happening in a cell.
+    No planner needed. The invisible hand finds equilibrium through local
+    feedback. The oscillation is the market discovering prices. The stability is
+    proof that distributed coordination works.
+
+    Panel D: "Cancer Mutations Target the Price System" — Strip plot showing
+    per-cancer-type mutation frequencies for 13 genes that map to the cellular
+    price system. Every dot is one cancer type (16 TCGA cancer types shown).
+    White line = median. Source: TCGA PanCancerAtlas via cBioPortal (10,967
+    samples, 32 cancer types).
+
+    The variation across cancer types IS the signal:
+        - TP53 (damage price → apoptosis): 96% in ovarian, 1% in thyroid
+        - PIK3CA (PI3K price integrator): 52% in uterine, 3% in ovarian
+        - PTEN (mTOR negative regulator): 67% in uterine, 1% in thyroid
+        - EGFR (growth factor receptor): 57% in GBM, 0.3% in thyroid
+        - STK11 (AMPK energy price reader): 17% in lung adeno, <1% elsewhere
+
+    Different tissues break different price components because different tissues
+    rely on different prices. This is tissue-specific misallocation — cancer is
+    not one disease but many different failures of the cellular price system.
+    The cancer cell is a firm that ignores market prices: it produces what no one
+    needs, consumes what everyone needs, and expands regardless of the cost to
+    the system.
+
+    Color coding by price system tier:
+        Gold = Price Receptors (intercellular signals: EGFR, ERBB2, NOTCH1)
+        Blue = Price Integrators (mTOR/AMPK pathway: PIK3CA, PTEN, MTOR, STK11)
+        Red = Decision Makers (p53/Rb checkpoint: TP53, RB1, CDKN2A)
+        Orange = Spatial Prices (Hippo/contact inhibition: FAT1, NF2)
+
+    The figure's argument in one sentence: living systems have a real price
+    system operating at multiple levels, and cancer is specifically the
+    destruction of that price system — the calculation problem at the cellular
+    level. The disease is the central planning, not the variation.
+
+    ---
+    The throughline
+
+    Every single figure answers the same question from a different angle: does biology
+    operate like a centrally planned economy or a free market?
+
+    - Layer 1: the network structure says market (no master node, self-regulation,
+    feed-forward price signals)
+    - Layer 1b: single cells say market (specialization, voluntary exchange, subjective
+     value, distributed robustness)
+    - Layer 2: metabolic allocation says market (distributed beats centralized under
+    perturbation, even against a smart planner with perfect information)
+    - Layer 2 FBA: the strongest possible planner (genome-scale LP) still fails on real
+     knockout data
+    - Layer 2 Price System: the central figure — life has a real price system at
+    three levels (metabolite ratios, signaling molecules, mTOR integration), and
+    cancer is specifically its destruction. The disease is the central planning,
+    not the variation.
+    - Layer 3: cross-species gene transfer says market (voluntary exchange succeeds,
+    forced exchange fails, trade blocs emerge spontaneously)

@@ -1,0 +1,103 @@
+# Dataset Metadata
+
+dataset_info:
+  name: AgriField3D
+  description: >
+    AgriField3D is a curated dataset of 3D point clouds representing fully field-grown maize plants 
+    from a diverse maize genetic panel. This dataset contains over 1,000 point clouds of maize plants, 
+    collected using a Terrestrial Laser Scanner, and includes various versions of point clouds such as raw, 
+    segmented, and reconstructed surfaces. It is designed to support advanced AI applications in agricultural 
+    research, particularly maize phenotyping and plant structure analysis.
+
+  version: 1.0
+  license: CC-BY-NC-4.0
+  authors:
+    - Elvis Kimara
+    - Mozhgan Hadadi
+    - Jackson Godbersen
+    - Aditya Balu
+    - Zaki Jubery
+    - Adarsh Krishnamurthy
+    - Patrick Schnable
+    - Baskar Ganapathysubramanian
+  citation: >
+    @article{kimara2025AgriField3D,
+        title = "AgriField3D: A Curated 3D Point Cloud Dataset of Field-Grown Plants from a Maize Diversity Panel",
+        author = "Elvis Kimara, Mozhgan Hadadi, Jackson Godbersen, Aditya Balu, Zaki Jubery, Adarsh Krishnamurthy, Patrick Schnable, Baskar Ganapathysubramanian",
+        year = "2025"
+    }
+
+  intended_use:
+    - AI-based agricultural research
+    - Maize phenotyping
+    - Plant structure analysis
+    - 3D data-driven studies in agriculture
+
+  features:
+    - Point clouds: `.ply` format
+    - Resolutions: 100k, 50k, 10k points
+    - Data types: Raw, segmented, reconstructed surfaces
+    - Plant types: Various maize genetic backgrounds
+    - Segmentation: Individual leaves and stalks color-labeled
+    - Metadata: Quality of point clouds, leaf count, tassels, and maize cobs presence
+
+  dataset_size: 
+    raw_point_clouds: 
+      - "FielGrwon_ZeaMays_RawPCD_100k.zip: 1045 .ply files (100K points per plant)"
+      - "FielGrwon_ZeaMays_RawPCD_50k.zip: 1045 .ply files (50K points per plant)"
+      - "FielGrwon_ZeaMays_RawPCD_10k.zip: 1045 .ply files (10K points per plant)"
+    segmented_point_clouds: 
+      - "FielGrwon_ZeaMays_SegmentedPCD_100k.zip: 520 .ply files (100K points per segmented plant)"
+      - "FielGrwon_ZeaMays_SegmentedPCD_50k.zip: 520 .ply files (50K points per segmented plant)"
+      - "FielGrwon_ZeaMays_SegmentedPCD_10k.zip: 520 .ply files (10K points per segmented plant)"
+    reconstructed_surfaces:
+      - "FielGrwon_ZeaMays_Reconstructed_Surface_stl.zip: 520 .ply files (reconstructed surfaces)"
+      - "FielGrwon_ZeaMays_Reconstructed_Surface_dat.zip: 520 .ply files (NURBS surface data)"
+
+  dependencies:
+    - Python 3.6+
+    - open3d (for visualization)
+    - MeshLab, CloudCompare (for additional point cloud manipulation)
+    - trimesh (for 3D mesh processing)
+
+  installation_instructions: |
+    To install the dataset, clone the repository and install the dependencies:
+    ```bash
+    git clone https://huggingface.co/datasets/BGLab/AgriField3D
+    cd AgriField3D
+    pip install -r requirements.txt
+    ```
+
+  download_instructions: |
+    1. Download the zipped files from the following links:
+       - FielGrwon_ZeaMays_RawPCD_100k.zip
+       - FielGrwon_ZeaMays_RawPCD_50k.zip
+       - FielGrwon_ZeaMays_RawPCD_10k.zip
+       - FielGrwon_ZeaMays_SegmentedPCD_100k.zip
+       - FielGrwon_ZeaMays_SegmentedPCD_50k.zip
+       - FielGrwon_ZeaMays_SegmentedPCD_10k.zip
+       - FielGrwon_ZeaMays_Reconstructed_Surface_stl.zip
+       - FielGrwon_ZeaMays_Reconstructed_Surface_dat.zip
+    2. Extract the `.zip` files:
+       ```bash
+       unzip FielGrwon_ZeaMays_RawPCD_100k.zip
+       unzip FielGrwon_ZeaMays_RawPCD_50k.zip
+       unzip FielGrwon_ZeaMays_RawPCD_10k.zip
+       unzip FielGrwon_ZeaMays_SegmentedPCD_100k.zip
+       unzip FielGrwon_ZeaMays_SegmentedPCD_50k.zip
+       unzip FielGrwon_ZeaMays_SegmentedPCD_10k.zip
+       ```
+
+  visualization_instructions: |
+    Use the following Python code to visualize the point clouds:
+    ```python
+    import open3d as o3d
+
+    # Load and visualize a PLY file
+    pcd = o3d.io.read_point_cloud("FielGrwon_ZeaMays_RawPCD_100k/0001.ply")
+    o3d.visualization.draw_geometries([pcd])
+    ```
+
+  repository_links:
+    - https://huggingface.co/datasets/BGLab/AgriField3D
+    - https://huggingface.co/docs/hub/datasets-cards

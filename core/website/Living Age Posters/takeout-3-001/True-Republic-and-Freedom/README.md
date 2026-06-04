@@ -1,0 +1,3 @@
+# True Republic and Freedom
+
+Political and civic vision. This folder holds images related to the True Republic — a framework for governance grounded in natural law, decentralized sovereignty, and genuine self-determination rather than managed democracy. Imagery includes the campaign for a True Republic, free market principles divorced from crony capitalism, housing freedom and property rights, declarations of individual sovereignty, and the civic creed that animates the political dimension of Living Works. The True Republic is not nostalgia — it is a forward vision of how free people organize themselves in alignment with living principles.

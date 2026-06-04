@@ -1,0 +1,2177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Machine Learning for Living Architecture — A Unified Field Guide</title>
+<style>
+:root{--bg:#0c0e14;--surface:#141824;--surface2:#1c2236;--accent:#6c63ff;--accent2:#43e97b;--gold:#ffd166;--text:#e0e2f0;--text2:#9a9dc4;--text3:#5d6190;--border:#262a45;--red:#ff6584;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:Georgia,'Times New Roman',serif;line-height:1.8;font-size:17px;}
+.book{max-width:820px;margin:0 auto;padding:20px 28px 80px;}
+
+/* TOC */
+.toc{page-break-after:always;padding:40px 0;}
+.toc h1{font-size:2.2rem;color:var(--accent);margin-bottom:6px;font-family:'Segoe UI',sans-serif;}
+.toc .sub{color:var(--gold);font-size:1rem;margin-bottom:30px;font-style:italic;}
+.toc-part{color:var(--accent2);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.12em;margin:22px 0 6px;font-family:'Segoe UI',sans-serif;font-weight:700;}
+.toc a{color:var(--text2);text-decoration:none;display:block;padding:3px 0 3px 18px;font-size:0.92rem;border-left:2px solid var(--border);transition:all 0.15s;}
+.toc a:hover{color:var(--accent);border-left-color:var(--accent);}
+.toc a .pg{float:right;color:var(--text3);font-size:0.8rem;}
+
+/* Chapters */
+.part-title{color:var(--accent2);font-size:0.78rem;text-transform:uppercase;letter-spacing:0.15em;margin:60px 0 4px;font-family:'Segoe UI',sans-serif;font-weight:700;}
+h2{font-size:1.65rem;color:var(--accent);margin-bottom:4px;font-family:'Segoe UI',sans-serif;border-bottom:1px solid var(--border);padding-bottom:10px;}
+h3{font-size:1.15rem;color:var(--gold);margin:28px 0 8px;font-family:'Segoe UI',sans-serif;}
+h4{font-size:0.95rem;color:var(--accent2);margin:20px 0 6px;font-family:'Segoe UI',sans-serif;}
+p{margin-bottom:14px;text-align:justify;}
+ul,ol{margin:0 0 14px 22px;}
+li{margin-bottom:5px;}
+
+/* Special blocks */
+.lw-box{background:rgba(67,233,123,0.06);border-left:4px solid var(--accent2);padding:14px 18px;border-radius:0 8px 8px 0;margin:18px 0;font-size:0.92rem;}
+.lw-box h4{color:var(--accent2);margin:0 0 6px;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;}
+.key-eq{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:16px 0;text-align:center;font-family:'Courier New',monospace;font-size:1.05rem;color:var(--gold);}
+.def{background:var(--surface);border-left:3px solid var(--accent);padding:10px 16px;margin:14px 0;border-radius:0 6px 6px 0;font-size:0.9rem;}
+.caption{font-size:0.8rem;color:var(--text3);text-align:center;margin:-6px 0 18px;font-style:italic;}
+
+/* Figures */
+.fig{margin:22px 0;text-align:center;}
+.fig img{max-width:100%;border-radius:6px;border:1px solid var(--border);}
+.fig-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:18px 0;}
+.fig-row img{max-width:48%;border-radius:6px;border:1px solid var(--border);}
+
+/* Page breaks for print */
+.page-break{page-break-before:always;margin-top:50px;}
+.epigraph{color:var(--text2);font-style:italic;border-left:2px solid var(--gold);padding:8px 16px;margin:20px 0 30px;font-size:0.95rem;}
+
+/* Responsive */
+@media(max-width:600px){.book{padding:12px 14px;font-size:15px;} h2{font-size:1.3rem;} .fig-row img{max-width:100%;}}
+</style>
+</head>
+<body>
+<div class="book">
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--                    TITLE PAGE                       -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div style="text-align:center;padding:80px 0 60px;">
+<h1 style="font-size:2.6rem;color:var(--accent);border:none;font-family:'Segoe UI',sans-serif;line-height:1.2;">Machine Learning<br>for Living Architecture</h1>
+<p style="color:var(--gold);font-size:1.15rem;margin:10px 0 4px;text-align:center;">A Unified Field Guide</p>
+<p style="color:var(--text2);font-size:0.92rem;text-align:center;">Synthesizing Kellis, Mitchell, ISLR, BERT, and the Genomic Language Model Papers<br>into One Book for the Living Works by the Word Project</p>
+<p style="color:var(--text3);font-size:0.82rem;margin-top:30px;text-align:center;">Sage Clokey · Spring 2026<br>BME 234 — ML & AI in Genomics · UC Santa Cruz</p>
+</div>
+
+<div class="epigraph">
+"Every model in this course is a tool for reading life's source code. The Living Works system uses them to write the next chapter."
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--               TABLE OF CONTENTS                     -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="toc page-break">
+<h1>Contents</h1>
+<p class="sub">How every algorithm in computational biology applies to growing living architecture</p>
+
+<div class="toc-part">Prologue</div>
+<a href="#prologue">Why Machines Must Learn to Read Life</a>
+
+<div class="toc-part">Part I — The Grammar of Sequence</div>
+<a href="#ch1">Chapter 1: Molecular Biology — The Source Code</a>
+<a href="#ch2">Chapter 2: Sequence Alignment — Comparing the Dialects</a>
+<a href="#ch3">Chapter 3: Markov Chains — The Simplest Grammar</a>
+<a href="#ch4">Chapter 4: Hidden Markov Models — Decoding the Hidden</a>
+<a href="#ch5">Chapter 5: HMM Parameter Estimation & Gene Finding</a>
+
+<div class="toc-part">Part II — The Statistical Lens</div>
+<a href="#ch6">Chapter 6: What Is Statistical Learning?</a>
+<a href="#ch7">Chapter 7: Linear & Logistic Regression</a>
+<a href="#ch8">Chapter 8: GWAS — Scanning the Genome for Signal</a>
+<a href="#ch9">Chapter 9: Multiple Testing & Linkage Disequilibrium</a>
+
+<div class="toc-part">Part III — Classical Machine Learning</div>
+<a href="#ch10">Chapter 10: Decision Trees — Recursive Splitting</a>
+<a href="#ch11">Chapter 11: Ensemble Methods — Random Forests & Boosting</a>
+<a href="#ch12">Chapter 12: Support Vector Machines</a>
+<a href="#ch13">Chapter 13: Bayesian Learning & Probabilistic Reasoning</a>
+
+<div class="toc-part">Part IV — Deep Learning</div>
+<a href="#ch14">Chapter 14: Neural Network Foundations</a>
+<a href="#ch15">Chapter 15: Convolutional Neural Networks for DNA</a>
+<a href="#ch16">Chapter 16: Sequence-to-Function Models</a>
+
+<div class="toc-part">Part V — The Language of Life</div>
+<a href="#ch17">Chapter 17: The Transformer Revolution</a>
+<a href="#ch18">Chapter 18: Genomic Language Models</a>
+<a href="#ch19">Chapter 19: Protein Language Models</a>
+<a href="#ch20">Chapter 20: AlphaFold & Structure Prediction</a>
+
+<div class="toc-part">Part VI — Regulatory Intelligence</div>
+<a href="#ch21">Chapter 21: Regulatory Motifs & Gene Regulation</a>
+<a href="#ch22">Chapter 22: Epigenomics & Chromatin States</a>
+<a href="#ch23">Chapter 23: Biological Networks</a>
+
+<div class="toc-part">Part VII — The Living Architecture</div>
+<a href="#ch24">Chapter 24: The Full Stack — From Sequence to Structure</a>
+<a href="#ch25">Chapter 25: The Seven Phases of Growing a House</a>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--                    PROLOGUE                         -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="prologue">
+<div class="part-title">Prologue</div>
+<h2>Why Machines Must Learn to Read Life</h2>
+
+<p>There are two kinds of architecture on this planet. The first is built by humans: steel frames, poured concrete, glass curtain walls. It is impressive, energy-intensive, and dead the moment it is finished. It does not heal when cracked. It does not grow when loaded. It does not breathe.</p>
+
+<p>The second kind of architecture is grown by cells. A tree trunk is a vertical column of cellulose microfibrils wound in helical patterns, reinforced by lignin cross-links, and continuously repaired by living cambium. A coral reef is a calcium carbonate superstructure secreted by billions of polyps, each responding to local flow, light, and mechanical stress. A mycelium network can span hectares underground, redistributing nutrients across an entire forest. These structures were not designed by an engineer. They were grown by organisms following programs written in DNA.</p>
+
+<p>The Living Works by the Word project asks a simple question: <em>can we learn to write those programs?</em></p>
+
+<p>Not from scratch. Evolution has been writing genomic programs for 4 billion years. The source code is already there — in Ganoderma's chitin cross-linking enzymes, in coral's biomineralization genes, in Arabidopsis's meristem feedback loops, in axolotl's regeneration pathways. The task is not to invent new biology. The task is to become fluent enough in life's existing language to compose new sentences that grow new structures.</p>
+
+<p>This requires machine learning.</p>
+
+<p>Not because ML is fashionable, but because the genome is a 3-billion-letter document written in a language we barely understand. We can read individual words (genes), but we cannot yet read the grammar (regulation), the rhetoric (developmental programs), or the poetry (emergent morphogenesis). Every algorithm in this book — from hidden Markov models to transformers — is a tool for reading a different layer of that language.</p>
+
+<h3>The Structure of This Book</h3>
+
+<p>This book synthesizes seven sources into a single narrative:</p>
+
+<ul>
+<li><strong>Kellis — Computational Biology</strong> (MIT 6.047): The biology and the sequence models. Markov chains, HMMs, gene finding, regulatory motifs, epigenomics, networks.</li>
+<li><strong>Mitchell — Machine Learning</strong>: The foundational theory. Decision trees, neural networks, Bayesian learning, inductive bias, concept learning.</li>
+<li><strong>ISLR — Introduction to Statistical Learning</strong>: The practitioner's toolkit. Regression, classification, SVMs, random forests, deep learning with code.</li>
+<li><strong>Devlin et al. — BERT</strong>: The transformer revolution. Masked language modeling, bidirectional context, pretraining and fine-tuning.</li>
+<li><strong>"To Transformers and Beyond" — Genomic LLMs</strong>: DNA as language. DNABERT, Nucleotide Transformer, HyenaDNA, Enformer.</li>
+<li><strong>Ofer et al. — Protein Language Models</strong>: NLP for amino acid sequences. Tokenization, embeddings, protein BERT.</li>
+<li><strong>"Genomic Language Models" review (2024)</strong>: The state of the field. Architecture comparison, tokenization strategies, downstream tasks.</li>
+</ul>
+
+<p>Every chapter teaches the concept as it appears in the source texts, then shows exactly how it applies to the Living Works adaptive genome design system. The application sections are marked with green boxes.</p>
+
+<div class="lw-box">
+<h4>Living Works Application</h4>
+Throughout this book, these green boxes connect each concept to a specific layer of the adaptive_Automation system: retrieval (UCSC/NCBI), compatibility (codon/regulatory/pathway), assembly, or the Phase 1-7 roadmap. The goal is to show that every algorithm in computational biology is a tool the system either already uses or will use.
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--        PART I: THE GRAMMAR OF SEQUENCE              -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch1">
+<div class="part-title">Part I — The Grammar of Sequence</div>
+<h2>Chapter 1: Molecular Biology — The Source Code</h2>
+
+<p class="epigraph">"Biology is the most powerful technology ever created. DNA is software, protein is hardware, and the cell is the operating system." — Adapted from the Kellis lecture notes</p>
+
+<h3>1.1 The Central Dogma</h3>
+
+<p>All of life runs on a three-step information pipeline that molecular biologists call the <em>central dogma</em>:</p>
+
+<div class="key-eq">DNA → mRNA → Protein</div>
+
+<p><strong>DNA</strong> is the storage medium — a double-stranded polymer of four nucleotides (adenine A, cytosine C, guanine G, thymine T) arranged in complementary base pairs (A-T, C-G). The human genome contains approximately 3.2 billion of these base pairs, organized into 23 chromosome pairs. But DNA is not unique to humans. Every organism on Earth — from the Ganoderma fungi that could form the walls of a living house to the coral polyps that could harden its foundation — uses the same four-letter alphabet.</p>
+
+<p><strong>Transcription</strong> copies a DNA segment into messenger RNA (mRNA) by the enzyme RNA polymerase. The mRNA is a single-stranded working copy — like printing a page from the master blueprint. In eukaryotes (organisms with nuclei, including fungi and plants), the initial transcript contains both coding regions (<em>exons</em>) and non-coding regions (<em>introns</em>). The introns are removed by <em>splicing</em>, and the remaining exons are joined to form the mature mRNA.</p>
+
+<p><strong>Translation</strong> converts the mRNA into protein at the ribosome. The mRNA is read in triplets called <em>codons</em>, each specifying one of 20 amino acids (or a stop signal). The resulting amino acid chain folds into a three-dimensional protein that performs actual biological work — catalyzing reactions, forming structures, transmitting signals.</p>
+
+<h4>The Redundancy That Makes Codon Optimization Possible</h4>
+
+<p>There are 4³ = 64 possible codons but only 20 amino acids plus stop signals. This means the genetic code is <em>redundant</em> — multiple codons encode the same amino acid. For example, leucine is encoded by six different codons: UUA, UUG, CUU, CUC, CUA, CUG. This redundancy is not arbitrary. Different organisms <em>prefer</em> different synonymous codons — a phenomenon called <em>codon usage bias</em>. E. coli strongly prefers certain codons; yeast prefers different ones; Ganoderma has its own dialect.</p>
+
+<div class="lw-box">
+<h4>Living Works Application — Codon Dialect</h4>
+<p>The <code>compatibility/codon.py</code> module in adaptive_Automation exploits exactly this redundancy. It stores RSCU (Relative Synonymous Codon Usage) tables for five chassis organisms: Komagataeibacter xylinus (bacterial cellulose), yeast, Ganoderma (fungi), Arabidopsis (plant), and sea urchin. When the system retrieves a gene from one organism and inserts it into another, it rewrites the synonymous codons to match the target's dialect — <em>without changing the protein</em>. This is translation in the linguistic sense: same meaning, different words.</p>
+<p>The CAI (Codon Adaptation Index) measures how well a sequence speaks the target's dialect, from 0.0 (maximally foreign) to 1.0 (perfectly adapted). Phase 1 will automate this: ESM-3 generates the protein sequence, then back-translation rewrites it into the target organism's preferred DNA codons.</p>
+</div>
+
+<h3>1.2 Gene Structure in Eukaryotes</h3>
+
+<div class="fig">
+<img src="book-images/kellis_p144_0.png" alt="Gene structure: intergenic, CpG island, promoter, first exon, intron, other exon, intron">
+<p class="caption">Figure 1.1 — Eukaryotic gene structure (Kellis). A gene consists of exons (coding) separated by introns (non-coding), preceded by a promoter and often a CpG island. The system must identify all of these elements when retrieving genes from source organisms.</p>
+</div>
+
+<p>A typical eukaryotic gene contains several elements the Living Works system must recognize and handle:</p>
+
+<ul>
+<li><strong>Promoter:</strong> The DNA region upstream of a gene where RNA polymerase binds to initiate transcription. Contains sequence motifs like the TATA box (~30bp upstream) and the initiator element. Promoter strength determines <em>how much</em> mRNA is produced — critical for controlling expression levels in a designed organism.</li>
+<li><strong>5' UTR (Untranslated Region):</strong> The mRNA region between the transcription start site and the start codon (AUG). Affects translation efficiency and mRNA stability. Contains the Kozak sequence in eukaryotes and the Shine-Dalgarno/RBS in prokaryotes.</li>
+<li><strong>Exons:</strong> Coding regions that remain in the mature mRNA after splicing. Defined by splice site consensus sequences at their boundaries (GT at the 5' splice site, AG at the 3' splice site).</li>
+<li><strong>Introns:</strong> Non-coding regions removed by the spliceosome. Can contain regulatory elements. First introns are often regulatory and affect expression levels.</li>
+<li><strong>3' UTR:</strong> Region after the stop codon. Contains polyadenylation signal (AATAAA) and regulatory elements affecting mRNA stability and localization.</li>
+<li><strong>CpG Islands:</strong> Regions with high CpG dinucleotide frequency, often near gene promoters. CpG methylation silences gene expression — a key epigenetic mechanism.</li>
+</ul>
+
+<div class="lw-box">
+<h4>Living Works Application — Cross-Kingdom Gene Assembly</h4>
+<p>When the system takes a cross-linking enzyme gene from Ganoderma (a fungus) and inserts it into a bacterial cellulose chassis (Komagataeibacter), it must handle the fact that:</p>
+<ul>
+<li>Fungi have introns; bacteria do not. The gene must be provided as cDNA (introns already spliced out).</li>
+<li>Fungi use eukaryotic promoters (TATA box + TFIID); bacteria use sigma factor promoters. The <code>compatibility/regulatory.py</code> module flags this cross-kingdom incompatibility.</li>
+<li>The 5' UTR needs a bacterial RBS (ribosome binding site) instead of a Kozak sequence.</li>
+<li>CpG islands in the fungal sequence might be methylated and silenced in the bacterial host — or vice versa.</li>
+</ul>
+<p>Every structural element described in this section is a potential failure point that the compatibility engine must detect and the assembly engine must resolve.</p>
+</div>
+
+<h3>1.3 Types of Genetic Variation</h3>
+
+<p>No two individuals of a species have identical genomes. The differences between them — <em>genetic variants</em> — are the raw material of evolution and the signal that GWAS (Chapter 8) uses to find disease-associated loci. For the Living Works system, understanding variant types matters because every designed sequence creates <em>artificial variants</em> relative to the wild-type source.</p>
+
+<p>The major types of variation (from the Kellis lectures and VCF format specification):</p>
+
+<ul>
+<li><strong>SNV/SNP (Single Nucleotide Variant/Polymorphism):</strong> A single base change. The most common type — a typical human genome has ~3 million SNVs relative to the reference. When the codon optimizer changes one synonymous codon to another, it creates a designed SNV.</li>
+<li><strong>Indel (Insertion/Deletion):</strong> Small additions or removals of bases, typically &lt;100bp. If the indel is in a coding region and not a multiple of 3, it causes a <em>frameshift</em> — shifting the reading frame and altering all downstream amino acids. The assembly engine must never introduce accidental frameshifts.</li>
+<li><strong>Missense variant:</strong> An SNV that changes one amino acid to another. May be benign or pathogenic depending on the amino acid's role in protein function.</li>
+<li><strong>Nonsense variant:</strong> An SNV that creates a premature stop codon, truncating the protein. Almost always damaging.</li>
+<li><strong>Synonymous variant:</strong> An SNV that does not change the amino acid (due to codon redundancy). Usually neutral, but can affect mRNA folding, splicing, or translation speed.</li>
+<li><strong>Structural variants:</strong> Large rearrangements (&gt;100bp) including deletions, duplications, inversions, and translocations.</li>
+</ul>
+
+<h3>1.4 Epigenomics — The Annotation Layer</h3>
+
+<p>The genome is not just a sequence of letters. It is a <em>decorated</em> sequence — chemically modified in ways that affect which genes are active in which cells. These modifications are collectively called the <em>epigenome</em>:</p>
+
+<ul>
+<li><strong>DNA methylation:</strong> A methyl group added to cytosine at CpG dinucleotides. Methylated promoters are typically silenced. Methylation patterns are heritable through cell division — the same gene can be active in one cell type and silent in another.</li>
+<li><strong>Histone modifications:</strong> Histones are the protein spools around which DNA is wound. Chemical marks on histone tails (acetylation, methylation, phosphorylation) affect chromatin state — whether a region is open (accessible for transcription) or closed (compacted and silent).</li>
+<li><strong>Chromatin accessibility:</strong> Measured by ATAC-seq or DNase-seq. Open chromatin = genes can be transcribed. Closed chromatin = genes are silenced.</li>
+</ul>
+
+<div class="lw-box">
+<h4>Living Works Application — Why Epigenomics Matters for Design</h4>
+<p>You can design the perfect gene with the perfect promoter and the perfect codon optimization — and it can still be silent if it lands in closed chromatin. Phase 2 of the roadmap uses Enformer (Chapter 16) to predict chromatin state at the insertion site and expression levels from the designed regulatory sequence. ChromHMM (Chapter 22) provides the training data for these predictions by learning chromatin states from histone modification data.</p>
+</div>
+
+<h3>1.5 Genomic Data Formats</h3>
+
+<p>The data that feeds the Living Works retrieval layer comes in standard bioinformatics formats:</p>
+
+<ul>
+<li><strong>FASTA:</strong> Plain text format for nucleotide or protein sequences. Header line starting with &gt; followed by sequence data. The UCSC and NCBI APIs return sequences in FASTA format, which the <code>GenomicPart</code> data model normalizes.</li>
+<li><strong>VCF (Variant Call Format):</strong> Tabular format storing genetic variants: chromosome, position, reference allele, alternate allele(s), quality score, filter status, INFO field with annotations (allele frequency, functional impact), and per-sample genotypes. Understanding VCF is essential for variant effect prediction (Chapter 8).</li>
+<li><strong>BED:</strong> Genomic intervals (chromosome, start, end, name). Used for gene annotations, regulatory element coordinates, and ChIP-seq peaks.</li>
+<li><strong>GFF/GTF:</strong> Gene annotation format with features (gene, mRNA, exon, CDS) and their coordinates. The UCSC API provides gene structures in this format.</li>
+</ul>
+
+<p>The <code>retrieval/ucsc_client.py</code> module queries 220+ genomes through the UCSC Genome Browser API, and <code>retrieval/ncbi_client.py</code> handles organisms not in UCSC (mycelium species, coral, spider silk, bacterial cellulose producers). Both normalize results into the unified <code>GenomicPart</code> dataclass.</p>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--           CHAPTER 2: SEQUENCE ALIGNMENT             -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch2">
+<h2>Chapter 2: Sequence Alignment — Comparing the Dialects</h2>
+
+<p class="epigraph">"The most important insight in all of bioinformatics: if two sequences are similar, they probably share a common ancestor — and therefore similar function." — Kellis Ch2</p>
+
+<h3>2.1 Why Alignment Matters</h3>
+
+<p>Before we can retrieve genomic parts from different organisms and combine them, we need to know which parts are <em>equivalent</em>. If we want a cross-linking enzyme from Ganoderma, how do we find the corresponding gene in Pleurotus (another fungus)? If we want to check whether a coral biomineralization gene has been preserved across coral species, how do we measure their similarity?</p>
+
+<p>The answer is <em>sequence alignment</em> — the foundational algorithm of bioinformatics. Given two sequences (DNA or protein), alignment finds the best correspondence between their positions, accounting for mutations (substitutions), insertions, and deletions (indels).</p>
+
+<h3>2.2 Scoring Alignments</h3>
+
+<p>An alignment is scored by summing match rewards, mismatch penalties, and gap penalties across all positions. The key parameters:</p>
+
+<ul>
+<li><strong>Substitution matrix:</strong> For DNA, simple match/mismatch scores (+1/-1). For proteins, PAM or BLOSUM matrices that capture evolutionary substitution rates — some amino acid changes are more likely than others (e.g., leucine → isoleucine is conservative; leucine → proline is radical).</li>
+<li><strong>Gap penalty:</strong> Cost of introducing an insertion or deletion. Linear gap penalty: each gap costs d. Affine gap penalty: opening a gap costs d, extending it costs e &lt; d. Affine penalties are more biologically realistic because a single indel event can affect multiple positions.</li>
+</ul>
+
+<h3>2.3 Dynamic Programming Algorithms</h3>
+
+<p>Finding the optimal alignment is solved by dynamic programming — the same paradigm that drives HMM decoding (Chapter 4). The three classic algorithms:</p>
+
+<h4>Needleman-Wunsch (Global Alignment)</h4>
+<p>Aligns two sequences end-to-end. Fills an (n+1) × (m+1) matrix where entry F(i,j) = best score aligning x[1..i] with y[1..j]. Recurrence:</p>
+
+<div class="key-eq">
+F(i,j) = max { F(i-1,j-1) + s(xᵢ,yⱼ), F(i-1,j) - d, F(i,j-1) - d }
+</div>
+
+<p>Time and space: O(nm). Traceback from F(n,m) gives the optimal alignment.</p>
+
+<h4>Smith-Waterman (Local Alignment)</h4>
+<p>Finds the highest-scoring local region between two sequences. Same recurrence but adds a fourth option: 0 (start fresh). Traceback from the maximum entry anywhere in the matrix.</p>
+
+<h4>BLAST (Heuristic Search)</h4>
+<p>Exact dynamic programming is O(nm) per pair — too slow for searching entire databases. BLAST (Basic Local Alignment Search Tool) uses a heuristic: find short exact matches (seeds), extend them, and only compute full alignments for promising hits. This is how the NCBI retrieval module searches for homologs of target genes.</p>
+
+<div class="lw-box">
+<h4>Living Works Application — Homolog Retrieval</h4>
+<p>The <code>retrieval/species_search.py</code> module maps functions to organisms (e.g., "structural strength" → Ganoderma lucidum). But to find the <em>specific gene</em> encoding a cross-linking enzyme, the system needs sequence alignment:</p>
+<ul>
+<li>Start with a known cross-linking enzyme from a characterized species</li>
+<li>BLAST against the Ganoderma genome to find the homolog</li>
+<li>Score similarity to assess whether the homolog has the same function</li>
+<li>Extract the gene + regulatory context for the assembly pipeline</li>
+</ul>
+<p>Alignment also determines <strong>protein domain conservation</strong>: if two proteins share >30% sequence identity across their catalytic domains, they likely share the same enzymatic function. Below 20%, the relationship is uncertain ("twilight zone"). This threshold guides the compatibility engine's confidence scoring.</p>
+</div>
+
+<h3>2.4 Multiple Sequence Alignment (MSA)</h3>
+
+<p>Aligning more than two sequences simultaneously reveals evolutionary conservation patterns. Positions that are invariant across many species are functionally critical — mutating them will likely break the protein. Positions that vary freely are tolerant to change — safe targets for codon optimization or functional modification.</p>
+
+<p>MSA is also a critical input to AlphaFold (Chapter 20). The Evoformer processes MSA rows to capture co-evolutionary signals: if position i and position j always change together across species, they are likely in physical contact in the 3D structure. This is how AlphaFold predicts structure from sequence.</p>
+
+<div class="fig">
+<img src="book-images/kellis_p72_2.png" alt="Comparative genomics conservation">
+<p class="caption">Figure 2.1 — Sequence conservation across species (Kellis). Conserved regions (high bars) indicate functional constraint — these positions cannot tolerate mutation. The Living Works system must identify and protect these positions during codon optimization.</p>
+</div>
+
+<h3>2.5 Probabilistic Foundations</h3>
+
+<p>Alignment scores can be interpreted probabilistically. A match score s(a,b) corresponds to a log-odds ratio:</p>
+
+<div class="key-eq">
+s(a,b) = log [ P(a,b | related) / P(a)P(b) ]
+</div>
+
+<p>This is the same log-odds framework used in Markov chain classification (Chapter 3) and GWAS (Chapter 8). Positive scores mean the pair (a,b) is more likely under the hypothesis of shared ancestry than under random chance. The total alignment score is the sum of log-odds ratios — a likelihood ratio test for evolutionary relatedness.</p>
+
+<p>Kellis (Ch3) notes that this probabilistic view connects alignment directly to HMMs: an alignment can be modeled as a pair-HMM with match, insert-x, and insert-y states. The Viterbi algorithm on this pair-HMM gives the optimal alignment, and the Forward algorithm gives the total probability of all alignments. The algorithms are mathematically identical — only the state space differs.</p>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--       CHAPTER 3: MARKOV CHAINS                      -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch3">
+<h2>Chapter 3: Markov Chains — The Simplest Grammar</h2>
+
+<p class="epigraph">"A Markov chain is a stochastic process that remembers only where it is, not where it has been." — Kellis Ch7</p>
+
+<h3>3.1 The Markov Assumption</h3>
+
+<p>A <em>Markov chain</em> is a sequence of random variables x₁, x₂, ..., x_L where the probability of each variable depends only on the immediately preceding one:</p>
+
+<div class="key-eq">
+P(xᵢ | x₁, x₂, ..., xᵢ₋₁) = P(xᵢ | xᵢ₋₁)
+</div>
+
+<p>This is the <em>Markov assumption</em> — the future depends only on the present, not the past. The key parameters are the <em>transition probabilities</em>:</p>
+
+<div class="key-eq">
+aₖₗ = P(xᵢ = l | xᵢ₋₁ = k)
+</div>
+
+<p>These form a <em>transition matrix</em> A where each row sums to 1 (from each state, you must go somewhere). The probability of an entire sequence is:</p>
+
+<div class="key-eq">
+P(X) = P(x₁) · ∏ᵢ₌₂ᴸ P(xᵢ | xᵢ₋₁)
+</div>
+
+<p>This is the simplest possible model of sequence structure. It says: the probability of seeing nucleotide G at position 100 depends only on what nucleotide is at position 99 — not on the entire preceding sequence.</p>
+
+<h3>3.2 CpG Islands — A Motivating Example</h3>
+
+<p>The classic application of Markov chains in genomics is CpG island detection. CpG dinucleotides (cytosine followed by guanine) are underrepresented in most of the genome because methylated cytosines spontaneously deaminate to thymine. But in <em>CpG islands</em> — regions near gene promoters — CpGs are maintained at expected frequency because these regions are typically unmethylated.</p>
+
+<p>Two Markov models capture this difference:</p>
+<ul>
+<li><strong>Model+</strong> (CpG island): transition matrix with relatively high probability for C→G transitions</li>
+<li><strong>Model−</strong> (non-CpG island): transition matrix with suppressed C→G transitions</li>
+</ul>
+
+<div class="fig">
+<img src="book-images/kellis_p158_0.png" alt="CpG island HMM states">
+<p class="caption">Figure 3.1 — CpG island detection model (Kellis). Two sets of states (+ and −) with different transition probabilities for CpG dinucleotides. This is the simplest HMM for genomic annotation — and a direct precursor to gene-finding HMMs.</p>
+</div>
+
+<p>To classify a sequence as CpG island or not, compute the <em>log odds ratio</em>:</p>
+
+<div class="key-eq">
+S(X) = log P(X | Model+) / P(X | Model−) = Σᵢ log [a⁺(xᵢ₋₁,xᵢ) / a⁻(xᵢ₋₁,xᵢ)]
+</div>
+
+<p>If S(X) > 0, the sequence is more likely a CpG island. This is the same log-odds ratio used in HW1 Problem 2 for promoter classification and in the compatibility/codon.py module for codon dialect scoring.</p>
+
+<h3>3.3 k-mer Markov Models</h3>
+
+<p>A first-order Markov chain conditions each base on only the previous base. A <em>k-th order</em> Markov chain conditions on the previous k bases — the state is a k-mer (substring of length k). The number of states grows as 4ᵏ.</p>
+
+<p>From HW1 Problem 2, we built k-mer Markov models to classify DNA sequences as promoter or non-promoter:</p>
+
+<ul>
+<li><strong>k=1:</strong> 4 states (A,C,G,T). Captures only single-nucleotide frequencies. Validation accuracy: 88.3%.</li>
+<li><strong>k=2:</strong> 16 states (AA,AC,...,TT). Captures dinucleotide dependencies. Validation accuracy: 98.6%. <em>Massive jump.</em></li>
+<li><strong>k=3-5:</strong> 64-1024 states. Marginal gains: 98.7% → 98.8%.</li>
+</ul>
+
+<p>The sharp jump from k=1 to k=2 reveals a fundamental biological truth: <em>most discriminative signal in DNA lies in dinucleotide dependencies</em>. The relationship between adjacent bases — the CpG frequency, the AA content, the dinucleotide step geometry — carries more information than single-base composition alone.</p>
+
+<h4>Why Very Large k Fails</h4>
+
+<p>At k=20, there are 4²⁰ ≈ 10¹² possible states. With only a few thousand training sequences, most k-mers will never be observed. The transition probabilities become unreliable (estimated from one or zero counts), and the model memorizes the training data without learning generalizable patterns. This is the <em>bias-variance tradeoff</em> (Chapter 6) in its simplest form: more complex models fit training data better but generalize worse.</p>
+
+<div class="lw-box">
+<h4>Living Works Application — Codon Usage as a Markov Model</h4>
+<p>The RSCU tables in <code>compatibility/codon.py</code> are exactly the parameters of a biological Markov model. Each organism's preferred codons define a probability distribution over synonymous triplets — a transition matrix from amino acid to DNA triplet. The CAI score is a log-odds ratio comparing how well a sequence fits the target organism's model versus a uniform model.</p>
+<p>Extending to k=2 (hexamers spanning codon boundaries) would capture <em>codon pair bias</em> — the tendency of certain adjacent codons to appear together. Research shows that codon pair deoptimization can attenuate viruses while maintaining the same protein. The Living Works system could exploit codon pair bias to fine-tune expression levels: strong codon pairs for high expression, weak pairs for low expression.</p>
+</div>
+
+<h3>3.4 Training a Markov Model</h3>
+
+<p>Estimating transition probabilities is straightforward — count transitions and normalize (maximum likelihood estimation):</p>
+
+<div class="key-eq">
+âₖₗ = Count(k→l) / Σₗ' Count(k→l')
+</div>
+
+<p>But what if some transitions are never observed in the training data? The MLE gives zero probability, which means any sequence containing that transition gets probability zero — clearly wrong. The solution is <em>pseudocounts</em> (Laplace smoothing): add a small count (e.g., 1) to every cell before normalizing:</p>
+
+<div class="key-eq">
+âₖₗ = [Count(k→l) + α] / [Σₗ' Count(k→l') + α·|states|]
+</div>
+
+<p>Pseudocounts reflect a weak prior belief that all transitions are possible. This is a Bayesian concept (Chapter 13) applied in the simplest possible way.</p>
+
+<h3>3.5 The Markov Chain Defines a Valid Probability Distribution</h3>
+
+<p>An important theoretical result (HW1 Problem 1e): the sum over all possible sequences of length L equals 1. The proof works by evaluating sums from inside out:</p>
+
+<ol>
+<li>The innermost sum Σ_{x_L} P(x_L | x_{L-1}) = 1 (conditional distribution sums to 1)</li>
+<li>This eliminates x_L, leaving a sum over sequences of length L-1</li>
+<li>Repeat: each inner sum evaluates to 1</li>
+<li>Left with Σ_{x₁} P(x₁) = 1</li>
+</ol>
+
+<p>This telescoping proof depends on the <em>conditional distributions summing to 1 at each step</em> — a property guaranteed by the transition matrix normalization. The same proof structure appears in the Forward algorithm for HMMs (Chapter 4), where it ensures that the total probability P(X) computed by summing over all possible hidden state sequences is correct.</p>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 4: HIDDEN MARKOV MODELS I               -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch4">
+<h2>Chapter 4: Hidden Markov Models — Decoding the Hidden</h2>
+
+<p class="epigraph">"An HMM is a Markov chain you can't see, producing observations you can." — Kellis Ch7</p>
+
+<h3>4.1 From Markov Chains to HMMs</h3>
+
+<p>A Markov chain models sequences where we directly observe the states. But in many biological problems, the states are <em>hidden</em> — we observe only their effects. We see the DNA sequence (observations), but we don't see whether each position is exon, intron, or intergenic (hidden states). We see the histone modification pattern, but we don't see the chromatin state (promoter, enhancer, repressed).</p>
+
+<p>A Hidden Markov Model adds an observation layer on top of a Markov chain:</p>
+
+<ul>
+<li><strong>Hidden states</strong> π₁, π₂, ..., π_L follow a Markov chain with transition probabilities aₖₗ = P(πᵢ₊₁ = l | πᵢ = k)</li>
+<li><strong>Observations</strong> x₁, x₂, ..., x_L are emitted from hidden states with emission probabilities eₖ(b) = P(xᵢ = b | πᵢ = k)</li>
+<li>Each observation depends only on the current hidden state (conditional independence)</li>
+</ul>
+
+<p>The joint probability of a sequence of observations X and a path of hidden states π is:</p>
+
+<div class="key-eq">
+P(X, π) = a(Begin, π₁) · e_{π₁}(x₁) · ∏ᵢ₌₂ᴸ a(πᵢ₋₁, πᵢ) · e_{πᵢ}(xᵢ)
+</div>
+
+<h4>Parameters of an HMM</h4>
+
+<p>An HMM with m hidden states and k possible observations requires:</p>
+
+<div class="key-eq">
+m + m² + mk parameters
+</div>
+
+<ul>
+<li><strong>m</strong> initial state probabilities (which state do we start in?)</li>
+<li><strong>m²</strong> transition probabilities (m states × m possible next states)</li>
+<li><strong>mk</strong> emission probabilities (m states × k possible observations)</li>
+</ul>
+
+<div class="fig">
+<img src="book-images/kellis_p152_0.jpeg" alt="Table of HMM applications">
+<p class="caption">Figure 4.1 — HMM applications in computational biology (Kellis). Each application has different states, observations, and topology. From detecting GC-rich regions (2 states) to finding gene structures (~20 states) to learning chromatin states (40 states). Every one of these applications has a direct analog in the Living Works system.</p>
+</div>
+
+<h3>4.2 The Three Fundamental Problems</h3>
+
+<p>Given an HMM, there are three fundamental computational problems (Kellis Ch7):</p>
+
+<ol>
+<li><strong>Evaluation:</strong> Given model M and observations X, what is P(X | M)? → Forward algorithm</li>
+<li><strong>Decoding:</strong> Given model M and observations X, what is the most likely sequence of hidden states? → Viterbi algorithm</li>
+<li><strong>Learning:</strong> Given observations X, what are the best model parameters? → Baum-Welch algorithm</li>
+</ol>
+
+<h3>4.3 The Viterbi Algorithm — Finding the Best Path</h3>
+
+<p>The Viterbi algorithm finds the single most probable sequence of hidden states given the observed sequence. It uses dynamic programming, filling a matrix where vₖ(i) = probability of the most probable path ending in state k at position i:</p>
+
+<div class="key-eq">
+vₖ(i) = eₖ(xᵢ) · max_l [ v_l(i-1) · a_{lk} ]
+</div>
+
+<p>The key operation is <strong>max</strong> — at each position, we pick the single best predecessor state. By storing backpointers, we can trace back from the final state to recover the full optimal path.</p>
+
+<div class="fig">
+<img src="book-images/kellis_p155_0.png" alt="Viterbi trellis diagram">
+<p class="caption">Figure 4.2 — Viterbi algorithm trellis (Kellis). Each column represents a position in the sequence, each row a hidden state. The highlighted cell V_k(i) takes the MAX over all incoming arrows from the previous column — selecting the single best predecessor.</p>
+</div>
+
+<p>Complexity: O(m² · L) time and O(m · L) space, where m = number of states and L = sequence length.</p>
+
+<h3>4.4 The Forward Algorithm — Total Probability</h3>
+
+<p>The Forward algorithm computes the total probability of the observed sequence, summing over <em>all possible</em> hidden state paths. The forward variable fₖ(i) = P(x₁...xᵢ, πᵢ = k):</p>
+
+<div class="key-eq">
+fₖ(i) = eₖ(xᵢ) · Σ_l [ f_l(i-1) · a_{lk} ]
+</div>
+
+<p>The only difference from Viterbi is <strong>sum instead of max</strong>. This subtle change has profound implications: Viterbi finds the single best explanation; Forward integrates over all possible explanations.</p>
+
+<div class="fig">
+<img src="book-images/kellis_p156_0.png" alt="Forward algorithm trellis">
+<p class="caption">Figure 4.3 — Forward algorithm trellis (Kellis). Same structure as Viterbi, but f_k(i) takes the SUM over all incoming arrows — integrating over all possible paths, not just the best one.</p>
+</div>
+
+<p>The total probability of the observed sequence is:</p>
+
+<div class="key-eq">
+P(X) = Σₖ fₖ(L)
+</div>
+
+<h3>4.5 The Backward Algorithm</h3>
+
+<p>The Backward algorithm computes bₖ(i) = P(xᵢ₊₁...x_L | πᵢ = k) — the probability of future observations given the current state:</p>
+
+<div class="key-eq">
+bₖ(i) = Σ_l a_{kl} · e_l(xᵢ₊₁) · b_l(i+1)
+</div>
+
+<p>Initialization: bₖ(L) = 1 for all k (after the last position, there are no more observations to explain).</p>
+
+<h3>4.6 Posterior Decoding — The Best State at Each Position</h3>
+
+<p>Combining Forward and Backward gives the <em>posterior probability</em> of being in state k at position i:</p>
+
+<div class="key-eq">
+P(πᵢ = k | X) = fₖ(i) · bₖ(i) / P(X)
+</div>
+
+<p>Posterior decoding picks the most likely state at each position independently. This is different from Viterbi in a subtle but important way:</p>
+
+<ul>
+<li><strong>Viterbi</strong> finds the best <em>global path</em> — the states are jointly optimal</li>
+<li><strong>Posterior decoding</strong> finds the best <em>state per position</em> — each position is independently optimal</li>
+<li>The posterior-decoded sequence may not be a valid path (it might include transitions with zero probability)</li>
+</ul>
+
+<div class="lw-box">
+<h4>Living Works Application — Annotation Before Assembly</h4>
+<p>The retrieval layer pulls raw genomic sequence from UCSC/NCBI. Before the assembly engine can work with it, the sequence must be <em>annotated</em>: where are the exons? Where are the regulatory elements? What chromatin state is each region in?</p>
+<p>HMMs provide this annotation:</p>
+<ul>
+<li><strong>Viterbi decoding</strong> gives the best gene structure annotation (exon/intron boundaries) for an uncharacterized gene from Ganoderma</li>
+<li><strong>Posterior decoding</strong> gives per-position confidence — if P(exon | x) = 0.95, we're confident; if P(exon | x) = 0.55, the boundary is uncertain and the system should flag it for manual review</li>
+<li><strong>Forward probability</strong> tells us how well the sequence fits the gene model overall — a quality score for the retrieved part</li>
+</ul>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 5: HMM LEARNING & GENE FINDING          -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch5">
+<h2>Chapter 5: HMM Parameter Estimation & Gene Finding</h2>
+
+<h3>5.1 Supervised Parameter Estimation</h3>
+
+<p>If we know the true hidden states (labeled training data), estimating HMM parameters is straightforward — count and normalize, just like training a Markov chain:</p>
+
+<div class="key-eq">
+âₖₗ = Count(k→l) / Σₗ' Count(k→l')   |   êₖ(b) = Count(state k emits b) / Count(state k)
+</div>
+
+<p>Add pseudocounts to avoid zeros. This is maximum likelihood estimation with a Dirichlet prior (Chapter 13).</p>
+
+<h3>5.2 Unsupervised Learning — When Labels Are Missing</h3>
+
+<p>In practice, we often don't know the true hidden states. We have the DNA sequence but not the exon/intron labels. Two approaches:</p>
+
+<h4>Viterbi Training</h4>
+<ol>
+<li>Initialize parameters (random or informed guess)</li>
+<li>Run Viterbi to find the most likely hidden state sequence</li>
+<li>Count transitions and emissions from that sequence</li>
+<li>Update parameters</li>
+<li>Repeat until convergence</li>
+</ol>
+
+<p>Viterbi training is a "hard" EM algorithm — it commits to a single best path at each iteration. It converges quickly but can get stuck in poor local optima.</p>
+
+<h4>Baum-Welch Algorithm (EM)</h4>
+
+<p>Baum-Welch is the "soft" EM algorithm for HMMs. Instead of committing to a single path, it uses <em>expected counts</em> from forward-backward probabilities:</p>
+
+<p><strong>E-step:</strong> Compute expected number of transitions and emissions using posterior probabilities:</p>
+
+<div class="key-eq">
+E[Aₖₗ] = Σᵢ fₖ(i) · aₖₗ · eₗ(xᵢ₊₁) · bₗ(i+1) / P(X)
+</div>
+
+<div class="key-eq">
+E[Eₖ(b)] = Σ_{i|xᵢ=b} P(πᵢ = k | X)
+</div>
+
+<p><strong>M-step:</strong> Update parameters using expected counts (same formulas as supervised, but with expected counts instead of actual counts).</p>
+
+<p>Repeat E and M steps until the likelihood P(X | θ) converges. Baum-Welch is guaranteed to increase the likelihood at each step (or leave it unchanged at a fixed point), but like all EM algorithms, it finds only a local maximum — the result depends on initialization.</p>
+
+<div class="lw-box">
+<h4>Living Works Application — Learning Organism-Specific Models</h4>
+<p>The system retrieves genes from organisms whose genomes may be poorly annotated (e.g., Ganoderma, coral). Baum-Welch can learn gene structure parameters directly from unannotated sequence:</p>
+<ul>
+<li>Input: raw genomic DNA from Ganoderma</li>
+<li>Initialize: use gene structure parameters from a well-characterized fungus (e.g., Neurospora)</li>
+<li>Run Baum-Welch to adapt parameters to Ganoderma's specific exon/intron statistics</li>
+<li>Use the adapted model to annotate Ganoderma genes with higher accuracy</li>
+</ul>
+<p>This is <em>transfer learning</em> at the HMM level — the same principle that makes fine-tuning work for transformers (Chapter 17), applied to the simplest sequence model.</p>
+</div>
+
+<h3>5.3 Gene Finding with HMMs</h3>
+
+<p>The most important genomic application of HMMs is <em>gene finding</em> — identifying protein-coding genes in raw DNA sequence. GENSCAN (Burge & Karlin, 1997) is the classic example.</p>
+
+<h4>GENSCAN Architecture</h4>
+
+<p>GENSCAN uses a complex HMM with states for:</p>
+<ul>
+<li><strong>Intergenic region:</strong> DNA between genes</li>
+<li><strong>Promoter / 5' UTR:</strong> Regulatory region upstream of coding sequence</li>
+<li><strong>First exon / Internal exon / Last exon:</strong> Different states because first and last exons have different splice site patterns</li>
+<li><strong>Introns:</strong> Three intron states (one for each reading frame) to track codon position across splicing</li>
+<li><strong>3' UTR / Polyadenylation signal:</strong> Downstream regulatory region</li>
+</ul>
+
+<p>The model has ~20 states and accounts for both forward and reverse strand genes. Observations at each position include not just the nucleotide but also contextual features like coding potential scores.</p>
+
+<h4>Generalized HMM (Semi-Markov Model)</h4>
+
+<p>Standard HMMs have a geometric state duration distribution (the probability of staying in a state for exactly d steps is p_self^(d-1) · (1-p_self)). This is biologically unrealistic — exons have a characteristic length distribution that is not geometric.</p>
+
+<p>Generalized HMMs (also called hidden semi-Markov models) allow each state to have an <em>explicit duration distribution</em>. GENSCAN uses this for exons: it models the distribution of exon lengths from known genes, rather than relying on self-transition probabilities.</p>
+
+<h3>5.4 ChromHMM — Chromatin State Discovery</h3>
+
+<p>ChromHMM (Ernst & Kellis, 2010) applies HMMs to a different problem: learning <em>chromatin states</em> from histone modification data.</p>
+
+<ul>
+<li><strong>Observations:</strong> Binary vectors of histone modifications at each genomic position (H3K4me3 present/absent, H3K27ac present/absent, etc.)</li>
+<li><strong>Hidden states:</strong> Functional chromatin states (active promoter, strong enhancer, transcribed gene body, repressed, heterochromatin, etc.)</li>
+<li><strong>Learning:</strong> Baum-Welch discovers both the number and nature of chromatin states from the data</li>
+</ul>
+
+<p>A typical ChromHMM model uses 15-40 states. Each state has a characteristic combination of histone marks that corresponds to a known functional element. The model is unsupervised — it discovers the states without being told what they are.</p>
+
+<div class="lw-box">
+<h4>Living Works Application — Regulatory Element Discovery</h4>
+<p>Phase 2 of the roadmap integrates Enformer for expression prediction. But Enformer needs training data — labeled regulatory elements (promoters, enhancers, silencers) in the target organism. ChromHMM provides this labeling:</p>
+<ol>
+<li>Generate ChIP-seq data for key histone marks in the target chassis organism</li>
+<li>Run ChromHMM to segment the genome into chromatin states</li>
+<li>Identify "strong promoter" and "active enhancer" states</li>
+<li>Use these as training labels for Enformer fine-tuning</li>
+</ol>
+<p>Even without wet-lab data, ChromHMM annotations from related organisms can be transferred as a starting point — analogous to Baum-Welch initialization from a related species.</p>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 6: WHAT IS STATISTICAL LEARNING?        -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch6">
+<div class="part-title">Part II — The Statistical Lens</div>
+<h2>Chapter 6: What Is Statistical Learning?</h2>
+
+<p class="epigraph">"Statistical learning refers to a vast set of tools for understanding data." — ISLR Ch2</p>
+
+<h3>6.1 The Framework</h3>
+
+<p>ISLR Chapter 2 establishes the fundamental framework that underlies every prediction task in this book. We observe an output variable Y (the thing we want to predict) and p input variables X = (X₁, X₂, ..., Xₚ) (the features we use to predict it). We assume there exists some function f such that:</p>
+
+<div class="key-eq">
+Y = f(X) + ε
+</div>
+
+<p>where ε is an irreducible error term (noise we can never eliminate). The goal of statistical learning is to <em>estimate</em> f — to find f̂ that approximates the true f as closely as possible.</p>
+
+<p>Two purposes for estimating f:</p>
+<ul>
+<li><strong>Prediction:</strong> We care about Ŷ = f̂(X) being accurate. We don't need to know the form of f — a black box is fine.</li>
+<li><strong>Inference:</strong> We care about understanding the relationship between X and Y. Which features matter? How does each feature affect the output? This requires an interpretable model.</li>
+</ul>
+
+<h3>6.2 The Bias-Variance Tradeoff</h3>
+
+<p>The expected prediction error for a regression model can be decomposed as:</p>
+
+<div class="key-eq">
+E[(Y - f̂(x))²] = Var(f̂(x)) + [Bias(f̂(x))]² + Var(ε)
+</div>
+
+<ul>
+<li><strong>Variance:</strong> How much f̂ changes when trained on different datasets. Complex models (high flexibility) have high variance — they fit each training set differently.</li>
+<li><strong>Bias:</strong> The error from approximating a complex real-world function with a simpler model. Simple models (low flexibility) have high bias — they can't capture the true pattern.</li>
+<li><strong>Irreducible error:</strong> Var(ε) — noise inherent in the problem.</li>
+</ul>
+
+<p>The tradeoff: as model complexity increases, bias decreases but variance increases. The optimal model minimizes total error — somewhere between too simple and too complex.</p>
+
+<p>This is exactly what we saw with k-mer Markov models in Chapter 3: k=1 is too simple (high bias, underfitting), k=20 is too complex (high variance, overfitting), and k=2-3 is the sweet spot.</p>
+
+<h3>6.3 Training Error vs. Test Error</h3>
+
+<p>Training error (error on the data used to fit the model) always decreases as complexity increases — a sufficiently flexible model can memorize the training data. But test error (error on new, unseen data) follows a U-shape: it decreases initially as the model captures real patterns, then increases as the model starts fitting noise.</p>
+
+<p>This is the most important concept in all of machine learning for the Living Works project: <em>a model that perfectly fits known genomic data is not necessarily a model that will correctly predict the behavior of designed sequences</em>. Validation on held-out data is essential.</p>
+
+<h3>6.4 Model Assessment Approaches</h3>
+
+<p>ISLR describes several methods for estimating test error:</p>
+
+<ul>
+<li><strong>Validation set approach:</strong> Split data into training and validation sets. Simple but high variance (depends on the specific split).</li>
+<li><strong>k-fold cross-validation:</strong> Split data into k folds, train on k-1, test on the held-out fold, rotate. Average the k test errors. k=5 or k=10 is typical.</li>
+<li><strong>Leave-one-out cross-validation (LOOCV):</strong> k-fold with k=n. Low bias but computationally expensive and high variance.</li>
+<li><strong>Bootstrap:</strong> Sample n observations with replacement, train on bootstrap sample, test on unsampled observations. Used in bagging (Chapter 11).</li>
+</ul>
+
+<div class="lw-box">
+<h4>Living Works Application — Validating Design Predictions</h4>
+<p>When Phase 1 generates candidate proteins via ESM-3 and scores them with AlphaFold's pLDDT, how confident should we be? The system must validate predictions:</p>
+<ul>
+<li><strong>In silico validation:</strong> Cross-validate structure predictions against known structures from related organisms</li>
+<li><strong>Comparative validation:</strong> If the system predicts a designed cross-linking enzyme will fold correctly, check that known cross-linking enzymes from the same family get similar pLDDT scores</li>
+<li><strong>Wet-lab validation:</strong> Eventually, synthesize top candidates and test them experimentally — this is the ultimate test set</li>
+</ul>
+<p>The bias-variance tradeoff applies directly: a design model that perfectly predicts known enzyme activities (training performance) may fail on novel designs (test performance). Early iterations of the system should prioritize conservative designs close to known functional sequences.</p>
+</div>
+
+<h3>6.5 Parametric vs. Non-Parametric Methods</h3>
+
+<p>ISLR distinguishes two approaches:</p>
+
+<ul>
+<li><strong>Parametric:</strong> Assume a functional form (e.g., linear), then estimate parameters. Simple, interpretable, but may miss complex patterns. Examples: linear regression, logistic regression.</li>
+<li><strong>Non-parametric:</strong> Make no assumption about functional form. Let the data determine the shape. More flexible but require more data. Examples: KNN, decision trees, neural networks.</li>
+</ul>
+
+<p>For genomics, the choice depends on the problem. GWAS (Chapter 8) uses parametric logistic regression because interpretability matters — we want to know the effect size of each variant. Variant effect prediction (Chapter 12) can use non-parametric random forests because prediction accuracy matters more than interpretability.</p>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 7: REGRESSION                           -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch7">
+<h2>Chapter 7: Linear & Logistic Regression</h2>
+
+<h3>7.1 Linear Regression</h3>
+
+<p>Linear regression models the relationship between a quantitative response Y and predictors X₁, ..., Xₚ as:</p>
+
+<div class="key-eq">
+Y = β₀ + β₁X₁ + β₂X₂ + ... + βₚXₚ + ε
+</div>
+
+<p>The coefficients β are estimated by minimizing the residual sum of squares (RSS):</p>
+
+<div class="key-eq">
+RSS = Σᵢ (yᵢ - β₀ - Σⱼ βⱼxᵢⱼ)²
+</div>
+
+<p>The ordinary least squares (OLS) solution has a closed-form expression: β̂ = (X'X)⁻¹X'Y. Key properties:</p>
+
+<ul>
+<li>β̂ⱼ represents the average change in Y for a one-unit increase in Xⱼ, holding all other predictors constant</li>
+<li>Standard error SE(β̂ⱼ) quantifies uncertainty in the estimate</li>
+<li>t-statistic = β̂ⱼ / SE(β̂ⱼ) tests H₀: βⱼ = 0 (no association)</li>
+<li>R² = 1 - RSS/TSS measures the proportion of variance explained by the model</li>
+</ul>
+
+<h3>7.2 Logistic Regression</h3>
+
+<p>For binary outcomes (case/control, pathogenic/benign), linear regression is inappropriate because it can predict values outside [0,1]. Logistic regression models the <em>probability</em> of the positive class using the logistic (sigmoid) function:</p>
+
+<div class="key-eq">
+P(Y=1 | X) = 1 / (1 + e^{-(β₀ + β₁X₁ + ... + βₚXₚ)})
+</div>
+
+<p>Equivalently, in terms of log-odds (logit):</p>
+
+<div class="key-eq">
+log(p / (1-p)) = β₀ + β₁X₁ + ... + βₚXₚ
+</div>
+
+<p>The log-odds is linear in the predictors. β₁ = the change in log-odds per unit increase in X₁. The odds ratio e^{β₁} is the multiplicative change in odds per unit increase.</p>
+
+<p>Parameters are estimated by <em>maximum likelihood</em> — find the β that maximize the probability of the observed data:</p>
+
+<div class="key-eq">
+ℓ(β) = Σᵢ [yᵢ log p(xᵢ) + (1-yᵢ) log(1-p(xᵢ))]
+</div>
+
+<p>This is the <em>cross-entropy loss</em> — the same loss function used to train neural networks for classification (Chapter 14).</p>
+
+<h3>7.3 Multiple Logistic Regression</h3>
+
+<p>In GWAS, the response Y is case/control status and the primary predictor is genotype dosage (0, 1, or 2 alternate alleles). But we also include <em>covariates</em> — variables that might confound the association:</p>
+
+<div class="key-eq">
+logit(P(case)) = β₀ + β₁·dosage + β₂·age + β₃·sex + β₄·PC1 + β₅·PC2 + ...
+</div>
+
+<p>Principal components (PCs) of the genotype matrix capture population structure (ancestry). Including PCs as covariates prevents false associations due to population stratification — the correlation between ancestry and both genotype and disease status.</p>
+
+<div class="lw-box">
+<h4>Living Works Application — Effect Prediction for Designed Variants</h4>
+<p>Every codon change in the assembly output is a designed variant. Logistic regression provides a framework for predicting whether each change will disrupt function:</p>
+<ul>
+<li><strong>Response:</strong> functional (1) vs non-functional (0)</li>
+<li><strong>Predictors:</strong> ΔGC content, codon frequency in target organism, position within protein (surface vs core), conservation score, predicted mRNA folding change</li>
+<li><strong>Odds ratio:</strong> e^{β_conservation} tells us how much more likely a change at a conserved position is to disrupt function</li>
+</ul>
+<p>This is simpler than deep learning approaches but interpretable and trainable on small datasets — exactly what the early stages of the Living Works system need, before enough wet-lab validation data accumulates for neural network training.</p>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 8: GWAS                                 -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch8">
+<h2>Chapter 8: GWAS — Scanning the Genome for Signal</h2>
+
+<p class="epigraph">"GWAS asks the simplest possible question across the entire genome: is this variant more common in cases than controls?" — BME 234 Lecture 5</p>
+
+<h3>8.1 Study Design</h3>
+
+<p>A genome-wide association study (GWAS) compares allele frequencies between disease cases and healthy controls across millions of genetic variants. The logic is straightforward:</p>
+
+<ol>
+<li>Genotype thousands of individuals (cases + controls) at millions of SNPs</li>
+<li>At each SNP, test whether the alternate allele is more frequent in cases</li>
+<li>Use logistic regression: logit(P(case)) = β₀ + β₁·dosage</li>
+<li>Compute z-score = β̂₁/SE(β̂₁) and p-value for each SNP</li>
+<li>Correct for multiple testing</li>
+<li>Report significant associations</li>
+</ol>
+
+<h3>8.2 The Genotype Matrix</h3>
+
+<p>GWAS data is organized as an n × p matrix where n = individuals and p = SNPs. Each entry is the <em>dosage</em>: 0, 1, or 2 copies of the alternate allele. This matrix can have millions of columns — far more features than samples, a high-dimensional challenge that recurs throughout machine learning.</p>
+
+<h3>8.3 Effect Sizes and Odds Ratios</h3>
+
+<p>For each SNP, the logistic regression coefficient β̂₁ represents the per-allele effect on log-odds of disease. The odds ratio OR = e^{β̂₁} is the multiplicative change in odds per alternate allele:</p>
+
+<ul>
+<li>OR > 1: risk allele (increases disease odds)</li>
+<li>OR < 1: protective allele (decreases disease odds)</li>
+<li>OR = 1: no effect</li>
+</ul>
+
+<p>Most GWAS hits have small effect sizes (OR = 1.05 - 1.3). Large-effect variants are rare because natural selection removes highly deleterious alleles from the population — this is the evolutionary logic that CADD (Chapter 12) exploits for variant effect prediction.</p>
+
+<h3>8.4 From GWAS to Function</h3>
+
+<p>GWAS identifies associated <em>loci</em>, not necessarily causal <em>variants</em> or <em>genes</em>. The causal variant might be in LD with the tag SNP (Chapter 9). Most GWAS hits are in non-coding regions, likely affecting gene regulation rather than protein sequence.</p>
+
+<p>Post-GWAS analysis bridges the gap:</p>
+
+<ul>
+<li><strong>Fine-mapping:</strong> Statistical methods to identify the most likely causal variant(s) within an associated locus</li>
+<li><strong>eQTL analysis:</strong> Test whether GWAS variants affect gene expression (expression quantitative trait loci). If a GWAS variant for heart disease also affects expression of a nearby gene in cardiac tissue, that gene is a strong candidate.</li>
+<li><strong>TWAS (Transcriptome-Wide Association Study):</strong> Impute gene expression from genotypes using eQTL weights, then test expression-trait associations. Identifies genes (not just variants) associated with disease.</li>
+<li><strong>Polygenic risk scores:</strong> Sum weighted effects across many SNPs to predict individual risk: PRS = Σⱼ β̂ⱼ · dosageⱼ</li>
+</ul>
+
+<div class="lw-box">
+<h4>Living Works Application — Reverse GWAS for Design</h4>
+<p>GWAS goes from genotype to phenotype: which variants affect which traits? The Living Works system reverses this: which designed changes will produce the desired phenotype?</p>
+<p>The eQTL framework is directly applicable. When Phase 2 designs regulatory sequences, each designed variant has a predicted effect on expression — an "eQTL effect" computed by Enformer rather than by association testing. The system can rank regulatory designs by their predicted expression-changing power, just as GWAS ranks variants by p-value.</p>
+<p>Polygenic risk scores have an analog too: a "polygenic design score" could sum the predicted effects of all designed changes in a construct, estimating the total impact on the desired phenotype.</p>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--   CHAPTER 9: MULTIPLE TESTING & LD                  -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch9">
+<h2>Chapter 9: Multiple Testing & Linkage Disequilibrium</h2>
+
+<h3>9.1 The Multiple Testing Problem</h3>
+
+<p>Testing 1 million SNPs at α = 0.05 produces ~50,000 false positives (5% of 1M). The challenge is distinguishing true associations from the enormous haystack of false positives.</p>
+
+<h4>Bonferroni Correction</h4>
+<div class="key-eq">
+α_corrected = α / m
+</div>
+<p>For GWAS: 0.05 / 10⁶ ≈ 5 × 10⁻⁸. This controls the <em>family-wise error rate</em> (FWER) — the probability of even one false positive. It's conservative: if the tests are correlated (which they are, due to LD), Bonferroni is overly strict.</p>
+
+<h4>Benjamini-Hochberg (FDR Control)</h4>
+<p>Less conservative than Bonferroni. Controls the <em>false discovery rate</em> — the expected proportion of discoveries that are false:</p>
+<ol>
+<li>Order p-values: p₍₁₎ ≤ p₍₂₎ ≤ ... ≤ p₍ₘ₎</li>
+<li>Find the largest i such that p₍ᵢ₎ ≤ (i/m) × α</li>
+<li>Reject all hypotheses with p ≤ p₍ᵢ₎</li>
+</ol>
+
+<h4>q-values</h4>
+<p>The q-value of a test is the minimum FDR at which it would be called significant. A q-value of 0.05 means that among all tests at least as significant, 5% are expected to be false discoveries. q-values additionally estimate π₀ (the proportion of true nulls) for improved power.</p>
+
+<h3>9.2 Linkage Disequilibrium (LD)</h3>
+
+<p>Nearby variants on the same chromosome are correlated because they are co-inherited on <em>haplotypes</em>. This non-random association is called linkage disequilibrium. Measured by r² (squared Pearson correlation between two variant dosages):</p>
+
+<ul>
+<li>r² = 0: variants are independent (linkage equilibrium)</li>
+<li>r² = 1: variants are perfectly correlated (perfect LD)</li>
+<li>Recombination breaks LD over generations — r² decays with physical distance</li>
+</ul>
+
+<p>LD has two important consequences for GWAS:</p>
+<ol>
+<li><strong>Tag SNPs:</strong> A causal variant's signal "leaks" to nearby correlated SNPs. Multiple SNPs per locus appear significant even though only one is causal.</li>
+<li><strong>Reduced effective tests:</strong> Because nearby SNPs are correlated, the number of <em>independent</em> tests is ~1 million (not the total number of SNPs tested).</li>
+</ol>
+
+<div class="key-eq">
+LD Score: ℓⱼ = Σᵢ rᵢⱼ²
+</div>
+
+<p>The LD score of a SNP is the sum of its r² values with all other SNPs. SNPs with high LD scores tag more of the genome — they're in high-LD regions where many variants are correlated.</p>
+
+<h3>9.3 GWAS Visualization</h3>
+
+<p><strong>Manhattan plot:</strong> -log₁₀(p-value) on the y-axis versus genomic position on the x-axis. Significant loci appear as peaks rising above the genome-wide significance line (p = 5 × 10⁻⁸). Each chromosome is a different color.</p>
+
+<p><strong>Q-Q plot:</strong> Observed -log₁₀(p) versus expected -log₁₀(p) under the null hypothesis. Most points should follow the diagonal (most SNPs have no effect). Systematic deviation above the diagonal suggests either true signal or population stratification (confounding by ancestry).</p>
+
+<div class="lw-box">
+<h4>Living Works Application — Multiple Testing in Compatibility Scoring</h4>
+<p>The assembly engine tests compatibility at thousands of positions in a designed sequence. Each position is a test: is this codon compatible with the target organism? Is this regulatory element functional in this context? Without multiple testing correction, the system would flag too many false incompatibilities (or miss real ones).</p>
+<p>BH-FDR control at 5% ensures that no more than 5% of flagged incompatibilities are false alarms — a manageable rate for manual review. Bonferroni would be too conservative, flagging only the most extreme incompatibilities and missing subtle problems that accumulate.</p>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 10: DECISION TREES                      -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch10">
+<div class="part-title">Part III — Classical Machine Learning</div>
+<h2>Chapter 10: Decision Trees — Recursive Splitting</h2>
+
+<p class="epigraph">"Decision tree learning is one of the most widely used and practical methods for inductive inference." — Mitchell Ch3</p>
+
+<h3>10.1 The Basic Idea</h3>
+
+<p>A decision tree classifies instances by sorting them through a tree of binary decisions. At each internal node, the tree tests one feature. At each leaf, the tree outputs a class prediction. The tree is learned by recursively splitting the training data on the feature that provides the most information.</p>
+
+<p>Mitchell (Ch3) uses a motivating example: predicting whether to play tennis based on Outlook, Temperature, Humidity, and Wind. The learned tree first splits on Outlook (Sunny/Overcast/Rain), then subdivides further. Each path from root to leaf represents a conjunction of feature constraints.</p>
+
+<div class="fig">
+<img src="book-images/mitchell_p86_0.png" alt="Mitchell GainRatio formula">
+<p class="caption">Figure 10.1 — The GainRatio measure (Mitchell). An improvement over Information Gain that normalizes by SplitInformation, preventing bias toward attributes with many values.</p>
+</div>
+
+<h3>10.2 Choosing the Best Split — Information Gain</h3>
+
+<p>The key question at each node: which feature should we split on? The ID3 algorithm (Quinlan, 1986) uses <em>information gain</em> — the reduction in entropy achieved by splitting on attribute A:</p>
+
+<div class="key-eq">
+Gain(S, A) = H(S) - Σᵥ (|Sᵥ|/|S|) · H(Sᵥ)
+</div>
+
+<p>where H(S) is the entropy of set S:</p>
+
+<div class="key-eq">
+H(S) = -Σᵢ pᵢ · log₂(pᵢ)
+</div>
+
+<p>Entropy measures impurity — uncertainty about the class label in a set. H = 0 when all examples belong to one class (pure). H = 1 when examples are evenly split between two classes (maximum uncertainty). Information gain selects the attribute that reduces uncertainty the most.</p>
+
+<h4>Gini Index (Alternative)</h4>
+
+<p>CART (Classification and Regression Trees) uses the Gini index instead of entropy:</p>
+
+<div class="key-eq">
+G = 1 - Σₖ pₖ²
+</div>
+
+<p>G = 0 when pure; maximum when classes are equally represented. Gini is the default in scikit-learn. In practice, Gini and entropy produce similar trees.</p>
+
+<h3>10.3 The ID3 Algorithm</h3>
+
+<p>Mitchell describes ID3 step by step:</p>
+
+<ol>
+<li>If all examples are positive, return a leaf node labeled +</li>
+<li>If all examples are negative, return a leaf node labeled −</li>
+<li>If no attributes remain, return majority class</li>
+<li>Otherwise, select the attribute A with highest information gain</li>
+<li>Create a decision node for A</li>
+<li>For each value v of A, add a branch and recursively build a subtree on examples where A = v</li>
+</ol>
+
+<p>ID3 has a strong <em>inductive bias</em>: it prefers shorter trees (Occam's Razor). This is because information gain tends to select the most discriminative attribute first, building compact trees. Mitchell devotes significant discussion to how inductive bias affects generalization — the same theme that runs through ISLR's bias-variance tradeoff.</p>
+
+<h3>10.4 Overfitting and Pruning</h3>
+
+<p>A tree grown to maximum depth will perfectly classify the training data — every leaf contains examples from a single class. But this tree overfits: it memorizes noise in the training data and generalizes poorly.</p>
+
+<p>Mitchell defines overfitting precisely: hypothesis h overfits the training data if there exists an alternative hypothesis h' such that h has smaller error than h' on training data but h' has smaller error on the full distribution. The tree is too specific to the training set.</p>
+
+<p>Solutions:</p>
+<ul>
+<li><strong>Pre-pruning:</strong> Stop growing the tree early (minimum leaf size, maximum depth, minimum information gain threshold). Simple but may stop too early.</li>
+<li><strong>Post-pruning:</strong> Grow the full tree, then remove branches that don't improve validation accuracy. ISLR's "cost-complexity pruning" adds a penalty α|T| for tree size |T|, selecting α by cross-validation.</li>
+</ul>
+
+<div class="lw-box">
+<h4>Living Works Application — Part Selection as Decision Tree</h4>
+<p>The <code>retrieval/species_search.py</code> module maps biological functions to source organisms. This mapping can be modeled as a decision tree:</p>
+<ul>
+<li><strong>Root:</strong> What type of function? (structural / self-repair / growth / sensing / ...)</li>
+<li><strong>Level 2:</strong> What material? (chitin / cellulose / mineral / protein fiber)</li>
+<li><strong>Level 3:</strong> What environment? (aquatic / terrestrial / temperature range)</li>
+<li><strong>Leaves:</strong> Specific organism + gene recommendations</li>
+</ul>
+<p>Currently this mapping is hard-coded from domain knowledge (8 biological capability categories). As the system accumulates data from designs that worked vs failed, a decision tree could be learned from experience — automatically discovering which organism-function combinations succeed.</p>
+</div>
+
+<h3>10.5 Handling Continuous Attributes</h3>
+
+<p>The basic ID3 algorithm handles discrete attributes. For continuous attributes (common in genomics — conservation scores, expression levels, allele frequencies), the tree must find the best threshold:</p>
+
+<ol>
+<li>Sort examples by the continuous attribute</li>
+<li>Consider each midpoint between consecutive values as a candidate threshold</li>
+<li>Compute information gain for each threshold</li>
+<li>Select the threshold with highest gain</li>
+</ol>
+
+<p>This makes the split binary: attribute ≤ threshold vs attribute > threshold. All continuous features in the Living Works compatibility engine (CAI score, GC content, regulatory score, pathway impact) would be handled this way.</p>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 11: ENSEMBLE METHODS                    -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch11">
+<h2>Chapter 11: Ensemble Methods — Random Forests & Boosting</h2>
+
+<p class="epigraph">"The key idea is to combine many weak learners to form a single strong learner." — ISLR Ch8</p>
+
+<h3>11.1 Why Single Trees Are Not Enough</h3>
+
+<p>Decision trees have low bias (they can fit complex patterns) but high variance (small changes in training data produce very different trees). ISLR calls them "unstable." Ensemble methods reduce variance by combining many trees.</p>
+
+<h3>11.2 Bagging (Bootstrap Aggregation)</h3>
+
+<p>Breiman's bagging (1996) is beautifully simple:</p>
+
+<ol>
+<li>Generate B bootstrap samples from the training data (sample n observations with replacement)</li>
+<li>Train a full decision tree on each bootstrap sample</li>
+<li>Average predictions (regression) or take majority vote (classification)</li>
+</ol>
+
+<p>Why it works: averaging reduces variance. If each tree has variance σ², the average of B uncorrelated trees has variance σ²/B. The key assumption is that trees are <em>uncorrelated</em> — which they're usually not, because all trees see the same features and tend to split on the same dominant predictor.</p>
+
+<h4>Out-of-Bag (OOB) Error</h4>
+
+<p>Each bootstrap sample includes ~2/3 of observations (the rest are left out by chance). These left-out observations form an automatic validation set — the <em>out-of-bag</em> sample. OOB error provides a free estimate of test error without requiring a separate validation set.</p>
+
+<h3>11.3 Random Forests</h3>
+
+<p>Random forests improve on bagging by <em>decorrelating</em> the trees. At each split, instead of considering all p features, randomly select a subset of m features (typically m ≈ √p for classification, m ≈ p/3 for regression). This forces different trees to use different features at the top splits, reducing correlation between trees.</p>
+
+<p>The result: lower variance than bagging, with similar bias. Random forests are among the most successful out-of-the-box classifiers in machine learning.</p>
+
+<h4>Variable Importance</h4>
+
+<p>Random forests provide a natural measure of feature importance: for each feature, permute its values in the OOB samples and measure the increase in prediction error. Features that cause large error increases when shuffled are important; features that cause no change are irrelevant.</p>
+
+<div class="lw-box">
+<h4>Living Works Application — Designability Scoring</h4>
+<p>CADD integrates 60+ annotations into a single variant effect score using a linear SVM. The Living Works system needs an analogous "designability score" — a single number predicting whether a designed construct will function. A random forest is ideal for this:</p>
+<ul>
+<li><strong>Features:</strong> CAI score, GC content, regulatory compatibility score, pathway impact score, structural prediction confidence (pLDDT), conservation at modified positions, codon pair score, mRNA folding energy</li>
+<li><strong>Labels:</strong> functional (1) vs non-functional (0) from wet-lab validation</li>
+<li><strong>Output:</strong> probability of success (the designability score)</li>
+<li><strong>Variable importance:</strong> reveals which aspects of compatibility matter most — is it codon usage? regulatory context? protein stability? This guides where to focus optimization.</li>
+</ul>
+<p>The random forest can be trained on small datasets (even 50-100 validated designs) and improves as more data accumulates. Feature importance adapts — early experiments might show codon usage is critical, but later data might reveal regulatory context dominates.</p>
+</div>
+
+<h3>11.4 Boosting</h3>
+
+<p>While bagging reduces variance by averaging, <em>boosting</em> reduces bias by iteratively focusing on hard-to-classify examples:</p>
+
+<ol>
+<li>Train a weak learner (small tree) on the data</li>
+<li>Increase weights on misclassified examples</li>
+<li>Train the next weak learner on the reweighted data</li>
+<li>Repeat for B iterations</li>
+<li>Final prediction = weighted sum of all weak learners</li>
+</ol>
+
+<p>AdaBoost (Freund & Schapire, 1996) was the first practical boosting algorithm. Gradient boosting (Friedman, 2001) generalizes by fitting each new tree to the <em>residual errors</em> of the current model.</p>
+
+<p>ISLR notes that boosting has three tuning parameters: B (number of trees), λ (learning rate / shrinkage), and d (interaction depth / tree depth). Typical values: B = 100-10000, λ = 0.01-0.1, d = 1-6. Cross-validation selects the best combination.</p>
+
+<p>XGBoost (Chen & Guestrin, 2016) is the dominant implementation, used in many winning Kaggle solutions and in bioinformatics tools like REVEL (variant effect meta-predictor).</p>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 12: SVMS                                -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch12">
+<h2>Chapter 12: Support Vector Machines</h2>
+
+<p class="epigraph">"Find the hyperplane that gives the largest minimum distance to the training examples." — ISLR Ch9</p>
+
+<h3>12.1 The Maximal Margin Classifier</h3>
+
+<p>Given two linearly separable classes, infinitely many hyperplanes can separate them. The <em>maximal margin classifier</em> chooses the one that maximizes the distance (margin) to the nearest training points. The points closest to the boundary are called <em>support vectors</em> — they alone define the decision boundary.</p>
+
+<p>The margin is 2/||w|| where w is the normal vector to the hyperplane. Maximizing the margin is equivalent to minimizing ||w||² subject to the constraint that all training points are correctly classified:</p>
+
+<div class="key-eq">
+min ½||w||²  subject to  yᵢ(w·xᵢ + b) ≥ 1  ∀i
+</div>
+
+<h3>12.2 The Soft Margin — Support Vector Classifier</h3>
+
+<p>Perfect separation is often impossible (or undesirable — it overfits). The <em>support vector classifier</em> allows some violations of the margin using slack variables ξᵢ:</p>
+
+<div class="key-eq">
+min ½||w||² + C Σᵢ ξᵢ  subject to  yᵢ(w·xᵢ + b) ≥ 1 - ξᵢ,  ξᵢ ≥ 0
+</div>
+
+<p>The parameter C controls the tolerance for violations:</p>
+<ul>
+<li><strong>Large C:</strong> Low tolerance → narrow margin, few violations → risk of overfitting</li>
+<li><strong>Small C:</strong> High tolerance → wide margin, more violations → risk of underfitting</li>
+</ul>
+
+<p>C is the SVM's regularization parameter — directly analogous to the bias-variance knob in every model.</p>
+
+<h3>12.3 The Kernel Trick</h3>
+
+<p>Linear boundaries are often inadequate. The <em>kernel trick</em> maps data to a higher-dimensional space where linear separation becomes possible — without ever explicitly computing the coordinates in that space.</p>
+
+<p>The SVM optimization depends on data only through inner products x·x'. The kernel function K(x,x') computes this inner product in the transformed space:</p>
+
+<ul>
+<li><strong>Linear kernel:</strong> K(x,x') = x·x'. No transformation.</li>
+<li><strong>Polynomial kernel:</strong> K(x,x') = (1 + x·x')^d. Maps to space of all monomials up to degree d.</li>
+<li><strong>Radial Basis Function (RBF):</strong> K(x,x') = exp(-γ||x-x'||²). Maps to infinite-dimensional space. The most flexible kernel.</li>
+</ul>
+
+<div class="key-eq">
+RBF Kernel: K(x,x') = exp(-γ||x-x'||²)
+</div>
+
+<p>The RBF kernel measures Gaussian similarity between points. γ controls the reach: large γ makes each point influential only in a tiny neighborhood (tight fit, risk of overfitting), small γ makes each point influential far away (smooth boundary, risk of underfitting).</p>
+
+<h3>12.4 SVMs in Genomics</h3>
+
+<p>Kellis (Ch16) describes SVMs for tumor classification from gene expression data. Each sample has ~20,000 gene expression features, but only ~100 samples. SVMs handle this high-dimensional setting well because they depend only on support vectors, not on the dimensionality of the feature space.</p>
+
+<p>CADD (Combined Annotation Dependent Depletion) uses a linear SVM to integrate 60+ genomic annotations into a single deleteriousness score. The training data comes from an elegant evolutionary argument: variants that have been removed by natural selection (not observed in the human population) are likely deleterious; variants that survived selection (observed in population databases) are likely benign. By training on "simulated" (random) versus "evolved" (observed) variants, CADD learns to distinguish deleterious from benign without any clinical labels.</p>
+
+<div class="lw-box">
+<h4>Living Works Application — Protein Function Classification with SVMs</h4>
+<p>When ESM-3 generates candidate proteins in Phase 1, we need to verify that each candidate has the desired function. An SVM with an RBF kernel on ESM-2 embeddings (768-dimensional vectors) can classify candidates as functional/non-functional:</p>
+<ul>
+<li><strong>Training data:</strong> Known cross-linking enzymes (positive) vs randomly sampled proteins (negative)</li>
+<li><strong>Features:</strong> ESM-2 embeddings of each candidate (captures sequence-derived structural and functional information)</li>
+<li><strong>SVM advantage:</strong> Works well with small training sets (only support vectors matter) and high-dimensional features (768 dimensions from ESM-2)</li>
+<li><strong>Output:</strong> Score indicating functional probability — candidates below threshold are discarded before the expensive AlphaFold validation step</li>
+</ul>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 13: BAYESIAN LEARNING                   -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch13">
+<h2>Chapter 13: Bayesian Learning & Probabilistic Reasoning</h2>
+
+<p class="epigraph">"Bayesian learning provides a principled approach to incorporating prior knowledge." — Mitchell Ch6</p>
+
+<h3>13.1 Bayes' Theorem</h3>
+
+<p>Mitchell devotes an entire chapter to Bayesian methods because they provide the theoretical foundation for many ML algorithms. Bayes' theorem:</p>
+
+<div class="key-eq">
+P(h | D) = P(D | h) · P(h) / P(D)
+</div>
+
+<ul>
+<li><strong>P(h):</strong> Prior probability of hypothesis h before seeing data</li>
+<li><strong>P(D|h):</strong> Likelihood of data D given hypothesis h</li>
+<li><strong>P(h|D):</strong> Posterior probability of h after seeing data</li>
+<li><strong>P(D):</strong> Evidence (normalizing constant)</li>
+</ul>
+
+<h4>MAP and ML Estimation</h4>
+
+<p><strong>Maximum A Posteriori (MAP):</strong> Choose h that maximizes P(h|D) ∝ P(D|h) · P(h). Incorporates prior beliefs.</p>
+
+<p><strong>Maximum Likelihood (ML):</strong> Choose h that maximizes P(D|h). Ignores prior beliefs (or assumes uniform prior). Equivalent to MAP when all hypotheses are equally likely a priori.</p>
+
+<p>Pseudocounts in HMMs (Chapter 5) are a Bayesian prior — they encode the belief that all transitions are possible, even if unobserved. The strength of the prior (how many pseudocounts) balances prior belief against observed data.</p>
+
+<h3>13.2 Naive Bayes Classifier</h3>
+
+<p>The Naive Bayes classifier assumes all features are conditionally independent given the class label:</p>
+
+<div class="key-eq">
+P(Y = c | X₁, ..., Xₚ) ∝ P(Y = c) · ∏ⱼ P(Xⱼ | Y = c)
+</div>
+
+<p>This "naive" independence assumption is almost never true in practice — gene expression features are highly correlated, for example. Yet Naive Bayes often works surprisingly well, especially with many features and limited training data. Mitchell explains this paradox: the classifier only needs to get the <em>ranking</em> of class probabilities correct, not their absolute values. Even with wrong probability estimates, the correct class often has the highest estimated probability.</p>
+
+<h3>13.3 Expectation Maximization (EM)</h3>
+
+<p>Mitchell and Kellis both cover EM as the general framework for learning with missing data. Baum-Welch (Chapter 5) is EM applied to HMMs. The general algorithm:</p>
+
+<ol>
+<li><strong>Initialize</strong> parameters θ</li>
+<li><strong>E-step:</strong> Compute expected values of the missing data given current parameters and observed data</li>
+<li><strong>M-step:</strong> Update parameters to maximize expected log-likelihood</li>
+<li><strong>Repeat</strong> until convergence</li>
+</ol>
+
+<p>EM is guaranteed to increase the likelihood at each step (or leave it unchanged), but it finds only a local maximum. Multiple random restarts help find better solutions.</p>
+
+<div class="lw-box">
+<h4>Living Works Application — Bayesian Reasoning Throughout the System</h4>
+<p>Bayesian thinking is embedded in every layer of the Living Works system:</p>
+<ul>
+<li><strong>Pseudocounts in codon tables:</strong> Prior belief that all codons are possible, even if unobserved in the target organism's genome</li>
+<li><strong>Prior over organisms:</strong> Some chassis organisms are better characterized (stronger prior) — the system should weight their compatibility scores differently</li>
+<li><strong>Uncertainty quantification:</strong> Instead of a single GO/NO-GO decision, the system should output P(functional | design features) — a posterior probability that carries forward through the pipeline</li>
+<li><strong>EM for chromatin state discovery:</strong> Baum-Welch learning of HMM parameters for poorly characterized organisms</li>
+</ul>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 14: NEURAL NETWORKS                     -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch14">
+<div class="part-title">Part IV — Deep Learning</div>
+<h2>Chapter 14: Neural Network Foundations</h2>
+
+<div class="fig">
+<img src="book-images/mitchell_p94_0.png" alt="Mitchell biological motivation for neural networks">
+<p class="caption">Figure 14.1 — Biological motivation for artificial neural networks (Mitchell Ch4). The brain uses ~10¹¹ neurons, each connected to ~10⁴ others. Neural networks are loosely inspired by this distributed, parallel architecture — the same architecture that cells use to process signals in living organisms.</p>
+</div>
+
+<h3>14.1 From Biology to Computation</h3>
+
+<p>Mitchell (Ch4) begins with biological motivation: the brain contains ~10¹¹ neurons, each connected to ~10⁴ others. Neuron switching time is ~10⁻³ seconds — far slower than computers at 10⁻¹⁰ seconds. Yet humans recognize faces in ~10⁻¹ seconds, which allows only ~100 sequential steps. This implies the brain uses <em>massively parallel distributed processing</em>.</p>
+
+<p>Artificial neural networks (ANNs) capture this idea: many simple units operating in parallel, with learned connections. But Mitchell is careful to note that ANNs are not faithful models of biological neurons — they output continuous values rather than spike trains, use backpropagation rather than biological learning rules, and lack temporal dynamics.</p>
+
+<h3>14.2 The Perceptron</h3>
+
+<p>The simplest neural network: a single neuron with input weights w₁, ..., wₙ, bias b, and a step activation function:</p>
+
+<div class="key-eq">
+output = 1  if  Σᵢ wᵢxᵢ + b > 0,  else  0
+</div>
+
+<p>The perceptron can learn any <em>linearly separable</em> function (AND, OR, NOT) but cannot learn XOR. This limitation motivated multi-layer networks.</p>
+
+<h3>14.3 Multi-Layer Networks and Backpropagation</h3>
+
+<p>A multi-layer network stacks neurons in layers: input → hidden → output. With nonlinear activation functions (sigmoid, tanh, ReLU), a network with one hidden layer can approximate any continuous function (universal approximation theorem).</p>
+
+<p>Training uses <em>backpropagation</em> — the chain rule applied layer by layer to compute gradients of the loss with respect to all weights:</p>
+
+<ol>
+<li><strong>Forward pass:</strong> Compute outputs layer by layer</li>
+<li><strong>Compute loss:</strong> Compare output to target (e.g., cross-entropy for classification)</li>
+<li><strong>Backward pass:</strong> Propagate gradients from output to input using the chain rule</li>
+<li><strong>Update weights:</strong> w ← w - η · ∂L/∂w (gradient descent)</li>
+</ol>
+
+<div class="key-eq">
+Cross-Entropy Loss: L = -Σᵢ [yᵢ log ŷᵢ + (1-yᵢ) log(1-ŷᵢ)]
+</div>
+
+<h3>14.4 Activation Functions</h3>
+
+<ul>
+<li><strong>Sigmoid:</strong> σ(z) = 1/(1+e⁻ᶻ). Output in [0,1]. Suffers from vanishing gradients in deep networks.</li>
+<li><strong>Tanh:</strong> Output in [-1,1]. Zero-centered but still has vanishing gradient problem.</li>
+<li><strong>ReLU:</strong> f(z) = max(0,z). Solves vanishing gradient. Simple and fast. Standard choice for hidden layers.</li>
+<li><strong>Softmax:</strong> Converts a vector of scores to probabilities: softmax(zᵢ) = eᶻⁱ / Σⱼ eᶻʲ. Used for multi-class output.</li>
+</ul>
+
+<h3>14.5 Regularization</h3>
+
+<p>Neural networks with many parameters easily overfit. Regularization techniques:</p>
+
+<ul>
+<li><strong>Weight decay (L2):</strong> Add λ||w||² to the loss. Penalizes large weights.</li>
+<li><strong>Dropout:</strong> Randomly set neurons to zero during training (typically p=0.5). Forces redundancy — like training an ensemble of sub-networks.</li>
+<li><strong>Early stopping:</strong> Monitor validation loss and stop training when it starts increasing.</li>
+<li><strong>Batch normalization:</strong> Normalize activations within each mini-batch. Stabilizes training and acts as mild regularization.</li>
+</ul>
+
+<div class="lw-box">
+<h4>Living Works Application — The Neural Network at Every Layer</h4>
+<p>Neural networks appear at every phase of the roadmap:</p>
+<ul>
+<li><strong>Phase 1:</strong> ESM-3 is a deep neural network generating proteins. Claude is a neural network interpreting English. AlphaFold is a neural network predicting structure.</li>
+<li><strong>Phase 2:</strong> Enformer is a neural network predicting expression. DeepSEA is a neural network predicting chromatin features.</li>
+<li><strong>Phase 3:</strong> scGPT is a neural network modeling cell states.</li>
+</ul>
+<p>Understanding backpropagation, activation functions, and regularization is not optional — it's the foundation for understanding every model in the pipeline. When a design candidate gets a low ESM-3 confidence score, you need to understand what the network is uncertain about. When Enformer predicts low expression, you need to understand whether the prediction is reliable (or whether the model is extrapolating outside its training distribution).</p>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 15: CNNs FOR DNA                        -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch15">
+<h2>Chapter 15: Convolutional Neural Networks for DNA</h2>
+
+<p class="epigraph">"A CNN learns motifs from sequence the way your eye learns edges from pixels." — BME 234 Lecture</p>
+
+<h3>15.1 Why CNNs for Genomics?</h3>
+
+<p>DNA sequence has a property that makes it ideal for convolutional neural networks: <em>local patterns matter</em>. Transcription factor binding motifs are 6-20bp long. Splice site signals span ~10bp. Promoter elements are ~30bp. These are local features — analogous to edges and textures in images — and convolution is designed to detect local features regardless of position.</p>
+
+<h3>15.2 One-Hot Encoding</h3>
+
+<p>DNA sequence is encoded as a 4 × L binary matrix, where L is the sequence length. Each position is a column with a single 1 indicating the nucleotide:</p>
+
+<div class="key-eq">
+A = [1,0,0,0]  C = [0,1,0,0]  G = [0,0,1,0]  T = [0,0,0,1]
+</div>
+
+<p>This creates a "1D image" with 4 channels — just like an RGB image has 3 channels. The first convolutional layer slides filters of size 4 × k across this input, where k is the filter width (motif length).</p>
+
+<h3>15.3 CNN Architecture for Sequence</h3>
+
+<p>A typical genomic CNN follows this pipeline:</p>
+
+<ol>
+<li><strong>Input:</strong> One-hot encoded DNA (4 × L)</li>
+<li><strong>Conv layer 1:</strong> K₁ filters of width k₁ → K₁ feature maps of length L-k₁+1. Each filter detects one motif.</li>
+<li><strong>ReLU activation:</strong> f(x) = max(0,x). Kills negative responses — the filter either matches or it doesn't.</li>
+<li><strong>Max pooling:</strong> Take maximum in windows of width w → reduces length by factor w. Adds position tolerance.</li>
+<li><strong>Repeat:</strong> Additional conv → ReLU → pool layers. Deeper layers combine motifs into higher-order grammar.</li>
+<li><strong>Flatten + Dense layers:</strong> Fully connected layers for final classification/regression.</li>
+<li><strong>Output:</strong> Predicted labels (binary: promoter/not, multi-label: histone marks, regression: expression level).</li>
+</ol>
+
+<h4>What First-Layer Filters Learn</h4>
+
+<p>A remarkable property of genomic CNNs: the weights of first-layer filters can be visualized as <em>position weight matrices</em> (PWMs) — the same format used to represent transcription factor binding motifs. Trained filters often match known TF binding sites from databases like JASPAR and TRANSFAC.</p>
+
+<p>This means CNNs rediscover biology: they learn, from raw sequence and labels alone, the same regulatory motifs that decades of wet-lab experiments identified. Deeper layers learn <em>combinations</em> of motifs — the spacing, orientation, and co-occurrence patterns that constitute regulatory grammar.</p>
+
+<h3>15.4 DeepSEA — The Landmark Model</h3>
+
+<p>DeepSEA (Zhou & Troyanskaya, 2015) was one of the first successful deep learning models for genomics:</p>
+
+<ul>
+<li><strong>Input:</strong> 1000bp DNA sequence (one-hot encoded: 4 × 1000)</li>
+<li><strong>Architecture:</strong> 3 convolutional layers (320 → 480 → 960 filters) with max pooling after each, then 2 dense layers with dropout</li>
+<li><strong>Output:</strong> 919 binary chromatin features — TF binding (125 TFs), histone marks (104 marks), and DNase hypersensitivity (125 cell types)</li>
+<li><strong>Training data:</strong> ENCODE + Roadmap Epigenomics ChIP-seq peaks aligned to the reference genome</li>
+<li><strong>Performance:</strong> AUC > 0.95 for many features</li>
+</ul>
+
+<h4>In Silico Mutagenesis</h4>
+
+<p>DeepSEA's killer application: predicting variant effects without wet-lab experiments. For each variant:</p>
+<ol>
+<li>Create two 1000bp sequences: one with the reference allele, one with the alternate</li>
+<li>Run both through DeepSEA</li>
+<li>Compare the 919 output probabilities</li>
+<li>The difference = predicted effect of the variant on each chromatin feature</li>
+</ol>
+
+<p>This is <em>in silico mutagenesis</em> — computational mutation scanning. It can prioritize GWAS variants (Chapter 8) for functional follow-up and predict the regulatory consequences of designed mutations.</p>
+
+<div class="lw-box">
+<h4>Living Works Application — Regulatory Sequence Design (Phase 2)</h4>
+<p>DeepSEA-style models are the core of Phase 2. The system needs to:</p>
+<ol>
+<li>Design regulatory sequences that drive expression of target genes in the chassis organism</li>
+<li>Predict expression levels from the designed sequence using Enformer</li>
+<li>Optimize the design by in silico mutagenesis — systematically scanning possible changes to find designs with maximum predicted expression</li>
+</ol>
+<p>The CNN learns the regulatory code of the target organism: which motifs drive expression, which combinations create enhancers, which patterns silence genes. This knowledge allows the system to <em>write</em> new regulatory programs, not just <em>read</em> existing ones.</p>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 16: SEQUENCE-TO-FUNCTION                -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch16">
+<h2>Chapter 16: Sequence-to-Function Models</h2>
+
+<h3>16.1 Beyond Binary Prediction</h3>
+
+<p>DeepSEA predicts binary labels (TF bound or not). But biological reality is quantitative — a promoter doesn't just "work" or "not work," it drives a specific level of expression that varies by cell type, condition, and time. The next generation of models predicts <em>quantitative signal tracks</em>.</p>
+
+<h3>16.2 Basenji and Basenji2</h3>
+
+<p>Basenji (Kelley et al., 2018) predicts quantitative CAGE (transcription), DNase, and histone modification tracks from 131kb input sequences. Instead of classifying peaks, it predicts the actual read count profile — a regression task across 128bp bins.</p>
+
+<p>Architecture innovations:</p>
+<ul>
+<li><strong>Dilated convolutions:</strong> Convolution with gaps between filter elements, exponentially increasing the receptive field without pooling. A filter with dilation d=4 has effective width 4× its parameter count.</li>
+<li><strong>Multi-task learning:</strong> Predicting many tracks simultaneously shares learned features. A motif useful for predicting H3K4me3 in one cell type is also useful in another.</li>
+</ul>
+
+<h3>16.3 Enformer — Attention Meets Genomics</h3>
+
+<p>Enformer (Avsec et al., DeepMind 2021) combines convolutions with transformer attention (Chapter 17) to capture long-range regulatory interactions:</p>
+
+<ul>
+<li><strong>Input:</strong> 196,608bp DNA sequence (~200kb — enough to include distal enhancers)</li>
+<li><strong>Trunk:</strong> Convolutional layers downsample to 1,536 positions</li>
+<li><strong>Transformer layers:</strong> 11 layers of multi-head self-attention capture long-range interactions (enhancer-promoter contacts up to 100kb away)</li>
+<li><strong>Output:</strong> 5,313 quantitative tracks (gene expression, epigenetic marks, chromatin accessibility) across 896 positions (128bp bins)</li>
+</ul>
+
+<p>Enformer significantly outperforms Basenji2 on predicting gene expression — the attention layers capture the long-range enhancer-promoter interactions that pure CNNs miss.</p>
+
+<div class="lw-box">
+<h4>Living Works Application — Enformer Is Phase 2</h4>
+<p>The Phase 2 roadmap explicitly names Enformer as the expression prediction engine. The workflow:</p>
+<ol>
+<li><strong>Input:</strong> Designed regulatory sequence + coding region + flanking context from target organism</li>
+<li><strong>Enformer predicts:</strong> Expression level (in TPM) across cell types and conditions</li>
+<li><strong>Optimization loop:</strong> Modify regulatory elements → re-predict → select designs with highest expression in target tissue</li>
+<li><strong>Constraint checking:</strong> Ensure the design doesn't activate expression in unwanted contexts (safety constraint)</li>
+</ol>
+<p>Key challenge: Enformer was trained on human and mouse data. Applying it to Ganoderma or coral requires <em>transfer learning</em> — fine-tuning on organism-specific data. ChromHMM (Chapter 5) provides the training labels; the compatibility module provides the cross-kingdom sanity checks.</p>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 17: TRANSFORMERS                        -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch17">
+<div class="part-title">Part V — The Language of Life</div>
+<h2>Chapter 17: The Transformer Revolution</h2>
+
+<p class="epigraph">"Attention is all you need." — Vaswani et al., 2017</p>
+
+<h3>17.1 The Problem with Recurrence</h3>
+
+<p>Before transformers, sequence models were recurrent (RNNs, LSTMs) — processing tokens one at a time, left to right. This had two problems:</p>
+<ul>
+<li><strong>Sequential computation:</strong> Can't parallelize across positions. Training is slow.</li>
+<li><strong>Long-range dependencies:</strong> Information from distant positions must pass through many steps, getting diluted (vanishing gradient) or distorted.</li>
+</ul>
+
+<p>The transformer architecture (Vaswani et al., 2017) replaces recurrence with <em>self-attention</em> — every position attends directly to every other position, in parallel.</p>
+
+<h3>17.2 Self-Attention</h3>
+
+<p>Given an input sequence of embeddings X = [x₁, x₂, ..., x_n], self-attention computes three matrices via learned linear projections:</p>
+
+<ul>
+<li><strong>Queries:</strong> Q = XW_Q — "what am I looking for?"</li>
+<li><strong>Keys:</strong> K = XW_K — "what do I contain?"</li>
+<li><strong>Values:</strong> V = XW_V — "what do I contribute?"</li>
+</ul>
+
+<p>Attention is computed as:</p>
+
+<div class="key-eq">
+Attention(Q, K, V) = softmax(QK^T / √d_k) · V
+</div>
+
+<p>Each position computes a weighted sum of all values, where the weights are determined by query-key compatibility (dot product). The √d_k scaling prevents the softmax from saturating when d_k is large.</p>
+
+<h3>17.3 Multi-Head Attention</h3>
+
+<p>A single attention head captures one type of relationship. Multi-head attention runs h parallel attention heads (each with its own W_Q, W_K, W_V), concatenates their outputs, and projects:</p>
+
+<div class="key-eq">
+MultiHead(Q,K,V) = Concat(head₁, ..., head_h) · W_O
+</div>
+
+<p>Different heads learn different relationship types. In protein language models (Chapter 19), different attention heads correspond to different structural properties — one head might capture local backbone geometry, another might capture long-range contacts.</p>
+
+<div class="fig">
+<img src="book-images/glm_p6_0.jpeg" alt="Transformer architectures for genomics">
+<p class="caption">Figure 17.1 — Transformer-LLM and Transformer-Hybrid architectures for genomics (from "To Transformers and Beyond"). Top: Pure transformer with multi-head attention for classification tasks (promoter, enhancer identification). Bottom: Hybrid architecture combining CNN convolutions with transformer attention — the approach used by Enformer for predicting quantitative tracks from one-hot encoded DNA.</p>
+</div>
+
+<h3>17.4 Positional Encoding</h3>
+
+<p>Transformers process all positions in parallel — they have no inherent sense of sequence order. Positional encoding adds order information by injecting position-dependent values into the input embeddings:</p>
+
+<div class="key-eq">
+PE(pos, 2i) = sin(pos / 10000^{2i/d})  |  PE(pos, 2i+1) = cos(pos / 10000^{2i/d})
+</div>
+
+<p>The sine/cosine functions at different frequencies create a unique "fingerprint" for each position. The model can learn relative positions from these patterns.</p>
+
+<h3>17.5 Transformer Blocks</h3>
+
+<p>A transformer block combines:</p>
+<ol>
+<li>Multi-head self-attention (with residual connection + layer normalization)</li>
+<li>Position-wise feed-forward network (two linear layers with ReLU, with residual connection + layer normalization)</li>
+</ol>
+
+<p>Stacking N blocks gives a deep model that alternates between attending to relationships (attention) and transforming representations (feed-forward). BERT-base uses N=12 blocks; BERT-large uses N=24; GPT-4 scale models use >100.</p>
+
+<div class="lw-box">
+<h4>Living Works Application — Claude IS a Transformer</h4>
+<p>The Phase 1 pipeline starts with Claude interpreting natural language descriptions of desired biological functions. Claude is a transformer — the exact architecture described in this chapter. When a user types "design a protein that cross-links fungal cell walls under mechanical stress," the self-attention mechanism is:</p>
+<ul>
+<li>"cross-links" attends to "cell walls" (what to cross-link)</li>
+<li>"mechanical stress" attends to "under" (condition for activation)</li>
+<li>"fungal" attends to "cell walls" (which organism's walls)</li>
+</ul>
+<p>Understanding self-attention explains <em>why</em> Claude can reason about biology: it captures relationships between concepts at arbitrary distance in the input. The same mechanism, applied to DNA sequences (Chapter 18) and protein sequences (Chapter 19), captures relationships between nucleotides and amino acids at arbitrary distance in the genome.</p>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 18: GENOMIC LANGUAGE MODELS             -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch18">
+<h2>Chapter 18: Genomic Language Models</h2>
+
+<p class="epigraph">"DNA is a language. Genomes are texts. The genome is a book written in a four-letter alphabet that we are only beginning to read." — adapted from the genomic LLM literature</p>
+
+<h3>18.1 The Analogy: DNA as Text</h3>
+
+<p>The insight driving genomic language models is that DNA sequences are structured like natural language:</p>
+
+<ul>
+<li><strong>Vocabulary:</strong> 4 nucleotides (or k-mers as "words")</li>
+<li><strong>Grammar:</strong> Regulatory logic — promoters precede genes, splice sites bracket introns, enhancers can act at distance</li>
+<li><strong>Semantics:</strong> Biological function encoded in sequence patterns</li>
+<li><strong>Context dependence:</strong> The same sequence motif can mean different things in different genomic contexts</li>
+</ul>
+
+<p>If NLP models can learn grammar and meaning from raw text, perhaps genomic models can learn regulatory grammar and biological function from raw DNA sequence.</p>
+
+<div class="fig">
+<img src="book-images/glm_p5_0.png" alt="Genome LLM overview">
+<p class="caption">Figure 18.1 — Overview of genomic language models (from "To Transformers and Beyond"). Data sources (whole genomes, single-cell transcriptomes) feed into the model via tokenization strategies (k-mer, gene-level). Pretext tasks include masked language modeling and autoregressive prediction. Downstream tasks include functional region identification, disease SNP prediction, and gene expression modeling.</p>
+</div>
+
+<h3>18.2 BERT-Style Pretraining for DNA</h3>
+
+<div class="fig">
+<img src="book-images/prot_p5_0.jpeg" alt="Pretraining and fine-tuning pipeline">
+<p class="caption">Figure 18.2 — Pretraining and fine-tuning pipeline (from Ofer et al.). A: Pretraining masks random tokens in a large unlabeled corpus and trains the model to predict them from context. B: Fine-tuning adds a task-specific head on top of the pretrained representations and trains on a small labeled dataset.</p>
+</div>
+
+<p>The BERT pretraining paradigm (Devlin et al., 2019) has been directly adapted for DNA:</p>
+
+<ol>
+<li><strong>Tokenize</strong> the genome into k-mers (e.g., 6-mers for DNABERT) or single nucleotides</li>
+<li><strong>Mask</strong> 15% of tokens randomly</li>
+<li><strong>Train</strong> the model to predict masked tokens from surrounding context</li>
+<li><strong>Fine-tune</strong> on specific tasks: promoter prediction, splice site detection, variant effect scoring</li>
+</ol>
+
+<h3>18.3 Key Genomic Language Models</h3>
+
+<div class="fig">
+<img src="book-images/glm_p11_0.png" alt="Comparison table of genomic language models">
+<p class="caption">Figure 18.3 — Comparison of genomic language models (from "To Transformers and Beyond"). Models compared by architecture, parameters, input length, pretraining strategy, training data, and interpretability. DNABERT through Borzoi, spanning 2021-2023.</p>
+</div>
+
+<h4>DNABERT (Ji et al., 2021)</h4>
+<p>First BERT-style model for DNA. Uses 6-mer tokenization on the human genome. 110M parameters. Fine-tuned for promoter prediction, splice site detection, and TF binding prediction. Attention maps can be visualized to identify which sequence regions contribute to predictions.</p>
+
+<h4>Nucleotide Transformer (Dalla-Torre et al., 2023)</h4>
+<p>Trained on 3,200+ genomes (not just human) with up to 2.5B parameters. Uses 6-mer tokenization and input up to 1000 tokens. Captures cross-species sequence patterns. Outperforms DNABERT on most benchmarks. Can predict epigenetic marks, enhancer sequences, and splice sites.</p>
+
+<h4>HyenaDNA (Nguyen et al., 2023)</h4>
+<p>Uses the Hyena operator (a sub-quadratic alternative to attention) to handle ultra-long sequences — up to 1 million base pairs. Single-nucleotide resolution. This matters because regulatory elements can be >100kb from the genes they control. Standard transformers (with O(n²) attention) can't handle this length.</p>
+
+<h4>Geneformer (Theodoris et al., 2023)</h4>
+<p>A different approach: instead of processing DNA sequence, Geneformer processes <em>gene expression vectors</em>. Each cell's transcriptome is tokenized as a ranked list of genes. Pretrained on ~30M single-cell transcriptomes. Predicts gene networks, disease gene candidates, and cell type transitions.</p>
+
+<h3>18.4 Tokenization Strategies</h3>
+
+<p>How to split a DNA sequence into tokens is a critical design choice:</p>
+
+<ul>
+<li><strong>Single nucleotide:</strong> Maximum resolution but very long sequences (human genome = 3 billion tokens). Used by HyenaDNA.</li>
+<li><strong>k-mer:</strong> Overlapping substrings of length k (e.g., k=6). Vocabulary = 4^k. Creates shorter sequences but larger vocabulary. Used by DNABERT, Nucleotide Transformer.</li>
+<li><strong>BPE (Byte Pair Encoding):</strong> Data-driven tokenization that merges frequent pairs. Creates variable-length tokens. Used in natural language by GPT models. Adapts vocabulary to the actual patterns in genomic data.</li>
+</ul>
+
+<h3>18.5 Zero-Shot Variant Effect Prediction</h3>
+
+<p>A pretrained genomic LM can predict variant effects without any fine-tuning:</p>
+
+<div class="key-eq">
+ΔScore = log P(alt | context) - log P(ref | context)
+</div>
+
+<p>If the model assigns much higher probability to the reference nucleotide than the alternate at a given position, the variant likely disrupts the learned sequence grammar. This is "zero-shot" because it uses only the pretrained model — no labeled variant effect data needed.</p>
+
+<div class="lw-box">
+<h4>Living Works Application — DNA Spellcheck for Designed Sequences</h4>
+<p>Phase 2 uses genomic LMs as a "spellcheck" for designed regulatory sequences:</p>
+<ol>
+<li>Design a regulatory element (promoter + enhancer + spacer) for the target organism</li>
+<li>Run the designed sequence through a pretrained genomic LM (e.g., Nucleotide Transformer)</li>
+<li>At each position, check P(designed nucleotide | context)</li>
+<li>Positions with low probability are "misspellings" — violations of the regulatory grammar</li>
+<li>Flag these positions for redesign or manual review</li>
+</ol>
+<p>This is the genomic analog of a grammar checker: the LM has learned what "correct" DNA looks like from billions of bases of evolution. Designed sequences that deviate from this learned grammar are unlikely to function correctly.</p>
+<p>For organisms not well-represented in training data (Ganoderma, coral), the Nucleotide Transformer's multi-species training provides some cross-species transfer. Eventually, the system could fine-tune a genomic LM on target organism sequences for higher accuracy.</p>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 19: PROTEIN LANGUAGE MODELS             -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch19">
+<h2>Chapter 19: Protein Language Models</h2>
+
+<p class="epigraph">"Proteins are sentences written in a 20-letter alphabet. Like language, their meaning depends on context." — Ofer et al., 2021</p>
+
+<h3>19.1 The NLP-Protein Analogy</h3>
+
+<div class="fig">
+<img src="book-images/prot_p2_0.jpeg" alt="NLP-protein analogy">
+<p class="caption">Figure 19.1 — The parallel between natural language processing and protein sequence analysis (Ofer et al.). A: Local properties (TF binding sites ↔ subject/verb/object), global properties (subcellular localization ↔ sentiment), and string structure (amino acid sequence ↔ text). B: Tokenization strategies for text and protein sequences. C: Bag-of-words representation for both domains.</p>
+</div>
+
+<p>Ofer et al. (2021) systematically map NLP concepts to protein biology:</p>
+
+<ul>
+<li><strong>Characters → amino acids:</strong> 20 amino acids form the alphabet</li>
+<li><strong>Words → k-mers or domains:</strong> Short subsequences as tokens</li>
+<li><strong>Sentences → proteins:</strong> A complete functional unit</li>
+<li><strong>Documents → proteomes:</strong> All proteins in an organism</li>
+<li><strong>Grammar → biochemistry:</strong> Rules governing which sequences fold and function</li>
+<li><strong>Meaning → function:</strong> What the protein does</li>
+</ul>
+
+<h3>19.2 Protein Embedding Methods</h3>
+
+<p>Just as word2vec learns word embeddings from text, protein embedding methods learn amino acid/protein representations:</p>
+
+<h4>Classical Approaches</h4>
+<ul>
+<li><strong>One-hot encoding:</strong> 20-dimensional binary vector per amino acid. No learned information.</li>
+<li><strong>BLOSUM62:</strong> Each amino acid represented by its row in the substitution matrix. Captures evolutionary substitution patterns.</li>
+<li><strong>Position-Specific Scoring Matrix (PSSM):</strong> From MSA of homologs. Each position has a 20-dimensional profile reflecting conservation.</li>
+</ul>
+
+<h4>Learned Embeddings</h4>
+<ul>
+<li><strong>ProtVec:</strong> Word2vec (Skip-gram) trained on protein 3-grams. Each 3-mer gets a 100-dimensional embedding.</li>
+<li><strong>SeqVec:</strong> ELMo-style contextualized embeddings from a bidirectional LSTM trained on UniRef50.</li>
+<li><strong>ESM (Evolutionary Scale Modeling):</strong> Transformer-based masked language model. State of the art.</li>
+</ul>
+
+<h3>19.3 ESM — The Foundation Model for Proteins</h3>
+
+<p>ESM (Rives et al., 2021; Lin et al., 2022) is the most important protein language model for the Living Works system:</p>
+
+<ul>
+<li><strong>ESM-1b:</strong> 650M parameters, trained on 250M protein sequences from UniRef</li>
+<li><strong>ESM-2:</strong> Up to 15B parameters. Produces per-residue embeddings used for downstream tasks</li>
+<li><strong>ESM-3:</strong> Function-conditioned protein generation — generates novel proteins with specified functions</li>
+<li><strong>ESMFold:</strong> Predicts protein structure directly from a single sequence (no MSA needed). Faster than AlphaFold for screening.</li>
+</ul>
+
+<h4>What ESM Learns</h4>
+
+<p>From sequence alone (no structure labels, no function labels), ESM's internal representations encode:</p>
+<ul>
+<li><strong>Secondary structure:</strong> Linear probes on ESM embeddings predict α-helix, β-sheet, coil with >80% accuracy</li>
+<li><strong>3D contacts:</strong> Attention heads in ESM directly correspond to residue-residue contacts in the 3D structure</li>
+<li><strong>Function:</strong> ESM embeddings cluster by enzyme class, subcellular localization, and protein family</li>
+<li><strong>Evolutionary relationships:</strong> Similar proteins (by evolution) have similar embeddings — ESM recapitulates the tree of life</li>
+</ul>
+
+<div class="lw-box">
+<h4>Living Works Application — ESM-3 IS Phase 1</h4>
+<p>ESM-3 is the protein generation engine at the heart of Phase 1. The pipeline:</p>
+<ol>
+<li>Claude interprets "design a protein that cross-links fungal cell walls" → GO terms + function tokens</li>
+<li>ESM-3 generates 3 candidate amino acid sequences conditioned on those function tokens</li>
+<li>Each candidate is scored by ESM-3's own log-likelihood (higher = more "protein-like")</li>
+<li>ESMFold or AlphaFold predicts 3D structure for top candidates</li>
+<li>pLDDT filters out candidates that don't fold reliably</li>
+<li>Surviving candidates are back-translated to DNA using target organism codon tables</li>
+</ol>
+<p>The <code>bridge/esm_bridge.py</code> module (to be built in Phase 1) handles steps 2-5. It maps GO terms to ESM-3 function annotation tokens, calls the model, scores candidates, and returns codon-optimized DNA sequences.</p>
+<p>Understanding how ESM works — masked language modeling, attention heads as contact maps, embeddings as function signatures — is essential for debugging the pipeline when candidates fail. If a candidate has high ESM likelihood but low pLDDT, the problem is likely in the structure module, not the sequence model.</p>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 20: ALPHAFOLD                           -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch20">
+<h2>Chapter 20: AlphaFold & Structure Prediction</h2>
+
+<p class="epigraph">"AlphaFold represents a stunning advance... this computational work represents a remarkable advance in the 50-year-old problem of protein structure prediction." — CASP14 assessment</p>
+
+<h3>20.1 The Protein Folding Problem</h3>
+
+<p>A protein's function is determined by its 3D structure, which is determined by its amino acid sequence. Predicting structure from sequence — the "protein folding problem" — was one of biology's grand challenges for 50 years. AlphaFold2 (Jumper et al., 2021) effectively solved it for single-chain proteins.</p>
+
+<h3>20.2 AlphaFold2 Architecture</h3>
+
+<p>AlphaFold2 has four main components:</p>
+
+<h4>Input Processing</h4>
+<ul>
+<li><strong>MSA:</strong> Multiple sequence alignment of homologs, computed by searching sequence databases (UniRef, BFD, MGnify). Each row is a homolog; each column is an aligned position.</li>
+<li><strong>Template search:</strong> Find experimentally determined structures of homologous proteins from PDB.</li>
+<li><strong>Pair representation:</strong> An L×L matrix encoding relationships between all pairs of residues.</li>
+</ul>
+
+<h4>Evoformer (48 blocks)</h4>
+<p>The core innovation. Jointly updates MSA representations and pair representations through alternating:</p>
+<ul>
+<li><strong>MSA row attention:</strong> Each sequence attends across positions (within-sequence pattern)</li>
+<li><strong>MSA column attention:</strong> Each position attends across sequences (conservation pattern)</li>
+<li><strong>Pair update:</strong> Triangle attention and multiplication — residue i,j pair features are updated using information from i,k and k,j pairs (triangle inequality in 3D space)</li>
+</ul>
+
+<h4>Structure Module (8 iterations)</h4>
+<p>Iteratively refines 3D coordinates from the Evoformer representations:</p>
+<ul>
+<li>Each residue is represented as a rigid body (rotation + translation)</li>
+<li>Invariant Point Attention (IPA) updates positions using both sequence-space features and 3D spatial relationships</li>
+<li>Iterative refinement: the structure module runs multiple times, progressively improving coordinates</li>
+</ul>
+
+<h4>Loss Function</h4>
+<p>Frame-Aligned Point Error (FAPE): measures the discrepancy between predicted and true atom positions in the local reference frame of each residue. This makes the loss invariant to global rotation and translation.</p>
+
+<h3>20.3 pLDDT — Knowing What You Don't Know</h3>
+
+<div class="key-eq">
+pLDDT: predicted Local Distance Difference Test (0-100)
+</div>
+
+<ul>
+<li><strong>&gt;90:</strong> High confidence. Backbone and side chains are reliable.</li>
+<li><strong>70-90:</strong> Moderate confidence. Backbone is reliable, side chains may be off.</li>
+<li><strong>50-70:</strong> Low confidence. General fold may be right but details are uncertain.</li>
+<li><strong>&lt;50:</strong> Very low confidence. Often indicates intrinsically disordered regions.</li>
+</ul>
+
+<h3>20.4 AlphaFold3 and Beyond</h3>
+
+<p>AlphaFold3 (Abramson et al., 2024) extends to complexes:</p>
+<ul>
+<li>Protein-protein interactions</li>
+<li>Protein-DNA/RNA binding</li>
+<li>Protein-ligand (small molecule) binding</li>
+<li>Uses a diffusion-based structure generation module</li>
+</ul>
+
+<div class="lw-box">
+<h4>Living Works Application — Structure Validation for Designed Proteins</h4>
+<p>AlphaFold is the quality control gate in Phase 1:</p>
+<ol>
+<li>ESM-3 generates candidate protein sequences</li>
+<li>AlphaFold (or ESMFold for speed) predicts their 3D structures</li>
+<li>pLDDT score filters: reject candidates with average pLDDT &lt; 70</li>
+<li>For cross-linking enzymes: check that the active site residues have pLDDT &gt; 90 (catalytic residues must be precisely positioned)</li>
+<li>For structural proteins: check that the overall fold is compact and stable (no large disordered regions)</li>
+</ol>
+<p>AlphaFold3 becomes critical in Phase 3 when the system designs protein-protein interactions — e.g., how a designed cross-linking enzyme interacts with the fungal cell wall substrate. The <code>compatibility/pathway.py</code> module's protein interface analysis could be replaced by AlphaFold3 complex prediction.</p>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 21: REGULATORY MOTIFS                   -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch21">
+<div class="part-title">Part VI — Regulatory Intelligence</div>
+<h2>Chapter 21: Regulatory Motifs & Gene Regulation</h2>
+
+<p class="epigraph">"The genome is not just a parts list — it is a program. Regulatory motifs are the grammar of that program." — Kellis Ch17</p>
+
+<h3>21.1 What Are Regulatory Motifs?</h3>
+
+<p>Regulatory motifs are short DNA sequence patterns (6-20bp) that are recognized by transcription factors (TFs). When a TF binds its motif, it activates or represses transcription of nearby genes. The combinatorial logic of which motifs appear, in what order, at what spacing, and with what orientation constitutes the <em>regulatory code</em>.</p>
+
+<p>Motifs are represented as Position Weight Matrices (PWMs): at each position, the probability of each nucleotide. High-information positions are highly conserved (one nucleotide dominates); low-information positions are variable.</p>
+
+<h3>21.2 De Novo Motif Discovery</h3>
+
+<p>Kellis (Ch17) describes two algorithms for finding motifs in unaligned sequences:</p>
+
+<h4>Expectation Maximization (EM)</h4>
+<ol>
+<li>Initialize a motif model (random or from seed)</li>
+<li><strong>E-step:</strong> For each sequence, compute the probability that the motif starts at each position</li>
+<li><strong>M-step:</strong> Update the PWM using the weighted counts from all sequences</li>
+<li>Repeat until convergence</li>
+</ol>
+
+<p>This is the same EM framework as Baum-Welch (Chapter 5), applied to a simpler model. The "hidden variable" is the motif start position in each sequence.</p>
+
+<h4>Gibbs Sampling</h4>
+<ol>
+<li>Initialize by randomly choosing a motif position in each sequence</li>
+<li>Remove one sequence from the alignment</li>
+<li>Build a PWM from the remaining sequences</li>
+<li>Score all positions in the removed sequence against the PWM</li>
+<li>Sample a new position proportional to the scores</li>
+<li>Repeat for all sequences, cycling many times</li>
+</ol>
+
+<p>Gibbs sampling is stochastic — it explores the solution space by random sampling rather than deterministic optimization. This helps escape local optima that EM gets stuck in.</p>
+
+<h3>21.3 Regulatory Logic</h3>
+
+<p>Gene expression is controlled by combinations of motifs — an "enhanceosome" where multiple TFs cooperatively bind to activate transcription. Key principles:</p>
+
+<ul>
+<li><strong>Combinatorial control:</strong> Each gene is regulated by a unique combination of TFs</li>
+<li><strong>Spacing and orientation matter:</strong> The same motifs in different arrangements can have different effects</li>
+<li><strong>Enhancers act at distance:</strong> Regulatory elements can be 10-1000kb from the gene they control</li>
+<li><strong>Repression:</strong> Some TFs repress rather than activate — recruiting chromatin-modifying enzymes that close the locus</li>
+</ul>
+
+<div class="lw-box">
+<h4>Living Works Application — Writing Regulatory Programs</h4>
+<p>Phase 2 doesn't just predict expression — it <em>designs</em> regulatory sequences. This requires writing motif combinations:</p>
+<ul>
+<li><strong>Constitutive expression:</strong> Strong promoter motifs from the target organism's housekeeping genes</li>
+<li><strong>Inducible expression:</strong> Motifs for stress-responsive TFs (e.g., mechanical stress → design a promoter with motifs for the fungal stress TF)</li>
+<li><strong>Spatial control:</strong> Motifs that restrict expression to specific cell types or developmental stages</li>
+<li><strong>Combinatorial design:</strong> Stack multiple motifs to achieve desired expression logic</li>
+</ul>
+<p>The <code>compatibility/regulatory.py</code> module already detects cross-kingdom conflicts (fungal vs bacterial promoter elements). Phase 2 extends this from detection to <em>design</em> — generating new regulatory sequences that follow the target organism's motif grammar.</p>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 22: EPIGENOMICS                         -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch22">
+<h2>Chapter 22: Epigenomics & Chromatin States</h2>
+
+<h3>22.1 The Epigenomic Landscape</h3>
+
+<p>The genome is the same in every cell of an organism — but different genes are active in different cells. The epigenome controls this differential activity through chemical modifications that don't change the DNA sequence:</p>
+
+<ul>
+<li><strong>DNA methylation:</strong> Methyl groups on cytosines at CpG sites. Generally silences transcription. Heritable through cell division.</li>
+<li><strong>Histone modifications:</strong> Chemical marks on the histone proteins around which DNA is wound. Different combinations signal different functional states:</li>
+<ul>
+<li>H3K4me3 + H3K27ac → Active promoter</li>
+<li>H3K4me1 + H3K27ac → Active enhancer</li>
+<li>H3K36me3 → Transcribed gene body</li>
+<li>H3K27me3 → Polycomb-repressed</li>
+<li>H3K9me3 → Heterochromatin (permanently silenced)</li>
+</ul>
+<li><strong>Chromatin accessibility:</strong> Whether DNA is open (accessible to TFs) or compacted (inaccessible). Measured by ATAC-seq, DNase-seq.</li>
+</ul>
+
+<div class="fig">
+<img src="book-images/kellis_p238_0.jpeg" alt="miRNA pathways in plants and animals">
+<p class="caption">Figure 22.1 — RNA interference pathways (Kellis). Small RNAs (miRNA, siRNA) are processed by Dicer/Drosha, loaded into RISC, and guide translational repression or mRNA degradation. This post-transcriptional regulation adds another layer of gene control beyond chromatin state — relevant for designing expression circuits that include safety switches.</p>
+</div>
+
+<h3>22.2 ENCODE and Roadmap</h3>
+
+<p>The ENCODE (Encyclopedia of DNA Elements) and Roadmap Epigenomics projects mapped histone modifications, TF binding, and chromatin accessibility across hundreds of human cell types and tissues. This data is the training set for epigenomic prediction models (DeepSEA, Enformer, ChromHMM).</p>
+
+<h3>22.3 Chromatin State Models</h3>
+
+<p>ChromHMM (Chapter 5) learns chromatin states from histone modification data. Typical states discovered:</p>
+
+<ol>
+<li><strong>Active TSS (Transcription Start Site):</strong> Strong H3K4me3, marks active promoters</li>
+<li><strong>Flanking active TSS:</strong> H3K4me1 + H3K4me3, regions near active promoters</li>
+<li><strong>Strong enhancer:</strong> H3K4me1 + H3K27ac, distal regulatory elements</li>
+<li><strong>Weak enhancer:</strong> H3K4me1 alone</li>
+<li><strong>Transcribed:</strong> H3K36me3, gene bodies of active genes</li>
+<li><strong>Repressed (Polycomb):</strong> H3K27me3, developmentally silenced genes</li>
+<li><strong>Heterochromatin:</strong> H3K9me3, constitutively silenced regions</li>
+<li><strong>Quiescent:</strong> No marks, inactive regions</li>
+</ol>
+
+<div class="lw-box">
+<h4>Living Works Application — Predicting Transgene Silencing</h4>
+<p>The most common failure mode in synthetic biology is <em>transgene silencing</em> — the inserted gene is recognized as foreign and shut down by the host's epigenetic machinery. Understanding chromatin states helps predict and prevent this:</p>
+<ul>
+<li><strong>Insertion site matters:</strong> Inserting into heterochromatin (H3K9me3) will silence the transgene. The system should target open chromatin regions.</li>
+<li><strong>CpG content:</strong> Sequences with high CpG content may trigger DNA methylation and silencing. The codon optimizer should monitor CpG frequency.</li>
+<li><strong>Insulator elements:</strong> Flanking the transgene with insulator sequences (like the chicken HS4 insulator) can protect it from spreading heterochromatin.</li>
+<li><strong>Chromatin state prediction:</strong> Phase 2 uses Enformer to predict the chromatin state at the designed insertion site, avoiding silenced regions.</li>
+</ul>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 23: NETWORKS                            -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch23">
+<h2>Chapter 23: Biological Networks</h2>
+
+<h3>23.1 Types of Biological Networks</h3>
+
+<p>Kellis (Ch20-21) covers network analysis in genomics. Biological systems operate through interconnected networks:</p>
+
+<ul>
+<li><strong>Gene regulatory networks (GRNs):</strong> TFs regulate target genes, which may themselves be TFs → cascading regulatory circuits. The sea urchin GRN (Davidson lab) is the most complete developmental network known.</li>
+<li><strong>Protein-protein interaction (PPI) networks:</strong> Physical interactions between proteins. Hubs (highly connected proteins) tend to be essential.</li>
+<li><strong>Metabolic networks:</strong> Enzymes catalyze reactions that convert metabolites. Flux balance analysis predicts metabolic flow.</li>
+<li><strong>Signaling networks:</strong> Cascades of protein modifications (phosphorylation, etc.) that transmit information from cell surface to nucleus.</li>
+</ul>
+
+<h3>23.2 Network Centrality</h3>
+
+<p>Which nodes are most important in a network?</p>
+
+<ul>
+<li><strong>Degree centrality:</strong> Number of connections. High-degree nodes are hubs.</li>
+<li><strong>Betweenness centrality:</strong> How many shortest paths pass through this node. High-betweenness nodes are bridges.</li>
+<li><strong>Eigenvector centrality:</strong> Importance from being connected to other important nodes. PageRank is a variant.</li>
+<li><strong>Closeness centrality:</strong> Average distance to all other nodes. Central nodes reach the entire network quickly.</li>
+</ul>
+
+<h3>23.3 Network Communities and Modules</h3>
+
+<p>Biological networks are modular — they contain densely connected subgraphs (modules) that correspond to functional units. Kellis covers spectral methods for community detection:</p>
+
+<ul>
+<li><strong>Graph Laplacian:</strong> L = D - A, where D is the degree matrix and A is the adjacency matrix</li>
+<li><strong>Spectral clustering:</strong> Eigenvectors of L reveal community structure. The second-smallest eigenvalue (Fiedler value) gives the optimal two-way partition.</li>
+<li><strong>Modularity optimization:</strong> Find the partition that maximizes within-community edges versus expected by chance</li>
+</ul>
+
+<div class="lw-box">
+<h4>Living Works Application — Gene Regulatory Network Design (Phase 3)</h4>
+<p>Phase 3 of the roadmap is GRN design — creating the developmental programs that grow structures. This requires network-level thinking:</p>
+<ul>
+<li><strong>GRN database:</strong> The system needs curated GRNs from target organisms: sea urchin (biomineralization circuit), Arabidopsis (meristem feedback: WUS/CLV3), mycelium (branching programs)</li>
+<li><strong>Network motifs:</strong> Common circuit patterns — toggle switches (bistability), oscillators (rhythmic growth), feed-forward loops (noise filtering), positive feedback (differentiation). The system combines these motifs to create desired behaviors.</li>
+<li><strong>Centrality analysis:</strong> Identify the hub genes in each GRN — these are the leverage points for reprogramming. Modifying a hub has system-wide effects; modifying a peripheral gene is localized.</li>
+<li><strong>The compatibility/pathway.py module</strong> already analyzes pathway-level interactions. Phase 3 extends this to full GRN design — not just checking compatibility but composing new regulatory circuits from modular components.</li>
+</ul>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 24: THE FULL STACK                      -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch24">
+<div class="part-title">Part VII — The Living Architecture</div>
+<h2>Chapter 24: The Full Stack — From Sequence to Structure</h2>
+
+<p class="epigraph">"Every model in this course is a tool for reading life's source code. The Living Works system uses them to write the next chapter."</p>
+
+<h3>24.1 The Integration Map</h3>
+
+<p>Every algorithm in this book maps to a specific layer of the adaptive_Automation system:</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:0.88rem;margin:20px 0;">
+<tr style="border-bottom:2px solid var(--accent);"><th style="text-align:left;padding:8px;color:var(--accent);">Algorithm</th><th style="text-align:left;padding:8px;color:var(--accent);">System Layer</th><th style="text-align:left;padding:8px;color:var(--accent);">What It Does</th></tr>
+<tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">Sequence Alignment</td><td style="padding:8px;">Retrieval</td><td style="padding:8px;">Find homologous genes across organisms</td></tr>
+<tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">HMMs / Viterbi</td><td style="padding:8px;">Retrieval / Annotation</td><td style="padding:8px;">Identify gene structures in raw sequence</td></tr>
+<tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">Markov Chains</td><td style="padding:8px;">Compatibility / Codon</td><td style="padding:8px;">Score and optimize codon dialect fitness</td></tr>
+<tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">Baum-Welch / EM</td><td style="padding:8px;">Retrieval</td><td style="padding:8px;">Learn organism-specific model parameters</td></tr>
+<tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">Logistic Regression</td><td style="padding:8px;">Compatibility / Pathway</td><td style="padding:8px;">Score variant effects and pathway impacts</td></tr>
+<tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">Multiple Testing</td><td style="padding:8px;">Assembly</td><td style="padding:8px;">Control false positive rate in compatibility flags</td></tr>
+<tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">Decision Trees</td><td style="padding:8px;">Retrieval / Species Search</td><td style="padding:8px;">Map functions to organisms and genes</td></tr>
+<tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">Random Forests</td><td style="padding:8px;">Assembly</td><td style="padding:8px;">Designability scoring from multiple features</td></tr>
+<tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">SVMs</td><td style="padding:8px;">Phase 1: Validation</td><td style="padding:8px;">Classify protein candidates as functional/not</td></tr>
+<tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">CNNs</td><td style="padding:8px;">Phase 2: Regulatory</td><td style="padding:8px;">Learn motifs and predict expression from sequence</td></tr>
+<tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">Enformer</td><td style="padding:8px;">Phase 2: Regulatory</td><td style="padding:8px;">Predict quantitative expression from 200kb context</td></tr>
+<tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">Transformers / BERT</td><td style="padding:8px;">Phase 1: Claude Interface</td><td style="padding:8px;">English → biological specification</td></tr>
+<tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">Genomic LMs</td><td style="padding:8px;">Phase 2: DNA Spellcheck</td><td style="padding:8px;">Verify designed sequences follow genomic grammar</td></tr>
+<tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">ESM-3</td><td style="padding:8px;">Phase 1: Protein Generation</td><td style="padding:8px;">Generate functional proteins from specification</td></tr>
+<tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">AlphaFold</td><td style="padding:8px;">Phase 1: Structure Validation</td><td style="padding:8px;">Verify designed proteins fold correctly</td></tr>
+<tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">ChromHMM</td><td style="padding:8px;">Phase 2: Chromatin Annotation</td><td style="padding:8px;">Find regulatory elements in target genomes</td></tr>
+<tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">Network Analysis</td><td style="padding:8px;">Phase 3: GRN Design</td><td style="padding:8px;">Design developmental regulatory circuits</td></tr>
+<tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;">Bayesian Learning</td><td style="padding:8px;">All Layers</td><td style="padding:8px;">Uncertainty quantification throughout the pipeline</td></tr>
+</table>
+
+<h3>24.2 The Phase 1 Pipeline in Detail</h3>
+
+<p>Here is the complete Phase 1 data flow, with every algorithm labeled:</p>
+
+<ol>
+<li><strong>User input</strong> (English): "Design a protein that cross-links fungal cell walls under mechanical stress"</li>
+<li><strong>Claude (Transformer, Ch17)</strong>: Parses to BiologicalSpec → GO terms: GO:0005618 (cell wall), GO:0004096 (catalase activity analog); Target organism: Ganoderma lucidum; Condition: mechanical stress response</li>
+<li><strong>Species search (Decision Tree, Ch10)</strong>: Maps function to known cross-linking enzymes in fungal databases</li>
+<li><strong>BLAST (Alignment, Ch2)</strong>: Finds homologs in related species if Ganoderma annotation is sparse</li>
+<li><strong>HMM annotation (Viterbi, Ch4)</strong>: Identifies exon-intron boundaries in retrieved gene</li>
+<li><strong>ESM-3 (Protein LM, Ch19)</strong>: Generates 3 candidate protein sequences conditioned on function tokens</li>
+<li><strong>ESMFold/AlphaFold (Ch20)</strong>: Predicts 3D structure, filters by pLDDT ≥ 70</li>
+<li><strong>SVM classifier (Ch12)</strong>: Scores candidates on ESM-2 embeddings for functional likelihood</li>
+<li><strong>Back-translation (Markov/Codon, Ch3)</strong>: Rewrites protein → DNA using Ganoderma RSCU tables; scores CAI</li>
+<li><strong>Regulatory compatibility (Motifs, Ch21)</strong>: Checks that designed regulatory elements match target kingdom</li>
+<li><strong>Pathway compatibility (Logistic Regression, Ch7)</strong>: Scores metabolic impact of the new protein</li>
+<li><strong>Assembly (Random Forest, Ch11)</strong>: Computes overall designability score; resolves conflicts</li>
+<li><strong>Multiple testing correction (BH-FDR, Ch9)</strong>: Controls false alarm rate across all compatibility tests</li>
+<li><strong>Claude (Transformer, Ch17)</strong>: Explains the design in plain English</li>
+<li><strong>Output</strong>: Synthesis-ready DNA sequence + modification log + confidence scores + explanation</li>
+</ol>
+
+<p>Every numbered step uses an algorithm from this book. The pipeline is not hypothetical — the retrieval layer, compatibility engine, and assembly engine are built. Phase 1 adds the Claude interface, ESM-3 bridge, and structure validation.</p>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     CHAPTER 25: THE SEVEN PHASES                    -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break" id="ch25">
+<h2>Chapter 25: The Seven Phases of Growing a House</h2>
+
+<p class="epigraph">"The creation of the Living Age requires media to explain why and technology to show how."</p>
+
+<h3>25.1 Phase 1: English ↔ Protein Bridge (Current)</h3>
+<p><strong>Algorithms:</strong> Transformers (Claude), Protein LMs (ESM-3), Structure Prediction (AlphaFold), SVMs, Markov Chains (codon optimization)</p>
+<p><strong>Deliverable:</strong> Type English → get synthesis-ready DNA encoding a functional protein, with explanation</p>
+<p><strong>Demo:</strong> "Design a protein that cross-links fungal cell walls under mechanical stress" → codon-optimized DNA + pLDDT score + Claude explanation</p>
+
+<h3>25.2 Phase 2: Regulatory Layer + Visual Interface</h3>
+<p><strong>Algorithms:</strong> CNNs (DeepSEA), Enformer, Genomic LMs (DNABERT/Nucleotide Transformer), ChromHMM, Regulatory Motif Discovery (EM/Gibbs)</p>
+<p><strong>Deliverable:</strong> Design not just the protein but the regulatory program — when, where, and how much to express it</p>
+<p><strong>New capability:</strong> Predict expression levels from designed sequence; optimize regulatory elements; DNA spellcheck</p>
+
+<h3>25.3 Phase 3: Developmental Programs (GRN Layer)</h3>
+<p><strong>Algorithms:</strong> Network Analysis, GRN motifs (toggle switches, oscillators, feed-forward loops), scGPT/Geneformer (cell state modeling)</p>
+<p><strong>Deliverable:</strong> Design multi-gene circuits that produce developmental behaviors (branching, biomineralization, regeneration)</p>
+<p><strong>Data sources:</strong> Sea urchin GRN (Davidson lab), Arabidopsis meristem, mycelium growth programs, coral biomineralization</p>
+
+<h3>25.4 Phase 4: Morphogenesis Engine</h3>
+<p><strong>Algorithms:</strong> Physics-based simulation, FEM-lite structural analysis, growth rule optimization</p>
+<p><strong>Deliverable:</strong> 3D simulation of growing structures from gene regulatory programs. Export OBJ/STL for visualization.</p>
+<p><strong>Key question:</strong> Can GRN programs produce load-bearing structures without physical scaffolds?</p>
+
+<h3>25.5 Phase 5: Living Architecture Studio (Web Platform)</h3>
+<p><strong>Deliverable:</strong> Web-based design environment. Type English → get a complete living structure design: DNA sequences + growth protocol + structural analysis + 3D visualization.</p>
+<p><strong>Revenue model:</strong> Academic (free), Community ($50/mo), Commercial ($500/mo)</p>
+
+<h3>25.6 Phase 6: Physical Prototypes</h3>
+<p><strong>Prototype 1 (6mo):</strong> Living Shelf — single Ganoderma wall section with enhanced cross-linking. Test: structural strength + self-repair.</p>
+<p><strong>Prototype 2 (12mo):</strong> Living Panel — 1×1m gradient-guided growth with damage response. Test: regeneration after controlled damage.</p>
+<p><strong>Prototype 3 (24mo):</strong> Living Room — 3×3m enclosure with mycelium walls, cellulose windows, stress sensing.</p>
+
+<h3>25.7 Phase 7: The Living Age</h3>
+<p>Full living houses. Communities that grow. Architecture that restores ecosystems instead of depleting them.</p>
+
+<p>The algorithms in this book are the tools. The organisms are the materials. The Living Works system is the translator between human intent and biological execution. The goal is not to replace nature's intelligence but to become fluent enough in its language to ask it — politely, precisely, and with understanding — to grow something beautiful.</p>
+
+<div style="text-align:center;margin:50px 0;color:var(--gold);font-size:1.2rem;font-style:italic;">
+The Markov assumption says the future depends only on the present state.<br>
+The Living Age says: understand the present state of biology deeply enough,<br>
+and you can grow the future.
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--                    APPENDIX                         -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="page-break">
+<h2>Appendix: Source Materials</h2>
+
+<h3>Textbooks</h3>
+<ul>
+<li><strong>Kellis, M.</strong> <em>Computational Biology: Genomes, Networks, Evolution</em>. MIT 6.047/6.878. LibreTexts edition. — Chapters 1-9 (sequence alignment, HMMs, gene finding), 17-21 (regulatory motifs, epigenomics, networks).</li>
+<li><strong>Mitchell, T.</strong> <em>Machine Learning</em>. McGraw-Hill, 1997. — Chapters 1 (introduction), 3 (decision trees), 4 (neural networks), 6 (Bayesian learning).</li>
+<li><strong>James, Witten, Hastie, Tibshirani.</strong> <em>An Introduction to Statistical Learning</em> (ISLRv2). Springer, 2023. — Chapters 2 (statistical learning), 4 (classification), 8 (tree-based methods), 9 (SVMs), 10 (deep learning).</li>
+</ul>
+
+<h3>Papers</h3>
+<ul>
+<li><strong>Devlin, J. et al.</strong> "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding." arXiv:1810.04805, 2019.</li>
+<li><strong>Consens, M. et al.</strong> "To Transformers and Beyond: Large Language Models for the Genome." arXiv:2311.07621, 2023.</li>
+<li><strong>Zhang, Y. et al.</strong> "Genomic Language Models: Opportunities and Challenges." arXiv:2407.11435, 2024.</li>
+<li><strong>Ofer, D. et al.</strong> "The Language of Proteins: NLP, Machine Learning & Protein Sequences." <em>Computational and Structural Biotechnology Journal</em>, 2021.</li>
+</ul>
+
+<h3>Course</h3>
+<ul>
+<li><strong>BME 234 — ML & AI in Genomics.</strong> UC Santa Cruz, Spring 2026. Lectures 1-5 (HMMs, GWAS, regression, variant effect prediction).</li>
+</ul>
+</div>
+
+</div>
+</body>
+</html>

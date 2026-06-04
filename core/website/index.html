@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Living Architecture — Not Blocks. Spirals.</title>
+<link rel="stylesheet" href="site.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-heading, Georgia, serif);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px;
+    background: rgba(7,9,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-logo {
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--dim);
+    text-decoration: none;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    font-family: var(--font-mono);
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  #hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-text {
+    position: relative;
+    text-align: center;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .hero-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 6px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0.8;
+  }
+
+  .hero-title {
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    font-weight: normal;
+    letter-spacing: 0.08em;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.6rem);
+    color: var(--gold);
+    font-style: italic;
+    letter-spacing: 0.04em;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    color: var(--dim);
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:0.8} }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 100px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  section.full {
+    max-width: none;
+    padding: 100px 0;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 5px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* ── MANIFESTO ── */
+  #manifesto {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--bg2);
+    max-width: none;
+    padding: 120px 48px;
+  }
+
+  .manifesto-inner {
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  .quote-block {
+    margin-bottom: 64px;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .quote-block.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .quote-text {
+    font-size: clamp(1.1rem, 2.2vw, 1.45rem);
+    line-height: 1.75;
+    color: var(--text);
+    font-style: italic;
+  }
+
+  .quote-text em {
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  .quote-source {
+    margin-top: 16px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+
+  .big-line {
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: normal;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 80px;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+
+  .big-line.visible { opacity: 1; transform: translateY(0); }
+  .big-line span { color: var(--gold); }
+
+  /* ── VISION GALLERY ── */
+  #vision { border-top: 1px solid var(--line); }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2px;
+    margin-top: 8px;
+  }
+
+  .gallery-item {
+    position: relative;
+    overflow: hidden;
+    background: #111;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .gallery-item.visible { opacity: 1; transform: translateY(0); }
+
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+
+  .gallery-item:hover img { transform: scale(1.04); }
+
+  .gallery-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 12px 16px;
+    background: linear-gradient(transparent, rgba(7,9,10,0.85));
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    color: var(--dim);
+    text-transform: uppercase;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .gallery-item:hover .gallery-caption { transform: translateY(0); }
+
+  .gallery-item.wide { grid-column: span 2; }
+
+  /* ── SIMULATION ── */
+  #simulation {
+    border-top: 1px solid var(--line);
+    background: var(--bg2);
+    max-width: none;
+    padding: 100px 48px;
+  }
+
+  .sim-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  @media (max-width: 860px) { .sim-inner { grid-template-columns: 1fr; } }
+
+  .sim-gif {
+    width: 100%;
+    border: 1px solid var(--line);
+    display: block;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .sim-gif.visible { opacity: 1; transform: translateX(0); }
+
+  .sim-text { padding-top: 8px; }
+
+  .sim-text h2 {
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-weight: normal;
+    margin-bottom: 24px;
+    line-height: 1.3;
+  }
+
+  .sim-text p {
+    color: var(--dim);
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    font-family: var(--font-body, 'Helvetica Neue', system-ui, sans-serif);
+    max-width: 65ch;
+  }
+
+  .keyword-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 32px;
+  }
+
+  .kw {
+    padding: 5px 12px;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--dim);
+    letter-spacing: 1px;
+  }
+
+  .kw span { color: var(--green); }
+
+  /* ── CLOSE ── */
+  #close {
+    border-top: 1px solid var(--line);
+    text-align: center;
+    padding: 140px 48px;
+  }
+
+  .cta-link {
+    display: inline-block;
+    margin-top: 40px;
+    padding: 12px 28px;
+    border: 1px solid rgba(122,158,126,0.25);
+    font-family: var(--font-mono, 'Courier New', monospace);
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--dim);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .cta-link:hover,
+  .cta-link:focus-visible {
+    color: var(--green);
+    border-color: rgba(122,158,126,0.5);
+  }
+
+  .close-word {
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: normal;
+    line-height: 1;
+    display: block;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+
+  .close-word.visible { opacity: 1; transform: translateY(0); }
+  .close-word + .close-word { color: var(--gold); transition-delay: 0.2s; }
+
+  .close-sub {
+    margin-top: 48px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--dim);
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 1s ease 0.5s;
+  }
+
+  .close-sub.visible { opacity: 1; }
+
+  /* ── THE WORK ── */
+  #the-work { border-top: 1px solid var(--line); }
+
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 900px) { .work-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .work-grid { grid-template-columns: 1fr; } }
+
+  .work-item {
+    position: relative;
+    overflow: hidden;
+    background: #0a0a10;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .work-item.visible { opacity: 1; transform: translateY(0); }
+
+  .work-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+
+  .work-item:hover img { transform: scale(1.04); }
+
+  .work-item .gallery-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 12px 16px;
+    background: linear-gradient(transparent, rgba(7,9,10,0.9));
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 2px;
+    color: var(--dim);
+    text-transform: uppercase;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .work-item:hover .gallery-caption { transform: translateY(0); }
+
+  .work-item.span-2 { grid-column: span 2; }
+
+  /* ── AUTHOR STRIP ── */
+  .author-strip {
+    margin-top: 2px;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  @media (max-width: 700px) { .author-strip { grid-template-columns: 1fr; } }
+
+  .author-photo img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .author-bio {
+    padding: 48px 56px;
+    background: var(--bg2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .author-name {
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-weight: normal;
+    margin-bottom: 8px;
+  }
+
+  .author-role {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 3px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .author-bio p {
+    color: var(--dim);
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: 65ch;
+    font-family: var(--font-body, 'Helvetica Neue', system-ui, sans-serif);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 40px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-left {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--dim);
+    letter-spacing: 2px;
+  }
+
+  .doc-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .doc-link {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    color: var(--dim);
+    text-decoration: none;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .doc-link:hover { color: var(--green); border-color: var(--green); }
+
+  /* ── FRAMES STRIP ── */
+  .frames-strip {
+    margin-top: 40px;
+    display: flex;
+    gap: 3px;
+    overflow: hidden;
+  }
+
+  .frames-strip img {
+    height: 80px;
+    width: auto;
+    object-fit: cover;
+    flex-shrink: 0;
+    filter: brightness(0.7) saturate(0.8);
+    transition: filter 0.3s;
+  }
+
+  .frames-strip img:hover { filter: brightness(1) saturate(1); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="site-nav">
+  <a class="nav-logo" href="living-age.html">Living Works by the Word</a>
+  <ul class="nav-links">
+    <li><a href="living-age.html">The Living Age</a></li>
+    <li><a href="index.html" class="active">Architecture</a></li>
+    <li><a href="spiral-steward.html">Spiral Steward</a></li>
+    <li><a href="moral-framework.html">Moral Framework</a></li>
+    <li><a href="sagent.html">The Sagent</a></li>
+    <li><a href="true-republic.html">True Republic</a></li>
+    <li><a href="channel.html">Channel</a></li>
+    <li><a href="posters.html">Posters</a></li>
+    <li><a href="pitch.html">Investor Hub</a></li>
+    <li><a href="competitive.html">Competitive</a></li>
+    <li><a href="design-lab.html">Design Lab</a></li>
+    <li><a href="biology-voluntaryism.html">Biology</a></li>
+    <li><a href="spiral steward website/book.html">The Book</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-text">
+    <div class="hero-label">Morphogenetic Design</div>
+    <h1 class="hero-title">Living Architecture</h1>
+    <p class="hero-subtitle">Not blocks. Spirals.</p>
+  </div>
+  <div class="scroll-hint">scroll ↓</div>
+</section>
+
+<!-- MANIFESTO -->
+<section id="manifesto" class="full">
+  <div class="manifesto-inner">
+    <div class="section-label">Manifesto</div>
+
+    <p class="big-line">
+      Life is not a block<br>you carve into shape.<br>
+      It is a <span>spiral</span> you cultivate.
+    </p>
+
+    <div class="quote-block">
+      <p class="quote-text">
+        "Bioinformatics offers a different posture: <em>attention before intervention.</em>
+        It trains you to watch patterns that no human mind can hold at once —
+        the combinatorial complexity of genomes, gene regulation, protein folding,
+        microbial communities, ecological networks."
+      </p>
+      <p class="quote-source">Bioinformatics as Stewardship of Living Order</p>
+    </div>
+
+    <div class="quote-block">
+      <p class="quote-text">
+        "It reveals that life is not centrally designed, but <em>emergent</em> —
+        a decentralized order created through layers of feedback, adaptation, and symbiosis.
+        When you do computational biology, you are forced into humility."
+      </p>
+      <p class="quote-source">Bioinformatics as Stewardship of Living Order</p>
+    </div>
+
+    <div class="quote-block">
+      <p class="quote-text">
+        "Stewardship means working with life's own principles rather than against them.
+        It means designing not single rigid outcomes, but <em>possibility spaces</em> —
+        resilient sets of options that allow organisms and communities to adapt."
+      </p>
+      <p class="quote-source">Bioinformatics as Stewardship of Living Order</p>
+    </div>
+
+    <div class="quote-block">
+      <p class="quote-text">
+        "Build structures that support decentralized intelligence, preserve feedback,
+        protect diversity, and allow self-organization to do what it does best."
+      </p>
+      <p class="quote-source">Bioinformatics as Stewardship of Living Order</p>
+    </div>
+
+    <div class="quote-block">
+      <p class="quote-text">
+        "To learn the language of life so we can stop treating it like dead matter —
+        and start designing like <em>gardeners, not rulers.</em>"
+      </p>
+      <p class="quote-source">Bioinformatics as Stewardship of Living Order</p>
+    </div>
+  </div>
+</section>
+
+<!-- VISION -->
+<section id="vision">
+  <div class="section-label">Architectural Vision</div>
+  <div class="gallery-grid">
+    <div class="gallery-item wide">
+      <img src="media/graphics/architecture/06_block_vs_spiral_manifesto.png" alt="Block vs Spiral">
+      <div class="gallery-caption">Block vs. Spiral — The Core Argument</div>
+    </div>
+    <div class="gallery-item">
+      <img src="media/graphics/architecture/01_fibonacci_spiral_house.png" alt="Fibonacci Spiral House">
+      <div class="gallery-caption">Fibonacci Spiral House</div>
+    </div>
+    <div class="gallery-item">
+      <img src="media/graphics/architecture/07_mycelium_dome_3d.png" alt="Mycelium Dome">
+      <div class="gallery-caption">Mycelium Dome — 3D Form</div>
+    </div>
+    <div class="gallery-item">
+      <img src="media/graphics/architecture/02_mycelium_network_plan.png" alt="Mycelium Network Plan">
+      <div class="gallery-caption">Mycelium Network Plan</div>
+    </div>
+    <div class="gallery-item">
+      <img src="media/graphics/architecture/04_branching_tree_structure.png" alt="Branching Tree Structure">
+      <div class="gallery-caption">Branching Tree Structure</div>
+    </div>
+    <div class="gallery-item">
+      <img src="media/graphics/architecture/05_sunflower_room_spiral.png" alt="Sunflower Room Spiral">
+      <div class="gallery-caption">Sunflower Room Spiral</div>
+    </div>
+    <div class="gallery-item">
+      <img src="media/graphics/architecture/03_living_facade.png" alt="Living Facade">
+      <div class="gallery-caption">Living Facade</div>
+    </div>
+  </div>
+</section>
+
+<!-- SIMULATION -->
+<section id="simulation" class="full">
+  <div class="sim-inner">
+    <div>
+      <img class="sim-gif" src="ai-tools/morphogenesis-engine/outputs/growth.gif" alt="Morphogenetic Growth">
+      <div class="frames-strip" id="frames-strip"></div>
+    </div>
+    <div class="sim-text">
+      <div class="section-label">The Engine</div>
+      <h2>Geometry that emerges from growth</h2>
+      <p>
+        Traditional 3D modeling requires direct vertex manipulation — you control
+        every point in space. This system works differently: you define growth
+        <em>rules</em>, and let the geometry emerge from simulation.
+      </p>
+      <p>
+        Cells grow, interact physically, and divide, producing complex 3D forms.
+        The same way biological organisms develop from a handful of cells
+        into branching, folding, asymmetric structures — unrepeatable, alive.
+      </p>
+      <p>
+        Natural language prompts translate into physics parameters. The interpreter
+        reads intention and generates a GrowthProgram. The simulation runs.
+        The form appears.
+      </p>
+
+      <div class="keyword-row">
+        <div class="kw"><span>grow upward</span> → anisotropy +Y</div>
+        <div class="kw"><span>branching</span> → division rate ↑</div>
+        <div class="kw"><span>stiff</span> → repulsion ↑</div>
+        <div class="kw"><span>noisy</span> → noise strength ↑</div>
+        <div class="kw"><span>soft</span> → stiffness ↓</div>
+        <div class="kw"><span>compact</span> → adhesion ↑</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE WORK -->
+<section id="the-work">
+  <div class="section-label">The Work</div>
+
+  <div class="work-grid">
+
+    <!-- "In the beginning was the Word" — spans 2 cols, most central to the site name -->
+    <div class="work-item span-2">
+      <img src="media/graphics/website/file_000000007c4c71f79db488542027fb97.png" alt="In the beginning was the Word">
+      <div class="gallery-caption">In the Beginning Was the Word</div>
+    </div>
+
+    <!-- Trinity Cycle -->
+    <div class="work-item tall">
+      <img src="media/graphics/website/file_000000002c0c720ca22e87ba9b353e68.png" alt="The Trinity Cycle">
+      <div class="gallery-caption">The Trinity Cycle — Preservation · Transformation · Emergence</div>
+    </div>
+
+    <!-- Cycle of Creative Destruction -->
+    <div class="work-item square">
+      <img src="media/graphics/website/file_00000000a1f471fdb2a5896d8724beb7%20(1).png" alt="The Cycle of Creative Destruction">
+      <div class="gallery-caption">The Cycle of Creative Destruction — Water · Fire · Spirit</div>
+    </div>
+
+    <!-- Sagent Creed — Law of Truth -->
+    <div class="work-item tall">
+      <img src="media/graphics/website/file_000000004d5c71f5ba9004794233ab1d.png" alt="The Sagent Creed">
+      <div class="gallery-caption">The Sagent Creed — The Law of Truth and the Shadow of the Lie</div>
+    </div>
+
+    <!-- Sagent figure -->
+    <div class="work-item tall">
+      <img src="media/graphics/website/file_000000005ae871f5987df16c933d1350.png" alt="The Sagent">
+      <div class="gallery-caption">The Sagent — Nature vs. Empire</div>
+    </div>
+
+    <!-- Sagent Creed and True Republic -->
+    <div class="work-item tall">
+      <img src="media/graphics/website/file_000000003a2071f5854b20ef9419ced9.png" alt="The Sagent Creed and the True Republic">
+      <div class="gallery-caption">The Sagent Creed and the True Republic</div>
+    </div>
+
+    <!-- True Republic poster -->
+    <div class="work-item tall">
+      <img src="media/graphics/website/file_0000000075c0620c823c43fa19004c10%20(1).png" alt="The True Republic">
+      <div class="gallery-caption">The True Republic — A New Order of Free People</div>
+    </div>
+
+    <!-- Pledge Turn Prestige flat -->
+    <div class="work-item span-2">
+      <img src="media/graphics/website/file_00000000028071fda6f0b76f18534b6f%20(1).png" alt="Pledge Turn Prestige">
+      <div class="gallery-caption">Pledge · Turn · Prestige — Arthur · Joseph Arthur · Sage Arthur Jordan</div>
+    </div>
+
+  </div>
+
+  <!-- Author strip -->
+  <div class="author-strip">
+    <div class="author-photo">
+      <img src="media/graphics/website/PXL_20250510_211954769.jpg" alt="Sage Clokey">
+    </div>
+    <div class="author-bio">
+      <div class="author-name">Sage Clokey</div>
+      <div class="author-role">Steward · Designer · Bioinformatician</div>
+      <p>
+        Living Works by the Word is a life-based design initiative exploring how biological
+        principles — morphogenesis, emergence, stewardship — can reshape architecture,
+        manufacturing, and the built environment.
+      </p>
+      <p style="margin-top:16px">
+        The work spans computational biology, morphogenetic simulation, architectural theory,
+        and the moral philosophy of design. Not blocks. Spirals.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSE -->
+<section id="close">
+  <span class="close-word">Not blocks.</span>
+  <span class="close-word">Spirals.</span>
+  <p class="close-sub">Morphogenetic Architecture · Living Works by the Word</p>
+  <a href="moral-framework.html" class="cta-link">Read the Moral Framework →</a>
+</section>
+
+<!-- FOOTER -->
+<footer id="site-footer">
+  <span class="footer-brand">Living Works by the Word &middot; Sage Clokey &middot; 2026</span>
+  <nav class="footer-links">
+    <a href="living-age.html">The Living Age</a>
+    <a href="index.html">Architecture</a>
+    <a href="spiral-steward.html">Spiral Steward</a>
+    <a href="moral-framework.html">Moral Framework</a>
+    <a href="sagent.html">The Sagent</a>
+    <a href="true-republic.html">True Republic</a>
+    <a href="posters.html">Posters</a>
+    <a href="pitch.html">Investor Hub</a>
+    <a href="competitive.html">Competitive</a>
+    <a href="summary.html">Summary</a>
+    <a href="story.html">The Story</a>
+    <a href="deck.html">Pitch Deck</a>
+    <a href="design-lab.html">Design Lab</a>
+    <a href="spiral steward website/book.html">The Book</a>
+  </nav>
+</footer>
+
+<script>
+// ─── HERO CANVAS: FIBONACCI / GOLDEN ANGLE SPIRAL ───────────────────────────
+
+const canvas = document.getElementById('hero-canvas');
+const ctx    = canvas.getContext('2d');
+let W, H;
+
+function resize() {
+  W = canvas.width  = canvas.offsetWidth;
+  H = canvas.height = canvas.offsetHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5)); // ≈ 2.399 rad
+const TOTAL        = 700;
+const BASE_SCALE   = 8.5;
+
+let frame     = 0;
+let fadeAlpha = 0; // fade-in at start
+
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+function drawSpiral() {
+  // Subtle fade trail
+  ctx.fillStyle = 'rgba(7,9,10,0.18)';
+  ctx.fillRect(0, 0, W, H);
+
+  const cx = W / 2;
+  const cy = H / 2;
+  const scale = Math.min(W, H) / 2 / Math.sqrt(TOTAL) * 0.88;
+  const n = Math.min(Math.floor(frame), TOTAL);
+
+  ctx.globalAlpha = Math.min(1, fadeAlpha);
+
+  for (let i = Math.max(0, n - 30); i <= n; i++) {
+    const angle = i * GOLDEN_ANGLE;
+    const r     = scale * Math.sqrt(i + 1);
+    const x     = cx + r * Math.cos(angle);
+    const y     = cy + r * Math.sin(angle);
+    const t     = i / TOTAL;
+
+    // Colour: deep gold → muted green
+    const hue  = lerp(45, 135, t);
+    const sat  = lerp(55, 40, t);
+    const lit  = lerp(32, 55, t);
+    const size = lerp(4, 1.5, t);
+    const alpha = i === n ? 0.95 : lerp(0.55, 0.25, t);
+
+    ctx.globalAlpha = alpha * Math.min(1, fadeAlpha);
+    ctx.fillStyle   = `hsl(${hue},${sat}%,${lit}%)`;
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Draw a faint line to previous point
+    if (i > 1) {
+      const pa = (i - 1) * GOLDEN_ANGLE;
+      const pr = scale * Math.sqrt(i);
+      ctx.globalAlpha = 0.06 * Math.min(1, fadeAlpha);
+      ctx.strokeStyle = `hsl(${hue},${sat}%,${lit}%)`;
+      ctx.lineWidth   = 0.5;
+      ctx.beginPath();
+      ctx.moveTo(cx + pr * Math.cos(pa), cy + pr * Math.sin(pa));
+      ctx.lineTo(x, y);
+      ctx.stroke();
+    }
+  }
+
+  ctx.globalAlpha = 1;
+  fadeAlpha += 0.015;
+  frame     += 0.9;
+
+  // When complete, hold then gently reset
+  if (frame > TOTAL + 90) frame = 0;
+
+  requestAnimationFrame(drawSpiral);
+}
+drawSpiral();
+
+
+// ─── SCROLL REVEAL ───────────────────────────────────────────────────────────
+
+const revealTargets = document.querySelectorAll(
+  '.quote-block, .big-line, .gallery-item, .work-item, .sim-gif, .close-word, .close-sub'
+);
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      // Stagger gallery / work items
+      const delay = (e.target.closest('.gallery-grid') || e.target.closest('.work-grid'))
+        ? [...e.target.parentElement.children].indexOf(e.target) * 70
+        : 0;
+      setTimeout(() => e.target.classList.add('visible'), delay);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+revealTargets.forEach(el => observer.observe(el));
+
+
+// ─── FRAMES STRIP ────────────────────────────────────────────────────────────
+
+const strip = document.getElementById('frames-strip');
+// Load a sample of frames (every 7th, to get ~10 images)
+const frameIndices = [0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70];
+
+frameIndices.forEach(i => {
+  const img = document.createElement('img');
+  const n   = String(i).padStart(4, '0');
+  img.src   = `../ai-tools/morphogenesis-engine/outputs/frames/frame_${n}.png`;
+  img.alt   = `Growth frame ${i}`;
+  strip.appendChild(img);
+});
+</script>
+</body>
+</html>

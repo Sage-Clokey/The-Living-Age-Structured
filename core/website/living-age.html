@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Living Age Initiative — LivingWorks</title>
+  <style>
+    :root {
+      --bg:    #06080a;
+      --bg2:   #0a0e0a;
+      --bg3:   #0c1008;
+      --text:  #ddd9cc;
+      --dim:   #6a6860;
+      --green: #7a9e7e;
+      --gold:  #b8973a;
+      --flame: #4aaa5a;
+      --red:   #8a3a2a;
+      --line:  rgba(255,255,255,0.07);
+      --max:   680px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-heading);
+      line-height: 1.85;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 48px;
+      background: rgba(6,8,10,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 0.7rem; letter-spacing: 4px;
+      color: var(--flame); text-decoration: none; text-transform: uppercase;
+    }
+    .nav-links { display: flex; gap: 24px; list-style: none; }
+    .nav-links a {
+      color: var(--dim); text-decoration: none;
+      font-size: 0.62rem; letter-spacing: 2px;
+      text-transform: uppercase; font-family: var(--font-mono);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active { color: var(--flame); }
+    @media (max-width: 768px) {
+      nav { padding: 14px 20px; }
+      .nav-links { gap: 14px; }
+      .nav-links a { font-size: 0.55rem; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: flex-end;
+      padding: 0 48px 80px;
+      overflow: hidden; border-bottom: 1px solid var(--line);
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url("media/graphics/living-age/ChatGPT Image Mar 6, 2026, 02_32_21 PM.png");
+      background-size: cover; background-position: center 40%;
+      opacity: 0.35;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(6,8,10,0.4) 0%,
+        rgba(6,8,10,0.2) 40%,
+        rgba(6,8,10,0.85) 80%,
+        var(--bg) 100%
+      );
+    }
+    .hero-inner { position: relative; z-index: 2; max-width: 900px; }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.62rem; letter-spacing: 5px;
+      color: var(--flame); text-transform: uppercase; margin-bottom: 28px;
+    }
+    h1 {
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-weight: normal; line-height: 1.05;
+      margin-bottom: 28px; letter-spacing: -0.01em;
+    }
+    h1 em { display: block; color: var(--dim); font-style: italic; font-size: 0.5em; margin-top: 14px; }
+    .hero-sub {
+      font-size: clamp(0.95rem, 2vw, 1.2rem);
+      color: var(--dim); font-style: italic;
+      max-width: 580px;
+      border-top: 1px solid var(--line); padding-top: 28px; line-height: 1.7;
+    }
+    .hero-sub strong { color: var(--gold); font-weight: normal; }
+
+    /* ── LAYOUT ── */
+    .content  { max-width: var(--max);   margin: 0 auto; padding: 0 24px; }
+    .wide     { max-width: 960px;        margin: 0 auto; padding: 0 24px; }
+    .chapter  { padding: 80px 48px;      border-top: 1px solid var(--line); }
+    .chapter-num {
+      font-family: var(--font-mono);
+      font-size: 0.58rem; letter-spacing: 4px;
+      color: var(--dim); text-transform: uppercase; margin-bottom: 20px;
+    }
+    h2 {
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      font-weight: normal; line-height: 1.2;
+      margin-bottom: 36px; max-width: var(--max);
+    }
+    h3 {
+      font-size: 1.1rem; font-weight: normal;
+      color: var(--gold); margin-bottom: 12px;
+      font-family: var(--font-mono);
+      letter-spacing: 1px;
+    }
+    p {
+      max-width: var(--max); font-size: 0.98rem;
+      color: var(--text); margin-bottom: 20px; line-height: 1.85;
+    }
+
+    /* ── MANIFESTO LINES ── */
+    .manifesto {
+      max-width: var(--max);
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      line-height: 1.9; margin-bottom: 20px;
+    }
+    .manifesto em { color: var(--gold); font-style: normal; }
+
+    /* ── PULL QUOTES ── */
+    blockquote {
+      margin: 48px 0; padding: 0 0 0 28px;
+      border-left: 2px solid var(--gold); max-width: var(--max);
+    }
+    blockquote p { font-size: 1.05rem; font-style: italic; margin-bottom: 10px; }
+    blockquote cite {
+      font-family: var(--font-mono);
+      font-size: 0.58rem; letter-spacing: 2px;
+      color: var(--dim); text-transform: uppercase; font-style: normal;
+    }
+
+    /* ── STANDOUT ── */
+    .standout {
+      padding: 80px 48px; text-align: center;
+      border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+      background: var(--bg2);
+    }
+    .standout p {
+      font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+      font-style: italic; max-width: 720px;
+      margin: 0 auto 20px; line-height: 1.45;
+    }
+    .standout p em { color: var(--gold); font-style: normal; }
+    .standout cite {
+      font-family: var(--font-mono);
+      font-size: 0.6rem; letter-spacing: 3px;
+      color: var(--dim); text-transform: uppercase;
+    }
+
+    /* ── BULLET LIST ── */
+    .bullet-list { max-width: var(--max); list-style: none; margin: 24px 0 32px; }
+    .bullet-list li {
+      padding: 10px 0 10px 24px; position: relative;
+      font-size: 0.96rem; color: var(--text);
+      border-bottom: 1px solid var(--line); line-height: 1.6;
+    }
+    .bullet-list li::before { content: '—'; position: absolute; left: 0; color: var(--flame); opacity: 0.7; }
+
+    /* ── PLATFORM IMAGE ── */
+    .platform-image {
+      width: 100%; max-width: 960px;
+      margin: 40px auto 0; display: block;
+      border: 1px solid var(--line);
+    }
+
+    /* ── IMAGE GRID ── */
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 2px; max-width: 960px; margin: 40px auto 0;
+    }
+    .image-grid img {
+      width: 100%; display: block;
+      transition: opacity 0.3s;
+    }
+    .image-grid img:hover { opacity: 0.85; }
+
+    /* ── TECH CARDS ── */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2px; max-width: 960px; margin: 32px 0;
+    }
+    .tech-card {
+      padding: 32px 28px;
+      background: var(--bg2);
+      border-top: 2px solid var(--flame);
+    }
+    .tech-num {
+      font-family: var(--font-mono);
+      font-size: 0.58rem; letter-spacing: 3px;
+      color: var(--flame); margin-bottom: 12px;
+    }
+    .tech-card h3 { color: var(--text); font-size: 1rem; margin-bottom: 10px; letter-spacing: 0; }
+    .tech-card p  { font-size: 0.88rem; color: var(--dim); margin-bottom: 0; max-width: 100%; }
+
+    /* ── MARKET TABLE ── */
+    .market-table {
+      width: 100%; max-width: var(--max);
+      border-collapse: collapse; margin: 24px 0 32px;
+      font-size: 0.88rem;
+    }
+    .market-table th {
+      text-align: left; padding: 10px 14px;
+      background: rgba(74,170,90,0.08);
+      color: var(--flame);
+      font-family: var(--font-mono);
+      font-size: 0.6rem; letter-spacing: 2px;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(74,170,90,0.3);
+    }
+    .market-table td {
+      padding: 10px 14px; color: var(--text);
+      border-bottom: 1px solid var(--line);
+      vertical-align: top; line-height: 1.5;
+    }
+    .market-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    .market-table .highlight td { color: var(--gold); }
+
+    /* ── SPIRAL VS BLOCK ── */
+    .svb-section {
+      padding: 80px 48px;
+      border-top: 1px solid var(--line);
+      background: var(--bg2);
+    }
+    .svb-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2px; max-width: 860px; margin: 40px auto 0;
+    }
+    @media (max-width: 640px) { .svb-grid { grid-template-columns: 1fr; } }
+    .svb-col { padding: 36px 32px; }
+    .svb-col.block-col  { background: var(--bg); border-top: 3px solid var(--red); }
+    .svb-col.spiral-col { background: rgba(10,20,10,0.6); border-top: 3px solid var(--flame); }
+    .svb-col h3 {
+      font-family: var(--font-mono);
+      font-size: 0.7rem; letter-spacing: 5px;
+      text-transform: uppercase; margin-bottom: 24px;
+      color: var(--flame);
+    }
+    .svb-col.block-col h3 { color: var(--red); }
+    .svb-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .svb-col ul li {
+      font-size: 0.93rem; padding-left: 16px;
+      position: relative; line-height: 1.5;
+    }
+    .svb-col ul li::before { content: '—'; position: absolute; left: 0; }
+    .svb-col.block-col  ul li { color: var(--dim); }
+    .svb-col.block-col  ul li::before { color: var(--red); opacity: 0.5; }
+    .svb-col.spiral-col ul li { color: var(--text); }
+    .svb-col.spiral-col ul li::before { color: var(--flame); opacity: 0.7; }
+
+    /* ── POSTER ROW ── */
+    .poster-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 2px; max-width: 960px; margin: 40px 0;
+    }
+    .poster-row img { width: 100%; display: block; transition: opacity 0.3s; }
+    .poster-row img:hover { opacity: 0.85; }
+
+    /* ── REVENUE CARDS ── */
+    .rev-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 2px; max-width: 960px; margin: 32px 0;
+    }
+    .rev-card { padding: 28px 24px; background: var(--bg2); border-top: 2px solid var(--gold); }
+    .rev-card h3 { color: var(--gold); font-size: 0.75rem; letter-spacing: 2px; margin-bottom: 10px; font-family: var(--font-mono); }
+    .rev-card p  { font-size: 0.86rem; color: var(--dim); margin-bottom: 0; max-width: 100%; }
+
+    /* ── ROADMAP ── */
+    .roadmap { max-width: var(--max); margin: 32px 0; }
+    .phase {
+      padding: 24px 0 24px 32px;
+      border-left: 2px solid var(--line);
+      margin-bottom: 2px; position: relative;
+    }
+    .phase::before {
+      content: ''; position: absolute; left: -5px; top: 28px;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--flame);
+    }
+    .phase-label {
+      font-family: var(--font-mono);
+      font-size: 0.58rem; letter-spacing: 3px;
+      color: var(--flame); text-transform: uppercase; margin-bottom: 6px;
+    }
+    .phase h3 { color: var(--text); font-size: 1rem; letter-spacing: 0; margin-bottom: 8px; }
+    .phase p  { font-size: 0.88rem; color: var(--dim); max-width: 100%; margin-bottom: 0; }
+
+    /* ── PROFILE ── */
+    .profile-section {
+      display: grid; grid-template-columns: 320px 1fr;
+      gap: 48px; max-width: 860px; margin: 40px 0; align-items: start;
+    }
+    @media (max-width: 700px) { .profile-section { grid-template-columns: 1fr; } }
+    .profile-img { width: 100%; display: block; filter: grayscale(20%) contrast(1.05); }
+    .profile-text p { max-width: 100%; }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding: 100px 48px; text-align: center;
+      border-top: 1px solid var(--line);
+      background: radial-gradient(ellipse at 50% 100%, rgba(20,60,20,0.35) 0%, transparent 70%), var(--bg3);
+    }
+    .cta-section h2 {
+      font-size: clamp(2rem, 5vw, 4rem);
+      color: var(--flame); margin: 0 auto 32px; max-width: 660px;
+    }
+    .cta-section p {
+      max-width: 520px; margin: 0 auto 40px;
+      font-style: italic; color: var(--dim); font-size: 1.05rem;
+    }
+    .cta-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; }
+    .cta-link {
+      font-family: var(--font-mono);
+      font-size: 0.65rem; letter-spacing: 3px;
+      text-transform: uppercase; text-decoration: none;
+      padding: 14px 28px;
+      border: 1px solid var(--flame); color: var(--flame);
+      transition: all 0.2s;
+    }
+    .cta-link:hover { background: var(--flame); color: var(--bg); }
+    .cta-link.secondary { border-color: var(--dim); color: var(--dim); }
+    .cta-link.secondary:hover { background: var(--dim); color: var(--bg); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 32px 48px;
+      border-top: 1px solid var(--line);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+    }
+    footer span {
+      font-family: var(--font-mono);
+      font-size: 0.58rem; letter-spacing: 2px;
+      color: var(--dim); text-transform: uppercase;
+    }
+  </style>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="site-nav">
+  <a class="nav-logo" href="living-age.html">Living Works by the Word</a>
+  <ul class="nav-links">
+    <li><a href="living-age.html" class="active">The Living Age</a></li>
+    <li><a href="index.html">Architecture</a></li>
+    <li><a href="spiral-steward.html">Spiral Steward</a></li>
+    <li><a href="moral-framework.html">Moral Framework</a></li>
+    <li><a href="sagent.html">The Sagent</a></li>
+    <li><a href="true-republic.html">True Republic</a></li>
+    <li><a href="channel.html">Channel</a></li>
+    <li><a href="posters.html">Posters</a></li>
+    <li><a href="pitch.html">Investor Hub</a></li>
+    <li><a href="competitive.html">Competitive</a></li>
+    <li><a href="design-lab.html">Design Lab</a></li>
+    <li><a href="biology-voluntaryism.html">Biology</a></li>
+    <li><a href="spiral steward website/book.html">The Book</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<header class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-inner">
+    <div class="eyebrow">Living Works · The Initiative</div>
+    <h1>The Living Age
+      <em>From blocks to spirals. From machines to living systems.</em>
+    </h1>
+    <p class="hero-sub">
+      Civilization was built by <strong>killing life to impose control.</strong>
+      The next civilization will be built by <strong>designing with life</strong> —
+      growing structures, materials, and ecosystems instead of manufacturing them.
+    </p>
+  </div>
+</header>
+
+<!-- ── I. THE DIAGNOSIS ── -->
+<section class="chapter" id="diagnosis">
+  <div class="wide">
+    <div class="chapter-num">I — The Diagnosis</div>
+    <h2>The Industrial Error</h2>
+
+    <div class="content">
+      <p class="manifesto">
+        The industrial age was built on a single foundational error.
+        <em>Everything else follows from it.</em>
+      </p>
+
+      <p>Industrial engineering designs systems that must first kill what is living:
+        trees become lumber, soil becomes substrate, ecosystems become resources.
+        Only once life is stripped away can control be imposed. This worldview is
+        inherited from Rome — hierarchy over harmony, command over relationship,
+        domination over participation.</p>
+
+      <p>The result is visible everywhere: dead soil, collapsing ecosystems, brittle
+        supply chains, soulless cities — systems that burn, flood, or fail the
+        moment stress appears. This is not a failure of technology.
+        <strong>It is a failure of design philosophy.</strong></p>
+
+      <blockquote>
+        <p>Bioinformatics offers a different posture: attention before intervention.
+          It trains you to watch patterns that no human mind can hold at once —
+          the combinatorial complexity of genomes, gene regulation, protein folding,
+          microbial communities, ecological networks.</p>
+        <cite>— Bioinformatics as Stewardship of Living Order</cite>
+      </blockquote>
+
+      <p>We now possess the tools — biological data, machine learning, decentralized
+        computation — to move beyond dead manufacturing into living creation.
+        The age of blocks is ending. <em>The Living Age is beginning.</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- ── SPIRAL VS BLOCK VISUAL ── -->
+<section class="svb-section" id="spiral-vs-block">
+  <div class="wide">
+    <div class="chapter-num" style="text-align:center; margin-bottom: 12px;">The Fundamental Opposition</div>
+    <h2 style="text-align:center; max-width:100%;">Block World → Spiral World</h2>
+
+    <div class="svb-grid">
+      <div class="svb-col block-col">
+        <h3>The Block — Industrial Age</h3>
+        <ul>
+          <li>Centralized control</li>
+          <li>Rigid structures</li>
+          <li>Mechanical manufacturing</li>
+          <li>Resource extraction</li>
+          <li>Top-down design</li>
+          <li>Dead materials that decay</li>
+          <li>Monoculture — uniformity</li>
+          <li>Straight lines and grids</li>
+        </ul>
+      </div>
+      <div class="svb-col spiral-col">
+        <h3>The Spiral — Living Age</h3>
+        <ul>
+          <li>Decentralized systems</li>
+          <li>Adaptive growth</li>
+          <li>Living materials</li>
+          <li>Regenerative ecosystems</li>
+          <li>Emergent design</li>
+          <li>Self-repairing structures</li>
+          <li>Biodiversity — resilience</li>
+          <li>Spirals and branching forms</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── II. THE PLATFORM ── -->
+<section class="chapter" id="platform">
+  <div class="wide">
+    <div class="chapter-num">II — The Platform</div>
+    <h2>Living Works: AI-Driven Biological Design</h2>
+
+    <div class="content">
+      <p>Living Works is the design software for living systems — comparable to
+        Autodesk for buildings, Unity for games, or Blender for graphics, but for
+        <em>biology</em>. Instead of designing objects, it designs
+        <strong>growth processes</strong> — rules that produce form the same way
+        a seed produces a tree.</p>
+
+      <p>Natural language prompts translate into physics parameters. The interpreter
+        reads intention and generates a GrowthProgram. The simulation runs.
+        The form appears.</p>
+    </div>
+
+    <img
+      src="media/graphics/living-age/ChatGPT Image Mar 6, 2026, 02_34_47 PM.png"
+      alt="Living Works Platform — From AI & Biology to Living Systems"
+      class="platform-image"
+    />
+
+    <!-- Tech Cards -->
+    <div class="tech-grid" style="margin-top: 48px;">
+      <div class="tech-card">
+        <div class="tech-num">01 — Core</div>
+        <h3>Morphogenesis Engine</h3>
+        <p>3D simulation of biological growth. Define growth rules — branching,
+          nutrient gradients, biomechanical forces, cellular division — and let
+          geometry emerge from simulation rather than direct vertex manipulation.</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-num">02 — Interface</div>
+        <h3>AI Biological Design</h3>
+        <p>Natural language → biological design. Describe a structure; the AI
+          generates growth algorithms, gene pathway suggestions, and structural
+          simulations. "Design a branching structure optimized for wind resistance
+          and water collection."</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-num">03 — Environment</div>
+        <h3>BioCAD Platform</h3>
+        <p>Computer-aided design tools built for living systems: genome editing
+          planning, tissue architecture modeling, ecosystem simulation, and
+          living material library integration.</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-num">04 — Data</div>
+        <h3>Bioinformatics Integration</h3>
+        <p>Existing genome browsers, pathway analysis, single-cell data, and
+          metabolic modeling tools — transformed from analysis instruments
+          into design resources.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── III. APPLICATIONS ── -->
+<section class="chapter" id="applications">
+  <div class="wide">
+    <div class="chapter-num">III — Applications</div>
+    <h2>What Living Works Builds</h2>
+
+    <div class="content">
+      <ul class="bullet-list">
+        <li><strong>Living Architecture</strong> — Buildings grown from fungal mycelium,
+          engineered plants, and bacterial cellulose. Structures that self-assemble,
+          adapt to their environment, and repair damage without intervention.</li>
+        <li><strong>Carbon-Negative Construction</strong> — Buildings that grow themselves,
+          absorb CO₂ from the atmosphere, and improve their environment over time.</li>
+        <li><strong>Ecosystem Engineering</strong> — Design landscapes that restore soil,
+          filter water, regulate local climate, and rebuild biodiversity.</li>
+        <li><strong>Biological Manufacturing</strong> — Grow leather alternatives,
+          structural composites, packaging, and insulation — materials with no
+          industrial waste stream.</li>
+        <li><strong>Programmable Living Materials</strong> — The $100B+ emerging industry
+          of materials that grow, respond, and self-repair. Living Works is the
+          design platform for this industry.</li>
+      </ul>
+    </div>
+
+    <div class="image-grid">
+      <img src="media/graphics/website/file_000000007c4c71f79db488542027fb97.png"
+           alt="In the Beginning Was the Word — Living Systems Design" />
+      <img src="media/graphics/website/file_000000005ae871f5987df16c933d1350.png"
+           alt="The Sagent Creed — Living Against the Block World" />
+      <img src="media/graphics/website/file_000000004d5c71f5ba9004794233ab1d.png"
+           alt="The Sagent Creed — The Law of Truth" />
+    </div>
+  </div>
+</section>
+
+<!-- ── IV. MARKET ── -->
+<section class="chapter" id="market">
+  <div class="wide">
+    <div class="chapter-num">IV — Market Opportunity</div>
+    <h2>Where Living Works Sits</h2>
+
+    <div class="content">
+      <p>The platform sits at the intersection of four rapidly growing fields —
+        in a gap that no existing company occupies:</p>
+
+      <table class="market-table">
+        <thead>
+          <tr>
+            <th>Market</th>
+            <th>Size</th>
+            <th>Living Works Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Synthetic Biology</td>
+            <td>$20B+</td>
+            <td>Design software layer above microbe engineering</td>
+          </tr>
+          <tr>
+            <td>AI Drug / Bio Design</td>
+            <td>$10B+</td>
+            <td>Morphological design at organism scale</td>
+          </tr>
+          <tr>
+            <td>Bioinformatics Software</td>
+            <td>$15B+</td>
+            <td>Transform analysis tools into creation tools</td>
+          </tr>
+          <tr>
+            <td>Living Materials</td>
+            <td>Emerging — $100B+ potential</td>
+            <td>Primary design platform for the category</td>
+          </tr>
+          <tr>
+            <td>Global Construction</td>
+            <td>$13T+</td>
+            <td>Living architecture as an alternative paradigm</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Critically — <strong>no major platform currently focuses on whole-organism
+        morphology, 3D growth simulation, natural language → biology design,
+        or living architecture</strong> as an integrated design environment.
+        This gap is the Living Works opportunity.</p>
+
+      <blockquote>
+        <p>There is a missing category in biotech right now called Morphological
+          BioCAD — computer-aided design for organism shape and growth.
+          Almost no startups exist there yet.</p>
+        <cite>— Living Works Competitive Analysis, 2026</cite>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ── V. PHILOSOPHY ── -->
+<div class="standout">
+  <p>Life is not a block you carve into shape.
+    It is a <em>spiral</em> you cultivate.</p>
+  <cite>— LivingWorks Manifesto</cite>
+</div>
+
+<section class="chapter" id="philosophy">
+  <div class="wide">
+    <div class="chapter-num">V — Philosophy</div>
+    <h2>The Spiral Steward</h2>
+
+    <div class="content">
+      <p>The technology is inseparable from its philosophy. Where competitors
+        operate within the industrial engineering paradigm — biology as
+        manufacturing — Living Works operates within a stewardship paradigm:
+        <em>biology as design partner.</em></p>
+
+      <p>A Spiral Steward is a leader who guides living systems rather than
+        controlling them. Instead of forcing rigid structures, the Spiral Steward
+        cultivates conditions where healthy systems can grow — like a gardener
+        rather than a machine operator.</p>
+
+      <ul class="bullet-list">
+        <li><strong>Stewardship over Control</strong> — Design conditions, not outcomes.
+          Work with emergence rather than imposing predetermined forms.</li>
+        <li><strong>Decentralization</strong> — Living systems distribute intelligence.
+          Build structures that support decentralized feedback, not central command.</li>
+        <li><strong>Adaptation</strong> — Rigid systems break; living systems respond.
+          Design for resilience, not optimization for a single predicted condition.</li>
+        <li><strong>Long-Term Thinking</strong> — Growth unfolds across generations,
+          not quarters. Stewards think in spirals, not straight lines.</li>
+        <li><strong>Emergence</strong> — Complex systems arise from simple rules.
+          The most powerful design is not the most complex blueprint —
+          it is the most elegant growth rule.</li>
+      </ul>
+    </div>
+
+    <!-- Poster images -->
+    <div class="poster-row">
+      <img src="media/graphics/website/file_000000002c0c720ca22e87ba9b353e68.png"
+           alt="The Trinity Cycle — Arthur · Joseph · Sage" />
+      <img src="media/graphics/website/file_000000003a2071f5854b20ef9419ced9.png"
+           alt="The Sagent Creed and the True Republic" />
+      <img src="media/graphics/website/file_0000000075c0620c823c43fa19004c10 (1).png"
+           alt="The True Republic — A New Order of Free People" />
+      <img src="media/graphics/website/file_00000000028071fda6f0b76f18534b6f (1).png"
+           alt="Pledge · Turn · Prestige — Water · Fire · Spirit" />
+    </div>
+  </div>
+</section>
+
+<!-- ── VI. TRINITY ── -->
+<section class="chapter" id="trinity" style="background: var(--bg2);">
+  <div class="wide">
+    <div class="chapter-num">VI — The Cycle</div>
+    <h2>The Trinity Cycle</h2>
+
+    <div class="content">
+      <p>The Living Age is not merely a technological transition — it is a
+        transformation of civilization across three phases, embodied in the
+        Trinity Cycle: <em>Pledge, Turn, Prestige.</em></p>
+
+      <p>Every true transformation follows this pattern. Water loosens form;
+        fire breaks it; spirit reorganizes it. The old order must be disrupted
+        before a new creation can emerge.</p>
+    </div>
+
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 2px; max-width: 780px; margin: 40px 0;">
+      <img src="media/graphics/website/file_00000000a1f471fdb2a5896d8724beb7 (1).png"
+           alt="The Cycle of Creative Destruction — Water · Fire · Spirit"
+           style="width:100%; display:block;" />
+      <div style="display:flex; flex-direction:column; gap:2px;">
+        <div style="padding: 32px 28px; background: var(--bg); border-top: 2px solid var(--red); flex:1;">
+          <div class="tech-num">The Pledge — Water</div>
+          <h3 style="color:var(--text); letter-spacing:0; font-size:1rem;">Arthur</h3>
+          <p style="font-size:0.88rem; color:var(--dim); max-width:100%; margin-bottom:0;">
+            Origin and creation. The pledging of the trick. The beginning of a cycle
+            where the old order is established. Preservation.
+          </p>
+        </div>
+        <div style="padding: 32px 28px; background: rgba(138,58,42,0.1); border-top: 2px solid var(--gold); flex:1;">
+          <div class="tech-num">The Turn — Fire</div>
+          <h3 style="color:var(--text); letter-spacing:0; font-size:1rem;">Joseph Arthur</h3>
+          <p style="font-size:0.88rem; color:var(--dim); max-width:100%; margin-bottom:0;">
+            Breaking and transformation. The trick turns; the expected order is disrupted.
+            The preserver must change form to enable new creation.
+          </p>
+        </div>
+        <div style="padding: 32px 28px; background: rgba(74,170,90,0.05); border-top: 2px solid var(--flame); flex:1;">
+          <div class="tech-num">The Prestige — Spirit</div>
+          <h3 style="color:var(--text); letter-spacing:0; font-size:1rem;">Sage Arthur Jordan</h3>
+          <p style="font-size:0.88rem; color:var(--dim); max-width:100%; margin-bottom:0;">
+            Revelation and realization. The prestige: where the true trick is revealed,
+            a new state is achieved, infused with wisdom from the Jordan.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── VII. THE SAGENT ── -->
+<section class="chapter" id="the-sagent">
+  <div class="wide">
+    <div class="chapter-num">VII — The Sagent</div>
+    <h2>Sage Arthur Jordan Clokey</h2>
+
+    <div class="profile-section">
+      <img src="media/graphics/website/PXL_20250510_211954769.jpg"
+           alt="Sage Arthur Jordan Clokey — The Sagent"
+           class="profile-img" />
+      <div class="profile-text">
+        <p>The Sagent — philosopher, storyteller, and seeker — walks a path between
+          faiths and philosophies, gathering the light of many lamps into one flame.
+          A Sagent is not an agent of worldly rulers. He is an agent of divine wisdom.</p>
+
+        <blockquote style="margin: 24px 0;">
+          <p>When every heart becomes a throne, no crown is needed.</p>
+          <cite>— The Sagent Creed</cite>
+        </blockquote>
+
+        <p>To be a Sagent is to reject service to human hierarchies and to become instead
+          an instrument of the unchanging law written on every human heart.
+          The Sagent does not force — he plants seeds. He does not rule — he leads
+          by example. He does not serve empire — he serves truth.</p>
+
+        <p>The same principles that govern living systems — decentralization, emergence,
+          adaptation, stewardship — govern the Sagent's philosophy of leadership
+          and design. <em>Life is a language. We are learning to speak it.</em></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── VIII. BUSINESS MODEL ── -->
+<section class="chapter" id="business-model" style="background: var(--bg2);">
+  <div class="wide">
+    <div class="chapter-num">VIII — Business Model</div>
+    <h2>How Living Works Grows</h2>
+
+    <div class="rev-grid">
+      <div class="rev-card">
+        <h3>SaaS Platform</h3>
+        <p>Subscription access to the Living Works design suite.
+          Academic ($50–200/mo), Startup ($500/mo), Enterprise ($2,000+/mo).</p>
+      </div>
+      <div class="rev-card">
+        <h3>AI Design Services</h3>
+        <p>Custom biological design projects for materials companies,
+          construction firms, and biotech enterprises.</p>
+      </div>
+      <div class="rev-card">
+        <h3>IP Licensing</h3>
+        <p>Patents on biological growth algorithms, engineered organism designs,
+          and living material systems created through the platform.</p>
+      </div>
+      <div class="rev-card">
+        <h3>Media & Community</h3>
+        <p>Sagent Creed videos, True Republic podcast, 8 Pillars series,
+          courses, books, speaking engagements, and Patreon memberships.</p>
+      </div>
+    </div>
+
+    <div class="content" style="margin-top: 32px;">
+      <div class="chapter-num" style="margin-bottom: 16px;">Development Roadmap</div>
+      <div class="roadmap">
+        <div class="phase">
+          <div class="phase-label">Phase 1 — Years 1–2</div>
+          <h3>Foundation</h3>
+          <p>Morphogenesis engine MVP · AI design interface · Basic BioCAD ·
+            Sagent Creed media launch · University and synthetic biology lab early adopters</p>
+        </div>
+        <div class="phase">
+          <div class="phase-label">Phase 2 — Years 3–5</div>
+          <h3>Expansion</h3>
+          <p>Living material design modules · Architecture simulation ·
+            Advanced AI models · Architecture firm and materials company partnerships ·
+            True Republic + 8 Pillars at scale</p>
+        </div>
+        <div class="phase">
+          <div class="phase-label">Phase 3 — Years 5–10</div>
+          <h3>Living Age Infrastructure</h3>
+          <p>Programmable ecosystem design · Living infrastructure at city scale ·
+            Municipal and government partnerships · Category standard for
+            biological design software</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section" id="connect">
+  <h2>Enter the Living Age</h2>
+  <p>Industrial civilization built with blocks.
+    The next civilization will build with living systems.
+    Living Works provides the tools.
+    Spiral Stewards guide their use.</p>
+  <div class="cta-links">
+    <a href="spiral-steward.html" class="cta-link">The Spiral Steward</a>
+    <a href="sagent.html" class="cta-link">The Sagent</a>
+    <a href="moral-framework.html" class="cta-link secondary">Moral Framework</a>
+    <a href="true-republic.html" class="cta-link secondary">True Republic</a>
+    <a href="biology-voluntaryism.html" class="cta-link secondary">Biology &amp; Voluntaryism</a>
+    <a href="spiral steward website/book.html" class="cta-link">The Book</a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer id="site-footer">
+  <span class="footer-brand">Living Works by the Word &middot; Sage Clokey &middot; 2026</span>
+  <nav class="footer-links">
+    <a href="living-age.html">The Living Age</a>
+    <a href="index.html">Architecture</a>
+    <a href="spiral-steward.html">Spiral Steward</a>
+    <a href="moral-framework.html">Moral Framework</a>
+    <a href="sagent.html">The Sagent</a>
+    <a href="true-republic.html">True Republic</a>
+    <a href="posters.html">Posters</a>
+    <a href="pitch.html">Investor Hub</a>
+    <a href="competitive.html">Competitive</a>
+    <a href="summary.html">Summary</a>
+    <a href="story.html">The Story</a>
+    <a href="deck.html">Pitch Deck</a>
+    <a href="design-lab.html">Design Lab</a>
+    <a href="spiral steward website/book.html">The Book</a>
+  </nav>
+</footer>
+
+</body>
+</html>

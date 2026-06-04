@@ -1,0 +1,13 @@
+Title: Untitled Note
+Created: 2026-02-23T22:53:45.687Z
+Updated: 2026-02-23T22:53:45.687Z
+ID: a473412e-53b9-4ce9-bca7-ae12f88132d9
+
+---
+
+
+Title
+A software that help abstract the designing of organisms. Like solid words or cad but for living organisms so it isn't based on making blocks but growth patterns and feedback mechanisms. If computers were programmed with 1s and 0s there would be a lot less software. Bare code needs to be abstracted so that design in that can actually be done at scale. Living things need to be designed as living things instead of reducing it into parts. The design has to integrate the complexity well that this is where the machine learning comes in for making predictions with what DNA sequences create which structures so that we can go from the abstracted design to the DNA. 
+
+
+

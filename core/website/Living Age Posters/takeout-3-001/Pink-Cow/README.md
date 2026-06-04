@@ -1,0 +1,3 @@
+# Pink Cow
+
+The pink cow as symbol of the remarkable, the counterintuitive, and the sacred anomaly. Drawn from Seth Godin's concept of the Purple Cow — the thing so different it cannot be ignored — but transposed into the Living Works color language where pink signals tenderness, vulnerability, and the shock of genuine originality. The pink cow is the idea that stops traffic, the vision that doesn't fit any existing category, the living thing that refuses to be ordinary. This folder collects images featuring or invoking this symbol: the strange creature in the field that makes you pull over, get out of the car, and reconsider everything.

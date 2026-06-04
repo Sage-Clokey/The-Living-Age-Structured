@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Living Age — Poster Gallery</title>
+  <style>
+    :root {
+      --bg:    #06080a;
+      --text:  #e8e2d6;
+      --dim:   #6b6358;
+      --line:  #1e2218;
+      --gold:  #b8973a;
+      --flame: #4aaa5a;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'Georgia', serif; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      display: flex; align-items: center; gap: 28px;
+      padding: 14px 32px;
+      background: rgba(6,8,10,0.95);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo { color: var(--flame); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.12em; white-space: nowrap; }
+    .nav-links { display: flex; gap: 20px; list-style: none; flex-wrap: wrap; }
+    .nav-links a { color: var(--dim); text-decoration: none; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active { color: var(--flame); }
+
+    /* HERO */
+    .hero {
+      padding: 80px 32px 60px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-label { color: var(--flame); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.6rem); font-weight: 400; color: var(--text); line-height: 1.15; }
+    .hero h1 em { display: block; color: var(--dim); font-style: italic; font-size: 0.45em; margin-top: 14px; }
+    .hero p { max-width: 560px; margin: 28px auto 0; color: var(--dim); font-size: 1rem; line-height: 1.7; }
+
+    /* SECTION NAV */
+    .section-nav {
+      position: sticky; top: 57px; z-index: 100;
+      background: rgba(6,8,10,0.96);
+      border-bottom: 1px solid var(--line);
+      padding: 10px 32px;
+      display: flex; gap: 6px; flex-wrap: wrap;
+    }
+    .section-nav a {
+      color: var(--dim); text-decoration: none; font-size: 0.72rem;
+      text-transform: uppercase; letter-spacing: 0.07em;
+      padding: 5px 11px;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+    .section-nav a:hover { color: var(--text); border-color: var(--line); }
+
+    /* SECTIONS */
+    .poster-section { padding: 64px 32px; border-bottom: 1px solid var(--line); }
+    .section-header { max-width: 700px; margin-bottom: 40px; }
+    .section-tag { color: var(--flame); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 10px; }
+    .section-header h2 { font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 400; color: var(--text); }
+    .section-header p { color: var(--dim); font-size: 0.92rem; line-height: 1.65; margin-top: 10px; }
+
+    /* GRID */
+    .poster-grid {
+      columns: 160px;
+      column-gap: 10px;
+    }
+    .poster-item {
+      break-inside: avoid;
+      margin-bottom: 10px;
+      cursor: pointer;
+      overflow: hidden;
+      border-radius: 3px;
+      border: 1px solid var(--line);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .poster-item:hover { border-color: var(--flame); transform: scale(1.02); }
+    .poster-item img {
+      display: block; width: 100%; height: auto;
+    }
+
+    /* LIGHTBOX */
+    #lightbox {
+      display: none; position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.92);
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox img {
+      max-width: min(90vw, 900px);
+      max-height: 90vh;
+      object-fit: contain;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+    }
+    #lightbox-close {
+      position: absolute; top: 20px; right: 28px;
+      color: var(--dim); font-size: 2rem; cursor: pointer;
+      background: none; border: none; line-height: 1;
+    }
+    #lightbox-close:hover { color: var(--text); }
+
+    /* COUNT BADGE */
+    .count-badge {
+      display: inline-block; background: var(--line);
+      color: var(--dim); font-size: 0.7rem;
+      padding: 2px 8px; border-radius: 10px;
+      vertical-align: middle; margin-left: 10px;
+    }
+
+    @media (max-width: 600px) {
+      nav { gap: 12px; padding: 12px 16px; }
+      .poster-section { padding: 48px 16px; }
+      .section-nav { padding: 8px 16px; }
+      .hero { padding: 60px 16px 40px; }
+      .poster-grid { columns: 130px; }
+    }
+  </style>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<nav id="site-nav">
+  <a class="nav-logo" href="living-age.html">Living Works by the Word</a>
+  <ul class="nav-links">
+    <li><a href="living-age.html">The Living Age</a></li>
+    <li><a href="index.html">Architecture</a></li>
+    <li><a href="spiral-steward.html">Spiral Steward</a></li>
+    <li><a href="moral-framework.html">Moral Framework</a></li>
+    <li><a href="sagent.html">The Sagent</a></li>
+    <li><a href="true-republic.html">True Republic</a></li>
+    <li><a href="posters.html" class="active">Posters</a></li>
+    <li><a href="biology-voluntaryism.html">Biology</a></li>
+    <li><a href="spiral steward website/book.html">The Book</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-label">The Archive</div>
+  <h1>Poster Gallery
+    <em>Visual Manifestos of the Living Age</em>
+  </h1>
+  <p>Every image here is a seed of the larger vision — organized by the themes that form the Living Age project.</p>
+</div>
+
+<nav class="section-nav" id="section-nav">
+  <a href="#living-age">The Living Age</a>
+  <a href="#spiral-steward">Spiral Steward</a>
+  <a href="#the-sagent">The Sagent</a>
+  <a href="#pledge-turn-prestige">Pledge / Turn / Prestige</a>
+  <a href="#true-republic">The True Republic</a>
+  <a href="#spiritual-warfare">Spiritual Warfare</a>
+  <a href="#the-kingdom">The Kingdom</a>
+  <a href="#justice-sovereignty">Justice &amp; Sovereignty</a>
+  <a href="#arthur-joseph-sage">Arthur–Joseph–Sage</a>
+  <a href="#truth-awakening">Truth &amp; Awakening</a>
+  <a href="#more-works">More Works</a>
+</nav>
+
+<!-- SECTION 1 -->
+<section class="poster-section" id="living-age">
+  <div class="section-header">
+    <div class="section-tag">Section I</div>
+    <h2>The Living Age <span class="count-badge" id="count-living-age"></span></h2>
+    <p>The core vision: life over machines, the green flame of renewal rising from the ashes of the industrial age. Living systems — decentralized, organic, spiraling, alive.</p>
+  </div>
+  <div class="poster-grid" data-section="living-age"></div>
+</section>
+
+<!-- SECTION 2 -->
+<section class="poster-section" id="spiral-steward">
+  <div class="section-header">
+    <div class="section-tag">Section II</div>
+    <h2>The Spiral Steward <span class="count-badge" id="count-spiral-steward"></span></h2>
+    <p>Renew. Heal. Rewild. The Spiral Steward designs with nature, not against it — from blocks to spirals, the age of living systems begins.</p>
+  </div>
+  <div class="poster-grid" data-section="spiral-steward"></div>
+</section>
+
+<!-- SECTION 3 -->
+<section class="poster-section" id="the-sagent">
+  <div class="section-header">
+    <div class="section-tag">Section III</div>
+    <h2>The Sagent &amp; The Cloaked Order <span class="count-badge" id="count-the-sagent"></span></h2>
+    <p>The Sagent is not a ruler. The Sagent is a steward of wisdom — guiding without command, working in the dark to serve the light. Power without panic. The Cloaked Ones move without fear.</p>
+  </div>
+  <div class="poster-grid" data-section="the-sagent"></div>
+</section>
+
+<!-- SECTION 4 -->
+<section class="poster-section" id="pledge-turn-prestige">
+  <div class="section-header">
+    <div class="section-tag">Section IV</div>
+    <h2>The Pledge / Turn / Prestige <span class="count-badge" id="count-pledge-turn-prestige"></span></h2>
+    <p>Every great story comes in three acts: the Pledge (life given), the Turn (life offered), the Prestige (life returned alive). Water prepares. Fire transforms. Spirit restores. Not a line — a spiral.</p>
+  </div>
+  <div class="poster-grid" data-section="pledge-turn-prestige"></div>
+</section>
+
+<!-- SECTION 5 -->
+<section class="poster-section" id="true-republic">
+  <div class="section-header">
+    <div class="section-tag">Section V</div>
+    <h2>The True Republic &amp; Sagent Creed <span class="count-badge" id="count-true-republic"></span></h2>
+    <p>Not a system of kings, but of conscience. A fellowship of sovereign souls who do not rule each other — because they have learned to rule themselves. Truth is law. Power flows from conscience and consent.</p>
+  </div>
+  <div class="poster-grid" data-section="true-republic"></div>
+</section>
+
+<!-- SECTION 6 -->
+<section class="poster-section" id="spiritual-warfare">
+  <div class="section-header">
+    <div class="section-tag">Section VI</div>
+    <h2>Spiritual Warfare &amp; Sacred Symbols <span class="count-badge" id="count-spiritual-warfare"></span></h2>
+    <p>The serpent rises from fire. The dove descends through water. Together they forge the Sword of the Spirit and raise the Shield of Faith. The spirit is armed — not with rage, but with truth.</p>
+  </div>
+  <div class="poster-grid" data-section="spiritual-warfare"></div>
+</section>
+
+<!-- SECTION 7 -->
+<section class="poster-section" id="the-kingdom">
+  <div class="section-header">
+    <div class="section-tag">Section VII</div>
+    <h2>The Kingdom &amp; Cosmic Order <span class="count-badge" id="count-the-kingdom"></span></h2>
+    <p>The Kingdom of God is not of this world — no man above another, natural law through God. Against it stands the Kingdom of Satan: authority by force, hierarchy and fear. The True Order is decentralized yet unified.</p>
+  </div>
+  <div class="poster-grid" data-section="the-kingdom"></div>
+</section>
+
+<!-- SECTION 8 -->
+<section class="poster-section" id="justice-sovereignty">
+  <div class="section-header">
+    <div class="section-tag">Section VIII</div>
+    <h2>Justice &amp; Sovereignty <span class="count-badge" id="count-justice-sovereignty"></span></h2>
+    <p>It is better to be a criminal for doing what is right than to follow the law by committing atrocities. Legality is not morality. Good soldiers follow conscience, not orders. Every person is sovereign — owned by God alone.</p>
+  </div>
+  <div class="poster-grid" data-section="justice-sovereignty"></div>
+</section>
+
+<!-- SECTION 9 -->
+<section class="poster-section" id="arthur-joseph-sage">
+  <div class="section-header">
+    <div class="section-tag">Section IX</div>
+    <h2>The Arthur–Joseph–Sage Cycle <span class="count-badge" id="count-arthur-joseph-sage"></span></h2>
+    <p>The Creator and the Continuator — a divine rhythm across generations. Arthur breaks the cycle. Joseph keeps the flame. The Sage solves what the warrior alone could not. The Royal Line of Clokey carries all three.</p>
+  </div>
+  <div class="poster-grid" data-section="arthur-joseph-sage"></div>
+</section>
+
+<!-- SECTION 10 -->
+<section class="poster-section" id="truth-awakening">
+  <div class="section-header">
+    <div class="section-tag">Section X</div>
+    <h2>Truth &amp; Awakening <span class="count-badge" id="count-truth-awakening"></span></h2>
+    <p>Vecna is America — not because it is evil, but because it woke up halfway. The most dangerous lie is not entirely false. Illusion that hides truth is a lie; illusion that reveals truth is a bridge. Question. Speak. Burn away the lies.</p>
+  </div>
+  <div class="poster-grid" data-section="truth-awakening"></div>
+</section>
+
+<!-- MORE WORKS -->
+<section class="poster-section" id="more-works">
+  <div class="section-header">
+    <div class="section-tag">Full Archive</div>
+    <h2>More Works <span class="count-badge" id="count-more-works"></span></h2>
+    <p>The complete collection — all remaining posters from the archive.</p>
+  </div>
+  <div class="poster-grid" data-section="more-works"></div>
+</section>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <button id="lightbox-close" onclick="closeLightbox()">&#215;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+const BASE = 'Living%20Age%20Posters/takeout-3-001/';
+
+const sections = {
+  'living-age': [
+    'file_00000000000871f7adfc4a9876eef38f.png',
+    'file_00000000526071fdb0bceb31e2949a09.png',
+    'file_000000001940722f8ea77ec8394b24c5.png',
+    'file_00000000090471f78e670d207ab8a787.png',
+    'file_0000000018a461f88704ee697e66f9f3.png',
+    'file_0000000049a8722f8e4cbec06079abea.png',
+    'file_00000000f11871f7aaeae521b5db86e9.png',
+  ],
+  'spiral-steward': [
+    'file_000000004c1c722f94b5b551f8515e62.png',
+    'file_0000000087a4722fa40f54efa32569af.png',
+    'file_00000000182071f78c70a19aa0cf940c.png',
+    'file_000000000d4861f6ac8d69eb2e0918dd.png',
+    'file_0000000098ac622fb263b0a13f81ff45 (1).png',
+  ],
+  'the-sagent': [
+    'file_000000006c7c71f5aa91c14b91753466.png',
+    'file_0000000015ac61fd8ef88c2e560b8615.png',
+    'file_00000000066c71f892114f447f3ef86d.png',
+    'file_00000000912461f581319242ae1fb3c4.png',
+    'file_0000000009dc61f696aa6e8b2efafdc8.png',
+    'file_00000000060861f68369a4035cdae75a.png',
+    'file_000000006a0c61f8a29414918959d29d.png',
+    'file_0000000012f4622f92a2efacac78eb57.png',
+  ],
+  'pledge-turn-prestige': [
+    'file_00000000005071fda3f6dc41f67c6fac.png',
+    'file_000000003c4871fd90e6a9bf1a0b927b.png',
+    'file_00000000025062308378de13ec6aeccc.png',
+    'file_00000000873071f596ae1de6301a3946.png',
+    'file_000000001f5861f691e9e201ebb089b4.png',
+    'file_00000000af2061f6a63e3061a99c3e18.png',
+  ],
+  'true-republic': [
+    'file_000000002208622f8e4a6db98f38ff78.png',
+    'file_000000001c10622f82247b7427a96004_conversation_id=6801b03e-bbe0-800e-81a5-980dbd336369&message_id=e5d1ef3f-f5b4-4aa9-bb8d-0ec1a19c8f13.png',
+    'file_0000000014e071f583c38a2dd7f55464.png',
+    'file_0000000015f0622f9a2d9c5f3c366374.png',
+    'file_000000003944622fb1fd42704c0f2e79.png',
+    'file_0000000077a061fd9d3a3373f77b3629.png',
+    'file_00000000fdd8622fb8488cdc6184035e.png',
+    'file_00000000ac10622f86176dc882481ee7.png',
+    'file_000000001bb4622f81e61f2c5dff881a.png',
+    'file_000000001778622f845d24689f8c3789.png',
+    'file_0000000021bc622f9b39666fc5600d39.png',
+    'file_00000000230c622faedea05682becfe5.png',
+  ],
+  'spiritual-warfare': [
+    'file_0000000040ac61f8a70c6b5b494d7597.png',
+    'file_00000000368c622fb6c590182a0b31d8.png',
+    'file_000000006344622f8a60314cc0845a41.png',
+    'file_000000001eb061fd8cbd97f5f61830de.png',
+    'file_00000000ec0c71f8bcddf7705fdd724d.png',
+    'file_0000000008b06230b50da1a8d7b36f40.png',
+    'file_00000000405861f8afcd491c05405509.png',
+    'file_00000000155861f7a64ffa73d96715c4.png',
+  ],
+  'the-kingdom': [
+    'file_00000000aab061f5b9bdeaead0309270.png',
+    'file_000000005d68722fa4191416f633ad2f.png',
+    'file_00000000d95c71f5a8399f43ff8c178e.png',
+    'file_00000000811c722faf354a1f720171bd.png',
+    'file_000000009240722f91df5bdfc641c33b.png',
+    'file_000000003e1061f6a76d4dd31721f695.png',
+  ],
+  'justice-sovereignty': [
+    'file_00000000013c622f97e7c9f17fbc6df1.png',
+    'file_000000003cf861fbaba45a618856d08a.png',
+    'file_00000000ba8c61f8a4b6e4b5de201f5c.png',
+    'file_0000000007b0723090bd5036d284da67.png',
+    'file_000000001888722f9f7015fae666fac2.png',
+    'file_00000000285471f58367723c527e86ba.png',
+    'file_00000000255461f89a21b7b1f2ea94d3.png',
+    'file_000000001f1061f8b999501a1167ce1b.png',
+    'file_000000003168622f96dd2a3577427fe3.png',
+  ],
+  'arthur-joseph-sage': [
+    'file_0000000071886230a51046f16407ecd1.png',
+    'file_00000000e74861fdaec8391bd8f93b0a.png',
+    'file_00000000c9fc61f6bcd90976a803cd8b.png',
+    'file_00000000c1807230bb9fb2b1f9162f31.png',
+    'file_00000000738061f6aaad2b58b0243980.png',
+  ],
+  'truth-awakening': [
+    'file_00000000218071fdb97e47e77a5229ef.png',
+    'file_0000000005f071f5927b6cefb687aa86.png',
+    'file_00000000116871fdacc29c34ee3628bc.png',
+    'file_000000002ae061f5aad8bee794c12709.png',
+    'file_00000000114861f9abe28ad5909985f5.png',
+  ],
+};
+
+// ALL files in the archive
+const allFiles = [
+  'codm_2025-06-21_02_30_01.jpg',
+  'file_00000000000871f7adfc4a9876eef38f.png',
+  'file_00000000005071fda3f6dc41f67c6fac.png',
+  'file_00000000013c622f97e7c9f17fbc6df1.png',
+  'file_00000000025062308378de13ec6aeccc.png',
+  'file_0000000003185230b022f9eee9b233c9_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=95c5f2b2-e612-4f92-876f-0f66da4f254b (1).PNG',
+  'file_0000000005f071f5927b6cefb687aa86.png',
+  'file_00000000060861f68369a4035cdae75a.png',
+  'file_00000000066c71f892114f447f3ef86d.png',
+  'file_0000000007b0723090bd5036d284da67.png',
+  'file_0000000007f052308f1becdbe11dcfde_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=94680cc5-b266-4cbb-801f-bdd4f2dcbb48.PNG',
+  'file_0000000008b06230b50da1a8d7b36f40.png',
+  'file_0000000008ec61f989261567fbd79a86.png',
+  'file_00000000090471f78e670d207ab8a787.png',
+  'file_0000000009dc61f696aa6e8b2efafdc8.png',
+  'file_000000000d4861f6ac8d69eb2e0918dd.png',
+  'file_000000000efc51f69b88ebe82ddccd7e_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=9f39fb2a-5a32-49d1-a5cf-e5bec276cfd9.PNG',
+  'file_0000000010005230936ce05799ead6d0_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=dca3207e-f870-47ef-9edb-9de4cb0c6bc3.PNG',
+  'file_00000000114861f9abe28ad5909985f5.png',
+  'file_00000000116871fdacc29c34ee3628bc.png',
+  'file_0000000012f4622f92a2efacac78eb57.png',
+  'file_0000000014e071f583c38a2dd7f55464.png',
+  'file_00000000155861f7a64ffa73d96715c4.png',
+  'file_0000000015ac61fd8ef88c2e560b8615.png',
+  'file_0000000015f0622f9a2d9c5f3c366374.png',
+  'file_000000001778622f845d24689f8c3789.png',
+  'file_00000000182071f78c70a19aa0cf940c.png',
+  'file_000000001888722f9f7015fae666fac2.png',
+  'file_0000000018a461f88704ee697e66f9f3.png',
+  'file_000000001940722f8ea77ec8394b24c5.png',
+  'file_000000001a1c51f69a32204a32b7f5f5_conversation_id=67edeac9-3778-800e-86f8-9ca982d98b54&message_id=bc8100e1-4446-4d95-aaa9-861b37174714.PNG',
+  'file_000000001b9461f69ea59fbf07821ec6_conversation_id=67fcb01b-337c-800e-b615-575d2fcdc9b1&message_id=162615c7-71e6-4798-b703-99d7a4d3b23b.PNG',
+  'file_000000001bb4622f81e61f2c5dff881a.png',
+  'file_000000001bb4622f81e61f2c5dff881a~2.png',
+  'file_000000001c10622f82247b7427a96004_conversation_id=6801b03e-bbe0-800e-81a5-980dbd336369&message_id=e5d1ef3f-f5b4-4aa9-bb8d-0ec1a19c8f13.png',
+  'file_000000001d906230956ea2450d06c467.png',
+  'file_000000001dd051f6a0a113a0a4e2935e_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=184baceb-91a0-47c5-bded-61f3aab7afef.PNG',
+  'file_000000001eb061fd8cbd97f5f61830de.png',
+  'file_000000001f1061f8b999501a1167ce1b.png',
+  'file_000000001f2051f7b2dbfc771a11e410_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=e779ec38-1ea5-459a-91af-5f14fd5b26fa.PNG',
+  'file_000000001f5861f691e9e201ebb089b4.png',
+  'file_00000000207861f892d72860a2372a6b (1).png',
+  'file_00000000218071fdb97e47e77a5229ef.png',
+  'file_0000000021bc622f9b39666fc5600d39.png',
+  'file_000000002208622f8e4a6db98f38ff78.png',
+  'file_00000000230c622faedea05682becfe5.png',
+  'file_00000000255461f89a21b7b1f2ea94d3.png',
+  'file_0000000026f851f6a2aef16443e28b46_conversation_id=67ee03dd-715c-800e-9656-4eeea15152fd&message_id=79a4bbc0-479a-4e18-b4e6-a568f1a8c592.PNG',
+  'file_00000000285471f58367723c527e86ba.png',
+  'file_0000000028d061f9b858a8e6db57b425 (1).png',
+  'file_000000002a9c51f6b51e40fe68053ab2_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=a7576571-c3fe-4601-9b2d-b097010483be (1).PNG',
+  'file_000000002ae061f5aad8bee794c12709.png',
+  'file_000000002cec71f7bf878e21c5902812 (1).png',
+  'file_000000002dd851f7bec6a285a312b29f_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=3941d99c-6a95-4e44-9f2d-72e6862217c1.PNG',
+  'file_000000002fe451f7998d1857e26a7f56_conversation_id=67f12408-4be4-800e-a726-e216279048af&message_id=0770ef60-ea01-4ced-989d-fbc58e8388ec.PNG',
+  'file_00000000313c71fda974dab013177456.png',
+  'file_000000003168622f96dd2a3577427fe3.png',
+  'file_00000000324861f98dafdb1864893a24.png',
+  'file_0000000034dc71fd9043bbae48cc879c.png',
+  'file_00000000367061f8a5681e0d03f04272.png',
+  'file_00000000368c622fb6c590182a0b31d8.png',
+  'file_00000000373c52308dbc281fc19dd6c2_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=c6295dbb-0c96-49ea-ab9d-451d6942acdd.PNG',
+  'file_0000000037a061f88a37d02215e904bf.png',
+  'file_0000000037c871fda606349876981afc.png',
+  'file_000000003944622fb1fd42704c0f2e79.png',
+  'file_0000000039485230a259fddd954c8896_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=32fa6986-3a5b-4ded-9845-ef6dc140c961.PNG',
+  'file_000000003a3471f59f3c0a5faecc7719.png',
+  'file_000000003b1052309bd312347a640feb_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=e3d6f163-dfe5-4640-b047-f4bbf46bb0cf.PNG',
+  'file_000000003c4871fd90e6a9bf1a0b927b.png',
+  'file_000000003c5c61f7aeac248e4d634748.png',
+  'file_000000003cf861fbaba45a618856d08a.png',
+  'file_000000003d085230aac3f9d39667c9e9_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=4b3831ef-9e1e-4a9a-9e22-c43b772d629f (1).PNG',
+  'file_000000003d105230b5a905dc053e41d8_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=e3ea5cf3-fd0d-440b-8dd6-610c2b57432a.PNG',
+  'file_000000003d3051f7a867fc555525093d_conversation_id=67eee433-0284-800e-8005-4b0eace40c89&message_id=320a940d-596f-4edf-998e-977a790f60f8.PNG',
+  'file_000000003d506230ad09f0b4f4d425c6.png',
+  'file_000000003d5871fdb46da8f508f9cd0a.png',
+  'file_000000003e1061f6a76d4dd31721f695.png',
+  'file_000000003f2051f7a04ad8a07a219d02_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=28fb247e-1fc6-4841-b07d-67899a0d7305.PNG',
+  'file_00000000405861f8afcd491c05405509.png',
+  'file_0000000040a4722f81e6e31bb5093314.png',
+  'file_0000000040ac61f8a70c6b5b494d7597.png',
+  'file_00000000412461f7833365f3c412c56a.png',
+  'file_0000000041346230b1487c5ee3e70cc9_conversation_id=67fcb01b-337c-800e-b615-575d2fcdc9b1&message_id=491eebb1-8957-4c42-8cd1-cbb37cea1a1a.PNG',
+  'file_00000000418861f789d96770661df3e1.png',
+  'file_00000000421051f799dc2a61a13b1b38_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=9686768c-bed6-4a17-8829-8acd076e9de8.PNG',
+  'file_00000000424471fda81187e1d3f1efd7.png',
+  'file_0000000043b861f680f662c2ff8a1b3a.png',
+  'file_0000000043e4620aa23ea3ccfc4f648d (1).png',
+  'file_00000000454071fd9bd8264f71434d03.png',
+  'file_0000000048fc61f5b6dfc60457d8f8d7.png',
+  'file_0000000049a8722f8e4cbec06079abea.png',
+  'file_000000004a4452309ea6ad25f5cabc6f_conversation_id=67eb858a-c258-800e-b8e9-71edf11001fc&message_id=c5d184cc-1064-4706-a063-43186f06f037.webp',
+  'file_000000004aa871f583e0ec9522d6109a.png',
+  'file_000000004c0451f7be6df0fe00de2d67_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=7abfd4c4-6bd0-4dca-8df4-1899e6c8bd2b.PNG',
+  'file_000000004c1c722f94b5b551f8515e62.png',
+  'file_000000004c6c71f78e0c4c11952ed80e.png',
+  'file_000000004f3861f6947741d7c6fb8a78.png',
+  'file_000000004fd471f5bcbb9f63e6233782.png',
+  'file_00000000504861f8a919272d23035a5b.png',
+  'file_0000000051885230b26ceee1267aceea_conversation_id=67eb858a-c258-800e-b8e9-71edf11001fc&message_id=eab39bda-b00b-49d8-a056-96daa549ddce.webp',
+  'file_00000000526071fdb0bceb31e2949a09.png',
+  'file_0000000052e471f79f3e702f926e99c9.png',
+  'file_00000000538851f6be7b29ab10b933c0_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=fbd7898c-e737-4cfa-9f85-5ccaabd3e6d0.PNG',
+  'file_0000000054d471f59ea79ead27068c72 (1).png',
+  'file_0000000055c452309c2b364e6039ebee_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=59a6763a-d81f-450c-addc-3b280cb45de0.PNG',
+  'file_00000000575c61fdb9730515aedb370e.png',
+  'file_00000000589872309dcf4637e20a2762.png',
+  'file_0000000058bc61f88372b45d86cd193e.png',
+  'file_000000005ba871f5b33e99e4935c2278.png',
+  'file_000000005c986230bdff5c2802b9c631_conversation_id=680095bd-3a7c-800e-abe6-5d0929df0239&message_id=10454598-efa9-41ed-a6a7-1f60165a87a1.PNG',
+  'file_000000005d68722fa4191416f633ad2f.png',
+  'file_0000000060d461f9847f2f30a8bb012f.png',
+  'file_0000000061a471f8ba6873bd355efc50 (1).png',
+  'file_00000000632c61f7b2b7a13405173ecd.png',
+  'file_000000006344622f8a60314cc0845a41.png',
+  'file_00000000657871f5aaae852dbc11dbcf.png',
+  'file_0000000066f461f7839695665a7663ed.png',
+  'file_00000000685c722fbf3c9473fd7b9916.png',
+  'file_000000006888722f9e44a23fbb007806.png',
+  'file_000000006918722fb73422c0a2673892 (1).png',
+  'file_000000006a0c61f8a29414918959d29d.png',
+  'file_000000006a18720c9973aa139817d2d3.png',
+  'file_000000006b3c71f5b210167c56ec16fd (1).png',
+  'file_000000006bf471f59bdd6976737b1992.png',
+  'file_000000006c7c71f5aa91c14b91753466.png',
+  'file_000000006ee86230a22434a4ce11bade.png',
+  'file_000000006f5071fdb5b577a195ec3a6d (1).png',
+  'file_000000006f9461f7a45c501e3e7d8deb.png',
+  'file_00000000700c62309efaca93f5e133cf.png',
+  'file_000000007098622f8f341dad06e8b461.png',
+  'file_0000000071886230a51046f16407ecd1.png',
+  'file_0000000072b0623086d00e354a05fb39.png',
+  'file_0000000072c4722f9e4925734eb2d628.png',
+  'file_0000000072e861f9af2d4c4cd91fe2f5.png',
+  'file_00000000738061f6aaad2b58b0243980.png',
+  'file_0000000073f861f8a330c4e77827565d.png',
+  'file_0000000075c0620c823c43fa19004c10 (1).png',
+  'file_0000000075ec5230b58854e46eb62751_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=9e3134ff-1475-4b9f-b883-8cb26177bd26.PNG',
+  'file_00000000761c71f5bbf53dba60fb8449.png',
+  'file_00000000763861fd933862d41645f8d5.png',
+  'file_0000000077a061fd9d3a3373f77b3629.png',
+  'file_000000007820720c9b4cd0ff58e5e332 (1).png',
+  'file_0000000078d8722f8862a0aae833ba17.png',
+  'file_0000000078e451f7be2ed5b0aefcffa5_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=e2feecb6-1d20-4d67-8b2c-48042fb18098.PNG',
+  'file_000000007aa862308da178b25b97ed4b.png',
+  'file_000000007b3061f895299f4a5955ced3.png',
+  'file_000000007bc8722fbc7f15d14472add8.png',
+  'file_000000007d6061fdbd5452a589f1e570.png',
+  'file_000000007e1461f9a3a4e98c5a212d97.png',
+  'file_000000007e7071f5a21e2581229da1c9.png',
+  'file_00000000811c722faf354a1f720171bd.png',
+  'file_00000000812461f6a11dc14d3ff2afdf_conversation_id=67fcb01b-337c-800e-b615-575d2fcdc9b1&message_id=8e9ac5b5-462b-4d6b-99e8-0f81330831ea.PNG',
+  'file_0000000081cc51f6aa1973ccaf6c4702_conversation_id=67edeac9-3778-800e-86f8-9ca982d98b54&message_id=2c3d35a0-8242-4cea-8a5a-a9b2db08718b.PNG',
+  'file_0000000081cc51f6aa1973ccaf6c4702_conversation_id=67edeac9-3778-800e-86f8-9ca982d98b54&message_id=2c3d35a0-8242-4cea-8a5a-a9b2db08718b.jpg',
+  'file_0000000082445230bed4657f88214abc_conversation_id=67eb858a-c258-800e-b8e9-71edf11001fc&message_id=fa423ec2-1343-434e-97fb-832594da283a.jpg',
+  'file_0000000082d061f4bb33354f5ec0182f.png',
+  'file_00000000831071f7b7b34d5767bbf148.png',
+  'file_0000000083a4522f9b4cfba247ccef44_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=e52901b9-59bb-44a2-8574-40561f3f8c96.PNG',
+  'file_0000000083e45230b4539f8d7e1ed7f4_conversation_id=67eb858a-c258-800e-b8e9-71edf11001fc&message_id=fa7dd680-1343-42af-801f-e22d7e2ab25e.jpg',
+  'file_0000000083e45230b4539f8d7e1ed7f4_conversation_id=67eb858a-c258-800e-b8e9-71edf11001fc&message_id=fa7dd680-1343-42af-801f-e22d7e2ab25e.webp',
+  'file_00000000873071f596ae1de6301a3946.png',
+  'file_00000000877c72308287571f396a6819.png',
+  'file_0000000087a4722fa40f54efa32569af.png',
+  'file_00000000897052308f30ed51d1871b4f_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=e4ac2937-9032-4b9c-965c-eaa2f4b7f0be.PNG',
+  'file_000000008a0c51f7a7d0400dae2680ae_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=ef9fd646-e83e-4e96-aa99-f288fe7e3ce0.PNG',
+  'file_000000008b0071f5b5241dce055ce3ee.png',
+  'file_000000008c2871f7a7e9f53527bb5764.png',
+  'file_000000008c2c61f993664bf8f7236897 (1).png',
+  'file_000000008c60722f92f9ae5440982473.png',
+  'file_00000000911c62309625154f6fc5bc0f.png',
+  'file_00000000912461f581319242ae1fb3c4.png',
+  'file_00000000914c71f58297e78da78b7c10.png',
+  'file_0000000091ec61f68903bebdfbdb2e92.png',
+  'file_00000000921871fdac38444151b9e9a0.png',
+  'file_000000009240722f91df5bdfc641c33b.png',
+  'file_00000000940061fb910160c32af908e4.png',
+  'file_00000000943061f68ac4052b8af86a1f.png',
+  'file_00000000946071f583a6feec924d88a2.png',
+  'file_00000000953061f599cdad43fd3ca2b9.png',
+  'file_00000000954861f89a0de2697a2f3a41.png',
+  'file_0000000098ac622fb263b0a13f81ff45 (1).png',
+  'file_000000009d4072309feda64d4cff07a2.png',
+  'file_000000009e50622f99ff188d4a70da29.png',
+  'file_00000000a0c471f58f2e5bf235fe39c8 (1).png',
+  'file_00000000a3006230ae05222163bc3751 (1).png',
+  'file_00000000a35071f7abd5d33f7ca6b2e3 (1).png',
+  'file_00000000a3b4622f9cef9c6f13584aae.png',
+  'file_00000000a3d851f796d8b9d2e084eb4a_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=085a0954-ac46-4cd3-b1f5-ded306d45852.PNG',
+  'file_00000000a40451f787b8041d6aa75f06_conversation_id=67f12408-4be4-800e-a726-e216279048af&message_id=97b8b396-d153-4c9f-a97f-e9dedf27c2f3.PNG',
+  'file_00000000a7d861f9b9fa922e8fed96dd.png',
+  'file_00000000aab061f5b9bdeaead0309270.png',
+  'file_00000000aab062309dd437833fc92e0e.png',
+  'file_00000000ac10622f86176dc882481ee7.png',
+  'file_00000000ac4c61fd9cecd7620fae7e65.png',
+  'file_00000000af2061f6a63e3061a99c3e18.png',
+  'file_00000000af7051f694f66a5a0817bfab_conversation_id=67ee03dd-715c-800e-9656-4eeea15152fd&message_id=968bb9ae-78b0-4113-82ae-828a396d08aa.PNG',
+  'file_00000000afc861f7a05c9734d516abba.png',
+  'file_00000000b27061fda360956402a86018.png',
+  'file_00000000b84461f98b7bbb9e3f5385ac.png',
+  'file_00000000b940622fab14acb24687fb45 (1).png',
+  'file_00000000ba8c61f8a4b6e4b5de201f5c.png',
+  'file_00000000bb386230871a194b2142590e.png',
+  'file_00000000be3c62308ab9d52db0794e89 (1).png',
+  'file_00000000c06061f9ab1b907ba12da6c5.png',
+  'file_00000000c1807230bb9fb2b1f9162f31.png',
+  'file_00000000c33861f789819a388ccc53ac.png',
+  'file_00000000c3dc622f8a91f6f4cdbc610e.png',
+  'file_00000000c48c71f5a06f41e32c516a8f.png',
+  'file_00000000c764622fb93c485af6b47b75.png',
+  'file_00000000c9d4722f8ebe05e4b8024565.png',
+  'file_00000000c9fc61f6bcd90976a803cd8b.png',
+  'file_00000000ca50722f8175de330d95561e.png',
+  'file_00000000ca5c71f592d7f5199b5796c6.png',
+  'file_00000000ccb461f580c1852512278088.png',
+  'file_00000000ccec61f5a4abfe54e1fc4b6d.png',
+  'file_00000000cd5461f59d1c33203b3e0ec1.png',
+  'file_00000000cf94624394d135811e477dc5.png',
+  'file_00000000d1b851f69dd5931f10e779e4_conversation_id=67edeac9-3778-800e-86f8-9ca982d98b54&message_id=8e736d64-e47a-4ed5-baaf-c286013559fc.PNG',
+  'file_00000000d2b45230bd9cbb660e1fcff1_conversation_id=67eb858a-c258-800e-b8e9-71edf11001fc&message_id=130f5a2a-fa19-4121-9730-f74ff9db12ce (1).jpg',
+  'file_00000000d31861f7a66ef48529176291_conversation_id=67fcb01b-337c-800e-b615-575d2fcdc9b1&message_id=eb0102dd-9225-4f72-88fc-3b25a140f01c.PNG',
+  'file_00000000d3f861f79ed075fff0b1b851.png',
+  'file_00000000d7b061f7bf2aff232ae375ea.png',
+  'file_00000000d8086230bb0cb0252d059667_conversation_id=67fcb01b-337c-800e-b615-575d2fcdc9b1&message_id=dc4614ff-5e63-4742-b746-d030a3fc6343.PNG',
+  'file_00000000d908622fb6e346be873aa78b.png',
+  'file_00000000d95c71f5a8399f43ff8c178e.png',
+  'file_00000000dc0c71f581535805cf6b5714.png',
+  'file_00000000dcf871f5a265cbd2fa7aba1c.png',
+  'file_00000000ddd85230bb82be02aa03390b_conversation_id=67eb858a-c258-800e-b8e9-71edf11001fc&message_id=7212495c-e66e-415b-9d4c-8e430c296757 (1).webp',
+  'file_00000000ded061fa9457a00a930b0f0c.png',
+  'file_00000000e04c6230ab85444fab0c8a8d.png',
+  'file_00000000e74861fdaec8391bd8f93b0a.png',
+  'file_00000000ea3851f7b2cf5de906a9c06a_conversation_id=67eee433-0284-800e-8005-4b0eace40c89&message_id=220a37a7-2ef6-4a95-895b-bd258fa7be17.PNG',
+  'file_00000000eb2871f5a8e7a172f47fdc72.png',
+  'file_00000000eb88722fb6d3364c23e01b2a.png',
+  'file_00000000ec0c71f8bcddf7705fdd724d.png',
+  'file_00000000ec94722fbf5a60ca58ff9d96 (1).png',
+  'file_00000000ed40622f89d9a189f7cafae8 (2).png',
+  'file_00000000edf051f786cd520ac2a182fb_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=71a1f08b-81f3-43a2-81bf-41a247ffff18.PNG',
+  'file_00000000edf051f786cd520ac2a182fb_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=71a1f08b-81f3-43a2-81bf-41a247ffff18.jpg',
+  'file_00000000ef485230a14ae1bcf58de5cf_conversation_id=67eb858a-c258-800e-b8e9-71edf11001fc&message_id=1adb70f9-c29f-440c-9d0b-352afa6347fd.webp',
+  'file_00000000f11871f7aaeae521b5db86e9.png',
+  'file_00000000f12871f69091665a7153c3ce.png',
+  'file_00000000f17c622faa6303aff9b376e9.png',
+  'file_00000000f44c61fbb6ab617a6c9f901f.png',
+  'file_00000000f4f051f6b830e4c04505ffb0_conversation_id=67ee0621-f430-800e-9a52-8b543e805db4&message_id=65096d31-d5c0-4855-be56-bd88db8acc5f.PNG',
+  'file_00000000f55c61f7b3d6ce9aa74157b6.png',
+  'file_00000000f90c622f8c12e1b3fb34bf70.png',
+  'file_00000000f9a051f6aa82a084be859145_conversation_id=67ee03dd-715c-800e-9656-4eeea15152fd&message_id=173605ef-fff8-42f5-812a-057a505d00e4 (1).PNG',
+  'file_00000000fb1c51f795074c1ec867c252_conversation_id=67f12cbe-d950-800e-8820-3e722e09c148&message_id=3a3ac4f4-900f-48f2-afa7-be5699e40682.PNG',
+  'file_00000000fc146230ba792e15042441bb.png',
+  'file_00000000fdd8622fb8488cdc6184035e.png',
+  'file_00000000ffc461f59f3e98e7c958fea2 (1).png',
+];
+
+function makeItem(filename, sectionEl) {
+  const item = document.createElement('div');
+  item.className = 'poster-item';
+  const img = document.createElement('img');
+  img.src = BASE + encodeURIComponent(filename);
+  img.loading = 'lazy';
+  img.alt = '';
+  img.onerror = function() { item.style.display = 'none'; };
+  item.appendChild(img);
+  item.addEventListener('click', () => openLightbox(BASE + encodeURIComponent(filename)));
+  sectionEl.appendChild(item);
+}
+
+// Build categorized sections
+const categorized = new Set();
+for (const [sectionId, files] of Object.entries(sections)) {
+  const grid = document.querySelector(`[data-section="${sectionId}"]`);
+  const badge = document.getElementById('count-' + sectionId);
+  if (!grid) continue;
+  files.forEach(f => {
+    makeItem(f, grid);
+    categorized.add(f);
+  });
+  if (badge) badge.textContent = files.length;
+}
+
+// Build "More Works" from remaining files
+const moreGrid = document.querySelector('[data-section="more-works"]');
+const moreBadge = document.getElementById('count-more-works');
+const remaining = allFiles.filter(f => !categorized.has(f));
+remaining.forEach(f => makeItem(f, moreGrid));
+if (moreBadge) moreBadge.textContent = remaining.length;
+
+// Lightbox
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.getElementById('lightbox-img').src = '';
+  document.body.style.overflow = '';
+}
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target === this) closeLightbox();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+
+
+<!-- FOOTER -->
+<footer id="site-footer">
+  <span class="footer-brand">Living Works by the Word &middot; Sage Clokey &middot; 2026</span>
+  <nav class="footer-links">
+    <a href="living-age.html">The Living Age</a>
+    <a href="index.html">Architecture</a>
+    <a href="spiral-steward.html">Spiral Steward</a>
+    <a href="moral-framework.html">Moral Framework</a>
+    <a href="sagent.html">The Sagent</a>
+    <a href="true-republic.html">True Republic</a>
+    <a href="posters.html">Posters</a>
+    <a href="spiral steward website/book.html">The Book</a>
+  </nav>
+</footer>
+
+</body>
+</html>

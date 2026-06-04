@@ -1,0 +1,3 @@
+# Star Wars and Mythology
+
+Archetypal myth through the lens of Star Wars and the Chosen One tradition. This folder contains images that engage with Luke Skywalker, Anakin Skywalker, and the Chosen One Prophecy as living mythological templates — not pop culture references but genuine vehicles for understanding sacrifice, destiny, corruption, and redemption. Juxtapositions with Surah 19:33 (Jesus speaking of his own death and resurrection in the Quran) place Star Wars within a much older mythological continuum. These images explore what it means to be the one prophesied, what it costs, and how ancient patterns recur across cultures and stories.

@@ -1,0 +1,2509 @@
+🧬 Living Systems Design Lab Architecture
+
+Your website will have three layers:
+
+Browser (website UI)
+        ↓
+AI API / backend server
+        ↓
+Simulation engine (Python morphogenesis)
+        ↓
+3D visualization in browser
+
+So the flow becomes:
+
+User types prompt
+↓
+AI converts prompt → simulation parameters
+↓
+Simulation generates structure
+↓
+3D model renders on website
+🌐 Step 1 — Basic Website Interface
+
+Add a page like:
+
+design-lab.html
+
+Example UI:
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Living Systems Design Lab</title>
+<link rel="stylesheet" href="site.css">
+</head>
+
+<body>
+
+<h1>Living Systems Design Lab</h1>
+
+<input id="prompt" placeholder="Describe a living structure...">
+
+<button onclick="generate()">Generate</button>
+
+<div id="viewer"></div>
+
+<script src="design.js"></script>
+
+</body>
+</html>
+⚙️ Step 2 — Send Prompt to AI
+
+design.js
+
+async function generate() {
+
+    const prompt = document.getElementById("prompt").value;
+
+    const response = await fetch("/generate", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({prompt})
+    });
+
+    const data = await response.json();
+
+    renderModel(data.model);
+}
+🧠 Step 3 — AI Converts Prompt to Parameters
+
+Example prompt:
+
+"grow a spiral coral structure with branching"
+
+AI converts it to:
+
+{
+ "branching_probability":0.3,
+ "growth_direction":"spiral",
+ "upward_bias":0.6,
+ "steps":200
+}
+🧪 Step 4 — Python Morphogenesis Engine
+
+Backend example (FastAPI):
+
+from fastapi import FastAPI
+from pydantic import BaseModel
+import morphogenesis
+
+app = FastAPI()
+
+class Prompt(BaseModel):
+    prompt: str
+
+@app.post("/generate")
+def generate_structure(data: Prompt):
+
+    params = ai_translate(data.prompt)
+
+    model = morphogenesis.generate(params)
+
+    return {"model": model}
+🌳 Step 5 — Morphogenesis Simulation
+
+Example growth engine:
+
+def generate(params):
+
+    structure = []
+
+    for i in range(params["steps"]):
+
+        grow_tip()
+        branch()
+        apply_bias()
+
+    return structure
+
+Your earlier coral simulation idea fits perfectly here.
+
+🎥 Step 6 — 3D Rendering in Browser
+
+Use Three.js.
+
+Example:
+
+function renderModel(model){
+
+const scene = new THREE.Scene();
+
+model.points.forEach(p => {
+
+    const geometry = new THREE.SphereGeometry(0.02);
+    const material = new THREE.MeshBasicMaterial();
+    const sphere = new THREE.Mesh(geometry, material);
+
+    sphere.position.set(p.x,p.y,p.z);
+
+    scene.add(sphere);
+});
+
+}
+🧠 What This Enables
+
+Users could type things like:
+
+grow a tree structure
+generate coral reef
+create spiral cathedral
+design living bridge
+
+And the system generates living geometry.
+
+🌍 This Becomes a Platform
+
+Your project could evolve into:
+
+Living Works
+     +
+AI Design Tools
+     +
+Bioinformatics
+     +
+Philosophy
+
+Examples:
+
+Living Architecture
+
+Grow buildings instead of constructing them.
+
+Biological Design
+
+Generate tissue scaffolds.
+
+Synthetic biology
+
+Design gene regulatory networks.
+
+🧬 This Aligns With Your Bioinformatics Path
+
+You could eventually connect:
+
+morphology → gene networks
+
+Example research idea:
+
+3D morphology prediction
+from
+gene regulatory networks
+
+That is cutting-edge research.
+
+🔥 The Full Vision
+
+Your ecosystem could become:
+
+Living Age Platform
+
+Components:
+
+Website
+Poster library
+AI design tools
+Morphogenesis simulation
+Bioinformatics explorer
+Philosophy media
+🚀 The Next Step (Very Important)
+
+The first real step is building a working morphogenesis simulator in Python.
+
+Once that works, the website becomes easy.
+
+If you'd like, I can show you something extremely useful next:
+
+🧬 A complete Python morphogenesis engine you can run immediately that grows trees, coral, and spiral structures in 3D.
+yes
+
+Absolutely — here’s a complete starter Python morphogenesis engine you can run locally to generate tree-like, coral-like, and spiral growth in 3D.
+
+It uses:
+
+python 3.11+
+
+numpy
+
+pyvista
+
+Install dependencies
+pip install numpy pyvista
+Save as morphogenesis_engine.py
+import math
+import random
+from dataclasses import dataclass, field
+from typing import List, Optional, Tuple
+
+import numpy as np
+import pyvista as pv
+
+
+# ============================================================
+# Utility functions
+# ============================================================
+
+def normalize(v: np.ndarray) -> np.ndarray:
+    norm = np.linalg.norm(v)
+    if norm < 1e-12:
+        return v.copy()
+    return v / norm
+
+
+def random_unit_vector() -> np.ndarray:
+    v = np.random.normal(size=3)
+    return normalize(v)
+
+
+def rotate_vector(vec: np.ndarray, axis: np.ndarray, angle_rad: float) -> np.ndarray:
+    """
+    Rodrigues' rotation formula.
+    """
+    axis = normalize(axis)
+    vec = np.asarray(vec, dtype=float)
+    cos_a = math.cos(angle_rad)
+    sin_a = math.sin(angle_rad)
+    return (
+        vec * cos_a
+        + np.cross(axis, vec) * sin_a
+        + axis * np.dot(axis, vec) * (1.0 - cos_a)
+    )
+
+
+def orthogonal_vector(v: np.ndarray) -> np.ndarray:
+    """
+    Returns some vector orthogonal to v.
+    """
+    v = normalize(v)
+    if abs(v[0]) < 0.9:
+        other = np.array([1.0, 0.0, 0.0])
+    else:
+        other = np.array([0.0, 1.0, 0.0])
+    ortho = np.cross(v, other)
+    return normalize(ortho)
+
+
+def distance_point_to_segment(p: np.ndarray, a: np.ndarray, b: np.ndarray) -> float:
+    """
+    Compute distance from point p to line segment ab.
+    """
+    ab = b - a
+    denom = np.dot(ab, ab)
+    if denom < 1e-12:
+        return np.linalg.norm(p - a)
+    t = np.dot(p - a, ab) / denom
+    t = max(0.0, min(1.0, t))
+    closest = a + t * ab
+    return np.linalg.norm(p - closest)
+
+
+# ============================================================
+# Data structures
+# ============================================================
+
+@dataclass
+class Segment:
+    start: np.ndarray
+    end: np.ndarray
+    radius: float
+    parent_id: Optional[int] = None
+
+
+@dataclass
+class Tip:
+    position: np.ndarray
+    direction: np.ndarray
+    radius: float
+    age: int = 0
+    alive: bool = True
+    lineage_depth: int = 0
+
+
+@dataclass
+class GrowthParams:
+    mode: str = "tree"  # tree, coral, spiral
+
+    steps: int = 300
+    step_size: float = 0.25
+
+    branching_probability: float = 0.08
+    max_tips: int = 128
+    max_depth: int = 8
+
+    upward_bias: float = 0.7          # tendency toward +Z
+    radial_bias: float = 0.0          # tendency away from origin
+    twist_strength: float = 0.0       # tendency to rotate around Z
+    noise_strength: float = 0.2       # random wiggle
+
+    branch_angle_deg: float = 28.0
+    split_probability: float = 0.5    # probability to make two child branches
+
+    taper: float = 0.985              # how quickly branches thin
+    min_radius: float = 0.015
+    initial_radius: float = 0.08
+
+    collision_avoidance: bool = True
+    collision_distance: float = 0.12
+
+    kill_if_outside_radius: Optional[float] = None
+
+    tropism_target: Optional[np.ndarray] = None  # optional attractor
+
+    seed: int = 42
+
+
+# ============================================================
+# Engine
+# ============================================================
+
+class MorphogenesisEngine:
+    def __init__(self, params: GrowthParams):
+        self.params = params
+        self.rng = random.Random(params.seed)
+        np.random.seed(params.seed)
+
+        self.segments: List[Segment] = []
+        self.tips: List[Tip] = []
+
+        self.origin = np.array([0.0, 0.0, 0.0], dtype=float)
+
+        self._init_structure()
+
+    def _init_structure(self) -> None:
+        initial_dir = np.array([0.0, 0.0, 1.0], dtype=float)
+
+        if self.params.mode == "coral":
+            initial_dir = normalize(np.array([0.15, 0.05, 1.0]))
+        elif self.params.mode == "spiral":
+            initial_dir = normalize(np.array([0.5, 0.0, 1.0]))
+
+        self.tips.append(
+            Tip(
+                position=self.origin.copy(),
+                direction=initial_dir,
+                radius=self.params.initial_radius,
+                age=0,
+                alive=True,
+                lineage_depth=0,
+            )
+        )
+
+    def _mode_defaults_direction_adjustment(self, pos: np.ndarray, direction: np.ndarray) -> np.ndarray:
+        """
+        Adds different behavior based on selected growth mode.
+        """
+        d = direction.copy()
+
+        if self.params.mode == "tree":
+            # Strong upward bias, slight radial spread
+            d += np.array([0.0, 0.0, 1.0]) * self.params.upward_bias
+            radial = pos.copy()
+            radial[2] = 0.0
+            if np.linalg.norm(radial) > 1e-9:
+                d += normalize(radial) * self.params.radial_bias
+
+        elif self.params.mode == "coral":
+            # Upward but more noisy and outward
+            d += np.array([0.0, 0.0, 1.0]) * (0.6 * self.params.upward_bias)
+            radial = pos - self.origin
+            if np.linalg.norm(radial) > 1e-9:
+                d += normalize(radial) * max(self.params.radial_bias, 0.25)
+
+        elif self.params.mode == "spiral":
+            # Grow upward while twisting around z-axis
+            d += np.array([0.0, 0.0, 1.0]) * self.params.upward_bias
+
+            xy = pos.copy()
+            xy[2] = 0.0
+            if np.linalg.norm(xy) > 1e-9:
+                tangent = np.array([-xy[1], xy[0], 0.0], dtype=float)
+                tangent = normalize(tangent)
+                d += tangent * max(self.params.twist_strength, 0.4)
+                d += normalize(xy) * max(self.params.radial_bias, 0.15)
+            else:
+                d += np.array([1.0, 0.0, 0.0]) * 0.15
+
+        return normalize(d)
+
+    def _apply_tropism(self, pos: np.ndarray, direction: np.ndarray) -> np.ndarray:
+        d = direction.copy()
+        if self.params.tropism_target is not None:
+            toward_target = self.params.tropism_target - pos
+            if np.linalg.norm(toward_target) > 1e-12:
+                d += normalize(toward_target) * 0.25
+        return normalize(d)
+
+    def _apply_noise(self, direction: np.ndarray) -> np.ndarray:
+        noise = random_unit_vector() * self.params.noise_strength
+        return normalize(direction + noise)
+
+    def _apply_collision_avoidance(self, pos: np.ndarray, proposed_dir: np.ndarray) -> np.ndarray:
+        """
+        Push away from nearby segments.
+        """
+        if not self.params.collision_avoidance or not self.segments:
+            return proposed_dir
+
+        repel = np.zeros(3, dtype=float)
+        sample_point = pos + proposed_dir * self.params.step_size
+
+        for seg in self.segments[-500:]:
+            dist = distance_point_to_segment(sample_point, seg.start, seg.end)
+            if dist < self.params.collision_distance:
+                midpoint = 0.5 * (seg.start + seg.end)
+                away = sample_point - midpoint
+                if np.linalg.norm(away) > 1e-12:
+                    strength = (self.params.collision_distance - dist) / self.params.collision_distance
+                    repel += normalize(away) * strength
+
+        if np.linalg.norm(repel) > 1e-12:
+            proposed_dir = normalize(proposed_dir + 0.8 * repel)
+
+        return proposed_dir
+
+    def _should_kill_tip(self, new_pos: np.ndarray, new_radius: float, depth: int) -> bool:
+        if new_radius < self.params.min_radius:
+            return True
+
+        if depth > self.params.max_depth:
+            return True
+
+        limit = self.params.kill_if_outside_radius
+        if limit is not None and np.linalg.norm(new_pos - self.origin) > limit:
+            return True
+
+        return False
+
+    def _grow_tip_once(self, tip: Tip, tip_index: int) -> List[Tip]:
+        if not tip.alive:
+            return []
+
+        d = tip.direction.copy()
+        d = self._mode_defaults_direction_adjustment(tip.position, d)
+        d = self._apply_tropism(tip.position, d)
+        d = self._apply_noise(d)
+        d = self._apply_collision_avoidance(tip.position, d)
+
+        start = tip.position.copy()
+        end = start + d * self.params.step_size
+        new_radius = tip.radius * self.params.taper
+
+        if self._should_kill_tip(end, new_radius, tip.lineage_depth):
+            tip.alive = False
+            return []
+
+        seg = Segment(start=start, end=end, radius=tip.radius, parent_id=tip_index)
+        self.segments.append(seg)
+
+        tip.position = end
+        tip.direction = d
+        tip.radius = new_radius
+        tip.age += 1
+
+        spawned: List[Tip] = []
+
+        can_branch = (
+            tip.lineage_depth < self.params.max_depth
+            and len([t for t in self.tips if t.alive]) + len(spawned) < self.params.max_tips
+        )
+
+        if can_branch and self.rng.random() < self.params.branching_probability:
+            axis = orthogonal_vector(d)
+            angle = math.radians(self.params.branch_angle_deg)
+
+            if self.params.mode == "coral":
+                angle *= 1.15
+            elif self.params.mode == "spiral":
+                angle *= 0.85
+
+            dir1 = normalize(rotate_vector(d, axis, angle))
+            child1 = Tip(
+                position=end.copy(),
+                direction=dir1,
+                radius=max(new_radius * 0.85, self.params.min_radius),
+                age=0,
+                alive=True,
+                lineage_depth=tip.lineage_depth + 1,
+            )
+            spawned.append(child1)
+
+            if self.rng.random() < self.params.split_probability:
+                dir2 = normalize(rotate_vector(d, axis, -angle))
+                child2 = Tip(
+                    position=end.copy(),
+                    direction=dir2,
+                    radius=max(new_radius * 0.82, self.params.min_radius),
+                    age=0,
+                    alive=True,
+                    lineage_depth=tip.lineage_depth + 1,
+                )
+                spawned.append(child2)
+
+        return spawned
+
+    def step(self) -> None:
+        alive_tips = [t for t in self.tips if t.alive]
+        if not alive_tips:
+            return
+
+        new_tips: List[Tip] = []
+
+        # Use a snapshot so newly spawned tips grow next step, not immediately.
+        for idx, tip in list(enumerate(self.tips)):
+            if not tip.alive:
+                continue
+            spawned = self._grow_tip_once(tip, idx)
+            new_tips.extend(spawned)
+
+        self.tips.extend(new_tips)
+
+    def run(self) -> None:
+        for _ in range(self.params.steps):
+            if not any(t.alive for t in self.tips):
+                break
+            self.step()
+
+    def build_tube_mesh(self, sides: int = 10) -> pv.PolyData:
+        """
+        Convert segments to a combined tube mesh.
+        """
+        if not self.segments:
+            return pv.PolyData()
+
+        meshes = []
+
+        for seg in self.segments:
+            pts = np.vstack([seg.start, seg.end])
+            line = pv.lines_from_points(pts)
+            tube = line.tube(radius=max(seg.radius, self.params.min_radius), n_sides=sides)
+            meshes.append(tube)
+
+        merged = meshes[0]
+        for mesh in meshes[1:]:
+            merged = merged.merge(mesh)
+
+        return merged
+
+    def build_tip_points(self) -> pv.PolyData:
+        alive_positions = [t.position for t in self.tips if t.alive]
+        if not alive_positions:
+            return pv.PolyData()
+
+        pts = np.array(alive_positions)
+        poly = pv.PolyData(pts)
+        return poly
+
+
+# ============================================================
+# Presets
+# ============================================================
+
+def tree_preset() -> GrowthParams:
+    return GrowthParams(
+        mode="tree",
+        steps=320,
+        step_size=0.22,
+        branching_probability=0.09,
+        max_tips=80,
+        max_depth=8,
+        upward_bias=0.95,
+        radial_bias=0.08,
+        twist_strength=0.0,
+        noise_strength=0.10,
+        branch_angle_deg=24.0,
+        split_probability=0.45,
+        taper=0.986,
+        min_radius=0.012,
+        initial_radius=0.085,
+        collision_avoidance=True,
+        collision_distance=0.10,
+        seed=42,
+    )
+
+
+def coral_preset() -> GrowthParams:
+    return GrowthParams(
+        mode="coral",
+        steps=420,
+        step_size=0.16,
+        branching_probability=0.14,
+        max_tips=150,
+        max_depth=10,
+        upward_bias=0.55,
+        radial_bias=0.35,
+        twist_strength=0.0,
+        noise_strength=0.28,
+        branch_angle_deg=34.0,
+        split_probability=0.65,
+        taper=0.989,
+        min_radius=0.010,
+        initial_radius=0.055,
+        collision_avoidance=True,
+        collision_distance=0.08,
+        seed=42,
+    )
+
+
+def spiral_preset() -> GrowthParams:
+    return GrowthParams(
+        mode="spiral",
+        steps=340,
+        step_size=0.18,
+        branching_probability=0.05,
+        max_tips=48,
+        max_depth=6,
+        upward_bias=0.8,
+        radial_bias=0.22,
+        twist_strength=0.72,
+        noise_strength=0.08,
+        branch_angle_deg=18.0,
+        split_probability=0.25,
+        taper=0.992,
+        min_radius=0.012,
+        initial_radius=0.070,
+        collision_avoidance=True,
+        collision_distance=0.10,
+        seed=42,
+    )
+
+
+# ============================================================
+# Visualization
+# ============================================================
+
+def visualize_engine(engine: MorphogenesisEngine, title: str = "Morphogenesis") -> None:
+    mesh = engine.build_tube_mesh()
+    tips = engine.build_tip_points()
+
+    plotter = pv.Plotter(window_size=(1200, 900))
+    plotter.add_title(title, font_size=14)
+
+    if mesh.n_points > 0:
+        plotter.add_mesh(mesh, smooth_shading=True)
+
+    if tips.n_points > 0:
+        plotter.add_mesh(tips, render_points_as_spheres=True, point_size=10)
+
+    plotter.add_axes()
+    plotter.show_grid()
+    plotter.show()
+
+
+def animate_growth(params: GrowthParams, every_n_steps: int = 4) -> None:
+    engine = MorphogenesisEngine(params)
+
+    plotter = pv.Plotter(window_size=(1200, 900))
+    plotter.add_title(f"Animated Growth: {params.mode}", font_size=14)
+    plotter.add_axes()
+    plotter.show_grid()
+
+    mesh_actor = None
+    tip_actor = None
+
+    plotter.show(auto_close=False, interactive_update=True)
+
+    for i in range(params.steps):
+        if not any(t.alive for t in engine.tips):
+            break
+
+        engine.step()
+
+        if i % every_n_steps == 0 or i == params.steps - 1:
+            mesh = engine.build_tube_mesh()
+            tips = engine.build_tip_points()
+
+            if mesh_actor is not None:
+                plotter.remove_actor(mesh_actor)
+            if tip_actor is not None:
+                plotter.remove_actor(tip_actor)
+
+            if mesh.n_points > 0:
+                mesh_actor = plotter.add_mesh(mesh, smooth_shading=True)
+            if tips.n_points > 0:
+                tip_actor = plotter.add_mesh(
+                    tips,
+                    render_points_as_spheres=True,
+                    point_size=10,
+                )
+
+            plotter.render()
+
+    plotter.close()
+
+
+# ============================================================
+# Main
+# ============================================================
+
+def main() -> None:
+    """
+    Change the preset here to explore different growth types.
+    """
+    # params = tree_preset()
+    # params = coral_preset()
+    params = spiral_preset()
+
+    # Static final render
+    engine = MorphogenesisEngine(params)
+    engine.run()
+    visualize_engine(engine, title=f"Final Structure: {params.mode}")
+
+    # Or animated growth:
+    # animate_growth(params, every_n_steps=3)
+
+
+if __name__ == "__main__":
+    main()
+How to run it
+python morphogenesis_engine.py
+What this engine does
+
+It supports three growth styles:
+
+tree
+
+strong upward growth
+
+moderate branching
+
+trunk/branch feel
+
+coral
+
+more chaotic outward branching
+
+more noise
+
+denser spreading structure
+
+spiral
+
+helical upward growth
+
+radial expansion
+
+architectural / living-tower feel
+
+Quick ways to modify behavior
+
+Inside the preset functions, these are the most important knobs:
+
+branching_probability=0.14
+step_size=0.16
+upward_bias=0.55
+radial_bias=0.35
+twist_strength=0.72
+noise_strength=0.28
+branch_angle_deg=34.0
+Meaning
+
+branching_probability: how often branches split
+
+step_size: growth amount per step
+
+upward_bias: tendency to grow upward
+
+radial_bias: tendency to spread away from center
+
+twist_strength: tendency to spiral
+
+noise_strength: randomness
+
+branch_angle_deg: branch divergence angle
+
+Best experiments to try first
+Make a giant living tree
+
+Use tree_preset() and change:
+
+steps=500
+branching_probability=0.07
+upward_bias=1.1
+Make dense coral
+
+Use coral_preset() and change:
+
+branching_probability=0.20
+noise_strength=0.35
+max_tips=220
+Make a spiral tower
+
+Use spiral_preset() and change:
+
+twist_strength=1.0
+radial_bias=0.10
+upward_bias=1.0
+Strong next upgrades
+
+This is a solid starter, but the really exciting upgrades are:
+
+1. Attractor fields
+
+Grow toward light sources, nutrient gradients, or user-placed targets.
+
+2. Obstacle avoidance
+
+Let structures grow around walls or through constrained spaces.
+
+3. Cell types / material zones
+
+Different branch classes with different thickness, stiffness, or behavior.
+
+4. Surface skin generation
+
+Turn the branching skeleton into membranes, shells, domes, or living architecture.
+
+5. Natural-language interface
+
+Prompt like:
+
+“grow a cathedral-shaped spiral coral with thick trunk and light-seeking branches”
+
+Then map that prompt into parameter values.
+
+6. Export to 3D formats
+
+Export .obj, .stl, or .ply for Blender or other modeling tools.
+
+Easiest path to your bigger vision
+
+A very practical roadmap is:
+
+Phase 1
+
+Get this Python engine working locally.
+
+Phase 2
+
+Add JSON parameter input/output.
+
+Phase 3
+
+Connect it to a FastAPI backend.
+
+Phase 4
+
+Render the generated structure in a browser with Three.js.
+
+Phase 5
+
+Add an LLM layer that translates natural language into growth parameters.
+
+That becomes your Living Systems Design Lab.
+
+Tiny example of prompt-to-parameters mapping
+
+Later, you could translate prompts like this:
+
+def prompt_to_params(prompt: str) -> GrowthParams:
+    prompt = prompt.lower()
+
+    if "coral" in prompt:
+        params = coral_preset()
+    elif "spiral" in prompt:
+        params = spiral_preset()
+    else:
+        params = tree_preset()
+
+    if "dense" in prompt:
+        params.branching_probability *= 1.4
+    if "tall" in prompt:
+        params.upward_bias *= 1.2
+        params.steps = int(params.steps * 1.3)
+    if "wild" in prompt:
+        params.noise_strength *= 1.5
+
+    return params
+One important note
+
+PyVista rendering depends on your local graphics setup. If the window does not appear, the engine itself may still be fine — the display layer can be the issue. In that case, we can switch to:
+
+off-screen rendering
+
+mesh export
+
+or browser-based rendering
+
+Best next move
+
+The most useful next step is for me to turn this into a small multi-file project with:
+
+engine.py
+
+presets.py
+
+viewer.py
+
+app.py
+
+and add:
+
+OBJ/STL export
+
+prompt-to-parameter translation
+
+and a FastAPI endpoint
+
+so it’s ready to plug into your website.
+
+yes
+
+Great — let’s turn the morphogenesis idea into a real mini-project you can run, extend, and later plug into your website. The goal is a clean modular structure that works with Git, AI prompts, and your Living Age design ideas.
+
+🧬 Morphogenesis Engine Project Structure
+
+Create a new folder:
+
+mkdir morphogenesis-engine
+cd morphogenesis-engine
+
+Then create this structure:
+
+morphogenesis-engine/
+│
+├── engine.py
+├── presets.py
+├── prompt_translate.py
+├── viewer.py
+├── api.py
+├── export.py
+├── requirements.txt
+└── README.md
+
+This separation makes the system clean and scalable.
+
+1️⃣ requirements.txt
+numpy
+pyvista
+fastapi
+uvicorn
+
+Install everything:
+
+pip install -r requirements.txt
+2️⃣ presets.py
+
+Defines the main growth styles.
+
+from dataclasses import dataclass
+
+@dataclass
+class GrowthParams:
+    mode:str="tree"
+    steps:int=300
+    step_size:float=0.25
+    branching_probability:float=0.1
+    upward_bias:float=0.8
+    radial_bias:float=0.2
+    twist_strength:float=0.0
+    noise_strength:float=0.2
+
+
+def tree():
+    return GrowthParams(
+        mode="tree",
+        branching_probability=0.08,
+        upward_bias=1.0,
+        radial_bias=0.05
+    )
+
+
+def coral():
+    return GrowthParams(
+        mode="coral",
+        branching_probability=0.15,
+        upward_bias=0.6,
+        radial_bias=0.4,
+        noise_strength=0.35
+    )
+
+
+def spiral():
+    return GrowthParams(
+        mode="spiral",
+        branching_probability=0.05,
+        upward_bias=0.9,
+        twist_strength=0.7,
+        radial_bias=0.2
+    )
+3️⃣ engine.py
+
+Simplified growth engine.
+
+import numpy as np
+import random
+from presets import GrowthParams
+
+
+class MorphogenesisEngine:
+
+    def __init__(self,params:GrowthParams):
+        self.params=params
+        self.points=[np.array([0,0,0])]
+        self.directions=[np.array([0,0,1])]
+        self.edges=[]
+
+
+    def random_unit(self):
+        v=np.random.normal(size=3)
+        return v/np.linalg.norm(v)
+
+
+    def step(self):
+
+        new_points=[]
+        new_dirs=[]
+
+        for p,d in zip(self.points,self.directions):
+
+            d=d+self.random_unit()*self.params.noise_strength
+            d=d/np.linalg.norm(d)
+
+            new_p=p+d*self.params.step_size
+
+            new_points.append(new_p)
+            new_dirs.append(d)
+
+            self.edges.append((p,new_p))
+
+            if random.random()<self.params.branching_probability:
+
+                new_dirs.append(self.random_unit())
+                new_points.append(new_p)
+
+        self.points=new_points
+        self.directions=new_dirs
+
+
+    def run(self):
+
+        for i in range(self.params.steps):
+            self.step()
+
+        return self.edges
+4️⃣ viewer.py
+
+Visualize the structure.
+
+import pyvista as pv
+
+
+def show(edges):
+
+    plotter=pv.Plotter()
+
+    for a,b in edges:
+
+        line=pv.Line(a,b)
+
+        plotter.add_mesh(line)
+
+    plotter.show()
+5️⃣ export.py
+
+Export models for Blender or other tools.
+
+import pyvista as pv
+
+
+def export_obj(edges,filename="structure.obj"):
+
+    lines=[]
+
+    for a,b in edges:
+        lines.append(pv.Line(a,b))
+
+    mesh=lines[0]
+
+    for l in lines[1:]:
+        mesh=mesh.merge(l)
+
+    mesh.save(filename)
+6️⃣ prompt_translate.py
+
+Turns natural language into parameters.
+
+from presets import tree,coral,spiral
+
+
+def translate(prompt:str):
+
+    prompt=prompt.lower()
+
+    if "coral" in prompt:
+        params=coral()
+
+    elif "spiral" in prompt:
+        params=spiral()
+
+    else:
+        params=tree()
+
+    if "dense" in prompt:
+        params.branching_probability*=1.5
+
+    if "tall" in prompt:
+        params.upward_bias*=1.2
+
+    if "wild" in prompt:
+        params.noise_strength*=1.5
+
+    return params
+7️⃣ api.py (for your website)
+
+This is the bridge to your website.
+
+from fastapi import FastAPI
+from prompt_translate import translate
+from engine import MorphogenesisEngine
+
+app=FastAPI()
+
+
+@app.post("/generate")
+def generate(data:dict):
+
+    prompt=data["prompt"]
+
+    params=translate(prompt)
+
+    engine=MorphogenesisEngine(params)
+
+    edges=engine.run()
+
+    return {
+        "segments":[
+            {
+                "x1":float(a[0]),
+                "y1":float(a[1]),
+                "z1":float(a[2]),
+                "x2":float(b[0]),
+                "y2":float(b[1]),
+                "z2":float(b[2])
+            }
+            for a,b in edges
+        ]
+    }
+8️⃣ Run the API
+uvicorn api:app --reload
+
+Server starts:
+
+http://127.0.0.1:8000
+
+Test in browser:
+
+http://127.0.0.1:8000/docs
+
+FastAPI automatically gives you a testing interface.
+
+9️⃣ Test locally
+
+Example request:
+
+{
+ "prompt":"grow a spiral coral structure"
+}
+
+You’ll get a JSON structure with all the segments.
+
+Your website can then render them with Three.js.
+
+🌱 What you now have
+
+A full AI design pipeline:
+
+prompt
+↓
+prompt_translate.py
+↓
+growth parameters
+↓
+engine.py
+↓
+generated geometry
+↓
+api.py
+↓
+website visualization
+🔥 This could evolve into
+
+Your Living Systems Design Lab:
+
+Users type:
+
+design a spiral living bridge
+
+and the system generates a 3D morphogenesis structure.
+
+🚀 Next Upgrade (Very Big)
+
+The next upgrade would make this 10x more powerful:
+
+Add biological rules:
+
+light gradients
+
+nutrient diffusion
+
+genetic regulatory networks
+
+mechanical stress
+
+This turns the system from procedural art → biological simulation.
+
+If you'd like, I can also show you something very important for your long-term idea:
+
+🧬 How to connect gene regulatory networks → 3D morphology
+
+This is exactly the bridge between bioinformatics and morphogenesis that researchers are starting to explore.
+
+yes
+Thought for 15s
+
+Yes — this is the core bridge between bioinformatics and shape generation.
+
+The simplest way to think about it is:
+
+GRNs don’t make shape directly
+
+They make cell behaviors, and those behaviors make shape.
+
+A gene regulatory network can change things like:
+
+cell division rate
+
+cell death
+
+adhesion
+
+stiffness
+
+polarity
+
+migration
+
+secretion of morphogens
+
+response to mechanics
+
+Those local rules then scale up into 3D morphology. That idea is well supported across modern developmental biology, especially by the combination of single-cell, spatial, and multi-omic methods with mechanical models.
+
+The full pipeline
+
+A practical pipeline looks like this:
+
+genome / regulatory elements
+→ gene regulatory networks
+→ cell states
+→ cell behaviors
+→ tissue mechanics + signaling
+→ 3D form
+
+That last jump matters a lot: morphology is not just “gene expression painted in space.” It emerges from gene regulation plus mechanics plus spatial interactions. Reviews in Cell and Science emphasize exactly that point.
+
+What this means for your project
+
+If you want to build a system that goes from gene-network information to generated 3D structures, the right abstraction is:
+
+1. Infer regulatory programs
+
+From data like:
+
+scRNA-seq
+
+scATAC-seq
+
+spatial transcriptomics
+
+lineage tracing
+
+perturbation data
+
+These are now routinely used to reconstruct developmental cell states and regulatory programs.
+
+2. Convert regulatory state into cell rules
+
+For each simulated cell, GRN outputs become parameters like:
+
+proliferation probability
+
+preferred direction of movement
+
+attraction/repulsion strength
+
+ECM production
+
+branching probability
+
+differentiation transitions
+
+This is the key modeling move.
+
+3. Simulate tissue growth
+
+Then run a spatial model such as:
+
+agent-based model
+
+vertex model
+
+cellular Potts model
+
+finite element / mechanical model
+
+neural cellular automata
+
+These approaches are commonly used to connect local rules to larger-scale morphogenesis.
+
+4. Render the morphology
+
+Export to:
+
+point cloud
+
+mesh
+
+voxel volume
+
+branching graph
+
+surface geometry
+
+That becomes your 3D visualization layer.
+
+The most useful mental model
+
+Think of each cell as having:
+
+an internal regulatory state
+
+a local environment
+
+a set of behavior rules
+
+A very simple update loop is:
+
+GRN state + environment
+→ update gene activity
+→ choose behavior
+→ move/divide/adhere/secrete
+→ update tissue geometry
+→ repeat
+
+That gives you a true developmental system, not just procedural graphics.
+
+A good starter architecture for you
+
+For your own engine, I would structure it like this:
+
+Layer 1 — Regulatory state
+
+Each cell stores:
+
+active genes / transcription factors
+
+morphogen receptor levels
+
+differentiation state
+
+Example:
+
+cell.grn = {
+    "SOX2": 0.8,
+    "BMP": 0.2,
+    "WNT_response": 0.6,
+    "adhesion_program": 0.4
+}
+Layer 2 — Cell behavior mapping
+
+Map GRN outputs into simulation parameters:
+
+cell.divide_rate = f(cell.grn["WNT_response"])
+cell.adhesion = f(cell.grn["adhesion_program"])
+cell.motility = f(cell.grn["EMT_program"])
+cell.branch_bias = f(cell.grn["FGF_program"])
+Layer 3 — Spatial simulation
+
+Update:
+
+position
+
+force
+
+neighbors
+
+branch creation
+
+mechanical stress
+
+morphogen diffusion
+
+Layer 4 — Morphology output
+
+Generate:
+
+tree-like skeleton
+
+tissue mesh
+
+organoid volume
+
+vascular network
+
+surface shell
+
+Where current biology helps you most
+
+The strongest real-world inputs right now are:
+
+Single-cell + spatial omics
+
+These let you estimate which cell states exist, where they are, and how they change over time. That is hugely important for developmental modeling. Recent work in developmental biology and spatial omics shows that these technologies are central for linking molecular programs to organized tissue structure.
+
+Developmental GRNs
+
+Specific developmental systems now have increasingly detailed GRN maps, including heart, brain, neural crest, roots, and plant tissues. For example, recent heart-development work used time-resolved single-nucleus RNA/ATAC data to define lineage-specific regulatory programs, and plant studies have mapped hormone-responsive GRNs at cellular resolution.
+
+Mechanics
+
+Modern morphogenesis research is very clear that mechanics is not optional. Shape depends on forces, stiffness, tension, geometry, and extracellular matrix interactions, not just transcription.
+
+The best computational approach for you
+
+For your goals, I’d recommend this progression:
+
+Phase 1 — Rule-based developmental engine
+
+Do not start with full real GRNs.
+Start with a simplified hidden regulatory layer:
+
+growth gene
+
+branching gene
+
+adhesion gene
+
+polarity gene
+
+differentiation gene
+
+Then map them to behavior.
+
+This gets you working morphology fast.
+
+Phase 2 — Spatial transcriptomic calibration
+
+Take a real developmental dataset and use it to estimate:
+
+cell states
+
+transitions
+
+spatial gradients
+
+likely regulators
+
+Then fit your model parameters to those patterns.
+
+Phase 3 — Learned regulatory surrogates
+
+Train a model that predicts cell behavior from omics-derived cell state.
+
+At that point you are approximating:
+
+omics → regulatory state → behavior → shape
+
+A concrete example
+
+Suppose you want to model a branching tissue.
+
+You could define:
+
+FGF-like signal increases branch initiation
+
+Notch-like signal suppresses nearby branch formation
+
+adhesion program controls cohesion
+
+ECM program controls stiffness
+
+polarity program biases growth direction
+
+Then each simulated tip or cell updates based on local signal concentrations and its internal state.
+
+That is already much closer to biology than plain random branching.
+
+How this fits your morphogenesis engine
+
+Your current engine already has things like:
+
+branching probability
+
+upward bias
+
+radial bias
+
+twist
+
+noise
+
+The next upgrade is to stop treating those as fixed constants and make them outputs of a simple GRN layer.
+
+For example:
+
+branching_probability = sigmoid(FGF - Notch)
+upward_bias = polarity_gene
+adhesion_strength = cadherin_program
+stiffness = ECM_program
+division_rate = growth_program
+
+Now your simulated form becomes the product of regulatory dynamics.
+
+Best data types for your long-term vision
+
+If you eventually want real biology-driven morphology prediction, the most useful data stack is:
+
+scRNA-seq for cell states
+
+scATAC-seq for regulatory potential
+
+spatial transcriptomics for location
+
+lineage tracing for developmental trajectories
+
+imaging / 3D morphology for ground-truth shape
+
+That combination is becoming increasingly powerful for development and organogenesis research.
+
+Best first version for you to build
+
+I would build this first:
+
+Minimal GRN-driven morphogenesis engine
+
+Each node/cell has 5 internal variables:
+
+growth
+
+branch
+
+adhesion
+
+polarity
+
+differentiation
+
+And 3 external signals:
+
+nutrient
+
+morphogen A
+
+morphogen B
+
+Then define rules like:
+
+growth high → divide / elongate
+
+branch high → spawn new tip
+
+adhesion high → cluster tightly
+
+polarity high → align direction
+
+differentiation high → change material properties
+
+That would be a real bridge model between bioinformatics thinking and visible 3D form.
+
+The deeper research frontier
+
+The frontier is no longer just “infer GRNs from single-cell data.” It is increasingly about integrating:
+
+spatial context
+
+time
+
+lineage
+
+perturbations
+
+mechanics
+
+to explain how regulatory programs generate structure. That is exactly the direction highlighted by recent reviews and tool development.
+
+My recommendation for your next build step
+
+Build a GRN layer on top of your current engine, where every tip stores internal gene-like variables and those variables determine branching, turning, and thickness.
+
+After that, connect it to a small JSON input schema like:
+
+{
+  "growth_program": 0.8,
+  "branch_program": 0.6,
+  "adhesion_program": 0.4,
+  "polarity_program": 0.9,
+  "differentiation_program": 0.3
+}
+
+Then later swap those values out for ones inferred from real omics data.
+
+I can turn this into a concrete multi-file Python implementation next: grn.py + engine.py + signals.py + viewer.py, with each tip carrying a mini regulatory network and generating 3D branching form.
+
+yes
+Thought for 6s
+
+Absolutely — here’s a concrete multi-file starter implementation for a GRN-driven 3D morphogenesis engine.
+
+This version gives you:
+
+a mini gene regulatory network per tip
+
+external signals in space
+
+GRN outputs mapped to:
+
+growth
+
+branching
+
+polarity
+
+thickness
+
+a PyVista viewer
+
+a clean structure you can expand later into real cell-based models
+
+Project structure
+grn_morphogenesis/
+├── main.py
+├── grn.py
+├── signals.py
+├── engine.py
+├── viewer.py
+├── presets.py
+└── requirements.txt
+requirements.txt
+numpy
+pyvista
+
+Install:
+
+pip install -r requirements.txt
+grn.py
+
+This defines the internal regulatory state for each growing tip.
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Dict
+import math
+
+
+def clamp(x: float, lo: float = 0.0, hi: float = 1.0) -> float:
+    return max(lo, min(hi, x))
+
+
+def sigmoid(x: float) -> float:
+    return 1.0 / (1.0 + math.exp(-x))
+
+
+@dataclass
+class GRNState:
+    """
+    Minimal gene-regulatory state for one growing tip.
+    Values are normalized to roughly [0, 1].
+    """
+    growth: float = 0.6
+    branch: float = 0.4
+    adhesion: float = 0.5
+    polarity: float = 0.7
+    differentiation: float = 0.2
+
+    def as_dict(self) -> Dict[str, float]:
+        return {
+            "growth": self.growth,
+            "branch": self.branch,
+            "adhesion": self.adhesion,
+            "polarity": self.polarity,
+            "differentiation": self.differentiation,
+        }
+
+
+@dataclass
+class SignalInput:
+    """
+    External environment sensed by a tip.
+    """
+    nutrient: float = 0.5
+    morphogen_a: float = 0.5
+    morphogen_b: float = 0.5
+    crowding: float = 0.0
+    height: float = 0.0
+
+
+def update_grn(state: GRNState, signal: SignalInput, dt: float = 1.0) -> GRNState:
+    """
+    A simple hand-designed GRN update.
+    You can later replace this with:
+    - ODEs
+    - Boolean / probabilistic logic
+    - learned models from single-cell or spatial data
+    """
+
+    g = state.growth
+    b = state.branch
+    a = state.adhesion
+    p = state.polarity
+    d = state.differentiation
+
+    # External influences:
+    # nutrient tends to increase growth
+    # morphogen_a tends to promote branching
+    # morphogen_b tends to promote polarity and differentiation
+    # crowding suppresses growth and branching
+    # height slightly increases differentiation
+
+    dg = (
+        1.4 * signal.nutrient
+        - 0.8 * signal.crowding
+        + 0.2 * b
+        - 0.4 * d
+        - 0.2 * g
+    )
+
+    db = (
+        1.3 * signal.morphogen_a
+        - 0.9 * signal.crowding
+        + 0.2 * g
+        - 0.3 * a
+        - 0.2 * b
+    )
+
+    da = (
+        0.7 * signal.crowding
+        + 0.2 * signal.morphogen_b
+        - 0.2 * b
+        - 0.1 * a
+    )
+
+    dp = (
+        1.0 * signal.morphogen_b
+        + 0.3 * signal.height
+        - 0.3 * signal.crowding
+        - 0.15 * p
+    )
+
+    dd = (
+        0.5 * signal.morphogen_b
+        + 0.4 * signal.height
+        - 0.2 * signal.nutrient
+        + 0.2 * p
+        - 0.2 * d
+    )
+
+    # Integrate with a small step
+    new_state = GRNState(
+        growth=clamp(g + 0.15 * dg * dt),
+        branch=clamp(b + 0.15 * db * dt),
+        adhesion=clamp(a + 0.15 * da * dt),
+        polarity=clamp(p + 0.15 * dp * dt),
+        differentiation=clamp(d + 0.15 * dd * dt),
+    )
+    return new_state
+
+
+def grn_to_behavior(state: GRNState) -> Dict[str, float]:
+    """
+    Map regulatory state -> physical / developmental behavior.
+    """
+
+    branching_probability = clamp(0.02 + 0.35 * state.branch + 0.10 * state.growth)
+    elongation_rate = 0.08 + 0.35 * state.growth
+    upward_bias = clamp(0.15 + 0.80 * state.polarity)
+    thickness_decay = clamp(0.003 + 0.02 * state.differentiation, 0.003, 0.06)
+    noise_strength = clamp(0.35 - 0.20 * state.polarity + 0.10 * state.branch, 0.02, 0.45)
+    split_angle_deg = 12.0 + 42.0 * state.branch
+    persistence = clamp(0.25 + 0.65 * state.polarity)
+
+    return {
+        "branching_probability": branching_probability,
+        "elongation_rate": elongation_rate,
+        "upward_bias": upward_bias,
+        "thickness_decay": thickness_decay,
+        "noise_strength": noise_strength,
+        "split_angle_deg": split_angle_deg,
+        "persistence": persistence,
+    }
+signals.py
+
+This defines the external fields in space.
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+import numpy as np
+from grn import SignalInput
+
+
+def clamp(x: float, lo: float = 0.0, hi: float = 1.0) -> float:
+    return max(lo, min(hi, x))
+
+
+@dataclass
+class SignalFieldParams:
+    nutrient_center: np.ndarray
+    morphogen_a_center: np.ndarray
+    morphogen_b_axis: np.ndarray
+    nutrient_decay: float = 0.12
+    morphogen_a_decay: float = 0.10
+    base_height_scale: float = 0.04
+
+
+class SignalField:
+    """
+    Provides external signals at a point in space.
+    """
+
+    def __init__(self, params: SignalFieldParams):
+        self.params = params
+        self.morphogen_b_axis = self._normalize(params.morphogen_b_axis)
+
+    @staticmethod
+    def _normalize(v: np.ndarray) -> np.ndarray:
+        n = np.linalg.norm(v)
+        if n < 1e-12:
+            return v.copy()
+        return v / n
+
+    def sample(self, position: np.ndarray, crowding: float) -> SignalInput:
+        p = position
+
+        dn = np.linalg.norm(p - self.params.nutrient_center)
+        nutrient = np.exp(-self.params.nutrient_decay * dn * dn)
+
+        da = np.linalg.norm(p - self.params.morphogen_a_center)
+        morphogen_a = np.exp(-self.params.morphogen_a_decay * da * da)
+
+        # Morphogen B is a directional / axial gradient
+        axial = float(np.dot(p, self.morphogen_b_axis))
+        morphogen_b = clamp(0.5 + 0.15 * axial)
+
+        height = clamp(self.params.base_height_scale * p[2])
+
+        return SignalInput(
+            nutrient=clamp(float(nutrient)),
+            morphogen_a=clamp(float(morphogen_a)),
+            morphogen_b=clamp(float(morphogen_b)),
+            crowding=clamp(crowding),
+            height=height,
+        )
+engine.py
+
+This is the core growth engine.
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import List, Optional
+import math
+import random
+
+import numpy as np
+
+from grn import GRNState, update_grn, grn_to_behavior
+from signals import SignalField
+
+
+def normalize(v: np.ndarray) -> np.ndarray:
+    n = np.linalg.norm(v)
+    if n < 1e-12:
+        return v.copy()
+    return v / n
+
+
+def random_unit_vector() -> np.ndarray:
+    v = np.random.normal(size=3)
+    return normalize(v)
+
+
+def orthogonal_vector(v: np.ndarray) -> np.ndarray:
+    v = normalize(v)
+    if abs(v[0]) < 0.9:
+        other = np.array([1.0, 0.0, 0.0])
+    else:
+        other = np.array([0.0, 1.0, 0.0])
+    return normalize(np.cross(v, other))
+
+
+def rotate_vector(vec: np.ndarray, axis: np.ndarray, angle_rad: float) -> np.ndarray:
+    axis = normalize(axis)
+    cos_a = math.cos(angle_rad)
+    sin_a = math.sin(angle_rad)
+    return (
+        vec * cos_a
+        + np.cross(axis, vec) * sin_a
+        + axis * np.dot(axis, vec) * (1.0 - cos_a)
+    )
+
+
+def distance_point_to_segment(p: np.ndarray, a: np.ndarray, b: np.ndarray) -> float:
+    ab = b - a
+    denom = np.dot(ab, ab)
+    if denom < 1e-12:
+        return float(np.linalg.norm(p - a))
+    t = np.dot(p - a, ab) / denom
+    t = max(0.0, min(1.0, t))
+    closest = a + t * ab
+    return float(np.linalg.norm(p - closest))
+
+
+@dataclass
+class Segment:
+    start: np.ndarray
+    end: np.ndarray
+    radius: float
+    depth: int
+
+
+@dataclass
+class Tip:
+    position: np.ndarray
+    direction: np.ndarray
+    radius: float
+    grn: GRNState
+    age: int = 0
+    alive: bool = True
+    depth: int = 0
+
+
+@dataclass
+class EngineParams:
+    steps: int = 300
+    dt: float = 1.0
+    max_tips: int = 120
+    max_depth: int = 8
+    initial_radius: float = 0.08
+    min_radius: float = 0.01
+    collision_distance: float = 0.10
+    collision_strength: float = 0.6
+    seed: int = 42
+
+
+class GRNMorphogenesisEngine:
+    def __init__(self, params: EngineParams, field: SignalField):
+        self.params = params
+        self.field = field
+        self.rng = random.Random(params.seed)
+        np.random.seed(params.seed)
+
+        self.origin = np.array([0.0, 0.0, 0.0], dtype=float)
+        self.tips: List[Tip] = []
+        self.segments: List[Segment] = []
+
+        self._initialize()
+
+    def _initialize(self) -> None:
+        root = Tip(
+            position=self.origin.copy(),
+            direction=np.array([0.0, 0.0, 1.0], dtype=float),
+            radius=self.params.initial_radius,
+            grn=GRNState(
+                growth=0.65,
+                branch=0.30,
+                adhesion=0.40,
+                polarity=0.75,
+                differentiation=0.10,
+            ),
+            age=0,
+            alive=True,
+            depth=0,
+        )
+        self.tips.append(root)
+
+    def _estimate_crowding(self, position: np.ndarray) -> float:
+        if not self.segments:
+            return 0.0
+
+        score = 0.0
+        for seg in self.segments[-300:]:
+            dist = distance_point_to_segment(position, seg.start, seg.end)
+            if dist < self.params.collision_distance:
+                score += (self.params.collision_distance - dist) / self.params.collision_distance
+
+        return max(0.0, min(1.0, score))
+
+    def _collision_repel(self, position: np.ndarray, proposed_dir: np.ndarray) -> np.ndarray:
+        repel = np.zeros(3, dtype=float)
+        test_point = position + proposed_dir * 0.15
+
+        for seg in self.segments[-300:]:
+            dist = distance_point_to_segment(test_point, seg.start, seg.end)
+            if dist < self.params.collision_distance:
+                midpoint = 0.5 * (seg.start + seg.end)
+                away = test_point - midpoint
+                if np.linalg.norm(away) > 1e-12:
+                    strength = (self.params.collision_distance - dist) / self.params.collision_distance
+                    repel += normalize(away) * strength
+
+        if np.linalg.norm(repel) > 1e-12:
+            proposed_dir = normalize(proposed_dir + self.params.collision_strength * repel)
+
+        return proposed_dir
+
+    def _compute_growth_direction(self, tip: Tip, behavior: dict) -> np.ndarray:
+        direction = tip.direction.copy()
+
+        # Upward polarity term
+        direction += np.array([0.0, 0.0, 1.0]) * behavior["upward_bias"]
+
+        # Nutrient attractor
+        nutrient_center = self.field.params.nutrient_center
+        toward_nutrient = nutrient_center - tip.position
+        if np.linalg.norm(toward_nutrient) > 1e-12:
+            direction += 0.25 * normalize(toward_nutrient)
+
+        # Morphogen A outward branching region
+        outward = tip.position.copy()
+        outward[2] = 0.0
+        if np.linalg.norm(outward) > 1e-12:
+            direction += 0.10 * normalize(outward)
+
+        # Persistence + noise
+        persistence = behavior["persistence"]
+        noise_strength = behavior["noise_strength"]
+        direction = normalize(persistence * direction + (1.0 - persistence) * random_unit_vector())
+        direction = normalize(direction + noise_strength * random_unit_vector())
+
+        # Collision avoidance
+        direction = self._collision_repel(tip.position, direction)
+
+        return normalize(direction)
+
+    def _spawn_branch(self, tip: Tip, new_pos: np.ndarray, parent_dir: np.ndarray, angle_deg: float) -> List[Tip]:
+        if tip.depth >= self.params.max_depth:
+            return []
+
+        axis = orthogonal_vector(parent_dir)
+        angle = math.radians(angle_deg)
+
+        children: List[Tip] = []
+
+        dir1 = normalize(rotate_vector(parent_dir, axis, angle))
+        child1 = Tip(
+            position=new_pos.copy(),
+            direction=dir1,
+            radius=max(tip.radius * 0.88, self.params.min_radius),
+            grn=GRNState(**tip.grn.as_dict()),
+            age=0,
+            alive=True,
+            depth=tip.depth + 1,
+        )
+        children.append(child1)
+
+        if self.rng.random() < 0.45:
+            dir2 = normalize(rotate_vector(parent_dir, axis, -angle))
+            child2 = Tip(
+                position=new_pos.copy(),
+                direction=dir2,
+                radius=max(tip.radius * 0.84, self.params.min_radius),
+                grn=GRNState(**tip.grn.as_dict()),
+                age=0,
+                alive=True,
+                depth=tip.depth + 1,
+            )
+            children.append(child2)
+
+        return children
+
+    def step(self) -> None:
+        if not any(t.alive for t in self.tips):
+            return
+
+        spawned: List[Tip] = []
+
+        for tip in list(self.tips):
+            if not tip.alive:
+                continue
+
+            crowding = self._estimate_crowding(tip.position)
+            signal = self.field.sample(tip.position, crowding)
+            tip.grn = update_grn(tip.grn, signal, dt=self.params.dt)
+            behavior = grn_to_behavior(tip.grn)
+
+            step_len = behavior["elongation_rate"]
+            new_dir = self._compute_growth_direction(tip, behavior)
+            new_pos = tip.position + step_len * new_dir
+
+            # Add segment
+            self.segments.append(
+                Segment(
+                    start=tip.position.copy(),
+                    end=new_pos.copy(),
+                    radius=tip.radius,
+                    depth=tip.depth,
+                )
+            )
+
+            # Update tip
+            tip.position = new_pos
+            tip.direction = new_dir
+            tip.radius = max(self.params.min_radius, tip.radius - behavior["thickness_decay"])
+            tip.age += 1
+
+            # Kill conditions
+            if tip.radius <= self.params.min_radius + 1e-9:
+                tip.alive = False
+                continue
+
+            if tip.depth > self.params.max_depth:
+                tip.alive = False
+                continue
+
+            # Branching
+            alive_count = sum(1 for t in self.tips if t.alive) + len(spawned)
+            if alive_count < self.params.max_tips:
+                if self.rng.random() < behavior["branching_probability"]:
+                    new_children = self._spawn_branch(
+                        tip=tip,
+                        new_pos=new_pos,
+                        parent_dir=new_dir,
+                        angle_deg=behavior["split_angle_deg"],
+                    )
+                    spawned.extend(new_children)
+
+        self.tips.extend(spawned)
+
+    def run(self) -> None:
+        for _ in range(self.params.steps):
+            if not any(t.alive for t in self.tips):
+                break
+            self.step()
+
+    def get_segment_arrays(self) -> List[dict]:
+        result = []
+        for s in self.segments:
+            result.append(
+                {
+                    "x1": float(s.start[0]),
+                    "y1": float(s.start[1]),
+                    "z1": float(s.start[2]),
+                    "x2": float(s.end[0]),
+                    "y2": float(s.end[1]),
+                    "z2": float(s.end[2]),
+                    "radius": float(s.radius),
+                    "depth": int(s.depth),
+                }
+            )
+        return result
+viewer.py
+
+This renders the branching structure.
+
+from __future__ import annotations
+
+import numpy as np
+import pyvista as pv
+from engine import GRNMorphogenesisEngine
+
+
+def build_tube_mesh(engine: GRNMorphogenesisEngine, n_sides: int = 10) -> pv.PolyData:
+    if not engine.segments:
+        return pv.PolyData()
+
+    meshes = []
+
+    for seg in engine.segments:
+        pts = np.vstack([seg.start, seg.end])
+        line = pv.lines_from_points(pts)
+        tube = line.tube(radius=max(seg.radius, 0.01), n_sides=n_sides)
+        meshes.append(tube)
+
+    merged = meshes[0]
+    for mesh in meshes[1:]:
+        merged = merged.merge(mesh)
+
+    return merged
+
+
+def show_engine(engine: GRNMorphogenesisEngine, title: str = "GRN Morphogenesis") -> None:
+    mesh = build_tube_mesh(engine)
+
+    plotter = pv.Plotter(window_size=(1200, 900))
+    plotter.add_title(title, font_size=14)
+
+    if mesh.n_points > 0:
+        plotter.add_mesh(mesh, smooth_shading=True)
+
+    plotter.add_axes()
+    plotter.show_grid()
+    plotter.show()
+presets.py
+
+This makes it easy to switch between styles.
+
+from __future__ import annotations
+
+import numpy as np
+
+from engine import EngineParams
+from signals import SignalFieldParams
+
+
+def tree_preset() -> tuple[EngineParams, SignalFieldParams]:
+    engine_params = EngineParams(
+        steps=320,
+        dt=1.0,
+        max_tips=90,
+        max_depth=7,
+        initial_radius=0.09,
+        min_radius=0.012,
+        collision_distance=0.10,
+        collision_strength=0.60,
+        seed=42,
+    )
+
+    field_params = SignalFieldParams(
+        nutrient_center=np.array([0.0, 0.0, 10.0]),
+        morphogen_a_center=np.array([2.0, 0.0, 4.0]),
+        morphogen_b_axis=np.array([0.0, 0.0, 1.0]),
+        nutrient_decay=0.02,
+        morphogen_a_decay=0.05,
+        base_height_scale=0.03,
+    )
+
+    return engine_params, field_params
+
+
+def coral_preset() -> tuple[EngineParams, SignalFieldParams]:
+    engine_params = EngineParams(
+        steps=400,
+        dt=1.0,
+        max_tips=150,
+        max_depth=9,
+        initial_radius=0.06,
+        min_radius=0.009,
+        collision_distance=0.08,
+        collision_strength=0.75,
+        seed=42,
+    )
+
+    field_params = SignalFieldParams(
+        nutrient_center=np.array([0.0, 0.0, 5.0]),
+        morphogen_a_center=np.array([0.0, 0.0, 1.5]),
+        morphogen_b_axis=np.array([0.0, 0.0, 1.0]),
+        nutrient_decay=0.035,
+        morphogen_a_decay=0.04,
+        base_height_scale=0.02,
+    )
+
+    return engine_params, field_params
+
+
+def spiral_preset() -> tuple[EngineParams, SignalFieldParams]:
+    engine_params = EngineParams(
+        steps=340,
+        dt=1.0,
+        max_tips=70,
+        max_depth=6,
+        initial_radius=0.075,
+        min_radius=0.010,
+        collision_distance=0.10,
+        collision_strength=0.55,
+        seed=42,
+    )
+
+    field_params = SignalFieldParams(
+        nutrient_center=np.array([0.0, 0.0, 9.0]),
+        morphogen_a_center=np.array([3.0, 0.0, 3.0]),
+        morphogen_b_axis=np.array([0.2, 0.6, 1.0]),
+        nutrient_decay=0.02,
+        morphogen_a_decay=0.03,
+        base_height_scale=0.035,
+    )
+
+    return engine_params, field_params
+main.py
+
+This is the file you run.
+
+from __future__ import annotations
+
+from presets import tree_preset, coral_preset, spiral_preset
+from signals import SignalField
+from engine import GRNMorphogenesisEngine
+from viewer import show_engine
+
+
+def main() -> None:
+    # Choose one:
+    # engine_params, field_params = tree_preset()
+    # engine_params, field_params = coral_preset()
+    engine_params, field_params = spiral_preset()
+
+    field = SignalField(field_params)
+    engine = GRNMorphogenesisEngine(engine_params, field)
+    engine.run()
+
+    print(f"Generated {len(engine.segments)} segments.")
+    print(f"Alive tips remaining: {sum(1 for t in engine.tips if t.alive)}")
+
+    show_engine(engine, title="GRN-Driven Morphogenesis")
+
+
+if __name__ == "__main__":
+    main()
+How to run
+python main.py
+What this version is doing biologically
+
+This engine has a real conceptual bridge between regulation and shape:
+
+Internal GRN variables
+
+Each tip carries:
+
+growth
+
+branch
+
+adhesion
+
+polarity
+
+differentiation
+
+External signals
+
+Each tip senses:
+
+nutrient
+
+morphogen_a
+
+morphogen_b
+
+crowding
+
+height
+
+Behavior mapping
+
+Those variables control:
+
+elongation rate
+
+branch probability
+
+upward bias
+
+branch angle
+
+noise
+
+thickness decay
+
+So now shape is not just random branching. It is:
+
+signal field → GRN update → behavior → geometry
+
+Good first modifications
+Make denser growth
+
+In grn.py, raise branch influence:
+
+branching_probability = clamp(0.05 + 0.45 * state.branch + 0.12 * state.growth)
+Make more stable vertical structures
+
+In grn.py, increase polarity effect:
+
+upward_bias = clamp(0.25 + 0.90 * state.polarity)
+Make branches survive longer
+
+In grn.py, reduce thickness decay:
+
+thickness_decay = clamp(0.002 + 0.012 * state.differentiation, 0.002, 0.03)
+Push growth toward a “light source”
+
+In signals.py, move the nutrient center higher or sideways:
+
+nutrient_center=np.array([3.0, 2.0, 12.0])
+Best next upgrades
+
+The strongest next improvements would be:
+
+1. Add true twist / helical bias
+
+Especially for spiral architecture.
+
+2. Add multiple tip types
+
+For example:
+
+trunk tips
+
+branch tips
+
+leaf / terminal tips
+
+3. Add a 3D voxel or mesh field
+
+So growth can fill surfaces or avoid obstacles.
+
+4. Export OBJ / STL
+
+So you can send outputs to Blender.
+
+5. Add a prompt layer
+
+Translate:
+
+“Grow a tall spiral coral cathedral with dense branching”
+
+into preset and GRN parameters.
+
+6. Replace hand-written GRN rules with learned surrogates
+
+Later, from real:
+
+scRNA-seq
+
+spatial transcriptomics
+
+lineage data
+
+Recommended build path from here
+
+I’d do it in this order:
+
+Phase 1
+
+Run this locally and tune the shapes.
+
+Phase 2
+
+Add export to .obj.
+
+Phase 3
+
+Return engine.get_segment_arrays() through a FastAPI endpoint.
+
+Phase 4
+
+Render the result in the browser with Three.js.
+
+Phase 5
+
+Add natural-language prompt control.
+
+That gets you very close to a real Living Systems Design Lab.
+
+If you want, I’ll turn this into version 2 with:
+
+OBJ export
+
+FastAPI endpoint
+
+and prompt-to-parameter translation

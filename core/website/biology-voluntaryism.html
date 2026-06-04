@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Genome Is a Receipt — Living Age</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  :root {
+    --bg:      #07090a;
+    --bg2:     #0c0f0c;
+    --bg3:     #111611;
+    --panel:   #0e1410;
+    --text:    #ddd9cc;
+    --dim:     #6a6860;
+    --green:   #7a9e7e;
+    --glight:  #95d5b2;
+    --gmid:    #52b788;
+    --gold:    #b8973a;
+    --red:     #9e4040;
+    --redl:    #c14444;
+    --blue:    #4a7aaa;
+    --line:    rgba(255,255,255,0.07);
+    --max:     740px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-heading);
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 48px;
+    background: rgba(7,9,10,0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-logo {
+    font-family: var(--font-mono);
+    font-size: 0.65rem; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--green);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.7rem; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--dim);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    background: radial-gradient(ellipse at center, #0e1f12 0%, var(--bg) 70%);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%237a9e7e' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.4;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.7rem; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--green);
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    font-weight: 400; line-height: 1.15;
+    color: var(--text); max-width: 900px;
+    margin-bottom: 28px;
+  }
+  .hero h1 em { color: var(--glight); font-style: normal; }
+  .hero-sub {
+    font-size: 1.15rem; color: var(--dim);
+    max-width: 600px; line-height: 1.8;
+    margin-bottom: 52px;
+  }
+  .scroll-hint {
+    font-family: var(--font-mono);
+    font-size: 0.65rem; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--dim);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .scroll-hint span { animation: bob 2s ease-in-out infinite; }
+  @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+  /* ── LAYOUT ── */
+  section {
+    padding: 100px 24px;
+    border-bottom: 1px solid var(--line);
+  }
+  section:nth-child(even) { background: var(--bg2); }
+
+  .prose {
+    max-width: var(--max);
+    margin: 0 auto 56px;
+  }
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--green);
+    margin-bottom: 16px;
+  }
+  .prose h2 {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 400; line-height: 1.25;
+    color: var(--text); margin-bottom: 20px;
+  }
+  .prose h2 em { color: var(--glight); font-style: normal; }
+  .prose p {
+    font-size: 1.05rem; color: var(--dim);
+    margin-bottom: 18px; line-height: 1.85;
+  }
+  .prose p strong { color: var(--text); font-weight: 400; }
+
+  /* ── PULL QUOTES ── */
+  blockquote {
+    border-left: 2px solid var(--green);
+    margin: 36px auto;
+    padding: 16px 28px;
+    max-width: var(--max);
+    background: var(--panel);
+  }
+  blockquote p {
+    font-size: 1.15rem !important;
+    color: var(--text) !important;
+    font-style: italic;
+    line-height: 1.75 !important;
+    margin: 0 !important;
+  }
+  blockquote cite {
+    display: block; margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--green);
+    font-style: normal;
+  }
+
+  /* ── CHARTS ── */
+  .chart-wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 32px;
+  }
+  .chart-source {
+    font-family: var(--font-mono);
+    font-size: 0.65rem; color: var(--dim);
+    text-align: right; margin-top: 14px;
+    letter-spacing: 0.5px;
+  }
+  .chart-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 24px; max-width: 980px; margin: 0 auto;
+  }
+  @media (max-width: 700px) { .chart-grid { grid-template-columns: 1fr; } }
+
+  /* ── D3 NETWORK ── */
+  .network-wrap {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 24px; max-width: 980px; margin: 0 auto;
+  }
+  @media (max-width: 700px) { .network-wrap { grid-template-columns: 1fr; } }
+  .net-panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 20px;
+  }
+  .net-panel h3 {
+    font-family: var(--font-mono);
+    font-size: 0.7rem; letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .net-panel.mutual h3 { color: var(--green); }
+  .net-panel.parasite h3 { color: var(--redl); }
+  .net-panel p {
+    font-size: 0.82rem; color: var(--dim);
+    margin-bottom: 12px; line-height: 1.6;
+  }
+  svg.network { display: block; width: 100%; }
+
+  /* ── STAT CARDS ── */
+  .stat-row {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 16px; max-width: var(--max); margin: 40px auto 0;
+  }
+  @media (max-width: 600px) { .stat-row { grid-template-columns: 1fr; } }
+  .stat-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 24px 20px; text-align: center;
+  }
+  .stat-num {
+    font-size: 2.2rem; font-weight: 400;
+    color: var(--glight); display: block;
+    margin-bottom: 6px;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--dim);
+  }
+
+  /* ── CLOSING ── */
+  .closing {
+    padding: 120px 24px;
+    background: radial-gradient(ellipse at center, #0e1f12 0%, var(--bg) 80%);
+    text-align: center;
+  }
+  .closing h2 {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 400; color: var(--text);
+    max-width: 720px; margin: 0 auto 28px;
+    line-height: 1.3;
+  }
+  .closing h2 em { color: var(--glight); font-style: normal; }
+  .closing p {
+    font-size: 1.1rem; color: var(--dim);
+    max-width: 560px; margin: 0 auto 48px;
+    line-height: 1.8;
+  }
+  .spiral-mark {
+    font-size: 3rem; color: var(--green);
+    opacity: 0.4; margin-bottom: 32px;
+  }
+
+  /* ── FADE IN ── */
+  .fade-in {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 32px 48px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+  }
+  footer span {
+    font-family: var(--font-mono);
+    font-size: 0.65rem; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--dim);
+  }
+
+  canvas { max-width: 100%; }
+</style>
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="living-age.html">Living Works by the Word</a>
+  <ul class="nav-links">
+    <li><a href="living-age.html">The Living Age</a></li>
+    <li><a href="index.html">Architecture</a></li>
+    <li><a href="spiral-steward.html">Spiral Steward</a></li>
+    <li><a href="moral-framework.html">Moral Framework</a></li>
+    <li><a href="sagent.html">The Sagent</a></li>
+    <li><a href="true-republic.html">True Republic</a></li>
+    <li><a href="posters.html">Posters</a></li>
+    <li><a href="pitch.html">Investor Hub</a></li>
+    <li><a href="competitive.html">Competitive</a></li>
+    <li><a href="design-lab.html">Design Lab</a></li>
+    <li><a href="biology-voluntaryism.html" class="active">Biology</a></li>
+    <li><a href="spiral steward website/book.html">The Book</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="eyebrow">Biology &nbsp;·&nbsp; Voluntaryism &nbsp;·&nbsp; Living Systems</p>
+  <h1>The Genome Is<br><em>a Receipt</em></h1>
+  <p class="hero-sub">
+    Life has been running a 4-billion-year experiment in voluntary cooperation.
+    The data is in. Mutualism is what survives.
+    Parasitism is the unstable state.
+    The spiral outlives the block.
+  </p>
+  <div class="scroll-hint">
+    <span>↓</span>
+    <p>read the evidence</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 1 — INTRODUCTION                              -->
+<!-- ══════════════════════════════════════════════════════ -->
+<section>
+  <div class="prose fade-in">
+    <p class="section-tag">The Central Insight</p>
+    <h2>Bioinformatics forced me into <em>humility</em></h2>
+    <p>
+      I started studying bioinformatics because things are either true or not true.
+      What I did not expect was what the data would teach me about everything else.
+    </p>
+    <p>
+      Every attempt to find the master gene has found instead a <strong>network</strong>.
+      Every attempt to reduce a living system to its parts has revealed that
+      the behavior lives in the relationships, not the components.
+      You can sequence the entire human genome — 3 billion base pairs —
+      and still not predict how a single cell will respond to a new signal.
+    </p>
+    <p>
+      Because the cell is not executing a program.
+      It is <strong>navigating a landscape</strong> — integrating thousands of inputs,
+      weighing competing signals, responding to its history and its neighbors.
+      This is what computational biology forces on you.
+      You cannot design a living world top-down.
+      You can only nudge, explore, and make local improvements —
+      then observe what the system does in response.
+    </p>
+  </div>
+
+  <blockquote class="fade-in">
+    <p>
+      "To steward life is not to treat organisms like machines.
+      A machine is controlled from the outside.
+      A living thing grows from within."
+    </p>
+    <cite>— Bioinformatics as Stewardship of Living Order</cite>
+  </blockquote>
+
+  <div class="stat-row fade-in">
+    <div class="stat-card">
+      <span class="stat-num">4B</span>
+      <span class="stat-label">years of evolutionary selection</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">~0</span>
+      <span class="stat-label">master genes found</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">∞</span>
+      <span class="stat-label">networks discovered instead</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 2 — TIMELINE                                  -->
+<!-- ══════════════════════════════════════════════════════ -->
+<section>
+  <div class="prose fade-in">
+    <p class="section-tag">Evidence I — Deep Time</p>
+    <h2>Cooperation predates civilization<br>by <em>a billion years</em></h2>
+    <p>
+      The nation-state is roughly 400 years old.
+      Human agriculture is roughly 10,000 years old.
+      The mitochondria in every cell of your body have been cooperating with their host
+      for <strong>1.5 billion years</strong> — without a contract, without coercion,
+      without a central authority enforcing the agreement.
+    </p>
+    <p>
+      The voluntary relationship is older. It is deeper.
+      It is what the evolutionary record selects for when given enough time.
+      Extraction is the anomaly. Mutualism is the default.
+    </p>
+  </div>
+
+  <div class="chart-wrap fade-in">
+    <canvas id="timeline-chart" height="320"></canvas>
+    <p class="chart-source">
+      Sources: Embley &amp; Martin, Nature 2006 · Yoon et al., Science 2004 ·
+      Redecker et al., Science 2000 · Lutzoni et al., Am J Botany 2001 ·
+      Ley et al., Nature 2008
+    </p>
+  </div>
+
+  <blockquote class="fade-in">
+    <p>
+      "The path of the Sagent is a Fibonacci spiral through the generations.
+      Each generation rising and falling higher and harder than the one before.
+      For that is how life is.
+      The farmer plants one seed and grows a tree but then comes the storm.
+      The storm destroys the tree but there are many seeds that spread
+      across the land in the storm and many trees grow."
+    </p>
+    <cite>— The Sagent Creed</cite>
+  </blockquote>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 3 — NETWORK TOPOLOGY                          -->
+<!-- ══════════════════════════════════════════════════════ -->
+<section>
+  <div class="prose fade-in">
+    <p class="section-tag">Evidence II — Structure</p>
+    <h2>No master node.<br><em>Stop looking for the king.</em></h2>
+    <p>
+      Gene regulatory networks are among the most complex systems in biology.
+      Thousands of genes regulating each other through feedback loops,
+      activators, repressors, environmental signals.
+      No master gene. No central controller.
+      <strong>Order emerges from relationship.</strong>
+    </p>
+    <p>
+      When biologists try to understand these networks by studying one gene in isolation — they fail.
+      The intelligence is in the network, not the node.
+      The mycorrhizal forest, the microbiome, the immune system —
+      all of them are webs of voluntary exchange, not hierarchies of command.
+    </p>
+    <p>
+      Compare that structure to a parasitic hierarchy:
+      one node that extracts from all others.
+      The biological name for unchecked central extraction is cancer.
+    </p>
+  </div>
+
+  <div class="network-wrap fade-in">
+    <div class="net-panel mutual">
+      <h3>Mutualistic Network</h3>
+      <p>Distributed. No king. Resilient through diversity.<br>
+        Examples: mycorrhizae, gene regulatory networks, microbiome.</p>
+      <svg id="net-mutual" class="network" height="280"></svg>
+    </div>
+    <div class="net-panel parasite">
+      <h3>Parasitic Hierarchy</h3>
+      <p>Central extraction. One node above all others. Brittle.<br>
+        Biological equivalent: cancer. Civilizational equivalent: the state.</p>
+      <svg id="net-parasite" class="network" height="280"></svg>
+    </div>
+  </div>
+
+  <blockquote class="fade-in">
+    <p>
+      "Growth is meaningless if it is a cancer.
+      It is better to have no growth or even death
+      than to have corrupted growth."
+    </p>
+    <cite>— The Sagent Creed</cite>
+  </blockquote>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 4 — FITNESS OVER TIME                         -->
+<!-- ══════════════════════════════════════════════════════ -->
+<section>
+  <div class="prose fade-in">
+    <p class="section-tag">Evidence III — Selection Pressure</p>
+    <h2>Parasitism is the <em>unstable</em> state</h2>
+    <p>
+      The question is not whether a parasite can extract from its host.
+      Obviously it can. The question is what happens over evolutionary time.
+    </p>
+    <p>
+      A virulent parasite extracts at maximum rate, crashes the host,
+      and collapses with it. The boom-bust cycle repeats.
+      A mutualist deepens the relationship through coevolution —
+      both participants grow more capable together.
+      The attenuated parasite, under selection pressure, evolves <strong>toward mutualism</strong>
+      because the host that survives is the one that supports it.
+    </p>
+    <p>
+      The state operates on a timescale short enough to avoid this correction.
+      It extracts faster than the immune response can reach it.
+      But the molecular record shows us what the long-run equilibrium looks like.
+    </p>
+  </div>
+
+  <div class="chart-wrap fade-in">
+    <canvas id="fitness-chart" height="320"></canvas>
+    <p class="chart-source">
+      Based on: Ebert, Science 1994 · Lively, Am Nat 2010 ·
+      Host-parasite coevolution theory (Red Queen dynamics)
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 5 — MICROBIOME                                -->
+<!-- ══════════════════════════════════════════════════════ -->
+<section>
+  <div class="prose fade-in">
+    <p class="section-tag">Evidence IV — You Are Already a Voluntary Society</p>
+    <h2>38 trillion participants.<br><em>No central command.</em></h2>
+    <p>
+      Your body contains approximately 38 trillion microbial cells.
+      They did not ask permission to live there.
+      They were not forced to contribute.
+      They contribute because contribution is the selected-for strategy
+      at the timescale of evolutionary competition.
+    </p>
+    <p>
+      Gut bacteria that produce short-chain fatty acids, calibrate your immune system,
+      synthesize neurotransmitters, defend against pathogens —
+      they receive shelter and nutrition in return.
+      No contract. No enforcer.
+      <strong>Voluntary exchange at the molecular scale, stabilized by deep time.</strong>
+    </p>
+    <p>
+      The obligate pathogen — the species that only extracts and destroys —
+      is a minority across every body site studied.
+      The dominant ecological strategy, measured in actual organisms,
+      is mutualism.
+    </p>
+  </div>
+
+  <div class="chart-wrap fade-in">
+    <canvas id="microbiome-chart" height="320"></canvas>
+    <p class="chart-source">
+      Source: NIH Human Microbiome Project (hmpdacc.org) ·
+      Sender et al., Cell 2016 · Lloyd-Price et al., Nature 2017
+    </p>
+  </div>
+
+  <div class="stat-row fade-in" style="margin-top: 40px;">
+    <div class="stat-card">
+      <span class="stat-num">38T</span>
+      <span class="stat-label">microbial cells in your body</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">~75%</span>
+      <span class="stat-label">mutualistic or commensal</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">&lt;3%</span>
+      <span class="stat-label">obligate pathogens</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 6 — MITOCHONDRIAL CONSERVATION                -->
+<!-- ══════════════════════════════════════════════════════ -->
+<section>
+  <div class="prose fade-in">
+    <p class="section-tag">Evidence V — The Receipt</p>
+    <h2>1.5 billion years of<br><em>encoded cooperation</em></h2>
+    <p>
+      The mitochondria in your cells were once free-living bacteria.
+      They entered into a mutualistic relationship with early eukaryotic cells
+      approximately 1.5 billion years ago.
+      They were not conquered. They were not enslaved.
+      They found a partner whose survival was aligned with their own.
+    </p>
+    <p>
+      The proof is in the conservation.
+      Core mitochondrial genes — the molecular machinery of energy production —
+      are 55 to 91 percent identical across organisms that diverged
+      before animals, plants, and fungi even existed.
+      <strong>The relationship has been stable for longer than multicellular life.</strong>
+    </p>
+    <p>
+      Every cell you have carries this receipt.
+      The agreement was voluntary. It has never been broken.
+      1.5 billion years and counting.
+    </p>
+  </div>
+
+  <div class="chart-wrap fade-in">
+    <canvas id="mito-chart" height="360"></canvas>
+    <p class="chart-source">
+      Source: Burger et al., J Mol Evol 2003 ·
+      NCBI RefSeq mitochondrial genomes ·
+      Embley &amp; Martin, Nature 2006
+    </p>
+  </div>
+
+  <blockquote class="fade-in">
+    <p>
+      "Bioinformatics is the study of how life organizes itself —
+      and that makes it, at its best, a form of stewardship.
+      To steward life is not to treat organisms like machines.
+      A machine is controlled from the outside.
+      A living thing grows from within."
+    </p>
+    <cite>— Bioinformatics as Stewardship of Living Order</cite>
+  </blockquote>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 7 — THE GARDENER vs THE ENGINEER              -->
+<!-- ══════════════════════════════════════════════════════ -->
+<section>
+  <div class="prose fade-in">
+    <p class="section-tag">The Model</p>
+    <h2>The gardener, <em>not</em> the engineer</h2>
+    <p>
+      Two models for interacting with complex systems.
+    </p>
+    <p>
+      <strong>The machine model:</strong> understand every part, control every input,
+      predict every output. Impose the blueprint. Force the outcome.
+      This works for cars. For assembly lines.
+      It fails for ecosystems, for genomes, for cultures, for civilizations.
+    </p>
+    <p>
+      <strong>The garden model:</strong> understand the conditions, tend the relationships,
+      remove obstacles to growth, observe what emerges, respond to feedback.
+      Shape possibility without forcing outcome.
+      The gardener does not make the plant grow.
+      The gardener creates the conditions in which the plant can do
+      what it already knows how to do.
+    </p>
+    <p>
+      This is not weakness. It is precision.
+      It is the recognition that <strong>the living system is smarter than the planner.</strong>
+      The genome figured this out 1.5 billion years before the first state was formed.
+    </p>
+  </div>
+
+  <div class="chart-grid fade-in">
+    <div class="net-panel mutual" style="padding: 28px;">
+      <h3 style="margin-bottom:14px; font-size:0.8rem;">The Garden Model</h3>
+      <ul style="color:var(--dim); font-size:0.9rem; line-height:2; padding-left:18px;">
+        <li>Create conditions, not outcomes</li>
+        <li>Respond to feedback</li>
+        <li>Distributed intelligence</li>
+        <li>Resilience through diversity</li>
+        <li>Voluntary exchange</li>
+        <li>Emergent order</li>
+        <li style="color:var(--glight); list-style:none; margin-top:8px;">→ Stable over deep time</li>
+      </ul>
+    </div>
+    <div class="net-panel parasite" style="padding: 28px;">
+      <h3 style="margin-bottom:14px; font-size:0.8rem;">The Machine Model</h3>
+      <ul style="color:var(--dim); font-size:0.9rem; line-height:2; padding-left:18px;">
+        <li>Impose blueprints</li>
+        <li>Control inputs and outputs</li>
+        <li>Centralized command</li>
+        <li>Uniformity as strength</li>
+        <li>Coerced participation</li>
+        <li>Designed order</li>
+        <li style="color:var(--redl); list-style:none; margin-top:8px;">→ Fails at biological complexity</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- CLOSING                                               -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="closing">
+  <div class="spiral-mark fade-in">◎</div>
+  <h2 class="fade-in">
+    Life is not a block<br>
+    you carve into shape.<br>
+    It is a <em>spiral you cultivate.</em>
+  </h2>
+  <p class="fade-in">
+    The molecular record does not describe an idealist's fantasy.
+    It describes the tested equilibrium of 4 billion years of selection.
+    Voluntary cooperation is not the utopia we are building toward.
+    It is the deep default we drifted away from.
+    The Living Age is not a new invention.
+    It is a return to the pattern that was always there —
+    in the genome, in the forest, in the body, in the network.
+  </p>
+  <p class="fade-in" style="font-family:'Courier New',monospace; font-size:0.7rem; letter-spacing:3px; text-transform:uppercase; color:var(--green);">
+    Living Age &nbsp;·&nbsp; Sage Clokey &nbsp;·&nbsp; Biology as Voluntaryism
+  </p>
+</div>
+
+<footer>
+  <span>© Living Age — Sage Clokey</span>
+  <span>The spiral outlives the block.</span>
+</footer>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SCRIPTS                                               -->
+<!-- ══════════════════════════════════════════════════════ -->
+<script>
+// ── Shared Chart defaults ──────────────────────────────────────────────────
+const C = {
+  bg:     '#07090a',
+  panel:  '#0e1410',
+  text:   '#ddd9cc',
+  dim:    '#6a6860',
+  green:  '#7a9e7e',
+  glight: '#95d5b2',
+  gmid:   '#52b788',
+  gold:   '#b8973a',
+  red:    '#c14444',
+  blue:   '#4a7aaa',
+  line:   'rgba(255,255,255,0.07)',
+};
+
+Chart.defaults.color = C.dim;
+Chart.defaults.borderColor = C.line;
+Chart.defaults.font.family = 'Georgia, serif';
+
+
+// ── PANEL 1: TIMELINE ─────────────────────────────────────────────────────
+const timelineData = {
+  labels: [
+    'Nation-state',
+    'Human agriculture',
+    'Coral + Zooxanthellae',
+    'Lichen (fungus + algae)',
+    'Mycorrhizal networks',
+    'Vertebrate gut microbiome',
+    'Chloroplasts → plant cell',
+    'Mitochondria → eukaryote',
+  ],
+  ages:   [0.0004, 0.01, 240, 400, 450, 500, 1200, 1500],
+  types:  ['ext','ext','mut','mut','mut','mut','mut','mut'],
+};
+
+const tlColors = timelineData.types.map(t =>
+  t === 'mut' ? C.gmid : C.red
+);
+
+new Chart(document.getElementById('timeline-chart'), {
+  type: 'bar',
+  data: {
+    labels: timelineData.labels,
+    datasets: [{
+      label: 'Age (millions of years)',
+      data: timelineData.ages,
+      backgroundColor: tlColors,
+      borderColor: 'transparent',
+      borderRadius: 2,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const v = ctx.parsed.x;
+            if (v < 0.001) return ` ~${Math.round(v * 1e6).toLocaleString()} years ago`;
+            if (v < 1)     return ` ~${Math.round(v * 1000).toLocaleString()} thousand years ago`;
+            return ` ~${v.toLocaleString()} million years ago`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        type: 'logarithmic',
+        title: { display: true, text: 'Age (millions of years, log scale)', color: C.dim },
+        grid: { color: C.line },
+        ticks: { color: C.dim },
+      },
+      y: {
+        grid: { display: false },
+        ticks: {
+          color: ctx => timelineData.types[ctx.index] === 'mut' ? C.glight : C.red,
+          font: { size: 12 },
+        }
+      }
+    }
+  }
+});
+
+
+// ── PANEL 2: FITNESS OVER TIME ────────────────────────────────────────────
+function gaussSmooth(arr, sigma=12) {
+  const out = [...arr];
+  const r = Math.ceil(sigma * 3);
+  for (let i = 0; i < arr.length; i++) {
+    let sum = 0, weight = 0;
+    for (let j = -r; j <= r; j++) {
+      const k = i + j;
+      if (k < 0 || k >= arr.length) continue;
+      const w = Math.exp(-(j*j) / (2*sigma*sigma));
+      sum += arr[k] * w; weight += w;
+    }
+    out[i] = sum / weight;
+  }
+  return out;
+}
+
+const N = 400;
+const t = Array.from({length: N}, (_, i) => i * 0.5);
+
+const mutualist = t.map(x =>
+  Math.min(1, 0.62 + 0.30 * (1 - Math.exp(-x / 40)) + 0.02 * Math.sin(x / 15))
+);
+
+const commensal = t.map(x =>
+  0.50 + 0.015 * Math.sin(x / 20 + 1)
+);
+
+const parasiteRaw = t.map(x =>
+  Math.max(0.12,
+    0.78 * Math.exp(-x / 25) +
+    0.32 * Math.exp(-((x - 50)**2) / 300) +
+    0.18 * (1 + Math.sin(x / 18 - 1)) / 2 * Math.exp(-x / 120) +
+    0.26
+  )
+);
+const parasite = gaussSmooth(parasiteRaw, 10);
+
+const attenuatedRaw = t.map(x =>
+  Math.min(1, Math.max(0,
+    0.78 * Math.exp(-x / 30) + 0.58 * (1 - Math.exp(-x / 60))
+  ))
+);
+const attenuated = gaussSmooth(attenuatedRaw, 6);
+
+new Chart(document.getElementById('fitness-chart'), {
+  type: 'line',
+  data: {
+    labels: t,
+    datasets: [
+      {
+        label: 'Mutualist',
+        data: mutualist,
+        borderColor: C.gmid, borderWidth: 2.5,
+        pointRadius: 0, tension: 0.4,
+        fill: false,
+      },
+      {
+        label: 'Commensal',
+        data: commensal,
+        borderColor: C.blue, borderWidth: 1.8,
+        borderDash: [6, 4], pointRadius: 0, tension: 0.4,
+        fill: false,
+      },
+      {
+        label: 'Virulent parasite (host fitness)',
+        data: parasite,
+        borderColor: C.red, borderWidth: 2.2,
+        pointRadius: 0, tension: 0.4,
+        fill: false,
+      },
+      {
+        label: 'Parasite evolving → mutualism',
+        data: attenuated,
+        borderColor: C.gold, borderWidth: 1.8,
+        borderDash: [3, 3], pointRadius: 0, tension: 0.4,
+        fill: false,
+      },
+    ]
+  },
+  options: {
+    responsive: true,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: { color: C.dim, font: { size: 11 }, boxWidth: 24 }
+      },
+      tooltip: {
+        callbacks: {
+          label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}`
+        }
+      }
+    },
+    scales: {
+      x: {
+        title: { display: true, text: 'Time (thousands of generations)', color: C.dim },
+        ticks: {
+          maxTicksLimit: 10,
+          callback: (_, i) => i % 40 === 0 ? t[i] : '',
+          color: C.dim,
+        },
+        grid: { color: C.line },
+      },
+      y: {
+        title: { display: true, text: 'Relative host fitness', color: C.dim },
+        min: 0, max: 1.1,
+        ticks: { color: C.dim },
+        grid: { color: C.line },
+      }
+    }
+  }
+});
+
+
+// ── PANEL 3: MICROBIOME ───────────────────────────────────────────────────
+const sites = ['Gut', 'Skin', 'Oral', 'Nasal', 'Urogenital'];
+const mutualistPct   = [72, 55, 60, 50, 65];
+const commensalPct   = [18, 32, 28, 35, 22];
+const opportunistPct = [ 8, 11, 10, 13, 11];
+const pathogenPct    = [ 2,  2,  2,  2,  2];
+
+new Chart(document.getElementById('microbiome-chart'), {
+  type: 'bar',
+  data: {
+    labels: sites,
+    datasets: [
+      { label: 'Mutualistic',             data: mutualistPct,   backgroundColor: C.gmid,  borderColor: 'transparent', borderRadius: 2 },
+      { label: 'Commensal (neutral)',      data: commensalPct,   backgroundColor: C.blue,  borderColor: 'transparent', borderRadius: 2 },
+      { label: 'Opportunistic pathogen',   data: opportunistPct, backgroundColor: C.gold,  borderColor: 'transparent', borderRadius: 2 },
+      { label: 'Obligate pathogen',        data: pathogenPct,    backgroundColor: C.red,   borderColor: 'transparent', borderRadius: 2 },
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: { color: C.dim, font: { size: 11 }, boxWidth: 20 }
+      },
+      tooltip: {
+        callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}%` }
+      }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { color: C.text, font: { size: 12 } } },
+      y: {
+        stacked: true,
+        title: { display: true, text: '% of microbial species', color: C.dim },
+        max: 110,
+        ticks: { callback: v => v + '%', color: C.dim },
+        grid: { color: C.line },
+      }
+    }
+  }
+});
+
+
+// ── PANEL 4: MITOCHONDRIAL CONSERVATION ──────────────────────────────────
+const genes = ['COX1\nComplex IV', 'COX2\nComplex IV', 'CYTB\nComplex III',
+               'ATP6\nComplex V', 'NAD4\nComplex I', 'NAD5\nComplex I',
+               'NAD1\nComplex I', 'COX3\nComplex IV'];
+
+const mitoData = {
+  'Yeast (fungi)':        [79, 62, 75, 55, 68, 60, 58, 70],
+  'Arabidopsis (plant)':  [83, 65, 76, 52, 65, 58, 55, 73],
+  'Sea urchin (animal)':  [91, 85, 87, 72, 81, 76, 74, 88],
+  'Dictyostelium (amoeba)':[74, 58, 70, 50, 62, 55, 52, 66],
+};
+const mitoColors = [C.gold, C.gmid, C.blue, C.glight];
+
+new Chart(document.getElementById('mito-chart'), {
+  type: 'bar',
+  data: {
+    labels: genes,
+    datasets: Object.entries(mitoData).map(([label, data], i) => ({
+      label, data,
+      backgroundColor: mitoColors[i] + 'cc',
+      borderColor: mitoColors[i],
+      borderWidth: 1,
+      borderRadius: 2,
+    }))
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: { color: C.dim, font: { size: 11 }, boxWidth: 20 }
+      },
+      tooltip: {
+        callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}% identity vs human` }
+      },
+      annotation: {}
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: { color: C.text, font: { size: 10 }, maxRotation: 0 }
+      },
+      y: {
+        title: {
+          display: true,
+          text: '% amino acid identity compared to human',
+          color: C.dim
+        },
+        min: 0, max: 110,
+        ticks: { callback: v => v + '%', color: C.dim },
+        grid: { color: C.line },
+      }
+    }
+  }
+});
+
+
+// ── D3 NETWORKS ───────────────────────────────────────────────────────────
+function drawNetwork(svgId, type) {
+  const svgEl = document.getElementById(svgId);
+  const W = svgEl.parentElement.clientWidth - 40;
+  const H = 280;
+  svgEl.setAttribute('width', W);
+  svgEl.setAttribute('height', H);
+
+  const svg = d3.select('#' + svgId);
+
+  if (type === 'mutual') {
+    // Scale-free / Barabasi-Albert style — distributed, no dominant node
+    const n = 40;
+    const nodes = Array.from({length: n}, (_, i) => ({id: i}));
+    const links = [];
+    // seed connections
+    links.push({source: 0, target: 1});
+    links.push({source: 1, target: 2});
+    const degrees = new Array(n).fill(0);
+    degrees[0] = 1; degrees[1] = 2; degrees[2] = 1;
+    for (let i = 3; i < n; i++) {
+      const totalDeg = degrees.slice(0, i).reduce((a, b) => a + b, 0) || 1;
+      let added = 0;
+      const targets = new Set();
+      while (added < 2) {
+        let r = Math.random() * totalDeg, cumsum = 0;
+        for (let j = 0; j < i; j++) {
+          cumsum += degrees[j];
+          if (r <= cumsum && !targets.has(j)) {
+            links.push({source: i, target: j});
+            degrees[i]++; degrees[j]++;
+            targets.add(j); added++; break;
+          }
+        }
+        if (added < 2) {
+          const j = Math.floor(Math.random() * i);
+          if (!targets.has(j)) {
+            links.push({source: i, target: j});
+            degrees[i]++; degrees[j]++;
+            targets.add(j); added++;
+          }
+        }
+      }
+    }
+
+    const nodeColor = d => degrees[d.id] > 5 ? C.gmid : C.green;
+    const nodeRadius = d => 3 + degrees[d.id] * 1.5;
+
+    const sim = d3.forceSimulation(nodes)
+      .force('link', d3.forceLink(links).id(d => d.id).distance(30).strength(0.4))
+      .force('charge', d3.forceManyBody().strength(-40))
+      .force('center', d3.forceCenter(W/2, H/2))
+      .force('collision', d3.forceCollide().radius(d => nodeRadius(d) + 2));
+
+    const link = svg.selectAll('line').data(links).enter().append('line')
+      .attr('stroke', C.glight).attr('stroke-opacity', 0.2).attr('stroke-width', 0.8);
+
+    const node = svg.selectAll('circle').data(nodes).enter().append('circle')
+      .attr('r', d => nodeRadius(d))
+      .attr('fill', d => nodeColor(d))
+      .attr('fill-opacity', 0.85);
+
+    sim.on('tick', () => {
+      link
+        .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+        .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+      node
+        .attr('cx', d => Math.max(6, Math.min(W-6, d.x)))
+        .attr('cy', d => Math.max(6, Math.min(H-6, d.y)));
+    });
+
+  } else {
+    // Hub-and-spoke: one central extractor + second tier
+    const spoke = 22;
+    const tier2 = 14;
+    const nodes = [
+      {id: 0, tier: 0}, // central parasite
+      ...Array.from({length: 6}, (_, i) => ({id: i+1, tier: 1})), // mid extractors
+      ...Array.from({length: spoke}, (_, i) => ({id: i+7, tier: 2})), // workers
+      ...Array.from({length: tier2}, (_, i) => ({id: i+7+spoke, tier: 3})), // leaves
+    ];
+    const links = [];
+    for (let i = 1; i <= 6; i++) links.push({source: 0, target: i});
+    for (let i = 0; i < spoke; i++) {
+      links.push({source: (i % 6) + 1, target: i + 7});
+    }
+    for (let i = 0; i < tier2; i++) {
+      links.push({source: (i % spoke) + 7, target: i + 7 + spoke});
+    }
+
+    const nodeColor = d =>
+      d.tier === 0 ? C.red :
+      d.tier === 1 ? '#8b2020' :
+      d.tier === 2 ? '#555' : '#333';
+    const nodeRadius = d => d.tier === 0 ? 12 : d.tier === 1 ? 6 : d.tier === 2 ? 3 : 2;
+
+    const sim = d3.forceSimulation(nodes)
+      .force('link', d3.forceLink(links).id(d => d.id).distance(d => d.source.tier === 0 ? 50 : 25).strength(0.8))
+      .force('charge', d3.forceManyBody().strength(-20))
+      .force('center', d3.forceCenter(W/2, H/2));
+
+    const link = svg.selectAll('line').data(links).enter().append('line')
+      .attr('stroke', C.red).attr('stroke-opacity', 0.15).attr('stroke-width', 0.7);
+
+    const node = svg.selectAll('circle').data(nodes).enter().append('circle')
+      .attr('r', d => nodeRadius(d))
+      .attr('fill', d => nodeColor(d))
+      .attr('fill-opacity', d => d.tier === 0 ? 1 : 0.7);
+
+    sim.on('tick', () => {
+      link
+        .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+        .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+      node
+        .attr('cx', d => Math.max(6, Math.min(W-6, d.x)))
+        .attr('cy', d => Math.max(6, Math.min(H-6, d.y)));
+    });
+  }
+}
+
+window.addEventListener('load', () => {
+  drawNetwork('net-mutual', 'mutual');
+  drawNetwork('net-parasite', 'parasite');
+});
+
+
+// ── SCROLL FADE-IN ────────────────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Sagent Creed — Get the Book</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-deep: #060b06; --bg-dark: #0a120a; --bg-mid: #0f1a0f;
+      --green-dark: #2a5c25; --green-mid: #3d7a35; --green-hi: #5aab4d;
+      --gold: #c9a227; --amber: #e07b1a; --cream: #f0ebe0;
+      --warm: #faf7f0; --muted: #8a9e86; --dim: #5a6a56;
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg-deep); color: var(--cream); font-family: var(--sans); font-weight: 300; line-height: 1.75; overflow-x: hidden; }
+
+    /* NAV */
+    #nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 3rem; background: rgba(6,11,6,0.92); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(90,171,77,0.14); }
+    .nav-brand { display: flex; align-items: center; gap: .65rem; text-decoration: none; }
+    .nav-brand-name { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; color: var(--cream); letter-spacing: .02em; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: .82rem; font-weight: 400; letter-spacing: .09em; text-transform: uppercase; transition: color .3s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--green-hi); }
+    .nav-cta { border: 1px solid var(--green-hi) !important; color: var(--green-hi) !important; padding: .45rem 1.1rem; border-radius: 2px; transition: background .3s, color .3s !important; }
+    .nav-cta:hover { background: var(--green-hi) !important; color: var(--bg-deep) !important; }
+    .nav-burger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+    .nav-burger span { display: block; width: 24px; height: 2px; background: var(--cream); border-radius: 2px; }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1.1fr;
+      align-items: center;
+      padding: 8rem 3rem 5rem;
+      position: relative; overflow: hidden;
+      gap: 4rem;
+    }
+    #hero-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse at 65% 40%, rgba(201,162,39,.12) 0%, transparent 55%),
+        radial-gradient(ellipse at 25% 70%, rgba(42,92,37,.1) 0%, transparent 45%);
+    }
+    .hero-left { position: relative; z-index: 2; }
+
+    /* BOOK COVER MOCKUP */
+    .book-cover {
+      position: relative; z-index: 2;
+      perspective: 1000px;
+    }
+    .book-3d {
+      width: 320px;
+      height: 440px;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateY(-18deg) rotateX(3deg);
+      margin: 0 auto;
+      filter: drop-shadow(-20px 20px 40px rgba(0,0,0,.7));
+      animation: bookFloat 6s ease-in-out infinite;
+    }
+    @keyframes bookFloat {
+      0%, 100% { transform: rotateY(-18deg) rotateX(3deg) translateY(0); }
+      50%       { transform: rotateY(-18deg) rotateX(3deg) translateY(-12px); }
+    }
+    .book-front {
+      width: 320px; height: 440px;
+      background: linear-gradient(160deg, #0e1f0e 0%, #060b06 40%, #111a08 100%);
+      border: 1px solid rgba(201,162,39,.35);
+      border-radius: 2px 6px 6px 2px;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      padding: 2.8rem 2.2rem;
+      position: relative; overflow: hidden;
+    }
+    .book-front::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 60%, rgba(201,162,39,.08) 0%, transparent 60%),
+        linear-gradient(to right, rgba(0,0,0,.3) 0%, transparent 15%);
+    }
+    .book-spine {
+      position: absolute; left: -20px; top: 0; bottom: 0;
+      width: 20px;
+      background: linear-gradient(to right, #030704, #0a140a);
+      border-radius: 2px 0 0 2px;
+      border-left: 1px solid rgba(201,162,39,.2);
+    }
+    .book-spiral-wrap {
+      position: absolute; top: 50%; right: 1.8rem;
+      transform: translateY(-50%);
+      opacity: .25;
+    }
+    .book-eyebrow {
+      font-size: .62rem; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--gold); position: relative; z-index: 1;
+    }
+    .book-title {
+      font-family: var(--serif); font-size: 1.75rem; font-weight: 700;
+      color: var(--warm); line-height: 1.18;
+      position: relative; z-index: 1;
+      text-shadow: 0 2px 12px rgba(0,0,0,.5);
+    }
+    .book-subtitle {
+      font-family: var(--serif); font-size: .82rem; font-style: italic;
+      color: rgba(201,162,39,.8); line-height: 1.5;
+      position: relative; z-index: 1;
+    }
+    .book-author {
+      font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); position: relative; z-index: 1;
+      border-top: 1px solid rgba(201,162,39,.2);
+      padding-top: .9rem; margin-top: .6rem;
+    }
+    .book-gold-line {
+      height: 2px;
+      background: linear-gradient(to right, var(--gold), transparent);
+      margin: .8rem 0; position: relative; z-index: 1;
+    }
+
+    /* HERO TEXT */
+    .eyebrow { display: inline-block; font-size: .72rem; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; }
+    .hero-h1 { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.4rem); font-weight: 700; line-height: 1.1; color: var(--warm); margin-bottom: .8rem; }
+    .hero-sub { font-family: var(--serif); font-size: 1.1rem; font-style: italic; color: var(--muted); margin-bottom: 1.6rem; }
+    .hero-desc { font-size: .96rem; color: var(--muted); line-height: 1.85; margin-bottom: 2rem; max-width: 480px; }
+    .hero-desc strong { color: var(--cream); font-weight: 500; }
+
+    /* PRICE / CTA */
+    .price-row { display: flex; align-items: center; gap: 1.4rem; margin-bottom: 1.6rem; flex-wrap: wrap; }
+    .price-tag { font-family: var(--serif); font-size: 2rem; font-weight: 700; color: var(--gold); }
+    .price-note { font-size: .8rem; color: var(--dim); line-height: 1.4; }
+
+    .cta-group { display: flex; flex-direction: column; gap: .7rem; max-width: 420px; }
+    .btn-buy {
+      background: linear-gradient(135deg, #c9a227, #e07b1a);
+      color: #060b06; border: none; padding: 1rem 2rem;
+      font-family: var(--sans); font-size: .95rem; font-weight: 600;
+      letter-spacing: .04em; cursor: pointer; text-decoration: none;
+      border-radius: 2px; transition: opacity .3s; display: block;
+      text-align: center;
+    }
+    .btn-buy:hover { opacity: .9; }
+    .btn-free {
+      background: transparent; color: var(--cream);
+      border: 1px solid rgba(240,235,224,.28); padding: .82rem 2rem;
+      font-family: var(--sans); font-size: .88rem; font-weight: 400;
+      letter-spacing: .05em; cursor: pointer; text-decoration: none;
+      border-radius: 2px; transition: all .3s; display: block;
+      text-align: center;
+    }
+    .btn-free:hover { border-color: var(--gold); color: var(--gold); }
+
+    .trust-row {
+      display: flex; gap: 1.2rem; margin-top: 1.2rem; flex-wrap: wrap;
+    }
+    .trust-item { display: flex; align-items: center; gap: .4rem; font-size: .78rem; color: var(--dim); }
+
+    /* EMAIL CAPTURE */
+    #notify {
+      background: var(--bg-dark);
+      border-top: 1px solid rgba(201,162,39,.1);
+      border-bottom: 1px solid rgba(201,162,39,.1);
+      padding: 4rem 3rem;
+    }
+    .notify-inner { max-width: 680px; margin: 0 auto; text-align: center; }
+    .notify-inner h2 { font-family: var(--serif); font-size: 1.9rem; font-weight: 700; color: var(--warm); margin-bottom: .7rem; }
+    .notify-inner p { font-size: .94rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.8rem; }
+    .email-form { display: flex; gap: .6rem; max-width: 480px; margin: 0 auto; }
+    .email-input { flex: 1; padding: .88rem 1.1rem; background: rgba(6,11,6,.8); border: 1px solid rgba(201,162,39,.3); border-radius: 2px; color: var(--cream); font-family: var(--sans); font-size: .88rem; outline: none; transition: border-color .3s; }
+    .email-input:focus { border-color: var(--gold); }
+    .email-input::placeholder { color: var(--dim); }
+    .btn-notify { background: linear-gradient(135deg, var(--green-dark), var(--green-hi)); color: var(--warm); border: none; padding: .88rem 1.6rem; font-family: var(--sans); font-size: .88rem; font-weight: 500; letter-spacing: .04em; cursor: pointer; border-radius: 2px; transition: opacity .3s; white-space: nowrap; }
+    .btn-notify:hover { opacity: .85; }
+    .email-note { font-size: .74rem; color: var(--dim); margin-top: .7rem; }
+
+    /* CHAPTER STRUCTURE */
+    #contents { padding: 6rem 3rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .sec-eyebrow { display: inline-block; font-size: .7rem; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: .8rem; }
+    .sec-h2 { font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 700; color: var(--warm); line-height: 1.12; margin-bottom: 1.4rem; }
+    .sec-sub { font-family: var(--serif); font-style: italic; font-size: 1.05rem; color: var(--muted); margin-bottom: 2.8rem; }
+
+    .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .toc-part {
+      background: rgba(10,18,10,.8);
+      border: 1px solid rgba(90,171,77,.1);
+      border-radius: 3px; padding: 1.8rem;
+      transition: border-color .3s;
+    }
+    .toc-part:hover { border-color: rgba(201,162,39,.25); }
+    .toc-part-label { font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: .6rem; }
+    .toc-part-title { font-family: var(--serif); font-size: 1.15rem; font-weight: 600; color: var(--warm); margin-bottom: 1rem; }
+    .toc-chapters { list-style: none; }
+    .toc-chapter { font-size: .84rem; color: var(--dim); line-height: 1.5; padding: .3rem 0; border-bottom: 1px solid rgba(90,171,77,.07); display: flex; gap: .8rem; align-items: baseline; }
+    .toc-chapter:last-child { border-bottom: none; }
+    .toc-ch-num { font-family: var(--serif); font-size: .78rem; color: rgba(201,162,39,.45); min-width: 1.4rem; }
+    .toc-chapter a { color: var(--dim); text-decoration: none; transition: color .3s; }
+    .toc-chapter a:hover { color: var(--green-hi); }
+
+    /* EXCERPT */
+    #excerpt { background: var(--bg-mid); padding: 6rem 3rem; }
+    .excerpt-inner { max-width: 720px; margin: 0 auto; }
+    .excerpt-label { font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--green-hi); margin-bottom: 1.2rem; }
+    .excerpt-text {
+      font-family: var(--serif);
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      color: var(--warm); line-height: 1.7;
+      position: relative; padding: 2rem 0;
+    }
+    .excerpt-text::before {
+      content: '\201C';
+      position: absolute; top: -.4rem; left: -.1rem;
+      font-size: 5rem; color: rgba(201,162,39,.15);
+      font-family: var(--serif); line-height: 1;
+    }
+    .excerpt-em { color: var(--gold); }
+    .excerpt-attribution { font-size: .82rem; color: var(--dim); margin-top: 1.4rem; font-style: italic; }
+
+    /* ABOUT AUTHOR */
+    #author { padding: 6rem 3rem; }
+    .author-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; align-items: start; max-width: 900px; margin: 0 auto; }
+    .author-emblem {
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, rgba(42,92,37,.2), rgba(201,162,39,.12));
+      border: 1px solid rgba(201,162,39,.25);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto;
+    }
+    .author-h3 { font-family: var(--serif); font-size: 1.6rem; font-weight: 700; color: var(--warm); margin-bottom: .4rem; }
+    .author-title { font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; }
+    .prose { font-size: .95rem; color: var(--muted); line-height: 1.88; }
+    .prose + .prose { margin-top: 1rem; }
+    .prose strong { color: var(--cream); font-weight: 500; }
+    .prose em { color: var(--gold); font-style: italic; }
+
+    /* SELL CHANNELS */
+    #where { background: var(--bg-dark); padding: 5rem 3rem; }
+    .channels-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; max-width: 900px; margin: 2rem auto 0; }
+    .channel-card { background: rgba(15,26,15,.8); border: 1px solid rgba(90,171,77,.12); border-radius: 3px; padding: 1.8rem; text-align: center; transition: border-color .3s; }
+    .channel-card:hover { border-color: rgba(201,162,39,.28); }
+    .channel-icon { font-size: 2rem; margin-bottom: .8rem; }
+    .channel-card h3 { font-family: var(--serif); font-size: 1rem; color: var(--cream); margin-bottom: .4rem; }
+    .channel-card p { font-size: .82rem; color: var(--dim); line-height: 1.6; margin-bottom: 1rem; }
+    .channel-link { font-size: .78rem; color: var(--green-hi); text-decoration: none; letter-spacing: .08em; text-transform: uppercase; }
+    .channel-link:hover { text-decoration: underline; }
+
+    /* FINAL CTA */
+    #final-cta { padding: 6rem 3rem; text-align: center; }
+    .final-inner { max-width: 620px; margin: 0 auto; }
+    .final-quote { font-family: var(--serif); font-size: clamp(1.3rem, 2.5vw, 1.9rem); font-style: italic; color: var(--warm); line-height: 1.5; margin-bottom: 2.4rem; }
+    .final-quote em { color: var(--gold); font-style: normal; }
+
+    /* WAVE */
+    .wave { line-height: 0; }
+
+    /* FOOTER */
+    footer { background: var(--bg-deep); border-top: 1px solid rgba(90,171,77,.1); padding: 3rem; text-align: center; }
+    .footer-brand { display: flex; align-items: center; justify-content: center; gap: .65rem; margin-bottom: 1.2rem; }
+    .footer-brand span { font-family: var(--serif); color: var(--cream); }
+    .footer-tag { font-size: .83rem; color: var(--dim); font-style: italic; margin-bottom: 1.8rem; }
+    .footer-links { display: flex; gap: 2rem; justify-content: center; list-style: none; margin-bottom: 1.8rem; flex-wrap: wrap; }
+    .footer-links a { text-decoration: none; color: var(--dim); font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; transition: color .3s; }
+    .footer-links a:hover { color: var(--green-hi); }
+    .footer-copy { font-size: .73rem; color: var(--dim); }
+
+    /* FADE UP */
+    .fu { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+    .fu.on { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; }
+    .d3 { transition-delay: .3s; } .d4 { transition-delay: .4s; }
+    .d5 { transition-delay: .5s; }
+
+    /* RESPONSIVE */
+    @media (max-width: 1000px) {
+      #hero { grid-template-columns: 1fr; text-align: center; }
+      .book-cover { order: -1; margin-bottom: 2rem; }
+      .hero-desc { margin-left: auto; margin-right: auto; }
+      .cta-group { margin: 0 auto; }
+      .trust-row { justify-content: center; }
+      .toc-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      #nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .nav-burger { display: flex; }
+      .nav-links.open { display: flex; flex-direction: column; position: fixed; top: 56px; left: 0; right: 0; background: rgba(6,11,6,.97); padding: 2rem 1.5rem; gap: 1.2rem; }
+      #hero, #contents, #excerpt, #author, #where, #final-cta { padding: 4.5rem 1.5rem; }
+      .book-3d { width: 240px; height: 330px; }
+      .book-front { width: 240px; height: 330px; padding: 2rem 1.6rem; }
+      .book-title { font-size: 1.3rem; }
+      .author-grid { grid-template-columns: 1fr; text-align: center; gap: 2rem; }
+      .channels-grid { grid-template-columns: 1fr; }
+      .email-form { flex-direction: column; }
+      #notify { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="nav-brand">
+    <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+      <path d="M15 15 C15 15,17.5 12.5,18.5 10 C20 6.5,17.5 3.5,14 3.5 C9.5 3.5,6 8,6 14 C6 20.5,11.5 26.5,18.5 26.5 C25.5 26.5,29 21,29 14.5 C29 7,23 1.5,15 1.5"
+        stroke="#5aab4d" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+    </svg>
+    <span class="nav-brand-name">The Spiral Steward</span>
+  </a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html">LivingWorks</a></li>
+    <li><a href="sagent.html">The Sagent</a></li>
+    <li><a href="true-republic.html">True Republic</a></li>
+    <li><a href="eight-pillars.html">Eight Pillars</a></li>
+    <li><a href="writings.html">Writings</a></li>
+    <li><a href="book.html" class="active nav-cta">Get the Book</a></li>
+  </ul>
+  <div class="nav-burger" id="burger" onclick="document.getElementById('nav-links').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div id="hero-bg"></div>
+
+  <div class="hero-left">
+    <span class="eyebrow fu">Now Available</span>
+    <h1 class="hero-h1 fu d1">The Sagent Creed</h1>
+    <p class="hero-sub fu d2">A Complete Philosophy of Conscience, Liberty, and Living Order</p>
+    <p class="hero-desc fu d3">
+      Eight wisdom traditions. One manifesto. Four essays on the shape of life. This is a philosophy for the age of awakening — when every heart becomes a throne and no crown is needed. By <strong>Sage Arthur Jordan Clokey</strong>.
+    </p>
+
+    <div class="price-row fu d4">
+      <span class="price-tag">$14.99</span>
+      <div class="price-note">
+        Ebook · PDF · Instant download<br>
+        <span style="color:var(--green-hi)">Also available in print</span>
+      </div>
+    </div>
+
+    <div class="cta-group fu d5">
+      <a href="#notify" class="btn-buy">Get the Book — $14.99</a>
+      <a href="#excerpt" class="btn-free">Read a Free Chapter First</a>
+    </div>
+
+    <div class="trust-row fu d5">
+      <div class="trust-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5aab4d" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        Instant PDF delivery
+      </div>
+      <div class="trust-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5aab4d" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        Print edition available
+      </div>
+      <div class="trust-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5aab4d" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        100% satisfaction guarantee
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOK COVER MOCKUP -->
+  <div class="book-cover fu d2">
+    <div class="book-3d">
+      <div class="book-spine"></div>
+      <div class="book-front">
+        <div class="book-spiral-wrap">
+          <canvas id="book-spiral" width="180" height="180"></canvas>
+        </div>
+        <div>
+          <div class="book-eyebrow">Sage Arthur Jordan Clokey</div>
+          <div class="book-gold-line" style="width:60px;margin-top:.7rem;margin-bottom:.9rem"></div>
+        </div>
+        <div>
+          <div class="book-title">The Sagent<br>Creed</div>
+          <div style="height:1px;background:linear-gradient(to right,rgba(201,162,39,.4),transparent);margin:1rem 0"></div>
+          <div class="book-subtitle">A Complete Philosophy of<br>Conscience, Liberty, and<br>Living Order</div>
+        </div>
+        <div class="book-author">Truth is Law · Conscience is Crown · Every Soul is Sovereign</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EMAIL CAPTURE -->
+<div class="wave"><svg viewBox="0 0 1440 55" preserveAspectRatio="none" style="background:#060b06"><path d="M0,20 C480,55 960,0 1440,35 L1440,55 L0,55 Z" fill="#0a120a"/></svg></div>
+
+<section id="notify">
+  <div class="notify-inner fu">
+    <span class="sec-eyebrow">Launch List</span>
+    <h2>Get the First Chapter Free</h2>
+    <p>Enter your email to receive the opening chapter of <em>The Sagent Creed</em> — "The Circle Without a Crown" — plus early access pricing when the book launches on Amazon and Gumroad.</p>
+    <form class="email-form" onsubmit="handleSignup(event)">
+      <input type="email" class="email-input" placeholder="your@email.com" required>
+      <button type="submit" class="btn-notify">Send Me the Chapter</button>
+    </form>
+    <p class="email-note">No spam. Unsubscribe anytime. Your conscience is your own.</p>
+  </div>
+</section>
+
+<!-- CONTENTS -->
+<div class="wave"><svg viewBox="0 0 1440 55" preserveAspectRatio="none" style="background:#0a120a"><path d="M0,35 C360,0 1080,55 1440,20 L1440,55 L0,55 Z" fill="#060b06"/></svg></div>
+
+<section id="contents">
+  <div class="container">
+    <span class="sec-eyebrow fu">Inside the Book</span>
+    <h2 class="sec-h2 fu d1">What You'll Read</h2>
+    <p class="sec-sub fu d2">~350 pages across four parts, an introduction, and epilogue</p>
+
+    <div class="toc-grid fu d3">
+
+      <div class="toc-part">
+        <div class="toc-part-label">Introduction</div>
+        <div class="toc-part-title">About the Sagent</div>
+        <ul class="toc-chapters">
+          <li class="toc-chapter"><span class="toc-ch-num">—</span><a href="sagent.html">Who Is the Sagent?</a></li>
+          <li class="toc-chapter"><span class="toc-ch-num">—</span>The Sagent Creed: Truth is Law. Conscience is Crown.</li>
+          <li class="toc-chapter"><span class="toc-ch-num">—</span>Prologue: The Circle Without a Crown</li>
+        </ul>
+      </div>
+
+      <div class="toc-part">
+        <div class="toc-part-label">Part I · Chapters 1–8</div>
+        <div class="toc-part-title">The Eight Pillars of Wisdom</div>
+        <ul class="toc-chapters">
+          <li class="toc-chapter"><span class="toc-ch-num">1</span><a href="eight-pillars.html#pillar1">Islamic Economics: Wealth as Stewardship</a></li>
+          <li class="toc-chapter"><span class="toc-ch-num">2</span><a href="eight-pillars.html#pillar2">The Law of Defense: Force Under Conscience</a></li>
+          <li class="toc-chapter"><span class="toc-ch-num">3</span><a href="eight-pillars.html#pillar3">Judaism: Kingship and Covenant</a></li>
+          <li class="toc-chapter"><span class="toc-ch-num">4</span><a href="eight-pillars.html#pillar4">Christianity: Grace and Stewardship</a></li>
+          <li class="toc-chapter"><span class="toc-ch-num">5</span><a href="eight-pillars.html#pillar5">Hinduism: Dharma and Liberation</a></li>
+          <li class="toc-chapter"><span class="toc-ch-num">6</span><a href="eight-pillars.html#pillar6">Buddhism: Awareness and Compassion</a></li>
+          <li class="toc-chapter"><span class="toc-ch-num">7</span><a href="eight-pillars.html#pillar7">Taoism: Natural Order</a></li>
+          <li class="toc-chapter"><span class="toc-ch-num">8</span><a href="eight-pillars.html#pillar8">Confucianism: Virtue and Harmony</a></li>
+        </ul>
+      </div>
+
+      <div class="toc-part">
+        <div class="toc-part-label">Part II · Chapters 9–15</div>
+        <div class="toc-part-title">Manifesto of the True Republic</div>
+        <ul class="toc-chapters">
+          <li class="toc-chapter"><span class="toc-ch-num">9</span><a href="true-republic.html#conscience">The Call to Conscience</a></li>
+          <li class="toc-chapter"><span class="toc-ch-num">10</span><a href="true-republic.html#false-republic">The False Republics of Man</a></li>
+          <li class="toc-chapter"><span class="toc-ch-num">11</span>Natural Law and the Sovereign Soul</li>
+          <li class="toc-chapter"><span class="toc-ch-num">12</span>The Ethics of Force</li>
+          <li class="toc-chapter"><span class="toc-ch-num">13</span><a href="true-republic.html#economy">The Economy of Freedom</a></li>
+          <li class="toc-chapter"><span class="toc-ch-num">14</span>The Republic Without Rulers</li>
+          <li class="toc-chapter"><span class="toc-ch-num">15</span>The Higher Allegiance</li>
+        </ul>
+      </div>
+
+      <div class="toc-part">
+        <div class="toc-part-label">Part III · Chapters 16–19</div>
+        <div class="toc-part-title">The Path of the Sagent</div>
+        <ul class="toc-chapters">
+          <li class="toc-chapter"><span class="toc-ch-num">16</span><a href="sagent.html#path">True Strength</a></li>
+          <li class="toc-chapter"><span class="toc-ch-num">17</span><a href="sagent.html#conflict">The Illusion of Conflict</a></li>
+          <li class="toc-chapter"><span class="toc-ch-num">18</span>Compassion as Power</li>
+          <li class="toc-chapter"><span class="toc-ch-num">19</span>Service to the Higher</li>
+        </ul>
+      </div>
+
+      <div class="toc-part">
+        <div class="toc-part-label">Part IV · Chapters 20–23</div>
+        <div class="toc-part-title">The Living Order</div>
+        <ul class="toc-chapters">
+          <li class="toc-chapter"><span class="toc-ch-num">20</span><a href="writings.html#spirals">Spirals Remember. Blocks Forget.</a></li>
+          <li class="toc-chapter"><span class="toc-ch-num">21</span><a href="writings.html#tree">The Tree of Time</a></li>
+          <li class="toc-chapter"><span class="toc-ch-num">22</span><a href="writings.html#bioinformatics">Bioinformatics as Stewardship</a></li>
+          <li class="toc-chapter"><span class="toc-ch-num">23</span><a href="writings.html#sword">The Sword and the Coin</a></li>
+        </ul>
+      </div>
+
+      <div class="toc-part">
+        <div class="toc-part-label">Epilogue</div>
+        <div class="toc-part-title">The Creed of the True Republic</div>
+        <ul class="toc-chapters">
+          <li class="toc-chapter"><span class="toc-ch-num">—</span>The Mandala of Truth</li>
+          <li class="toc-chapter"><span class="toc-ch-num">—</span>A Prayer for the Free</li>
+          <li class="toc-chapter"><span class="toc-ch-num">—</span>The Living Age Begins</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXCERPT -->
+<div class="wave"><svg viewBox="0 0 1440 55" preserveAspectRatio="none" style="background:#060b06"><path d="M0,0 C480,55 960,0 1440,40 L1440,55 L0,55 Z" fill="#0f1a0f"/></svg></div>
+
+<section id="excerpt">
+  <div class="excerpt-inner">
+    <div class="excerpt-label fu">Free Excerpt · Prologue</div>
+    <div class="excerpt-text fu d2">
+      The journey through the Eight Pillars of wisdom reveals a single law spoken in many tongues. From faith to philosophy, from East to West, every tradition bears witness: <span class="excerpt-em">authority belongs not to rulers but to truth itself.</span> When conscience reigns, no man need be king. The circle completes — each pillar reflecting the same light. In this harmony of wisdom, the True Republic arises: a realm of hearts, self-governed by love, united by the law written within.
+      <br><br>
+      The Sagent Creed begins with a deceptively simple declaration: <span class="excerpt-em">"When every heart becomes a throne, no crown is needed."</span> Everything that follows is an elaboration of that creed — drawn from eight great spiritual traditions, from the Manifesto of the True Republic, from the philosophy of living systems, and from the personal notebooks of one seeker who has spent years listening to what the world's deepest voices say in common.
+    </div>
+    <p class="excerpt-attribution fu d3">— Prologue: The Circle Without a Crown · The Sagent Creed</p>
+    <div style="margin-top:2rem" class="fu d4">
+      <a href="#notify" class="btn-buy" style="display:inline-block;max-width:320px;text-align:center">Get the Full Book — $14.99</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT AUTHOR -->
+<div class="wave"><svg viewBox="0 0 1440 55" preserveAspectRatio="none" style="background:#0f1a0f"><path d="M0,35 C360,0 1080,55 1440,20 L1440,55 L0,55 Z" fill="#060b06"/></svg></div>
+
+<section id="author">
+  <div class="container">
+    <div class="author-grid">
+      <div class="fu">
+        <div class="author-emblem">
+          <svg width="80" height="80" viewBox="0 0 30 30" fill="none">
+            <path d="M15 15 C15 15,17.5 12.5,18.5 10 C20 6.5,17.5 3.5,14 3.5 C9.5 3.5,6 8,6 14 C6 20.5,11.5 26.5,18.5 26.5 C25.5 26.5,29 21,29 14.5 C29 7,23 1.5,15 1.5"
+              stroke="#c9a227" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <div class="fu">
+          <h3 class="author-h3">Sage Arthur Jordan Clokey</h3>
+          <div class="author-title">Philosopher · Storyteller · The Sagent</div>
+        </div>
+        <p class="prose fu d2">
+          Sage Arthur Jordan Clokey is a philosopher, storyteller, and seeker of divine wisdom — heir to a lineage of dreamsmiths and truth-tellers. As <strong>The Sagent</strong>, he walks the path between faiths and philosophies, gathering the light of many lamps into one flame.
+        </p>
+        <p class="prose fu d3">
+          Through <em>The Sagent Creed</em> and his dialogues on conscience, law, and liberty, he teaches that truth is not owned but revealed; not ruled but lived. His mission is to restore the Republic of the Heart — a world without rulers, where wisdom governs through love and every soul stands sovereign before Heaven.
+        </p>
+        <p class="prose fu d4">
+          He is also the founder of <strong>The Spiral Steward</strong> and <strong>LivingWorks</strong> — a life-based design platform replacing industrial block-thinking with regenerative, spiral-based design. His work spans philosophy, biology, economics, architecture, and the deep grammar of living systems.
+        </p>
+        <p style="font-family:var(--serif);font-size:1rem;font-style:italic;color:var(--gold);margin-top:1.2rem" class="fu d5">
+          "When every heart becomes a throne, no crown is needed."
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHERE TO BUY -->
+<div class="wave"><svg viewBox="0 0 1440 55" preserveAspectRatio="none" style="background:#060b06"><path d="M0,0 C480,55 960,0 1440,40 L1440,55 L0,55 Z" fill="#0a120a"/></svg></div>
+
+<section id="where">
+  <div class="container" style="text-align:center">
+    <span class="sec-eyebrow fu">Where to Get It</span>
+    <h2 class="sec-h2 fu d1">Available On</h2>
+    <p style="font-size:.94rem;color:var(--muted);max-width:600px;margin:0 auto 0" class="fu d2">
+      Buy the ebook directly (best price, instant download) or find the print edition on Amazon. Every purchase goes directly to the author.
+    </p>
+    <div class="channels-grid fu d3">
+      <div class="channel-card">
+        <div class="channel-icon">📗</div>
+        <h3>Gumroad</h3>
+        <p>Buy direct — ebook PDF + ePub. Best price. Instant download. Supports the author fully.</p>
+        <a href="#notify" class="channel-link">Get it here →</a>
+      </div>
+      <div class="channel-card">
+        <div class="channel-icon">📦</div>
+        <h3>Amazon KDP</h3>
+        <p>Paperback + Kindle edition. Print-on-demand. Available worldwide. Perfect as a gift.</p>
+        <a href="#notify" class="channel-link">Coming soon →</a>
+      </div>
+      <div class="channel-card">
+        <div class="channel-icon">📧</div>
+        <h3>Email List</h3>
+        <p>Join the launch list for early access pricing, free chapters, and future writings.</p>
+        <a href="#notify" class="channel-link">Sign up above →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<div class="wave"><svg viewBox="0 0 1440 55" preserveAspectRatio="none" style="background:#0a120a"><path d="M0,35 C360,0 1080,55 1440,20 L1440,55 L0,55 Z" fill="#060b06"/></svg></div>
+
+<section id="final-cta">
+  <div class="final-inner">
+    <p class="final-quote fu">
+      "Eight pillars. One flame. The truth was never lost —<br><em>it was only waiting to be remembered.</em>"
+    </p>
+    <div class="fu d2" style="display:flex;flex-direction:column;gap:.7rem;align-items:center">
+      <a href="#notify" class="btn-buy" style="display:block;max-width:380px;width:100%">Get The Sagent Creed — $14.99</a>
+      <a href="#notify" class="btn-free" style="display:block;max-width:380px;width:100%">Get a Free Chapter First</a>
+    </div>
+    <p style="font-size:.77rem;color:var(--dim);margin-top:1.2rem" class="fu d3">
+      Ebook · PDF + ePub · Instant delivery · Print edition on Amazon
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <svg width="22" height="22" viewBox="0 0 30 30" fill="none">
+      <path d="M15 15 C15 15,17.5 12.5,18.5 10 C20 6.5,17.5 3.5,14 3.5 C9.5 3.5,6 8,6 14 C6 20.5,11.5 26.5,18.5 26.5 C25.5 26.5,29 21,29 14.5 C29 7,23 1.5,15 1.5"
+        stroke="#5aab4d" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+    </svg>
+    <span>The Spiral Steward</span>
+  </div>
+  <p class="footer-tag">Truth is Law. Conscience is Crown. Every Soul is Sovereign.</p>
+  <ul class="footer-links">
+    <li><a href="index.html">LivingWorks</a></li>
+    <li><a href="sagent.html">The Sagent</a></li>
+    <li><a href="true-republic.html">True Republic</a></li>
+    <li><a href="eight-pillars.html">Eight Pillars</a></li>
+    <li><a href="writings.html">Writings</a></li>
+    <li><a href="book.html">Get the Book</a></li>
+  </ul>
+  <p class="footer-copy">© 2026 The Spiral Steward · Sage Arthur Jordan Clokey · All rights reserved</p>
+</footer>
+
+<script>
+/* BOOK SPIRAL (small decorative) */
+function drawGoldenSpiral(ctx, W, H, prog, opts = {}) {
+  const cx = W / 2, cy = H / 2;
+  const phi = 1.6180339887;
+  const b   = Math.log(phi) / (Math.PI / 2);
+  const turns = opts.turns || 4.5;
+  const a0    = opts.startR || 2;
+  const steps = opts.steps  || 800;
+  const totalAngle = turns * 2 * Math.PI;
+  const gGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(W,H)*0.46);
+  gGrad.addColorStop(0, `rgba(61,122,53,${opts.glowBase || 0.05})`);
+  gGrad.addColorStop(1, 'rgba(61,122,53,0)');
+  ctx.fillStyle = gGrad; ctx.fillRect(0, 0, W, H);
+  const lGrad = ctx.createLinearGradient(cx - W*0.4, cy, cx + W*0.4, cy);
+  lGrad.addColorStop(0, opts.colorA || '#c9a227');
+  lGrad.addColorStop(0.5, opts.colorB || '#5aab4d');
+  lGrad.addColorStop(1, opts.colorC || '#2a5c25');
+  ctx.lineWidth = opts.lw || 1.4; ctx.strokeStyle = lGrad;
+  ctx.shadowColor = '#c9a227'; ctx.shadowBlur = opts.blur || 5;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  let first = true;
+  const total = Math.floor(steps * Math.min(prog, 1));
+  for (let i = 0; i <= total; i++) {
+    const t = (i / steps) * totalAngle;
+    const r = a0 * Math.exp(b * t);
+    const x = cx + r * Math.cos(t + Math.PI);
+    const y = cy + r * Math.sin(t + Math.PI);
+    first ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    first = false;
+  }
+  ctx.stroke(); ctx.shadowBlur = 0;
+}
+
+(function() {
+  const canvas = document.getElementById('book-spiral');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  let prog = 0, ph = 0;
+  function frame() {
+    ctx.clearRect(0, 0, W, H);
+    prog = Math.min(prog + 0.006, 1);
+    ph += 0.015;
+    const glow = 0.04 + 0.02 * Math.sin(ph);
+    drawGoldenSpiral(ctx, W, H, prog, { turns: 3.5, startR: 1.5, steps: 600, lw: 1.2, glowBase: glow, blur: 4, colorA:'#c9a227', colorB:'#7cc46d', colorC:'#2a5c25' });
+    requestAnimationFrame(frame);
+  }
+  setTimeout(frame, 400);
+})();
+
+/* EMAIL FORM */
+function handleSignup(e) {
+  e.preventDefault();
+  const input = e.target.querySelector('input[type=email]');
+  const btn   = e.target.querySelector('button');
+  btn.textContent = 'Thank you! Check your inbox.';
+  btn.style.background = 'linear-gradient(135deg,#2a5c25,#5aab4d)';
+  input.disabled = true;
+  btn.disabled   = true;
+}
+
+/* FADE-UPS */
+const fuEls = document.querySelectorAll('.fu');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+fuEls.forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+Title: Cover Letter voluntarist biology
+Created: 2026-02-23T21:58:55.874Z
+Updated: 2026-02-23T21:58:59.703Z
+ID: b148f7fc-7492-4a2d-b7ed-ac070fd9f222
+
+---
+
+Dear Hiring Committee, 
+I am writing to express my interest in roles at the intersection of computational biology, machine 
+learning, and systems design. My long-term goal in this field is not merely to analyze biological 
+data, but to deepen our collective understanding of how living systems organize themselves — 
+and to use that understanding to help humanity become better stewards of life. 
+To me, evolution represents nature’s most powerful example of a decentralized, 
+discovery-driven process. In this sense, it functions much like the free market described by 
+thinkers such as Friedrich Hayek and Murray Rothbard: order emerges not from central control, 
+but from countless local interactions, feedback loops, and adaptive experimentation. I see 
+biology and political economy as parallel systems that reveal the same truth — that resilience, 
+creativity, and sustainability arise from voluntary coordination rather than top-down command. 
+In computational biology, I want to model these principles rigorously. By applying machine 
+learning, network science, and multi-omics analysis, I aim to uncover how decentralized genetic, 
+cellular, and ecological systems self-organize across scales. My particular interest lies in 
+connecting high-level patterns of growth and adaptation to underlying DNA-level mechanisms, 
+enabling predictive models that respect the complexity of life rather than reducing it to rigid, 
+mechanical parts. 
+Ultimately, I hope to contribute to a new paradigm of bio-design — one that works with living 
+systems instead of trying to dominate them. This means developing tools that guide growth 
+through gentle constraints, feedback, and learning rather than coercive engineering. Such an 
+approach mirrors the ethics of voluntaryism: shaping environments that allow life to flourish on 
+its own terms. 
+I am excited by the possibility of joining a team that values both technical rigor and philosophical 
+depth — one that recognizes that our most powerful technologies should align with the 
+principles that already govern the natural world. I would welcome the opportunity to discuss how 
+my background in bioinformatics, machine learning, and systems thinking could contribute to 
+your work. 
+Thank you for your time and consideration. 
+Sincerely, 
+Sage Clokey

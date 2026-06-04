@@ -1,0 +1,10 @@
+step	part	change_type	before	after	reason
+pathway	[all parts]	substrate_competition	ATP	flagged	4 pathways compete for ATP: Bacterial cellulose synthesis, WUS/CLV3 meristem growth, Sonic hedgehog patterning, Spider s
+regulatory	bcsA	promoter_replacement	native komagataeibacter regulatory signals (cross_kingdom)	TEF1	Cross-kingdom transfer requires full regulatory replacement
+assembly	bcsA	cassette_built	separate part	[TEF1][kozak][0bp CDS][CYC1_term]	expression cassette assembled with compatible regulatory elements
+regulatory	WUS	promoter_replacement	native arabidopsis regulatory signals (promoter_mismatch)	TEF1	Regulatory incompatibility detected: promoter_mismatch
+codon	WUS	codon_optimization	CAI=0.570 GC=43.1%	CAI=0.651 GC=46.1%	28 rare codons rewritten for ganoderma (28 conflicts resolved)
+assembly	WUS	cassette_built	separate part	[TEF1][kozak][1248bp CDS][CYC1_term]	expression cassette assembled with compatible regulatory elements
+regulatory	Col1a1	promoter_replacement	native mouse regulatory signals (rbs_mismatch)	TEF1	Regulatory incompatibility detected: rbs_mismatch
+codon	Col1a1	codon_optimization	CAI=0.637 GC=55.4%	CAI=0.662 GC=56.1%	6 rare codons rewritten for ganoderma (6 conflicts resolved)
+assembly	Col1a1	cassette_built	separate part	[TEF1][kozak][900bp CDS][CYC1_term]	expression cassette assembled with compatible regulatory elements

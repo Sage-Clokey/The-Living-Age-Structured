@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BME 234 — ML & AI in Genomics Study App</title>
+<style>
+:root {
+  --bg:#0f1117; --surface:#1a1d2e; --surface2:#252840; --surface3:#2e3255;
+  --accent:#6c63ff; --accent2:#ff6584; --accent3:#43e97b;
+  --text:#e8eaf6; --text2:#9e9ec8; --text3:#6b6f99;
+  --border:#2e3150; --correct:#43e97b; --wrong:#ff6584; --warning:#ffd166;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;}
+
+nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;display:flex;align-items:center;gap:2px;flex-wrap:wrap;position:sticky;top:0;z-index:200;}
+.logo{font-size:0.95rem;font-weight:700;color:var(--accent);padding:12px 0;margin-right:6px;white-space:nowrap;flex-shrink:0;}
+nav button{background:none;border:none;color:var(--text2);padding:12px 9px;cursor:pointer;font-size:0.8rem;font-weight:500;border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap;}
+nav button:hover{color:var(--text);}
+nav button.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+.page{display:none;padding:20px;max-width:1200px;margin:0 auto;}
+.page.active{display:block;}
+h1{font-size:1.5rem;margin-bottom:4px;}
+h2{font-size:1.1rem;color:var(--accent);margin-bottom:12px;}
+.subtitle{color:var(--text2);margin-bottom:20px;font-size:0.88rem;}
+
+/* NOTES */
+#page-notes{padding:0;max-width:none;}
+.notes-layout{display:grid;grid-template-columns:200px 1fr;gap:0;min-height:calc(100vh - 52px);}
+@media(max-width:700px){.notes-layout{grid-template-columns:1fr;}}
+.notes-sidebar{border-right:1px solid var(--border);padding:14px 0;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;}
+.notes-sidebar-item{padding:7px 14px;cursor:pointer;font-size:0.8rem;color:var(--text2);border-left:3px solid transparent;transition:all 0.15s;line-height:1.35;}
+.notes-sidebar-item:hover{color:var(--text);background:var(--surface2);}
+.notes-sidebar-item.active{color:var(--accent);border-left-color:var(--accent);background:rgba(108,99,255,0.07);}
+.notes-sidebar-item .ln{font-size:0.62rem;color:var(--text3);display:block;}
+.notes-main{padding:20px 24px;overflow-y:auto;max-width:900px;}
+.lec-section{margin-bottom:32px;scroll-margin-top:70px;}
+.lec-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.lec-num{font-size:0.68rem;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;background:rgba(108,99,255,0.15);padding:3px 9px;border-radius:20px;white-space:nowrap;}
+.lec-title{font-size:1rem;font-weight:700;}
+.tag{font-size:0.65rem;background:var(--surface2);border-radius:12px;padding:2px 7px;color:var(--text3);}
+.bullet-block{margin-bottom:10px;}
+.bullet-block h4{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--warning);margin-bottom:5px;font-weight:700;}
+.bl{list-style:none;padding:0;}
+.bl li{padding:4px 0 4px 14px;position:relative;font-size:0.83rem;color:var(--text2);line-height:1.5;border-bottom:1px solid rgba(46,49,80,0.4);}
+.bl li:last-child{border-bottom:none;}
+.bl li::before{content:'▸';position:absolute;left:0;color:var(--accent);font-size:0.68rem;top:6px;}
+
+/* GLOSSARY */
+.glossary-controls{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
+.gl-filter{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 11px;border-radius:7px;font-size:0.83rem;}
+.gl-search{background:var(--surface2);border:1.5px solid var(--border);color:var(--text);padding:6px 12px;border-radius:7px;font-size:0.83rem;outline:none;flex:1;min-width:140px;}
+.gl-search:focus{border-color:var(--accent);}
+.gl-table{width:100%;border-collapse:collapse;font-size:0.83rem;}
+.gl-table th{text-align:left;padding:9px 12px;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--text3);border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);}
+.gl-table td{padding:9px 12px;border-bottom:1px solid rgba(46,49,80,0.35);vertical-align:top;line-height:1.5;}
+.gl-table tr:hover td{background:var(--surface);}
+.gl-table .term-col{color:var(--text);font-weight:600;width:26%;}
+.gl-table .lec-col{width:8%;}
+.lec-badge{font-size:0.65rem;color:var(--accent);background:rgba(108,99,255,0.15);border-radius:4px;padding:2px 6px;white-space:nowrap;}
+.gl-table .def-col{color:var(--text2);}
+
+/* FORMULAS */
+.formula-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;}
+.formula-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.formula-card h4{color:var(--accent);font-size:0.78rem;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.05em;}
+.formula{font-family:'Courier New',monospace;background:var(--surface2);padding:7px 11px;border-radius:6px;font-size:0.9rem;color:var(--warning);margin-bottom:7px;text-align:center;}
+.formula-desc{font-size:0.79rem;color:var(--text2);line-height:1.55;}
+
+/* FLASHCARDS */
+.fc-controls{display:flex;gap:9px;align-items:center;margin-bottom:18px;flex-wrap:wrap;}
+.fc-select{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 11px;border-radius:7px;font-size:0.83rem;}
+.fc-progress{color:var(--text2);font-size:0.8rem;margin-left:auto;}
+.fc-area{display:flex;flex-direction:column;align-items:center;}
+.fc-card-wrap{perspective:1000px;width:100%;max-width:560px;height:260px;cursor:pointer;}
+.fc-card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.4s;}
+.fc-card.flipped{transform:rotateY(180deg);}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;background:var(--surface);border:1px solid var(--border);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:26px;text-align:center;}
+.fc-face.back{transform:rotateY(180deg);background:var(--surface2);}
+.fc-face .label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:12px;}
+.fc-face .content{font-size:0.95rem;line-height:1.6;}
+.fc-face.front .content{font-weight:600;font-size:1rem;}
+.fc-face.back .content{color:var(--text2);font-size:0.88rem;}
+.fc-nav{display:flex;gap:10px;align-items:center;margin-top:18px;flex-wrap:wrap;justify-content:center;}
+.fc-hint{font-size:0.72rem;color:var(--text3);margin-top:8px;}
+.known-bar{display:flex;gap:14px;margin-top:14px;font-size:0.78rem;color:var(--text2);}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+.dot.green{background:var(--correct);}.dot.red{background:var(--wrong);}.dot.grey{background:var(--border);}
+
+/* QUIZ */
+.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:9px;}
+.quiz-score-badge{background:var(--surface2);border-radius:7px;padding:5px 11px;font-size:0.83rem;}
+.progress-bar{height:3px;background:var(--surface2);border-radius:2px;margin-bottom:18px;}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.3s;}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px;margin-bottom:14px;}
+.q-lec{font-size:0.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:7px;font-weight:600;}
+.q-text{font-size:0.97rem;font-weight:500;margin-bottom:16px;line-height:1.55;}
+.q-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+@media(max-width:520px){.q-options{grid-template-columns:1fr;}}
+.q-opt{background:var(--surface2);border:2px solid var(--border);border-radius:8px;padding:10px 13px;cursor:pointer;font-size:0.85rem;line-height:1.45;transition:all 0.15s;text-align:left;color:var(--text);}
+.q-opt:hover:not(.locked){border-color:var(--accent);}
+.q-opt.correct{border-color:var(--correct);background:rgba(67,233,123,0.1);color:var(--correct);}
+.q-opt.wrong{border-color:var(--wrong);background:rgba(255,101,132,0.1);color:var(--wrong);}
+.q-opt.locked{cursor:default;}
+.q-explanation{background:var(--surface2);border-left:3px solid var(--accent);padding:9px 13px;border-radius:0 6px 6px 0;font-size:0.83rem;color:var(--text2);margin-top:12px;line-height:1.55;}
+.quiz-start{text-align:center;padding:48px 20px;}
+.quiz-result{text-align:center;padding:40px 20px;}
+.result-circle{width:100px;height:100px;border-radius:50%;border:4px solid var(--accent);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 18px;}
+.result-circle .big{font-size:1.7rem;font-weight:700;}
+.result-circle .small{font-size:0.72rem;color:var(--text2);}
+
+/* MATCHING */
+.match-controls{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:18px;align-items:center;}
+.match-timer{font-size:0.95rem;font-weight:600;color:var(--warning);margin-left:auto;}
+.match-board{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:560px){.match-board{grid-template-columns:1fr;}}
+.match-col h3{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);margin-bottom:9px;}
+.match-item{background:var(--surface);border:2px solid var(--border);border-radius:8px;padding:9px 13px;margin-bottom:6px;cursor:pointer;font-size:0.83rem;line-height:1.45;transition:all 0.15s;user-select:none;}
+.match-item:hover:not(.matched){border-color:var(--accent);}
+.match-item.selected{border-color:var(--accent);background:rgba(108,99,255,0.1);}
+.match-item.matched{border-color:var(--correct);background:rgba(67,233,123,0.07);color:var(--text3);cursor:default;}
+.match-item.wrong-flash{border-color:var(--wrong);background:rgba(255,101,132,0.1);animation:shake 0.35s;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.match-score{margin-top:12px;font-size:0.86rem;color:var(--text2);}
+
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:7px;border:none;cursor:pointer;font-size:0.85rem;font-weight:600;transition:all 0.15s;}
+.btn-primary{background:var(--accent);color:#fff;}.btn-primary:hover{background:#5a52e0;}
+.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border);}.btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
+.btn-success{background:var(--correct);color:#000;}
+.btn-danger{background:var(--wrong);color:#fff;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">BME 234 · ML in Genomics</div>
+  <button class="active" data-page="notes">Notes</button>
+  <button data-page="glossary">Glossary</button>
+  <button data-page="formulas">Formulas</button>
+  <button data-page="flashcards">Flashcards</button>
+  <button data-page="quiz">Quiz</button>
+  <button data-page="matching">Matching</button>
+  <button data-page="schedule">Schedule</button>
+</nav>
+
+<!-- NOTES -->
+<div id="page-notes" class="page active" style="max-width:none;padding:0;">
+<div class="notes-layout">
+<div class="notes-sidebar" id="notesSidebar"></div>
+<div class="notes-main" id="notesMain"></div>
+</div>
+</div>
+
+<!-- GLOSSARY -->
+<div id="page-glossary" class="page">
+<h1>Glossary</h1>
+<p class="subtitle">All key terms from Classes 1-5</p>
+<div class="glossary-controls">
+  <select class="gl-filter" id="glFilter" onchange="renderGlossary()">
+    <option value="all">All Classes</option>
+    <option value="1">Class 1</option><option value="2">Class 2</option>
+    <option value="3">Class 3</option><option value="4">Class 4</option>
+    <option value="5">Class 5</option><option value="6">Topic 6: ML/Variants</option>
+    <option value="7">Topic 7: CNNs</option><option value="8">Topic 8: LMs</option>
+  </select>
+  <input class="gl-search" id="glSearch" placeholder="Search terms..." oninput="renderGlossary()">
+</div>
+<table class="gl-table"><thead><tr><th class="term-col">Term</th><th class="lec-col">Class</th><th class="def-col">Definition</th></tr></thead><tbody id="glBody"></tbody></table>
+</div>
+
+<!-- FORMULAS -->
+<div id="page-formulas" class="page">
+<h1>Key Formulas</h1>
+<p class="subtitle">The equations you need to know</p>
+<div class="formula-grid" id="formulaGrid"></div>
+</div>
+
+<!-- FLASHCARDS -->
+<div id="page-flashcards" class="page">
+<h1>Flashcards</h1>
+<div class="fc-controls">
+  <select class="fc-select" id="fcFilter" onchange="initFlashcards()">
+    <option value="all">All Classes</option>
+    <option value="1">Class 1</option><option value="2">Class 2</option>
+    <option value="3">Class 3</option><option value="4">Class 4</option>
+    <option value="5">Class 5</option><option value="6">Topic 6: ML/Variants</option>
+    <option value="7">Topic 7: CNNs</option><option value="8">Topic 8: LMs</option>
+  </select>
+  <button class="btn btn-secondary" onclick="shuffleCards()">Shuffle</button>
+  <span class="fc-progress" id="fcProgress"></span>
+</div>
+<div class="fc-area">
+  <div class="fc-card-wrap" onclick="document.querySelector('.fc-card').classList.toggle('flipped')">
+    <div class="fc-card" id="fcCard">
+      <div class="fc-face front"><div class="label">Term</div><div class="content" id="fcFront"></div></div>
+      <div class="fc-face back"><div class="label">Definition</div><div class="content" id="fcBack"></div></div>
+    </div>
+  </div>
+  <div class="fc-hint">Click card to flip</div>
+  <div class="fc-nav">
+    <button class="btn btn-secondary" onclick="fcNav(-1)">Previous</button>
+    <button class="btn btn-danger" onclick="fcMark(false)">Don't Know</button>
+    <button class="btn btn-success" onclick="fcMark(true)">Know It</button>
+    <button class="btn btn-secondary" onclick="fcNav(1)">Next</button>
+  </div>
+  <div class="known-bar" id="knownBar"></div>
+</div>
+</div>
+
+<!-- QUIZ -->
+<div id="page-quiz" class="page">
+<h1>Quiz</h1>
+<div id="quizArea">
+  <div class="quiz-start">
+    <h2>Test Your Knowledge</h2>
+    <p class="subtitle">10 random questions from all lectures</p>
+    <button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+</div>
+
+<!-- MATCHING -->
+<div id="page-matching" class="page">
+<h1>Matching Game</h1>
+<p class="subtitle">Match terms to definitions as fast as you can</p>
+<div class="match-controls">
+  <button class="btn btn-primary" onclick="startMatching()">New Game</button>
+  <span class="match-timer" id="matchTimer">0:00</span>
+</div>
+<div class="match-board" id="matchBoard"></div>
+<div class="match-score" id="matchScore"></div>
+</div>
+
+<!-- SCHEDULE -->
+<div id="page-schedule" class="page">
+<h1>Course Schedule</h1>
+<p class="subtitle">Spring 2026 — TuTh 5:20-6:55PM</p>
+<table class="gl-table" style="margin-top:14px;">
+<thead><tr><th style="width:6%;">Wk</th><th style="width:10%;">Date</th><th>Topic</th><th style="width:18%;">Due</th></tr></thead>
+<tbody>
+<tr><td rowspan="2">1</td><td>Tu 3/31</td><td>Course introduction</td><td></td></tr>
+<tr><td>Th 4/2</td><td>Genomics background</td><td></td></tr>
+<tr><td rowspan="2">2</td><td>Tu 4/7</td><td>HMMs & genome annotation 1</td><td></td></tr>
+<tr><td>Th 4/9</td><td>HMMs & genome annotation 2</td><td></td></tr>
+<tr><td rowspan="2">3</td><td>Tu 4/14</td><td>Linear/logistic regression & GWAS 1</td><td></td></tr>
+<tr><td>Th 4/16</td><td style="color:var(--accent2);">Paper: ChromHMM</td><td></td></tr>
+<tr><td rowspan="2">4</td><td>Tu 4/21</td><td>Linear/logistic regression & GWAS 2</td><td style="color:var(--warning);">HW1 due 4/22</td></tr>
+<tr><td>Th 4/23</td><td>Linear/logistic regression & GWAS 3</td><td></td></tr>
+<tr><td rowspan="2">5</td><td>Tu 4/28</td><td>ML & variant effect prediction 1</td><td></td></tr>
+<tr><td>Th 4/30</td><td style="color:var(--accent2);">Paper: COVID-19 GWAS</td><td></td></tr>
+<tr><td rowspan="2">6</td><td>Tu 5/5</td><td>ML & variant effect prediction 2</td><td style="color:var(--warning);">HW2 due</td></tr>
+<tr><td>Th 5/7</td><td>CNNs & sequence-to-function 1</td><td></td></tr>
+<tr><td rowspan="2">7</td><td>Tu 5/12</td><td style="color:var(--accent2);">Paper: CADD</td><td></td></tr>
+<tr><td>Th 5/14</td><td>CNNs & sequence-to-function 2</td><td style="color:var(--warning);">HW3 due</td></tr>
+<tr><td rowspan="2">8</td><td>Tu 5/19</td><td>CNNs & sequence-to-function 3</td><td style="color:var(--warning);">Project proposals</td></tr>
+<tr><td>Th 5/21</td><td style="color:var(--accent2);">Paper: DeepSEA</td><td></td></tr>
+<tr><td rowspan="2">9</td><td>Tu 5/26</td><td>Language models for DNA & proteins 1</td><td></td></tr>
+<tr><td>Th 5/28</td><td>Language models for DNA & proteins 2</td><td style="color:var(--warning);">HW4 due</td></tr>
+<tr><td rowspan="2">10</td><td>Tu 6/2</td><td style="color:var(--accent2);">Paper: AlphaGenome</td><td></td></tr>
+<tr><td>Th 6/4</td><td style="color:var(--accent2);">Paper: AlphaFold</td><td></td></tr>
+<tr><td></td><td>Th 6/11</td><td></td><td style="color:var(--warning);">Final projects</td></tr>
+</tbody>
+</table>
+
+<div style="margin-top:24px;">
+<h2>Five Course Topics</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:12px;">
+<div class="formula-card"><h4>1. HMMs</h4><div class="formula-desc">Genome annotation — finding genes, CpG islands, chromatin states using hidden Markov models</div></div>
+<div class="formula-card"><h4>2. Regression & GWAS</h4><div class="formula-desc">Logistic regression, association studies, eQTLs, TWAS, polygenic risk scores</div></div>
+<div class="formula-card"><h4>3. ML & Variants</h4><div class="formula-desc">Decision trees, SVMs, random forests for classifying pathogenic vs benign variants</div></div>
+<div class="formula-card"><h4>4. CNNs</h4><div class="formula-desc">Convolutional neural networks for predicting molecular phenotypes from DNA sequence</div></div>
+<div class="formula-card"><h4>5. Language Models</h4><div class="formula-desc">Transformers, BERT-style models for DNA and protein sequences (ESM, AlphaFold)</div></div>
+</div>
+</div>
+
+<div style="margin-top:24px;">
+<h2>Paper Discussions</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-top:12px;">
+<div class="formula-card"><h4>ChromHMM</h4><div class="formula-desc">Ernst & Kellis 2010 — HMM-based chromatin state discovery from histone marks</div></div>
+<div class="formula-card"><h4>COVID-19 GWAS</h4><div class="formula-desc">Genome-wide association study for COVID-19 severity</div></div>
+<div class="formula-card"><h4>CADD</h4><div class="formula-desc">Combined Annotation Dependent Depletion — ML-based variant effect scoring</div></div>
+<div class="formula-card"><h4>DeepSEA</h4><div class="formula-desc">CNN predicting chromatin effects of noncoding variants from sequence</div></div>
+<div class="formula-card"><h4>AlphaGenome</h4><div class="formula-desc">Sequence-to-function model for regulatory genomics</div></div>
+<div class="formula-card"><h4>AlphaFold</h4><div class="formula-desc">Deep learning protein structure prediction from amino acid sequence</div></div>
+</div>
+</div>
+</div>
+
+<script>
+// ─── DATA ───
+const LECTURES = [
+  {
+    id:1, title:"Course Overview & Topics", date:"Mar 31",
+    bullets:[
+      {heading:"Five Course Topics",items:[
+        "HMMs and genome annotation",
+        "Linear/logistic regression and GWAS/eQTLs/TWAS",
+        "Machine learning and variant effect prediction",
+        "CNNs and sequence-to-function models",
+        "Language models for DNA and proteins"
+      ]},
+      {heading:"Genome Basics",items:[
+        "Human genome: ~3 billion nucleotide bases (A, C, G, T)",
+        "Gene structure: exons (coding) and introns (non-coding)",
+        "Typical genome: ~3M SNVs, ~1M indels, ~10K protein-altering variants, ~100K rare variants, ~100 de novo mutations"
+      ]},
+      {heading:"Key Applications",items:[
+        "Genome annotation: finding protein-coding genes in unannotated sequence",
+        "GWAS: finding genomic regions contributing to disease risk",
+        "Variant effect prediction: classifying rare variants as pathogenic or benign",
+        "Sequence-to-function: predicting molecular phenotypes from DNA sequence",
+        "Protein language models: predicting protein structure and function"
+      ]}
+    ]
+  },
+  {
+    id:2, title:"Biology Review & Genomic Data", date:"Apr 2",
+    bullets:[
+      {heading:"Central Dogma",items:[
+        "DNA → mRNA → Protein (transcription then translation)",
+        "Transcription: DNA is copied to mRNA by RNA polymerase",
+        "Splicing: introns removed, exons joined to form mature mRNA",
+        "Alternative splicing: same gene can produce different mRNA/protein isoforms",
+        "Translation: mRNA read in codons (3 bases) → amino acid sequence"
+      ]},
+      {heading:"Genomic Data Formats",items:[
+        "FASTA: stores reference genome sequence",
+        "VCF (Variant Call Format): stores genetic variants — chrom, pos, ref, alt, genotypes",
+        "Genome builds: GRCh37/hg19, GRCh38/hg38, T2T-CHM13",
+        "dbSNP: NCBI database of known variants with rsID identifiers"
+      ]},
+      {heading:"Types of Genetic Variation",items:[
+        "SNVs/SNPs: single nucleotide changes",
+        "Indels: small insertions or deletions",
+        "Structural variants: large rearrangements (>100bp)",
+        "Missense: amino acid change; Nonsense: premature stop codon; Synonymous: silent; Frameshift: reading frame shift"
+      ]},
+      {heading:"Epigenomics",items:[
+        "DNA methylation: methyl group on cytosine at CpG dinucleotides; heritable through replication",
+        "Histone modifications: chemical marks on histone proteins affecting chromatin state",
+        "Chromatin accessibility: open vs. closed regions (measured by ATAC-seq, DNase-seq)",
+        "3D genome organization: long-distance contacts and TADs"
+      ]}
+    ]
+  },
+  {
+    id:3, title:"Markov Chains & HMMs", date:"Apr 7",
+    bullets:[
+      {heading:"Markov Chains",items:[
+        "Sequence of random variables where each depends only on the previous one (Markov assumption)",
+        "Transition probabilities a_kl = P(x_i = l | x_{i-1} = k) — constant over time (homogeneity)",
+        "P(X) = P(x_1) * prod P(x_i | x_{i-1}) for i=2..L",
+        "CpG island model vs non-CpG island model: different transition matrices for different regions",
+        "Log odds ratio: log P(X|model1) / P(X|model2) to classify whole sequences"
+      ]},
+      {heading:"Hidden Markov Models",items:[
+        "Hidden states π follow a Markov chain with transition probabilities a_kl",
+        "Observations x are emitted from hidden states with emission probabilities e_k(b)",
+        "Joint probability: P(X,π) = a_{B,π1} * e_{π1}(x_1) * prod a_{πi,πi+1} * e_{πi+1}(x_{i+1})",
+        "Parameters: initial probs (m), transitions (m²), emissions (m*k) → total m + m² + mk"
+      ]},
+      {heading:"Decoding Algorithms",items:[
+        "Viterbi: finds most likely sequence of hidden states (dynamic programming, takes max)",
+        "Forward algorithm: f_k(i) = e_k(x_i) * sum_l f_l(i-1) * a_lk — probability of observations up to position i ending in state k",
+        "Backward algorithm: b_k(i) = sum_l a_kl * e_l(x_{i+1}) * b_l(i+1) — probability of remaining observations given state k at i",
+        "Posterior decoding: P(π_i = k | X) = f_k(i) * b_k(i) / P(X) — most likely state at each position",
+        "Viterbi finds best global path; posterior decoding finds best state per position (may not be a valid path)"
+      ]}
+    ]
+  },
+  {
+    id:4, title:"HMM Parameter Estimation & Applications", date:"Apr 9",
+    bullets:[
+      {heading:"Parameter Estimation",items:[
+        "Goal: find θ that maximizes likelihood P(x1,...,xn | θ) = prod P(xj | θ)",
+        "Supervised: if hidden states are labeled, count transitions and emissions → MLE",
+        "Pseudocounts: add small counts to avoid zero probabilities (Laplace smoothing)",
+        "Unsupervised: iterative — initialize params → decode → update params → repeat"
+      ]},
+      {heading:"Viterbi Training",items:[
+        "Use Viterbi to find most likely hidden state sequence",
+        "Count transitions/emissions from that sequence",
+        "Update parameters from counts",
+        "Repeat until convergence (finds local maximum)"
+      ]},
+      {heading:"Baum-Welch Algorithm (EM)",items:[
+        "E-step: compute expected transition/emission counts using forward-backward probabilities",
+        "Expected emissions: E_k(b) = sum_{i|x_i=b} P(π_i=k | X)",
+        "Expected transitions: A_kl = sum_i f_k(i) * a_kl * e_l(x_{i+1}) * b_l(i+1) / P(X)",
+        "M-step: update parameters using expected counts (same formulas as supervised)",
+        "Converges to local maximum of likelihood"
+      ]},
+      {heading:"HMM Applications in Genomics",items:[
+        "GENSCAN: gene finding with states for exons, introns, UTRs, promoters, intergenic regions",
+        "Uses generalized HMM (semi-Markov) for explicit length distributions of exons",
+        "Three reading frames for exons/introns to track codon position",
+        "ChromHMM: learns chromatin states from histone modification data (ChIP-seq)",
+        "States represent functional elements: promoter, enhancer, transcribed, repressed, etc."
+      ]}
+    ]
+  },
+  {
+    id:5, title:"GWAS, Multiple Testing & LD", date:"Apr 14",
+    bullets:[
+      {heading:"GWAS Overview",items:[
+        "Case-control design: compare allele frequencies between disease cases and healthy controls",
+        "Test each SNP across genome for association with trait",
+        "Genotype dosage: 0, 1, or 2 copies of alternate allele",
+        "Common variants (>1% frequency) vs rare variants"
+      ]},
+      {heading:"Logistic Regression",items:[
+        "P(Y=1|x) = 1 / (1 + e^{-(β0 + β1*x)}) — logistic/sigmoid function",
+        "β1 = log odds ratio per unit change in dosage",
+        "e^{β1} = odds ratio — multiplicative change in odds per alt allele",
+        "Z-score = β1 / SE(β1) ~ N(0,1) under null; p-value from Z",
+        "Multiple regression: include covariates like ancestry PCs"
+      ]},
+      {heading:"Multiple Testing Correction",items:[
+        "Problem: testing ~1M SNPs at α=0.05 → 50,000 false positives expected",
+        "Bonferroni: divide α by number of tests (strict, controls FWER)",
+        "GWAS threshold: p < 5×10⁻⁸ (Bonferroni for ~1M independent tests)",
+        "Benjamini-Hochberg: controls false discovery rate (FDR), less strict",
+        "q-values: FDR-adjusted p-values incorporating estimated proportion of true nulls"
+      ]},
+      {heading:"Linkage Disequilibrium (LD)",items:[
+        "Nearby variants are correlated because they're inherited together on haplotypes",
+        "Recombination breaks correlations over generations",
+        "r² = Pearson correlation² between two variant dosages",
+        "LD = 0: linkage equilibrium (independent); LD ≠ 0: linkage disequilibrium",
+        "Causal variant signal 'tags' nearby correlated SNPs → multiple significant hits per locus",
+        "LD score: sum of r² with all other SNPs; higher score = more LD"
+      ]},
+      {heading:"GWAS Visualization & Interpretation",items:[
+        "Manhattan plot: -log10(p) vs genomic position, peaks = associated loci",
+        "Q-Q plot: observed vs expected p-values; inflation = population stratification",
+        "Ancestry PCs as covariates to correct for population structure",
+        "GWAS Catalog: curated database of published associations (ebi.ac.uk/gwas)"
+      ]}
+    ]
+  }
+  ,{
+    id:6, title:"ML & Variant Effect Prediction", date:"Wk 5-6",
+    bullets:[
+      {heading:"Decision Trees (Mitchell Ch3, ISLR Ch8)",items:[
+        "Recursive binary splitting: choose attribute+threshold that best separates classes at each node",
+        "Information Gain: Gain(S,A) = Entropy(S) - Σ |Sv|/|S| · Entropy(Sv) — reduction in uncertainty",
+        "Entropy: H(S) = -Σ p_i · log₂(p_i) — measures impurity/disorder in a set of labels",
+        "Gini Index: G = 1 - Σ p_k² — alternative impurity measure (used in CART, sklearn default)",
+        "ID3 algorithm: greedily picks highest information gain attribute at each node until leaves are pure",
+        "Overfitting: tree memorizes training noise → prune by minimum leaf size or max depth",
+        "Pruning: remove branches that don't improve validation accuracy (cost-complexity pruning)"
+      ]},
+      {heading:"Random Forests (ISLR Ch8)",items:[
+        "Bagging (Bootstrap Aggregation): train many trees on bootstrap samples, average predictions",
+        "Key insight: averaging reduces variance without increasing bias",
+        "Random forests add feature subsampling: at each split, consider only m ≈ √p of p features",
+        "Decorrelates trees — if one feature dominates, bagged trees would be correlated",
+        "Out-of-bag (OOB) error: each tree tested on ~1/3 of samples not in its bootstrap → free validation",
+        "Variable importance: mean decrease in accuracy when feature is permuted across OOB samples"
+      ]},
+      {heading:"Support Vector Machines (ISLR Ch9)",items:[
+        "Maximal margin classifier: find hyperplane that maximizes distance to nearest training points",
+        "Support vectors: the training points closest to the decision boundary (define the margin)",
+        "Soft margin (C parameter): allow some misclassification for better generalization",
+        "Large C → narrow margin, few violations (overfit); Small C → wide margin, more violations (underfit)",
+        "Kernel trick: project data into higher-dimensional space without explicit computation",
+        "Common kernels: linear, polynomial (degree d), radial basis function (RBF/Gaussian)",
+        "RBF kernel: K(x,x') = exp(-γ||x-x'||²) — measures similarity in infinite-dimensional space"
+      ]},
+      {heading:"Variant Effect Prediction",items:[
+        "Goal: classify rare variants as pathogenic or benign (clinical genetics)",
+        "ACMG guidelines: 5-tier system (pathogenic, likely pathogenic, VUS, likely benign, benign)",
+        "CADD (Combined Annotation Dependent Depletion): integrates 60+ annotations into single score",
+        "CADD training: evolved (benign) vs simulated (random) variants — learns what evolution removes",
+        "Features for variant classification: conservation (PhyloP, GERP), protein impact (SIFT, PolyPhen), allele frequency, functional annotations",
+        "Conservation score intuition: if a position is unchanged across species, mutations there are likely damaging",
+        "Ensemble methods (REVEL, MetaSVM): combine multiple predictors for better performance"
+      ]}
+    ]
+  },
+  {
+    id:7, title:"CNNs & Sequence-to-Function", date:"Wk 6-8",
+    bullets:[
+      {heading:"Convolutional Neural Networks",items:[
+        "CNN architecture: Input → [Conv → ReLU → Pool]×N → Flatten → Dense → Output",
+        "Convolution: slide a learned filter (kernel) across the input, computing dot product at each position",
+        "Filter/kernel: small weight matrix (e.g. 4×8 for DNA) that detects a local pattern/motif",
+        "Feature map: output of applying one filter across entire input — activates where pattern is found",
+        "Multiple filters per layer: each learns a different pattern (e.g. different TF binding motifs)",
+        "Pooling: downsample feature maps (max pooling takes maximum in each window) — adds translation invariance",
+        "ReLU activation: f(x) = max(0,x) — introduces nonlinearity, kills negative activations"
+      ]},
+      {heading:"DNA Sequence Encoding",items:[
+        "One-hot encoding: each nucleotide as 4-dimensional vector (A=[1,0,0,0], C=[0,1,0,0], G=[0,0,1,0], T=[0,0,0,1])",
+        "Input shape: 4 × L matrix where L = sequence length (like a 1D image with 4 channels)",
+        "First layer filters learn PWMs (position weight matrices) similar to known TF binding motifs",
+        "Deeper layers combine motifs to learn grammar (spacing, orientation, combinations)"
+      ]},
+      {heading:"DeepSEA (Zhou & Troyanskaya 2015)",items:[
+        "Input: 1000bp DNA sequence (one-hot encoded, 4×1000)",
+        "Output: 919 binary chromatin features (TF binding, histone marks, DNase hypersensitivity)",
+        "Architecture: 3 conv layers (320→480→960 filters) with pooling + 2 dense layers",
+        "Training data: ENCODE/Roadmap ChIP-seq peaks aligned to reference genome",
+        "In silico mutagenesis: compare predictions for ref vs alt allele → variant effect scores",
+        "Key insight: learns regulatory code directly from sequence without hand-crafted features"
+      ]},
+      {heading:"Sequence-to-Function Models",items:[
+        "Basenji/Enformer: predict quantitative signal tracks (not just binary) from longer sequences (100kb+)",
+        "Multi-task learning: predict many outputs simultaneously (expression, accessibility, histone marks)",
+        "Dilated convolutions: exponentially increasing receptive field without pooling (capture distal elements)",
+        "Attention layers (Enformer): capture long-range enhancer-promoter interactions",
+        "Variant effect: difference in predicted tracks between ref and alt allele sequences",
+        "Interpreting CNN weights: first-layer filters → sequence logos resembling known motifs"
+      ]}
+    ]
+  },
+  {
+    id:8, title:"Language Models for DNA & Proteins", date:"Wk 9-10",
+    bullets:[
+      {heading:"Transformer Architecture (Vaswani 2017)",items:[
+        "Self-attention: each position attends to all other positions with learned query/key/value weights",
+        "Attention(Q,K,V) = softmax(QK^T / √d_k) · V — scaled dot-product attention",
+        "Multi-head attention: multiple parallel attention heads capture different relationship types",
+        "Positional encoding: sine/cosine functions add position information (transformers have no inherent order)",
+        "Feed-forward layers: two linear transformations with ReLU between, applied position-wise",
+        "Layer normalization + residual connections: stabilize training of deep networks"
+      ]},
+      {heading:"BERT & Masked Language Modeling (Devlin 2019)",items:[
+        "Pretraining task: mask 15% of input tokens, predict the masked tokens from context",
+        "Bidirectional: sees both left and right context (unlike GPT which is left-to-right only)",
+        "Fine-tuning: add task-specific layer on top of pretrained representations",
+        "Key insight: learns rich contextual representations of tokens without labeled data",
+        "[CLS] token: special token whose final representation is used for classification tasks",
+        "BERT for genomics: mask nucleotides/k-mers, predict from surrounding sequence context"
+      ]},
+      {heading:"Genomic Language Models",items:[
+        "DNABERT: BERT-style model pretrained on human genome using k-mer tokenization",
+        "Nucleotide Transformer: trained on 3,200+ genomes, up to 2.5B parameters",
+        "HyenaDNA: uses Hyena operator (sub-quadratic attention alternative) for ultra-long sequences (up to 1M bp)",
+        "Tokenization strategies: single nucleotide, k-mer, BPE (byte pair encoding)",
+        "Downstream tasks: promoter prediction, splice site detection, variant effect, regulatory element classification",
+        "Zero-shot variant effect: compare likelihood of ref vs alt token in pretrained model (no fine-tuning needed)"
+      ]},
+      {heading:"Protein Language Models",items:[
+        "ESM (Evolutionary Scale Modeling): masked language model trained on 250M protein sequences",
+        "Learns: secondary structure, contacts, function, evolutionary relationships — all from sequence alone",
+        "Attention heads correspond to protein contacts: attention map ≈ 3D contact map",
+        "ESM-2: 15B parameter model; ESMFold: predicts structure directly from single sequence",
+        "ProtTrans: family of transformer models (ProtBERT, ProtT5) trained on UniRef",
+        "Applications: predict structure, function, localization, binding sites, variant effects",
+        "Transfer learning: pretrained embeddings + simple downstream classifier often beats hand-crafted features"
+      ]},
+      {heading:"AlphaFold (Jumper et al. 2021)",items:[
+        "Input: amino acid sequence + multiple sequence alignment (MSA) of homologs",
+        "Evoformer: custom transformer that jointly processes MSA and pair representations",
+        "Structure module: iteratively refines 3D atom coordinates from representations",
+        "End-to-end differentiable: trained on known structures from PDB",
+        "pLDDT: per-residue confidence score (predicted LDDT) — tells you which parts are reliable",
+        "AlphaFold2 solved the 'protein folding problem' for single chains (CASP14, 2020)",
+        "AlphaFold3: extends to complexes (protein-protein, protein-DNA, protein-ligand)"
+      ]}
+    ]
+  }
+];
+
+const GLOSSARY = [
+  {term:"HMM (Hidden Markov Model)",lec:3,def:"A probabilistic model with hidden states that follow a Markov chain and emit observable outputs. Used for genome annotation."},
+  {term:"Markov Chain",lec:3,def:"A sequence of random variables where each depends only on the immediately preceding one (memoryless property)."},
+  {term:"Markov Assumption",lec:3,def:"P(x_i | x_1,...,x_{i-1}) = P(x_i | x_{i-1}). The future depends only on the present, not the past."},
+  {term:"Transition Probability",lec:3,def:"a_kl = P(π_{i+1} = l | π_i = k). The probability of moving from state k to state l."},
+  {term:"Emission Probability",lec:3,def:"e_k(b) = P(x_i = b | π_i = k). The probability of observing symbol b given hidden state k."},
+  {term:"Viterbi Algorithm",lec:3,def:"Dynamic programming algorithm that finds the single most likely sequence of hidden states given observations."},
+  {term:"Forward Algorithm",lec:3,def:"Computes f_k(i) = P(x_1...x_i, π_i=k), the probability of observations up to position i ending in state k. Uses sum (not max)."},
+  {term:"Backward Algorithm",lec:3,def:"Computes b_k(i) = P(x_{i+1}...x_L | π_i=k), the probability of remaining observations given state k at position i."},
+  {term:"Posterior Decoding",lec:3,def:"Finds the most likely hidden state at each individual position: P(π_i=k|X) = f_k(i)*b_k(i)/P(X)."},
+  {term:"Baum-Welch Algorithm",lec:4,def:"EM algorithm for learning HMM parameters without labeled hidden states. Alternates between computing expected counts (E-step) and updating parameters (M-step)."},
+  {term:"Viterbi Training",lec:4,def:"Iterative parameter estimation using Viterbi decoding: find best path → count transitions/emissions → update params → repeat."},
+  {term:"Pseudocounts",lec:4,def:"Small counts added to observed counts to avoid zero probabilities. A form of Laplace smoothing reflecting weak prior beliefs."},
+  {term:"GENSCAN",lec:4,def:"HMM-based gene finder (Burge & Karlin 1997) with states for exons, introns, UTRs, promoters. Uses generalized HMM for exon length distributions."},
+  {term:"ChromHMM",lec:4,def:"HMM-based method (Ernst & Kellis 2010) that learns chromatin states from histone modification data to annotate regulatory elements."},
+  {term:"CpG Island",lec:3,def:"Genomic region with high frequency of CpG dinucleotides, often found near gene promoters. CpG methylation regulates gene expression."},
+  {term:"Log Odds Ratio",lec:3,def:"log P(X|model1)/P(X|model2). Used to classify sequences by comparing likelihoods under two models."},
+  {term:"SNV / SNP",lec:2,def:"Single Nucleotide Variant/Polymorphism. A single base change in the genome. SNP typically refers to common variants (>1% freq)."},
+  {term:"Indel",lec:2,def:"Small insertion or deletion of bases in the genome, typically <100bp."},
+  {term:"VCF",lec:2,def:"Variant Call Format. Text file format storing genetic variants: chromosome, position, ref allele, alt allele, quality, genotypes per sample."},
+  {term:"dbSNP",lec:2,def:"NCBI database of known genetic variants. Each variant gets a stable rsID (e.g. rs12345). Contains >2 billion submitted variants."},
+  {term:"Missense Variant",lec:2,def:"A single nucleotide change that results in a different amino acid in the protein (nonsynonymous)."},
+  {term:"Nonsense Variant",lec:2,def:"A single nucleotide change that creates a premature stop codon, truncating the protein."},
+  {term:"Frameshift",lec:2,def:"An insertion or deletion that is not a multiple of 3, shifting the reading frame and altering all downstream amino acids."},
+  {term:"DNA Methylation",lec:2,def:"Addition of a methyl group to cytosine at CpG dinucleotides. Heritable epigenetic mark that typically silences gene expression."},
+  {term:"Chromatin Accessibility",lec:2,def:"Whether DNA is in an open (accessible) or closed (compacted) state. Measured by ATAC-seq or DNase-seq."},
+  {term:"GWAS",lec:5,def:"Genome-Wide Association Study. Tests millions of SNPs for statistical association with a disease or trait using case-control design."},
+  {term:"Logistic Regression",lec:5,def:"Statistical model for binary outcomes: log(odds) = β0 + β1*x. Used in GWAS to test each SNP's effect on case/control status."},
+  {term:"Odds Ratio",lec:5,def:"e^{β1}. The multiplicative change in odds of disease per additional copy of the alternate allele."},
+  {term:"Bonferroni Correction",lec:5,def:"Divide significance threshold α by number of tests m. Controls family-wise error rate (FWER). Conservative."},
+  {term:"FDR (False Discovery Rate)",lec:5,def:"The expected proportion of rejected null hypotheses that are false positives. Controlled by Benjamini-Hochberg procedure."},
+  {term:"Benjamini-Hochberg",lec:5,def:"FDR control procedure: order p-values, find largest i where p_i ≤ (i/m)*α. Less conservative than Bonferroni."},
+  {term:"q-value",lec:5,def:"The minimum FDR at which a test would be called significant. Accounts for estimated proportion of true nulls."},
+  {term:"Linkage Disequilibrium (LD)",lec:5,def:"Non-random association of alleles at nearby loci. Measured by r². Caused by co-inheritance on haplotypes; broken by recombination."},
+  {term:"Manhattan Plot",lec:5,def:"GWAS visualization: -log10(p-value) on y-axis vs genomic position on x-axis. Peaks indicate associated loci."},
+  {term:"Q-Q Plot",lec:5,def:"Quantile-quantile plot comparing observed vs expected p-values. Systematic deviation from diagonal suggests population stratification."},
+  {term:"LD Score",lec:5,def:"Sum of r² between a SNP and all other SNPs. SNPs with high LD scores are more likely to tag causal variants."},
+  {term:"eQTL",lec:5,def:"Expression Quantitative Trait Locus. A genetic variant associated with changes in gene expression levels."},
+  {term:"TWAS",lec:5,def:"Transcriptome-Wide Association Study. Imputes gene expression from genotypes, then tests expression-trait associations."},
+  {term:"Polygenic Risk Score",lec:1,def:"Sum of weighted variant effects across the genome to predict an individual's disease risk from GWAS results."},
+  {term:"Central Dogma",lec:2,def:"DNA → mRNA → Protein. The fundamental flow of genetic information in biology."},
+  {term:"Phred Score",lec:2,def:"Quality score Q = -10*log10(P_error). Phred 30 = 99.9% accuracy, Phred 40 = 99.99% accuracy."},
+  {term:"Genotype Dosage",lec:5,def:"Number of alternate alleles (0, 1, or 2) an individual carries at a variant site."},
+  {term:"Haplotype",lec:5,def:"A set of alleles on a single chromosome that are inherited together. Recombination shuffles haplotypes over generations."},
+  {term:"Principal Component Analysis (PCA)",lec:5,def:"Dimensionality reduction of genotype data to capture population structure. PCs used as GWAS covariates to control for ancestry."},
+  {term:"Generalized HMM",lec:4,def:"Also called hidden semi-Markov model. States have explicit duration/length distributions instead of geometric (from self-transitions)."},
+  {term:"ChIP-seq",lec:4,def:"Chromatin Immunoprecipitation followed by sequencing. Measures protein-DNA binding and histone modifications genome-wide."},
+  {term:"ATAC-seq",lec:2,def:"Assay for Transposase-Accessible Chromatin with sequencing. Identifies open chromatin regions across the genome."},
+  {term:"Decision Tree",lec:6,def:"A model that recursively splits the feature space using binary decisions at each node. Predicted class = majority vote in the leaf."},
+  {term:"Information Gain",lec:6,def:"Gain(S,A) = H(S) - Σ|Sv|/|S|·H(Sv). The reduction in entropy achieved by splitting on attribute A."},
+  {term:"Entropy (Information Theory)",lec:6,def:"H(S) = -Σ p_i·log₂(p_i). Measures impurity/uncertainty in a set. H=0 when all labels are same; H=1 for equal split."},
+  {term:"Gini Index",lec:6,def:"G = 1 - Σ p_k². Alternative impurity measure used by CART. G=0 when pure; maximum at equal class proportions."},
+  {term:"Pruning",lec:6,def:"Removing tree branches that don't improve validation accuracy. Prevents overfitting by reducing model complexity."},
+  {term:"Random Forest",lec:6,def:"Ensemble of decision trees trained on bootstrap samples with random feature subsets at each split. Reduces variance through averaging."},
+  {term:"Bagging",lec:6,def:"Bootstrap Aggregation. Train many models on bootstrap samples (sampling with replacement), average predictions."},
+  {term:"Out-of-Bag (OOB) Error",lec:6,def:"Each bagged tree is tested on ~1/3 of samples not in its bootstrap. Provides validation estimate without holdout set."},
+  {term:"Support Vector Machine (SVM)",lec:6,def:"Classifier that finds the maximum-margin hyperplane separating classes. Only support vectors (closest points) define the boundary."},
+  {term:"Kernel Trick",lec:6,def:"Maps data to higher-dimensional space implicitly via kernel function K(x,x'). Enables nonlinear decision boundaries without explicit computation."},
+  {term:"RBF Kernel",lec:6,def:"K(x,x') = exp(-γ||x-x'||²). Radial basis function — measures Gaussian similarity. Projects to infinite-dimensional space."},
+  {term:"Soft Margin (C parameter)",lec:6,def:"Allows some training errors for better generalization. Large C = narrow margin (overfit); Small C = wide margin (underfit)."},
+  {term:"CADD Score",lec:6,def:"Combined Annotation Dependent Depletion. Integrates 60+ genomic annotations to score deleteriousness of variants. Trained on evolved vs simulated variants."},
+  {term:"ACMG Classification",lec:6,def:"Five-tier variant classification: Pathogenic, Likely Pathogenic, VUS (Variant of Uncertain Significance), Likely Benign, Benign."},
+  {term:"Conservation Score",lec:6,def:"Measures how unchanged a genomic position is across species (PhyloP, GERP). High conservation → functional constraint → mutations likely damaging."},
+  {term:"CNN (Convolutional Neural Network)",lec:7,def:"Neural network using learned filters convolved across input to detect local patterns. Architecture: Conv → ReLU → Pool → Dense."},
+  {term:"Convolution (in CNNs)",lec:7,def:"Sliding a learned filter/kernel across input, computing dot product at each position. Detects local patterns regardless of position."},
+  {term:"Feature Map",lec:7,def:"Output of applying one convolutional filter across the input. High activation where the learned pattern is present."},
+  {term:"Max Pooling",lec:7,def:"Downsampling by taking the maximum value in each window. Reduces dimensionality and adds translation invariance."},
+  {term:"One-Hot Encoding (DNA)",lec:7,def:"Representing each nucleotide as a 4-dimensional binary vector: A=[1000], C=[0100], G=[0010], T=[0001]. Input shape: 4×L."},
+  {term:"DeepSEA",lec:7,def:"CNN predicting 919 chromatin features from 1000bp DNA sequence. Uses 3 conv layers + dense layers. Trained on ENCODE/Roadmap data."},
+  {term:"In Silico Mutagenesis",lec:7,def:"Computationally predicting variant effects by comparing model outputs for reference vs alternate allele sequences."},
+  {term:"Enformer",lec:7,def:"Sequence-to-function model using dilated convolutions + attention to predict quantitative epigenomic tracks from 200kb input."},
+  {term:"Dilated Convolution",lec:7,def:"Convolution with gaps (dilation) between filter elements. Exponentially increases receptive field without losing resolution."},
+  {term:"Transformer",lec:8,def:"Neural architecture using self-attention to process all positions in parallel. Captures long-range dependencies without recurrence."},
+  {term:"Self-Attention",lec:8,def:"Each position computes weighted sum of all positions: Attention(Q,K,V) = softmax(QK^T/√d_k)·V. Learns which positions to attend to."},
+  {term:"Multi-Head Attention",lec:8,def:"Multiple parallel attention heads, each learning different relationship types. Outputs concatenated and projected."},
+  {term:"Masked Language Modeling",lec:8,def:"BERT pretraining: mask 15% of tokens, predict from surrounding context. Learns bidirectional contextual representations."},
+  {term:"BERT",lec:8,def:"Bidirectional Encoder Representations from Transformers. Pretrained via masked LM + next sentence prediction, then fine-tuned for specific tasks."},
+  {term:"Fine-Tuning",lec:8,def:"Taking a pretrained model and training it further on a specific downstream task with labeled data. Typically needs much less data than training from scratch."},
+  {term:"Transfer Learning",lec:8,def:"Using representations learned on one task (pretraining) to improve performance on a different task (fine-tuning)."},
+  {term:"DNABERT",lec:8,def:"BERT-style model pretrained on human genome using k-mer tokenization. Fine-tuned for promoter prediction, splice sites, etc."},
+  {term:"ESM (Evolutionary Scale Modeling)",lec:8,def:"Protein language model (up to 15B params) trained via masked LM on 250M sequences. Learns structure, function, evolution from sequence alone."},
+  {term:"AlphaFold",lec:8,def:"Deep learning system predicting protein 3D structure from sequence + MSA. Uses Evoformer (custom transformer) + structure module. Solved CASP14."},
+  {term:"Evoformer",lec:8,def:"AlphaFold's custom transformer block that jointly processes MSA representations and pair (residue-residue) representations."},
+  {term:"pLDDT",lec:8,def:"AlphaFold's per-residue confidence score (predicted LDDT). >90 = high confidence, 70-90 = moderate, <50 = low/disordered."},
+  {term:"Positional Encoding",lec:8,def:"Sine/cosine functions added to embeddings to give transformers a sense of sequence position (they have no inherent order)."}
+];
+
+const FORMULAS = [
+  {name:"Markov Chain Probability",eq:"P(X) = P(x₁) ∏ P(xₙ|xₙ₋₁)",desc:"Probability of a sequence under a Markov chain. Product of initial probability and all transition probabilities."},
+  {name:"HMM Joint Probability",eq:"P(X,π) = a(B,π₁) · e(π₁,x₁) · ∏ a(πᵢ,πᵢ₊₁) · e(πᵢ₊₁,xᵢ₊₁)",desc:"Joint probability of observed sequence X and hidden state path π."},
+  {name:"HMM Parameter Count",eq:"m + m² + mk",desc:"Parameters for an HMM with m states and k observations: initial (m) + transitions (m²) + emissions (mk)."},
+  {name:"Viterbi Recursion",eq:"v_k(i) = e_k(xᵢ) · max_l [ v_l(i-1) · a_lk ]",desc:"Most probable path ending in state k at position i. Takes the MAX over previous states."},
+  {name:"Forward Variable",eq:"f_k(i) = e_k(xᵢ) · Σ_l f_l(i-1) · a_lk",desc:"Total probability of observations x₁...xᵢ with π_i=k. Takes the SUM over previous states."},
+  {name:"Backward Variable",eq:"b_k(i) = Σ_l a_kl · e_l(x_{i+1}) · b_l(i+1)",desc:"Probability of observations x_{i+1}...x_L given state k at position i."},
+  {name:"Posterior Decoding",eq:"P(πᵢ=k|X) = f_k(i) · b_k(i) / P(X)",desc:"Probability of being in state k at position i, given entire observed sequence."},
+  {name:"Logistic Regression",eq:"P(Y=1|x) = 1 / (1 + e^{-(β₀+β₁x)})",desc:"Probability of case status given genotype dosage x. β₁ = log odds ratio."},
+  {name:"Log Odds (Logit)",eq:"logit(p) = log(p/(1-p)) = β₀ + β₁x",desc:"Linear model for log odds. Each unit increase in x changes log odds by β₁."},
+  {name:"Bonferroni Threshold",eq:"α_corrected = α / m",desc:"Divide significance level by number of tests m. GWAS: 0.05/10⁶ ≈ 5×10⁻⁸."},
+  {name:"Phred Score",eq:"Q = -10 · log₁₀(P_error)",desc:"Quality score. Phred 30 = 0.1% error, Phred 40 = 0.01% error, Phred 45 = 0.003% error."},
+  {name:"LD Score",eq:"ℓⱼ = Σᵢ rᵢⱼ²",desc:"Sum of squared correlations between SNP j and all other SNPs. Higher = more LD."},
+  {name:"Baum-Welch Transitions",eq:"A_kl = Σᵢ f_k(i)·a_kl·e_l(x_{i+1})·b_l(i+1) / P(X)",desc:"Expected number of transitions from state k to l, used in M-step of EM."},
+  {name:"Odds Ratio",eq:"OR = e^{β₁}",desc:"Multiplicative change in odds of disease per additional alternate allele. OR>1 = risk, OR<1 = protective."},
+  {name:"Entropy",eq:"H(S) = -Σ pᵢ · log₂(pᵢ)",desc:"Measures impurity in a set of labels. H=0 when pure (one class); H=1 when binary classes are equally split."},
+  {name:"Information Gain",eq:"Gain(S,A) = H(S) - Σ |Sᵥ|/|S| · H(Sᵥ)",desc:"Reduction in entropy from splitting set S on attribute A. Greedy criterion for decision tree construction."},
+  {name:"Gini Index",eq:"G = 1 - Σ p_k²",desc:"Impurity measure for decision trees. G=0 when pure. Used by CART/sklearn. Lower Gini = better split."},
+  {name:"SVM Decision Boundary",eq:"f(x) = sign(w·x + b), maximize 2/||w||",desc:"Classify by sign of linear function. Margin width = 2/||w||. Maximize margin subject to constraints."},
+  {name:"RBF Kernel",eq:"K(x,x') = exp(-γ||x-x'||²)",desc:"Radial basis function kernel. γ controls reach: large γ = tight fit (overfit), small γ = smooth boundary."},
+  {name:"Convolution (1D)",eq:"(f * g)[n] = Σₖ f[k] · g[n-k]",desc:"Slide filter g across input f, summing element-wise products. In CNNs: learned filter detects local patterns."},
+  {name:"Self-Attention",eq:"Attn(Q,K,V) = softmax(QKᵀ/√d_k) · V",desc:"Scaled dot-product attention. Q,K,V are linear projections of input. √d_k prevents softmax saturation."},
+  {name:"Softmax",eq:"softmax(zᵢ) = eᶻⁱ / Σⱼ eᶻʲ",desc:"Converts raw scores to probabilities that sum to 1. Used in attention weights and classification output."},
+  {name:"Cross-Entropy Loss",eq:"L = -Σ yᵢ · log(ŷᵢ)",desc:"Loss function for classification. Penalizes confident wrong predictions heavily. Standard for neural network training."}
+];
+
+const QUIZ_QUESTIONS = [
+  {lec:3,q:"What does the Markov assumption state?",opts:["Each observation depends on all previous observations","Each observation depends only on the immediately preceding one","All observations are independent","Each observation depends on the next one"],ans:1,exp:"The Markov assumption says P(x_i | x_1,...,x_{i-1}) = P(x_i | x_{i-1}). Only the immediate predecessor matters."},
+  {lec:3,q:"In an HMM, what do emission probabilities represent?",opts:["P(state → state)","P(observation | hidden state)","P(hidden state | observation)","P(observation → observation)"],ans:1,exp:"Emission probabilities e_k(b) = P(x_i = b | π_i = k) give the probability of observing b when in hidden state k."},
+  {lec:3,q:"How does the Viterbi algorithm differ from the Forward algorithm?",opts:["Viterbi uses sum, Forward uses max","Viterbi uses max, Forward uses sum","They are identical","Viterbi runs backward, Forward runs forward"],ans:1,exp:"Viterbi takes the MAX over previous states (best path), while Forward takes the SUM (total probability of all paths)."},
+  {lec:3,q:"How many parameters does an HMM with m states and k observations need?",opts:["m × k","m²","m + m² + mk","m × k × 2"],ans:2,exp:"Initial state probs (m) + transition matrix (m²) + emission matrix (m×k) = m + m² + mk."},
+  {lec:4,q:"What is the Baum-Welch algorithm?",opts:["A decoding algorithm for finding hidden states","An EM algorithm for learning HMM parameters without labels","A supervised learning method requiring labeled data","A sequence alignment algorithm"],ans:1,exp:"Baum-Welch is an EM algorithm: E-step computes expected counts via forward-backward, M-step updates parameters."},
+  {lec:4,q:"Why are pseudocounts used in HMM parameter estimation?",opts:["To speed up computation","To avoid zero probabilities for unseen transitions/emissions","To increase the number of states","To normalize the transition matrix"],ans:1,exp:"Some transitions/emissions may never appear in training data. Pseudocounts ensure no probability is exactly zero."},
+  {lec:5,q:"What does a GWAS test for?",opts:["Protein structure","Association between genetic variants and a trait/disease","Gene expression levels","Sequence alignment quality"],ans:1,exp:"GWAS tests each SNP for statistical association with case/control status (or a quantitative trait) across many individuals."},
+  {lec:5,q:"Why is Bonferroni correction needed in GWAS?",opts:["To increase statistical power","To correct for multiple hypothesis testing and control false positives","To account for LD between variants","To normalize genotype dosages"],ans:1,exp:"Testing ~1M SNPs at α=0.05 would yield ~50K false positives. Bonferroni divides α by number of tests."},
+  {lec:5,q:"What does β₁ represent in logistic regression for GWAS?",opts:["The p-value","The allele frequency","The log odds ratio per alternate allele","The false discovery rate"],ans:2,exp:"β₁ is the change in log odds of disease per unit increase in genotype dosage. e^{β₁} is the odds ratio."},
+  {lec:5,q:"What is linkage disequilibrium (LD)?",opts:["Random association between distant genes","Non-random association of alleles at nearby loci","A type of genetic mutation","A sequencing error"],ans:1,exp:"Nearby variants tend to be inherited together on haplotypes, creating non-random correlations. Recombination breaks LD over generations."},
+  {lec:2,q:"What does VCF stand for?",opts:["Variant Copy File","Variable Control Format","Variant Call Format","Virtual Chromosome File"],ans:2,exp:"VCF (Variant Call Format) stores genetic variants: chromosome, position, ref/alt alleles, quality, and genotypes."},
+  {lec:2,q:"What is the central dogma of molecular biology?",opts:["Protein → RNA → DNA","DNA → mRNA → Protein","mRNA → DNA → Protein","DNA → Protein → mRNA"],ans:1,exp:"The central dogma: DNA is transcribed to mRNA, which is translated to protein."},
+  {lec:2,q:"What is a missense variant?",opts:["A variant that creates a stop codon","A variant that shifts the reading frame","A single nucleotide change resulting in a different amino acid","A silent variant with no amino acid change"],ans:2,exp:"Missense (nonsynonymous) variants change one amino acid to another in the protein."},
+  {lec:4,q:"What does ChromHMM learn from?",opts:["DNA sequence only","Protein structures","Histone modification data (ChIP-seq)","Gene expression data"],ans:2,exp:"ChromHMM uses histone modification signals from ChIP-seq to learn chromatin states like promoters, enhancers, and repressed regions."},
+  {lec:5,q:"What does a Q-Q plot show in GWAS?",opts:["Quality scores vs position","Observed vs expected p-values","Allele frequencies vs LD","Gene expression vs genotype"],ans:1,exp:"Q-Q plots compare observed p-value distribution to expected uniform distribution. Systematic inflation suggests population stratification."},
+  {lec:3,q:"What is posterior decoding?",opts:["Finding the most likely hidden state at each position independently","Finding the most likely full path of hidden states","Estimating parameters without labels","Computing sequence alignment scores"],ans:0,exp:"Posterior decoding finds P(π_i=k|X) at each position independently. Unlike Viterbi, the resulting state sequence may not be a valid path."},
+  {lec:5,q:"What is an eQTL?",opts:["A type of structural variant","A genetic variant associated with gene expression changes","An epigenetic modification","A protein domain"],ans:1,exp:"Expression QTL: a genetic variant (usually SNP) that is statistically associated with changes in mRNA expression levels of a gene."},
+  {lec:2,q:"What is a Phred score of 30?",opts:["30% accuracy","99.9% accuracy","70% accuracy","99.97% accuracy"],ans:1,exp:"Phred Q = -10*log10(P_error). Q=30 → P_error = 10^(-3) = 0.001 → 99.9% accuracy."},
+  {lec:4,q:"What is a generalized HMM?",opts:["An HMM with more than 2 states","An HMM where state durations have explicit length distributions","An HMM trained with Baum-Welch","An HMM for protein sequences"],ans:1,exp:"Generalized HMMs (hidden semi-Markov models) allow explicit state duration distributions instead of the geometric distribution from self-transitions."},
+  {lec:5,q:"What is a Manhattan plot?",opts:["A bar chart of allele frequencies","A plot of -log10(p-value) vs genomic position","A Q-Q plot for GWAS","A heatmap of LD between variants"],ans:1,exp:"Manhattan plots show -log10(p) on the y-axis and chromosomal position on the x-axis. Tall peaks indicate associated loci."},
+  {lec:6,q:"What criterion does ID3 use to choose the best attribute for splitting?",opts:["Gini index","Information gain (entropy reduction)","Variance reduction","Chi-squared test"],ans:1,exp:"ID3 greedily selects the attribute with highest information gain — the biggest reduction in entropy after splitting."},
+  {lec:6,q:"Why do random forests subsample features at each split?",opts:["To speed up training","To decorrelate the individual trees","To reduce the number of features","To prevent overfitting to rare classes"],ans:1,exp:"If one feature strongly dominates, all bagged trees would split on it first and be highly correlated. Random subsampling decorrelates trees so averaging reduces variance more effectively."},
+  {lec:6,q:"What are support vectors in an SVM?",opts:["All training points","Points furthest from the boundary","Training points closest to (on the margin of) the decision boundary","The test set points"],ans:2,exp:"Support vectors are the data points that lie exactly on the margin boundary. They are the only points that define the decision hyperplane."},
+  {lec:6,q:"What does increasing C do in a soft-margin SVM?",opts:["Wider margin, more tolerance for errors","Narrower margin, less tolerance for errors (risk of overfitting)","Changes the kernel type","Adds more support vectors randomly"],ans:1,exp:"Large C penalizes misclassifications heavily → narrow margin, fewer violations, higher risk of overfitting. Small C allows more slack."},
+  {lec:6,q:"How does CADD define 'deleterious' variants for training?",opts:["Expert-curated pathogenic variants from ClinVar","Variants that cause frameshift mutations","Simulated variants vs variants that survived natural selection","Variants with low allele frequency"],ans:2,exp:"CADD trains on simulated (random) variants vs observed (evolved) variants. Variants that survived evolution are presumed benign; simulated ones include deleterious ones that evolution would have removed."},
+  {lec:6,q:"What is the Gini index for a node where 70% of samples are class A and 30% are class B?",opts:["0.42","0.30","0.70","0.51"],ans:0,exp:"Gini = 1 - (0.7² + 0.3²) = 1 - (0.49 + 0.09) = 1 - 0.58 = 0.42."},
+  {lec:7,q:"What is the input representation for DNA in a CNN?",opts:["ASCII character codes","One-hot encoding: 4×L binary matrix","Integer encoding: 1,2,3,4","Frequency spectrum"],ans:1,exp:"DNA is one-hot encoded: each nucleotide becomes a 4-dim vector (A=[1,0,0,0], etc.), giving a 4×L matrix like a 1D image with 4 channels."},
+  {lec:7,q:"What do first-layer CNN filters learn when trained on DNA?",opts:["Random noise patterns","Position weight matrices resembling known TF binding motifs","Gene boundaries","Chromosome numbers"],ans:1,exp:"First-layer filters learn short sequence patterns that match known transcription factor binding sites (motifs), interpretable as PWMs/sequence logos."},
+  {lec:7,q:"What does DeepSEA predict?",opts:["Gene expression levels","919 chromatin features from 1000bp DNA sequence","Protein structure","Variant pathogenicity scores"],ans:1,exp:"DeepSEA takes 1000bp one-hot DNA as input and predicts 919 binary chromatin features (TF binding, histone marks, DNase) simultaneously."},
+  {lec:7,q:"How does in silico mutagenesis work?",opts:["Mutate cells in a lab and sequence them","Compare model predictions for reference vs alternate allele sequences","Run CRISPR experiments computationally","Train separate models for each variant"],ans:1,exp:"Feed both ref and alt sequences to the model, then take the difference in predictions. No wet lab needed — purely computational."},
+  {lec:7,q:"What advantage do dilated convolutions provide?",opts:["Faster training","Exponentially larger receptive field without losing resolution","Better accuracy on short sequences","Fewer parameters"],ans:1,exp:"Dilated convolutions skip positions with increasing gaps, giving exponential growth of receptive field without pooling (which loses resolution)."},
+  {lec:8,q:"What is the key innovation of the Transformer architecture?",opts:["Recurrent connections","Self-attention: each position attends to all other positions in parallel","Convolutional filters","Memory cells"],ans:1,exp:"Self-attention computes relationships between all pairs of positions simultaneously, capturing long-range dependencies without sequential processing."},
+  {lec:8,q:"What is masked language modeling (BERT-style pretraining)?",opts:["Predicting the next token left-to-right","Masking 15% of tokens and predicting them from surrounding context","Classifying sequences into categories","Generating new sequences"],ans:1,exp:"BERT masks random tokens and trains the model to recover them using bidirectional context. This teaches rich contextual representations."},
+  {lec:8,q:"How can a pretrained genomic language model predict variant effects without fine-tuning?",opts:["By comparing the likelihood/probability of ref vs alt token in context (zero-shot)","It cannot — fine-tuning is always required","By reading the VCF file directly","By computing LD scores"],ans:0,exp:"Zero-shot variant effect: the pretrained model assigns a probability to each token given context. If P(alt) << P(ref), the variant likely disrupts the learned sequence grammar."},
+  {lec:8,q:"What does ESM (protein language model) learn from sequence alone?",opts:["Only amino acid frequencies","Structure, contacts, function, and evolutionary relationships","Only secondary structure","Only protein-protein interactions"],ans:1,exp:"ESM's attention patterns correspond to 3D contacts, and its embeddings encode structure, function, and evolutionary information — all learned purely from amino acid sequences."},
+  {lec:8,q:"What is AlphaFold's Evoformer?",opts:["A standard BERT encoder","A custom transformer jointly processing MSA and pair representations","A CNN for protein sequences","A recurrent neural network"],ans:1,exp:"The Evoformer is AlphaFold's novel transformer block that simultaneously updates MSA representations (sequence-level) and pair representations (residue-residue relationships)."},
+  {lec:8,q:"What does pLDDT measure in AlphaFold predictions?",opts:["Sequence similarity to template","Per-residue confidence of the predicted structure","Total energy of the structure","Evolutionary conservation"],ans:1,exp:"pLDDT (predicted LDDT) is a per-residue confidence score. >90 is high confidence, 70-90 moderate, <50 suggests disorder or low reliability."},
+  {lec:7,q:"Why is max pooling used in CNNs for genomics?",opts:["It increases resolution","It adds translation invariance and reduces dimensionality","It prevents overfitting by adding noise","It normalizes the input"],ans:1,exp:"Max pooling takes the maximum in each window, making the model less sensitive to exact motif position (translation invariance) while reducing the spatial dimension."}
+];
+
+// ─── NAVIGATION ───
+document.querySelectorAll('nav button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('page-'+btn.dataset.page).classList.add('active');
+  });
+});
+
+// ─── NOTES ───
+function renderNotes(){
+  const sb=document.getElementById('notesSidebar');
+  const main=document.getElementById('notesMain');
+  sb.innerHTML=LECTURES.map(l=>`<div class="notes-sidebar-item" data-lec="${l.id}" onclick="scrollToLec(${l.id})"><b>Class ${l.id}</b><span class="ln">${l.title}</span></div>`).join('');
+  main.innerHTML=LECTURES.map(l=>{
+    const blocks=l.bullets.map(b=>`<div class="bullet-block"><h4>${b.heading}</h4><ul class="bl">${b.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`).join('');
+    return `<div class="lec-section" id="lec-${l.id}"><div class="lec-header"><span class="lec-num">Class ${l.id}</span><span class="lec-title">${l.title}</span><span class="tag">${l.date}</span></div>${blocks}</div>`;
+  }).join('');
+}
+function scrollToLec(id){
+  document.getElementById('lec-'+id).scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('.notes-sidebar-item').forEach(s=>s.classList.toggle('active',+s.dataset.lec===id));
+}
+
+// ─── GLOSSARY ───
+function renderGlossary(){
+  const f=document.getElementById('glFilter').value;
+  const s=document.getElementById('glSearch').value.toLowerCase();
+  const filtered=GLOSSARY.filter(g=>(f==='all'||g.lec==f)&&(g.term.toLowerCase().includes(s)||g.def.toLowerCase().includes(s)));
+  document.getElementById('glBody').innerHTML=filtered.map(g=>`<tr><td class="term-col">${g.term}</td><td class="lec-col"><span class="lec-badge">C${g.lec}</span></td><td class="def-col">${g.def}</td></tr>`).join('');
+}
+
+// ─── FORMULAS ───
+function renderFormulas(){
+  document.getElementById('formulaGrid').innerHTML=FORMULAS.map(f=>`<div class="formula-card"><h4>${f.name}</h4><div class="formula">${f.eq}</div><div class="formula-desc">${f.desc}</div></div>`).join('');
+}
+
+// ─── FLASHCARDS ───
+let fcCards=[],fcIdx=0,fcKnown=new Set();
+function initFlashcards(){
+  const f=document.getElementById('fcFilter').value;
+  fcCards=GLOSSARY.filter(g=>f==='all'||g.lec==f).slice();
+  fcIdx=0;fcKnown=new Set();showCard();
+}
+function shuffleCards(){fcCards.sort(()=>Math.random()-0.5);fcIdx=0;fcKnown=new Set();showCard();}
+function showCard(){
+  if(!fcCards.length)return;
+  const c=fcCards[fcIdx];
+  document.getElementById('fcFront').textContent=c.term;
+  document.getElementById('fcBack').textContent=c.def;
+  document.getElementById('fcCard').classList.remove('flipped');
+  document.getElementById('fcProgress').textContent=`${fcIdx+1} / ${fcCards.length}`;
+  updateKnownBar();
+}
+function fcNav(d){fcIdx=(fcIdx+d+fcCards.length)%fcCards.length;showCard();}
+function fcMark(known){
+  if(known)fcKnown.add(fcIdx);else fcKnown.delete(fcIdx);
+  fcNav(1);
+}
+function updateKnownBar(){
+  const k=fcKnown.size,u=fcCards.length-k;
+  document.getElementById('knownBar').innerHTML=`<span><span class="dot green"></span> Know: ${k}</span><span><span class="dot red"></span> Learning: ${u}</span>`;
+}
+
+// ─── QUIZ ───
+let quizQs=[],quizIdx=0,quizScore=0;
+function startQuiz(){
+  quizQs=QUIZ_QUESTIONS.slice().sort(()=>Math.random()-0.5).slice(0,10);
+  quizIdx=0;quizScore=0;showQuestion();
+}
+function showQuestion(){
+  if(quizIdx>=quizQs.length){showResult();return;}
+  const q=quizQs[quizIdx];
+  document.getElementById('quizArea').innerHTML=`
+    <div class="quiz-header"><span class="quiz-score-badge">Score: ${quizScore}/${quizIdx}</span><span style="color:var(--text2);font-size:0.85rem;">Question ${quizIdx+1} of ${quizQs.length}</span></div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${(quizIdx/quizQs.length)*100}%"></div></div>
+    <div class="q-card"><div class="q-lec">Class ${q.lec}</div><div class="q-text">${q.q}</div>
+    <div class="q-options">${q.opts.map((o,i)=>`<div class="q-opt" onclick="pickAnswer(${i})" data-i="${i}">${o}</div>`).join('')}</div>
+    <div class="q-explanation" id="qExp" style="display:none"></div></div>`;
+}
+function pickAnswer(i){
+  const q=quizQs[quizIdx];
+  document.querySelectorAll('.q-opt').forEach(o=>{o.classList.add('locked');if(+o.dataset.i===q.ans)o.classList.add('correct');if(+o.dataset.i===i&&i!==q.ans)o.classList.add('wrong');});
+  if(i===q.ans)quizScore++;
+  const exp=document.getElementById('qExp');exp.style.display='block';exp.textContent=q.exp;
+  setTimeout(()=>{quizIdx++;showQuestion();},2200);
+}
+function showResult(){
+  const pct=Math.round(quizScore/quizQs.length*100);
+  document.getElementById('quizArea').innerHTML=`<div class="quiz-result"><div class="result-circle"><span class="big">${pct}%</span><span class="small">${quizScore}/${quizQs.length}</span></div><h2>${pct>=80?'Great job!':pct>=60?'Good effort!':'Keep studying!'}</h2><button class="btn btn-primary" onclick="startQuiz()" style="margin-top:18px;">Try Again</button></div>`;
+}
+
+// ─── MATCHING ───
+let matchPairs=[],matchSel=null,matchCount=0,matchTimer=null,matchSec=0;
+function startMatching(){
+  clearInterval(matchTimer);matchSec=0;matchCount=0;
+  const pool=GLOSSARY.slice().sort(()=>Math.random()-0.5).slice(0,6);
+  matchPairs=pool.map((g,i)=>({id:i,term:g.term,def:g.def}));
+  const terms=matchPairs.slice().sort(()=>Math.random()-0.5);
+  const defs=matchPairs.slice().sort(()=>Math.random()-0.5);
+  const board=document.getElementById('matchBoard');
+  board.innerHTML=`<div class="match-col"><h3>Terms</h3>${terms.map(t=>`<div class="match-item" data-type="term" data-id="${t.id}" onclick="matchClick(this)">${t.term}</div>`).join('')}</div>
+  <div class="match-col"><h3>Definitions</h3>${defs.map(d=>`<div class="match-item" data-type="def" data-id="${d.id}" onclick="matchClick(this)">${d.def}</div>`).join('')}</div>`;
+  document.getElementById('matchScore').textContent='';
+  matchTimer=setInterval(()=>{matchSec++;document.getElementById('matchTimer').textContent=`${Math.floor(matchSec/60)}:${String(matchSec%60).padStart(2,'0')}`;},1000);
+}
+function matchClick(el){
+  if(el.classList.contains('matched'))return;
+  if(!matchSel){matchSel=el;el.classList.add('selected');return;}
+  if(matchSel.dataset.type===el.dataset.type){matchSel.classList.remove('selected');matchSel=el;el.classList.add('selected');return;}
+  if(matchSel.dataset.id===el.dataset.id){
+    matchSel.classList.remove('selected');matchSel.classList.add('matched');el.classList.add('matched');
+    matchCount++;matchSel=null;
+    if(matchCount===matchPairs.length){clearInterval(matchTimer);document.getElementById('matchScore').innerHTML=`All matched in <b>${document.getElementById('matchTimer').textContent}</b>!`;}
+  } else {
+    el.classList.add('wrong-flash');matchSel.classList.add('wrong-flash');
+    const s=matchSel;setTimeout(()=>{s.classList.remove('selected','wrong-flash');el.classList.remove('wrong-flash');},400);
+    matchSel=null;
+  }
+}
+
+// ─── INIT ───
+renderNotes();renderGlossary();renderFormulas();initFlashcards();
+</script>
+</body>
+</html>

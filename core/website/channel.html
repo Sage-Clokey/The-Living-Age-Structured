@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Living Age — Channel</title>
+  <style>
+    /* ============================================================
+       HOW TO ADD A VIDEO
+       ============================================================
+       1. Upload your video to YouTube
+       2. Copy the video ID from the URL
+          Example: youtube.com/watch?v=dQw4w9WgXcQ
+          The ID is everything after "v=" → dQw4w9WgXcQ
+       3. Find the video card below (search for the title)
+       4. Replace  VIDEO_ID_HERE  with your actual video ID
+       5. The placeholder disappears automatically once the ID is set
+       ============================================================ */
+
+    :root {
+      --bg:       #06080a;
+      --bg2:      #0a0e0a;
+      --bg3:      #0c1008;
+      --text:     #ddd9cc;
+      --dim:      #6a6860;
+      --green:    #5aab4d;
+      --gold:     #b8973a;
+      --line:     rgba(255,255,255,0.07);
+      --max:      1100px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-heading);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 48px;
+      background: rgba(6,8,10,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 0.7rem; letter-spacing: 4px;
+      color: var(--green); text-decoration: none; text-transform: uppercase;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      color: var(--dim); text-decoration: none;
+      font-size: 0.65rem; letter-spacing: 2px;
+      text-transform: uppercase; font-family: var(--font-mono);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    @media (max-width: 768px) {
+      nav { padding: 14px 20px; }
+      .nav-links { gap: 14px; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 140px 48px 80px;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.6rem; letter-spacing: 5px;
+      color: var(--green); text-transform: uppercase;
+      margin-bottom: 24px; opacity: 0.8;
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: normal; line-height: 1.1;
+      margin-bottom: 24px; max-width: 720px;
+    }
+    .hero h1 em { color: var(--gold); font-style: normal; }
+    .hero-sub {
+      font-size: 1rem; color: var(--dim);
+      font-style: italic; max-width: 560px;
+      border-top: 1px solid var(--line); padding-top: 24px;
+    }
+
+    /* ── SERIES SECTION ── */
+    .series {
+      padding: 80px 48px;
+      border-top: 1px solid var(--line);
+    }
+    .series.alt { background: var(--bg2); }
+    .series-inner { max-width: var(--max); margin: 0 auto; }
+
+    .series-header { margin-bottom: 48px; }
+    .series-tag {
+      font-family: var(--font-mono);
+      font-size: 0.58rem; letter-spacing: 4px;
+      color: var(--green); text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .series-title {
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      font-weight: normal; line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .series-desc {
+      font-size: 0.9rem; color: var(--dim);
+      font-style: italic; max-width: 580px;
+    }
+
+    /* ── VIDEO GRID ── */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2px;
+    }
+    .video-grid.featured {
+      grid-template-columns: 1fr;
+      max-width: 800px;
+    }
+
+    /* ── VIDEO CARD ── */
+    .video-card { background: var(--bg); }
+    .series.alt .video-card { background: var(--bg3); }
+
+    .video-embed {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 */
+      background: #0a0f0a;
+      overflow: hidden;
+    }
+    .video-embed iframe {
+      position: absolute;
+      inset: 0; width: 100%; height: 100%;
+      border: none;
+    }
+
+    /* Placeholder shown when VIDEO_ID_HERE is not replaced */
+    .video-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #090f09, #0c140c);
+      border: 1px solid var(--line);
+      cursor: default;
+    }
+    .placeholder-icon {
+      width: 48px; height: 48px;
+      border: 1.5px solid rgba(90,171,77,0.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .placeholder-icon::after {
+      content: '';
+      width: 0; height: 0;
+      border-style: solid;
+      border-width: 8px 0 8px 14px;
+      border-color: transparent transparent transparent rgba(90,171,77,0.4);
+      margin-left: 3px;
+    }
+    .placeholder-label {
+      font-family: var(--font-mono);
+      font-size: 0.55rem; letter-spacing: 3px;
+      color: var(--dim); text-transform: uppercase;
+    }
+
+    .video-info { padding: 20px 24px 28px; }
+    .video-num {
+      font-family: var(--font-mono);
+      font-size: 0.55rem; letter-spacing: 3px;
+      color: var(--dim); text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .video-title {
+      font-size: 1rem; font-weight: normal;
+      line-height: 1.35; margin-bottom: 10px;
+      color: var(--text);
+    }
+    .video-desc {
+      font-size: 0.82rem; color: var(--dim);
+      font-style: italic; line-height: 1.6;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 60px 48px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+    }
+    footer p {
+      font-family: var(--font-mono);
+      font-size: 0.6rem; letter-spacing: 3px;
+      color: var(--dim); text-transform: uppercase;
+    }
+    footer p + p { margin-top: 12px; }
+    footer a { color: var(--green); text-decoration: none; }
+
+    @media (max-width: 640px) {
+      .hero, .series { padding-left: 24px; padding-right: 24px; }
+      nav { padding: 14px 20px; }
+      .video-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-logo" href="index.html">Living Works</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="living-age.html">The Living Age</a></li>
+    <li><a href="channel.html" class="active">Channel</a></li>
+    <li><a href="true-republic.html">True Republic</a></li>
+    <li><a href="sagent.html">The Sagent</a></li>
+    <li><a href="spiral steward website/book.html">The Book</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <p class="hero-eyebrow">The Living Age — YouTube Channel</p>
+  <h1>Civilization is a <em>Living System.</em></h1>
+  <p class="hero-sub">Every video, every series — organized by theme. Add a YouTube ID to any card below to publish it to this page.</p>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     CHANNEL TRAILER
+     ════════════════════════════════════════════════════════════ -->
+<section class="series">
+  <div class="series-inner">
+    <div class="series-header">
+      <p class="series-tag">Start Here</p>
+      <h2 class="series-title">Channel Trailer</h2>
+      <p class="series-desc">Three minutes. Three doors. Every viewer finds themselves in one of them.</p>
+    </div>
+
+    <div class="video-grid featured">
+
+      <!-- ─────────────────────────────────────────────────────
+           TRAILER
+           Replace VIDEO_ID_HERE with your YouTube video ID
+           ───────────────────────────────────────────────────── -->
+      <div class="video-card">
+        <div class="video-embed">
+          <div class="video-placeholder">
+            <div class="placeholder-icon"></div>
+            <span class="placeholder-label">Coming Soon</span>
+          </div>
+          <!-- UNCOMMENT AND ADD ID WHEN READY:
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+            title="Welcome to The Living Age"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          -->
+        </div>
+        <div class="video-info">
+          <p class="video-num">Trailer</p>
+          <p class="video-title">Welcome to The Living Age</p>
+          <p class="video-desc">You were never supposed to be a machine. Something alive is taking the machine's place.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     LAUNCH TRILOGY
+     ════════════════════════════════════════════════════════════ -->
+<section class="series alt">
+  <div class="series-inner">
+    <div class="series-header">
+      <p class="series-tag">Series 01 — Start Here</p>
+      <h2 class="series-title">The Launch Trilogy</h2>
+      <p class="series-desc">Three videos released together. The hook, the pattern, the revelation.</p>
+    </div>
+
+    <div class="video-grid">
+
+      <!-- VIDEO 01 — Replace VIDEO_ID_HERE -->
+      <div class="video-card">
+        <div class="video-embed">
+          <div class="video-placeholder">
+            <div class="placeholder-icon"></div>
+            <span class="placeholder-label">Coming Soon</span>
+          </div>
+          <!-- UNCOMMENT AND ADD ID WHEN READY:
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+            title="Why Empires Always Collapse"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          -->
+        </div>
+        <div class="video-info">
+          <p class="video-num">01</p>
+          <p class="video-title">Why Empires Always Collapse</p>
+          <p class="video-desc">Every empire believed it was different. Every single one was wrong.</p>
+        </div>
+      </div>
+
+      <!-- VIDEO 02 — Replace VIDEO_ID_HERE -->
+      <div class="video-card">
+        <div class="video-embed">
+          <div class="video-placeholder">
+            <div class="placeholder-icon"></div>
+            <span class="placeholder-label">Coming Soon</span>
+          </div>
+          <!-- UNCOMMENT AND ADD ID WHEN READY:
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+            title="The Spiral vs The Block"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          -->
+        </div>
+        <div class="video-info">
+          <p class="video-num">02</p>
+          <p class="video-title">The Spiral vs The Block</p>
+          <p class="video-desc">Once you see it you cannot unsee it. Two patterns. One defines the machine age. One defines what comes next.</p>
+        </div>
+      </div>
+
+      <!-- VIDEO 03 — Replace VIDEO_ID_HERE -->
+      <div class="video-card">
+        <div class="video-embed">
+          <div class="video-placeholder">
+            <div class="placeholder-icon"></div>
+            <span class="placeholder-label">Coming Soon</span>
+          </div>
+          <!-- UNCOMMENT AND ADD ID WHEN READY:
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+            title="Civilization Is a Living System"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          -->
+        </div>
+        <div class="video-info">
+          <p class="video-num">03</p>
+          <p class="video-title">Civilization Is a Living System</p>
+          <p class="video-desc">Life already knows how to build worlds. We forgot how to listen.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     BRIDGE SERIES
+     ════════════════════════════════════════════════════════════ -->
+<section class="series">
+  <div class="series-inner">
+    <div class="series-header">
+      <p class="series-tag">Series 02 — The Bridge</p>
+      <h2 class="series-title">Where Does Law Come From?</h2>
+      <p class="series-desc">The thread connecting Jesus, Tertullian, John Wise, and the American ideal — and what happened when empire impersonated each one.</p>
+    </div>
+
+    <div class="video-grid">
+
+      <!-- BRIDGE 01 — Replace VIDEO_ID_HERE -->
+      <div class="video-card">
+        <div class="video-embed">
+          <div class="video-placeholder">
+            <div class="placeholder-icon"></div>
+            <span class="placeholder-label">Coming Soon</span>
+          </div>
+          <!-- UNCOMMENT AND ADD ID WHEN READY:
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+            title="Where Does Law Come From?"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          -->
+        </div>
+        <div class="video-info">
+          <p class="video-num">Bridge 01</p>
+          <p class="video-title">Where Does Law Come From?</p>
+          <p class="video-desc">The republic was never the government. It was the shared commitment to what is already true.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     STAR WARS SERIES
+     ════════════════════════════════════════════════════════════ -->
+<section class="series alt">
+  <div class="series-inner">
+    <div class="series-header">
+      <p class="series-tag">Series 03 — Mythology of Media</p>
+      <h2 class="series-title">Star Wars and the Living Order</h2>
+      <p class="series-desc">The saga is not entertainment. It is the oldest story — told again for those with eyes to see it. The series continues.</p>
+    </div>
+
+    <div class="video-grid">
+
+      <!-- SW EP 01 — Replace VIDEO_ID_HERE -->
+      <div class="video-card">
+        <div class="video-embed">
+          <div class="video-placeholder">
+            <div class="placeholder-icon"></div>
+            <span class="placeholder-label">Coming Soon</span>
+          </div>
+          <!-- UNCOMMENT AND ADD ID WHEN READY:
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+            title="The Force as Natural Law"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          -->
+        </div>
+        <div class="video-info">
+          <p class="video-num">SW — 01</p>
+          <p class="video-title">The Force as Natural Law</p>
+          <p class="video-desc">The Force does not belong to the Jedi. It belongs to life itself. You already are one.</p>
+        </div>
+      </div>
+
+      <!-- SW EP 02 — Replace VIDEO_ID_HERE -->
+      <div class="video-card">
+        <div class="video-embed">
+          <div class="video-placeholder">
+            <div class="placeholder-icon"></div>
+            <span class="placeholder-label">Coming Soon</span>
+          </div>
+          <!-- UNCOMMENT AND ADD ID WHEN READY:
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+            title="Qui-Gon and the Living Force"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          -->
+        </div>
+        <div class="video-info">
+          <p class="video-num">SW — 02</p>
+          <p class="video-title">Qui-Gon and the Living Force</p>
+          <p class="video-desc">He was the only one truly listening. He was right. Every time.</p>
+        </div>
+      </div>
+
+      <!-- SW EP 03 — Replace VIDEO_ID_HERE -->
+      <div class="video-card">
+        <div class="video-embed">
+          <div class="video-placeholder">
+            <div class="placeholder-icon"></div>
+            <span class="placeholder-label">Coming Soon</span>
+          </div>
+          <!-- UNCOMMENT AND ADD ID WHEN READY:
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+            title="How the Republic Became the Empire"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          -->
+        </div>
+        <div class="video-info">
+          <p class="video-num">SW — 03</p>
+          <p class="video-title">How the Republic Became the Empire</p>
+          <p class="video-desc">So this is how liberty dies — with thunderous applause. The face lies. The structure doesn't.</p>
+        </div>
+      </div>
+
+      <!-- SW EP 04 — Replace VIDEO_ID_HERE -->
+      <div class="video-card">
+        <div class="video-embed">
+          <div class="video-placeholder">
+            <div class="placeholder-icon"></div>
+            <span class="placeholder-label">Coming Soon</span>
+          </div>
+          <!-- UNCOMMENT AND ADD ID WHEN READY:
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+            title="The Jedi as the Institutional Church"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          -->
+        </div>
+        <div class="video-info">
+          <p class="video-num">SW — 04</p>
+          <p class="video-title">The Jedi as the Institutional Church</p>
+          <p class="video-desc">They stopped asking what the Force required — and started asking what the Senate needed.</p>
+        </div>
+      </div>
+
+      <!-- SW EP 05 — Replace VIDEO_ID_HERE -->
+      <div class="video-card">
+        <div class="video-embed">
+          <div class="video-placeholder">
+            <div class="placeholder-icon"></div>
+            <span class="placeholder-label">Coming Soon</span>
+          </div>
+          <!-- UNCOMMENT AND ADD ID WHEN READY:
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+            title="Anakin and the Scapegoat Mechanism"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          -->
+        </div>
+        <div class="video-info">
+          <p class="video-num">SW — 05</p>
+          <p class="video-title">Anakin and the Scapegoat Mechanism</p>
+          <p class="video-desc">The scapegoat is always someone the system failed first. Look past the mask.</p>
+        </div>
+      </div>
+
+      <!-- SW EP 06 — Replace VIDEO_ID_HERE -->
+      <div class="video-card">
+        <div class="video-embed">
+          <div class="video-placeholder">
+            <div class="placeholder-icon"></div>
+            <span class="placeholder-label">Coming Soon</span>
+          </div>
+          <!-- UNCOMMENT AND ADD ID WHEN READY:
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+            title="Luke and the Prestige"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          -->
+        </div>
+        <div class="video-info">
+          <p class="video-num">SW — 06</p>
+          <p class="video-title">Luke and the Prestige</p>
+          <p class="video-desc">He put down the weapon. He called to the living thing underneath. That is the move.</p>
+        </div>
+      </div>
+
+      <!-- SW EP 07 — Replace VIDEO_ID_HERE -->
+      <div class="video-card">
+        <div class="video-embed">
+          <div class="video-placeholder">
+            <div class="placeholder-icon"></div>
+            <span class="placeholder-label">Coming Soon</span>
+          </div>
+          <!-- UNCOMMENT AND ADD ID WHEN READY:
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+            title="The Mandalorian and the Living Order"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          -->
+        </div>
+        <div class="video-info">
+          <p class="video-num">SW — 07</p>
+          <p class="video-title">The Mandalorian and the Living Order</p>
+          <p class="video-desc">Being a Mandalorian isn't an ethnicity. It is a creed. This is the Way.</p>
+        </div>
+      </div>
+
+      <!-- SW EP 08 — Replace VIDEO_ID_HERE -->
+      <div class="video-card">
+        <div class="video-embed">
+          <div class="video-placeholder">
+            <div class="placeholder-icon"></div>
+            <span class="placeholder-label">Coming Soon</span>
+          </div>
+          <!-- UNCOMMENT AND ADD ID WHEN READY:
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+            title="Andor and the True Republic"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          -->
+        </div>
+        <div class="video-info">
+          <p class="video-num">SW — 08</p>
+          <p class="video-title">Andor and the True Republic</p>
+          <p class="video-desc">I burn my life to make a sunrise I'll never see. The light was never losing — it was laying its trap.</p>
+        </div>
+      </div>
+
+      <!-- SW EP 09 — Replace VIDEO_ID_HERE -->
+      <div class="video-card">
+        <div class="video-embed">
+          <div class="video-placeholder">
+            <div class="placeholder-icon"></div>
+            <span class="placeholder-label">Coming Soon</span>
+          </div>
+          <!-- UNCOMMENT AND ADD ID WHEN READY:
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+            title="The Order That Kills"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          -->
+        </div>
+        <div class="video-info">
+          <p class="video-num">SW — 09</p>
+          <p class="video-title">The Order That Kills</p>
+          <p class="video-desc">Stop holding up the dam. The river knows where it is going. It always did.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     MYTHOLOGY OF MEDIA — ASSASSIN'S CREED
+     ════════════════════════════════════════════════════════════ -->
+<section class="series">
+  <div class="series-inner">
+    <div class="series-header">
+      <p class="series-tag">Series 03 — Mythology of Media</p>
+      <h2 class="series-title">Assassin's Creed</h2>
+      <p class="series-desc">Nothing is true. Everything is permitted. The most misunderstood creed in gaming — and the most theologically precise.</p>
+    </div>
+
+    <div class="video-grid">
+
+      <!-- AC 01 — Replace VIDEO_ID_HERE -->
+      <div class="video-card">
+        <div class="video-embed">
+          <div class="video-placeholder">
+            <div class="placeholder-icon"></div>
+            <span class="placeholder-label">Coming Soon</span>
+          </div>
+          <!-- UNCOMMENT AND ADD ID WHEN READY:
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+            title="Nothing is True, Everything is Permitted"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          -->
+        </div>
+        <div class="video-info">
+          <p class="video-num">AC — 01</p>
+          <p class="video-title">Nothing is True, Everything is Permitted</p>
+          <p class="video-desc">We work in the dark to serve the light. Many members. One body.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     EIGHT PILLARS
+     ════════════════════════════════════════════════════════════ -->
+<section class="series alt">
+  <div class="series-inner">
+    <div class="series-header">
+      <p class="series-tag">Series 04 — Eight Pillars</p>
+      <h2 class="series-title">How Every Tradition Points at the Same Living Order</h2>
+      <p class="series-desc">Islam, Judaism, Christianity, Hinduism, Buddhism, Taoism, Confucianism — different members of the same body.</p>
+    </div>
+
+    <div class="video-grid">
+
+      <!-- 8P 01 — Replace VIDEO_ID_HERE -->
+      <div class="video-card">
+        <div class="video-embed">
+          <div class="video-placeholder">
+            <div class="placeholder-icon"></div>
+            <span class="placeholder-label">Coming Soon</span>
+          </div>
+          <!-- UNCOMMENT AND ADD ID WHEN READY:
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+            title="1 Samuel 8: The Day Israel Chose the Block"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          -->
+        </div>
+        <div class="video-info">
+          <p class="video-num">Pillars — 01</p>
+          <p class="video-title">1 Samuel 8: The Day Israel Chose the Block</p>
+          <p class="video-desc">The thorn always promises shade. It always delivers fire. No king but the Creator.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p>The Living Age — A Spiral Steward Project</p>
+  <p>Civilization as a Living System</p>
+  <p style="margin-top:20px;">
+    <a href="index.html">Home</a> &nbsp;·&nbsp;
+    <a href="living-age.html">The Initiative</a> &nbsp;·&nbsp;
+    <a href="true-republic.html">True Republic</a> &nbsp;·&nbsp;
+    <a href="sagent.html">The Sagent</a> &nbsp;·&nbsp;
+    <a href="spiral steward website/book.html">The Book</a>
+  </p>
+</footer>
+
+</body>
+</html>

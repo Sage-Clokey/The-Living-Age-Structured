@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Executive Summary — Living Works by the Word</title>
+<style>
+  :root {
+    --bg:    #07090a;
+    --bg2:   #0c0f0c;
+    --text:  #ddd9cc;
+    --dim:   #6a6860;
+    --green: #7a9e7e;
+    --gold:  #b8973a;
+    --line:  rgba(255,255,255,0.07);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-heading);
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    padding: 140px 48px 80px;
+    border-bottom: 1px solid var(--line);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 5px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: normal;
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+
+  h1 em { color: var(--gold); font-style: normal; }
+
+  .header-sub {
+    font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+    color: var(--dim);
+    font-style: italic;
+    max-width: 640px;
+    line-height: 1.75;
+    font-family: var(--font-body);
+  }
+
+  /* ── ONE-PAGER CONTAINER ── */
+  .onepager {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 48px 96px;
+  }
+
+  /* ── SECTION BLOCKS ── */
+  .block {
+    padding: 56px 0;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 48px;
+    align-items: start;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .block.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 760px) { .block { grid-template-columns: 1fr; gap: 24px; } }
+
+  .block-label {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 3px;
+    color: var(--dim);
+    text-transform: uppercase;
+    padding-top: 5px;
+    line-height: 2;
+  }
+
+  .block-label strong {
+    display: block;
+    font-size: 0.65rem;
+    color: var(--green);
+    margin-bottom: 4px;
+    font-weight: normal;
+  }
+
+  h2 {
+    font-size: clamp(1.25rem, 2.5vw, 1.8rem);
+    font-weight: normal;
+    line-height: 1.25;
+    margin-bottom: 16px;
+    max-width: 640px;
+  }
+
+  h2 em { color: var(--gold); font-style: normal; }
+
+  p {
+    color: var(--dim);
+    font-size: 0.94rem;
+    line-height: 1.85;
+    max-width: 660px;
+    margin-bottom: 16px;
+    font-family: var(--font-body);
+  }
+
+  p strong { color: var(--text); font-weight: normal; }
+
+  /* ── TWO-COL INSIDE BLOCK ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; gap: 24px; } }
+
+  /* ── MARKET NUMBERS STRIP ── */
+  .numbers-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 24px;
+  }
+
+  @media (max-width: 620px) { .numbers-strip { grid-template-columns: 1fr; } }
+
+  .num-block {
+    padding: 28px 24px;
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,0.015);
+  }
+
+  .num-big {
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+
+  .num-label {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 2px;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .num-block p { font-size: 0.78rem; margin-bottom: 0; line-height: 1.5; }
+
+  /* ── TECH PILLARS ── */
+  .pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 16px;
+  }
+
+  @media (max-width: 560px) { .pillars { grid-template-columns: 1fr; } }
+
+  .pillar {
+    padding: 24px 22px;
+    border: 1px solid var(--line);
+  }
+
+  .pillar-num {
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .pillar h3 {
+    font-size: 0.9rem;
+    font-weight: normal;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .pillar p { font-size: 0.8rem; margin-bottom: 0; line-height: 1.6; }
+
+  /* ── REVENUE TABLE ── */
+  .rev-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--line);
+    margin-top: 16px;
+  }
+
+  .rev-table th {
+    font-family: var(--font-mono);
+    font-size: 0.54rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--dim);
+    padding: 12px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    background: rgba(255,255,255,0.02);
+  }
+
+  .rev-table td {
+    padding: 13px 18px;
+    font-size: 0.86rem;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-body);
+    color: var(--dim);
+    line-height: 1.45;
+  }
+
+  .rev-table td:first-child { color: var(--text); }
+  .rev-table td.price { color: var(--green); }
+  .rev-table tr:last-child td { border-bottom: none; }
+
+  /* ── TWO-ENGINE LAYOUT ── */
+  .engine-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 16px;
+  }
+
+  @media (max-width: 600px) { .engine-pair { grid-template-columns: 1fr; } }
+
+  .engine-card {
+    padding: 32px 28px;
+    border: 1px solid var(--line);
+  }
+
+  .engine-card.tech { border-color: rgba(122,158,126,0.2); background: rgba(122,158,126,0.03); }
+  .engine-card.culture { border-color: rgba(184,151,58,0.2); background: rgba(184,151,58,0.03); }
+
+  .engine-tag {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .engine-card.tech .engine-tag { color: var(--green); }
+  .engine-card.culture .engine-tag { color: var(--gold); }
+
+  .engine-card h3 {
+    font-size: 1.05rem;
+    font-weight: normal;
+    color: var(--text);
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+
+  .engine-card p { font-size: 0.85rem; margin-bottom: 0; line-height: 1.7; }
+
+  /* ── DOWNLOADS ── */
+  .downloads {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .dl-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    border: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--dim);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .dl-link:hover { color: var(--green); border-color: rgba(122,158,126,0.35); }
+
+  .dl-link::before { content: '↓'; color: var(--green); }
+
+  /* ── CLOSE ── */
+  .close-band {
+    text-align: center;
+    padding: 96px 48px;
+    border-top: 1px solid var(--line);
+    background: var(--bg2);
+  }
+
+  .close-band blockquote {
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    font-style: italic;
+    max-width: 640px;
+    margin: 0 auto 32px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .close-band blockquote em { color: var(--gold); font-style: normal; }
+
+  .close-band cite {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 3px;
+    color: var(--dim);
+    text-transform: uppercase;
+    font-style: normal;
+  }
+
+  .btn-row { margin-top: 40px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  .btn {
+    display: inline-block;
+    padding: 12px 28px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.22s;
+  }
+
+  .btn-gold { background: var(--gold); color: #07090a; border: 1px solid var(--gold); }
+  .btn-gold:hover { background: #c9a227; }
+  .btn-ghost { border: 1px solid rgba(255,255,255,0.14); color: var(--dim); }
+  .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.3); }
+</style>
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="site-nav">
+  <a class="nav-logo" href="living-age.html">Living Works by the Word</a>
+  <ul class="nav-links">
+    <li><a href="living-age.html">The Living Age</a></li>
+    <li><a href="index.html">Architecture</a></li>
+    <li><a href="spiral-steward.html">Spiral Steward</a></li>
+    <li><a href="moral-framework.html">Moral Framework</a></li>
+    <li><a href="sagent.html">The Sagent</a></li>
+    <li><a href="true-republic.html">True Republic</a></li>
+    <li><a href="pitch.html">Investor Hub</a></li>
+    <li><a href="competitive.html">Competitive</a></li>
+    <li><a href="design-lab.html">Design Lab</a></li>
+    <li><a href="biology-voluntaryism.html">Biology</a></li>
+    <li><a href="spiral steward website/book.html">The Book</a></li>
+  </ul>
+</nav>
+
+<!-- HEADER IMAGE -->
+<div style="position:relative;overflow:hidden;height:clamp(240px,35vw,500px);margin-top:60px;border-bottom:1px solid var(--line);">
+  <img src="media/graphics/architecture/ChatGPT Image Feb 28, 2026, 02_38_41 PM.png" alt="Living Architecture" style="width:100%;height:100%;object-fit:cover;object-position:center 40%;display:block;filter:brightness(0.45) saturate(0.8);">
+  <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(7,9,10,0.2) 0%,rgba(7,9,10,0.4) 60%,rgba(7,9,10,0.95) 100%);"></div>
+  <div style="position:absolute;bottom:36px;left:48px;right:48px;">
+    <div style="font-family:'Courier New',monospace;font-size:0.58rem;letter-spacing:5px;color:var(--green);text-transform:uppercase;margin-bottom:10px;">The Living Age Initiative</div>
+    <div style="font-size:clamp(1.4rem,4vw,3rem);color:var(--text);font-weight:normal;line-height:1.15;font-family:Georgia,serif;">Executive Summary</div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="page-header" style="padding-top:48px;">
+  <div class="eyebrow">Executive Summary — The Living Age Initiative</div>
+  <h1>Everything you need<br>to understand <em>Living Works</em>.</h1>
+  <p class="header-sub">
+    A single-scroll overview of the mission, technology, market opportunity, revenue model,
+    and cultural engine behind the Living Age Initiative.
+  </p>
+</div>
+
+<!-- ONE-PAGER -->
+<div class="onepager">
+
+  <!-- MISSION -->
+  <div class="block">
+    <div class="block-label">
+      <strong>01</strong>
+      Mission
+    </div>
+    <div>
+      <h2>Build the tools that let humanity<br>design <em>with</em> living systems.</h2>
+      <p>
+        Living Works is an AI-driven platform for designing biological systems, organisms, and living materials.
+        Where traditional engineering builds rigid objects, Living Works designs <strong>growth processes</strong> —
+        the rules by which forms emerge from living matter.
+      </p>
+      <p>
+        The mission spans technology and culture: build the design tools, and build the narrative movement that
+        makes people understand why those tools matter.
+      </p>
+    </div>
+  </div>
+
+  <!-- THE PROBLEM -->
+  <div class="block">
+    <div class="block-label">
+      <strong>02</strong>
+      The Problem
+    </div>
+    <div>
+      <h2>Civilization still builds with <em>blocks</em>.</h2>
+      <p>
+        Modern construction, manufacturing, and infrastructure are based on industrial-age engineering —
+        assemble rigid components, consume massive energy, replace when broken. Meanwhile, living systems
+        self-assemble, self-repair, adapt, and grow without centralized control.
+      </p>
+      <p>
+        Our current tools only allow us to <strong>analyze</strong> biology. We have no design interface for
+        working with life as a creative medium. That is the gap Living Works fills.
+      </p>
+    </div>
+  </div>
+
+  <!-- MARKET -->
+  <div class="block">
+    <div class="block-label">
+      <strong>03</strong>
+      Market Size
+    </div>
+    <div>
+      <h2>$45B+ addressable across<br><em>four converging industries</em>.</h2>
+      <div class="numbers-strip">
+        <div class="num-block">
+          <div class="num-big">$20B+</div>
+          <div class="num-label">Synthetic Biology</div>
+          <p>AI-driven organism engineering for pharmaceuticals, agriculture, and manufacturing.</p>
+        </div>
+        <div class="num-block">
+          <div class="num-big">$10B+</div>
+          <div class="num-label">AI Drug Design</div>
+          <p>Generative models for proteins and therapeutic molecules.</p>
+        </div>
+        <div class="num-block">
+          <div class="num-big">$15B+</div>
+          <div class="num-label">Bioinformatics Software</div>
+          <p>Enterprise tools managing biological research data and pipelines.</p>
+        </div>
+      </div>
+      <p style="margin-top:20px;">
+        <strong>Plus</strong>: the emerging programmable living materials market — bio-grown buildings,
+        carbon-absorbing cities, self-repairing materials — with no dominant design platform yet.
+        Living Works is positioned as the first mover in this space.
+      </p>
+    </div>
+  </div>
+
+  <!-- TECHNOLOGY -->
+  <div class="block">
+    <div class="block-label">
+      <strong>04</strong>
+      Technology
+    </div>
+    <div>
+      <h2>Four core technologies<br>building a new design paradigm.</h2>
+      <div class="pillars">
+        <div class="pillar">
+          <img src="media/graphics/architecture/07_mycelium_dome_3d.png" alt="Morphogenesis Engine" style="width:calc(100% + 44px);margin:-24px -22px 14px;display:block;height:90px;object-fit:cover;object-position:center;filter:brightness(0.55) saturate(0.75);border-bottom:1px solid var(--line);">
+          <div class="pillar-num">01 — Core</div>
+          <h3>Morphogenesis Engine</h3>
+          <p>3D simulation of biological growth: branching systems, nutrient diffusion,
+            biomechanical forces, cellular rules. The form emerges from the simulation.</p>
+        </div>
+        <div class="pillar">
+          <img src="ai-tools/morphogenesis-engine/outputs/frames/frame_0070.png" alt="Natural Language Bio Design" style="width:calc(100% + 44px);margin:-24px -22px 14px;display:block;height:90px;object-fit:cover;object-position:center;filter:brightness(0.6) saturate(0.75);border-bottom:1px solid var(--line);">
+          <div class="pillar-num">02 — Interface</div>
+          <h3>Natural Language Bio Design</h3>
+          <p>Describe a biological structure in plain language. The system generates growth algorithms,
+            gene pathway suggestions, and structural simulations.</p>
+        </div>
+        <div class="pillar">
+          <img src="media/graphics/architecture/04_branching_tree_structure.png" alt="BioCAD Platform" style="width:calc(100% + 44px);margin:-24px -22px 14px;display:block;height:90px;object-fit:cover;object-position:center 25%;filter:brightness(0.55) saturate(0.75);border-bottom:1px solid var(--line);">
+          <div class="pillar-num">03 — Platform</div>
+          <h3>BioCAD Environment</h3>
+          <p>Unified workspace for organism blueprinting, gene network visualization,
+            tissue architecture modeling, and ecosystem design.</p>
+        </div>
+        <div class="pillar">
+          <img src="media/graphics/architecture/02_mycelium_network_plan.png" alt="Living Materials Library" style="width:calc(100% + 44px);margin:-24px -22px 14px;display:block;height:90px;object-fit:cover;object-position:center;filter:brightness(0.55) saturate(0.75);border-bottom:1px solid var(--line);">
+          <div class="pillar-num">04 — Library</div>
+          <h3>Living Materials Library</h3>
+          <p>Curated database of biological building blocks — mycelium, plant scaffolds,
+            bacterial cellulose, coral mineralization — each with growth rules.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TWO ENGINES -->
+  <div class="block">
+    <div class="block-label">
+      <strong>05</strong>
+      Two Engines
+    </div>
+    <div>
+      <h2>Technology and philosophy<br>reinforce each other.</h2>
+      <div class="engine-pair">
+        <div class="engine-card tech">
+          <div class="engine-tag">Technology Engine</div>
+          <h3>"Living Works builds the tools."</h3>
+          <p>The platform enables biological design across scales — from genome to architecture.
+            SaaS subscriptions, enterprise services, and IP licensing create revenue.
+            Real-world solutions: living buildings, carbon-negative materials, programmable ecosystems.</p>
+        </div>
+        <div class="engine-card culture">
+          <div class="engine-tag">Cultural Engine</div>
+          <h3>"Spiral Stewards guide how they are used."</h3>
+          <p>The Sagent Creed videos, True Republic podcast, and 8 Pillars series create cultural
+            demand for biological design — the same way "Think Different" created demand for personal
+            computers before people understood why they needed them.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVENUE MODEL -->
+  <div class="block">
+    <div class="block-label">
+      <strong>06</strong>
+      Revenue Model
+    </div>
+    <div>
+      <h2>Three streams:<br>SaaS, services, <em>IP licensing</em>.</h2>
+      <table class="rev-table">
+        <thead>
+          <tr>
+            <th>Stream</th>
+            <th>Target Customers</th>
+            <th>Price / Terms</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Academic SaaS</td>
+            <td>Universities, synthetic biology labs</td>
+            <td class="price">$50–$200/mo</td>
+          </tr>
+          <tr>
+            <td>Startup SaaS</td>
+            <td>Biotech companies, materials startups</td>
+            <td class="price">$500/mo</td>
+          </tr>
+          <tr>
+            <td>Enterprise SaaS</td>
+            <td>Architecture firms, pharmaceutical companies</td>
+            <td class="price">$2,000+/mo</td>
+          </tr>
+          <tr>
+            <td>AI Design Services</td>
+            <td>Materials companies, construction firms, biotech</td>
+            <td class="price">Project-based</td>
+          </tr>
+          <tr>
+            <td>IP Licensing</td>
+            <td>Growth algorithm patents, organism systems</td>
+            <td class="price">Recurring royalties</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ROADMAP -->
+  <div class="block">
+    <div class="block-label">
+      <strong>07</strong>
+      Roadmap
+    </div>
+    <div>
+      <h2>From prototype to ecosystem<br>in <em>three phases</em>.</h2>
+      <div class="two-col">
+        <div>
+          <p style="font-family:'Courier New',monospace;font-size:0.6rem;letter-spacing:3px;color:var(--gold);margin-bottom:10px;text-transform:uppercase;">Phase 1 · Years 1–2</p>
+          <p><strong>Build the foundation.</strong> Morphogenesis engine, AI design interface, basic BioCAD platform.
+            Early adopters: universities and synthetic biology labs. Academic SaaS subscriptions.</p>
+        </div>
+        <div>
+          <p style="font-family:'Courier New',monospace;font-size:0.6rem;letter-spacing:3px;color:var(--gold);margin-bottom:10px;text-transform:uppercase;">Phase 2 · Years 3–5</p>
+          <p><strong>Expand to industry.</strong> Living material design, architecture simulation, advanced AI models.
+            Partner with architecture firms and materials companies. Launch enterprise tier.</p>
+        </div>
+      </div>
+      <div style="margin-top:24px;">
+        <p style="font-family:'Courier New',monospace;font-size:0.6rem;letter-spacing:3px;color:var(--gold);margin-bottom:10px;text-transform:uppercase;">Phase 3 · Years 5–10</p>
+        <p><strong>Enable the Living Age.</strong> Programmable ecosystems, organism-scale design, and living infrastructure.
+          The platform becomes the standard design environment for biological systems across industries.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOWNLOADS -->
+  <div class="block">
+    <div class="block-label">
+      <strong>08</strong>
+      Documents
+    </div>
+    <div>
+      <h2>Full documentation<br>available for download.</h2>
+      <div class="downloads">
+        <a href="business plan pitch prompts/01_Business_Plan_Living_Age_Initiative.pdf" class="dl-link" target="_blank">Business Plan</a>
+        <a href="business plan pitch prompts/02_Competitive_Analysis.pdf" class="dl-link" target="_blank">Competitive Analysis</a>
+        <a href="business plan pitch prompts/03_Living_Works_Spiral_Steward.pdf" class="dl-link" target="_blank">Spiral Steward Brief</a>
+        <a href="business plan pitch prompts/04_Pitch_Deck.pdf" class="dl-link" target="_blank">Pitch Deck PDF</a>
+        <a href="business plan pitch prompts/05_Presentation_Overview.pdf" class="dl-link" target="_blank">Presentation Overview</a>
+        <a href="business plan pitch prompts/Living_Works_Pitch_Deck_v2.pptx" class="dl-link" target="_blank">Pitch Deck PPTX</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CLOSE BAND -->
+<div class="close-band" style="position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:url('../media/graphics/architecture/ChatGPT Image Feb 28, 2026, 02_37_12 PM.png');background-size:cover;background-position:center 30%;opacity:0.14;filter:grayscale(0.15) saturate(0.85);z-index:0;pointer-events:none;"></div>
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(12,15,12,0.3) 0%,rgba(12,15,12,0.9) 70%);z-index:0;pointer-events:none;"></div>
+  <blockquote style="position:relative;z-index:1;">
+    "Industrial civilization built with <em>blocks</em>.<br>
+    The next civilization will build with <em>living systems</em>."
+  </blockquote>
+  <cite style="position:relative;z-index:1;">Living Works by the Word — The Living Age Initiative</cite>
+  <div class="btn-row" style="position:relative;z-index:1;">
+    <a href="pitch.html" class="btn btn-gold">Full Investor Hub →</a>
+    <a href="competitive.html" class="btn btn-ghost">Competitive Landscape</a>
+    <a href="story.html" class="btn btn-ghost">The Story</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="site-footer">
+  <span class="footer-brand">Living Works by the Word &middot; Sage Clokey &middot; 2026</span>
+  <nav class="footer-links">
+    <a href="living-age.html">The Living Age</a>
+    <a href="index.html">Architecture</a>
+    <a href="spiral-steward.html">Spiral Steward</a>
+    <a href="moral-framework.html">Moral Framework</a>
+    <a href="sagent.html">The Sagent</a>
+    <a href="true-republic.html">True Republic</a>
+    <a href="pitch.html">Investor Hub</a>
+    <a href="competitive.html">Competitive</a>
+    <a href="summary.html">Summary</a>
+    <a href="story.html">The Story</a>
+    <a href="design-lab.html">Design Lab</a>
+    <a href="spiral steward website/book.html">The Book</a>
+  </nav>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.block').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+/*
+ * site.css — Shared styles for Living Works by the Word
+ * Loaded by every page to ensure a coherent site identity.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
+
+/* ── Shared design tokens ─────────────────────────────────────────────────── */
+:root {
+  --bg:           #07090a;
+  --bg2:          #0c0f0c;
+  --bg3:          #0c1008;
+  --text:         #ddd9cc;
+  --dim:          #6a6860;
+  --green:        #7a9e7e;
+  --gold:         #b8973a;
+  --flame:        #4aaa5a;
+  --red:          #9e5a4a;
+  --line:         rgba(255,255,255,0.07);
+  --max:          680px;
+  --font-heading: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Jost', 'Helvetica Neue', system-ui, sans-serif;
+  --font-mono:    'Courier New', monospace;
+}
+
+/* ── Baseline UX ──────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+:focus-visible {
+  outline: 1px solid var(--green);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Site nav ─────────────────────────────────────────────────────────────── */
+#site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 48px;
+  background: rgba(7,9,10,0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+#site-nav .nav-logo {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 4px;
+  color: var(--green);
+  text-decoration: none;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
+#site-nav .nav-logo:hover { color: var(--text); }
+
+#site-nav .nav-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#site-nav .nav-links a {
+  color: var(--dim);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+#site-nav .nav-links a:hover  { color: var(--text); }
+#site-nav .nav-links a.active { color: var(--green); }
+
+/* ── Site footer ──────────────────────────────────────────────────────────── */
+#site-footer {
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 36px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: var(--bg2);
+}
+
+#site-footer .footer-brand {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+#site-footer .footer-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+#site-footer .footer-links a {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--dim);
+  text-decoration: none;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+}
+
+#site-footer .footer-links a:hover { color: var(--green); border-color: var(--green); }
+
+/* ── Mobile nav ───────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  #site-nav { padding: 14px 28px; }
+  #site-nav .nav-links { gap: 18px; }
+  #site-nav .nav-links a { font-size: 0.55rem; }
+}
+
+@media (max-width: 720px) {
+  #site-nav .nav-links { display: none; }
+  #site-footer { flex-direction: column; align-items: flex-start; }
+}

@@ -1,0 +1,52 @@
+=================================================================
+ADAPTIVE ASSEMBLY REPORT
+=================================================================
+Target chassis:    ganoderma (eukaryote_fungal)
+Parts assembled:   3
+Parts flagged:     0
+Overall confidence:0.71
+ATP load estimate: medium
+Construct length:  3692bp
+
+PATHWAY CONFLICTS (1):
+  [HIGH] substrate_competition: ATP
+    4 pathways compete for ATP: Bacterial cellulose synthesis, WUS/CLV3 meristem growth, Sonic hedgehog 
+    → Use inducible promoters to run pathways sequentially, or supplement ATP externally. For UDP-sugar co
+
+ASSEMBLED PARTS:
+
+  [bcsA] from komagataeibacter — cellulose
+    Promoter:    TEF1
+    Kozak/RBS:   none
+    CDS length:  0bp
+    Terminator:  CYC1_term
+    CAI:         0.000
+    Confidence:  0.35
+
+  [WUS] from arabidopsis — growth
+    Promoter:    TEF1
+    Kozak/RBS:   none
+    CDS length:  1248bp
+    Terminator:  CYC1_term
+    CAI:         0.651
+    Confidence:  0.87
+
+  [Col1a1] from mouse — tensile-strength
+    Promoter:    TEF1
+    Kozak/RBS:   none
+    CDS length:  900bp
+    Terminator:  CYC1_term
+    CAI:         0.662
+    Confidence:  0.92
+
+MODIFICATION LOG (9 changes):
+  [pathway   ] [all parts]  substrate_competition: 4 pathways compete for ATP: Bacterial cellulose synthesis, WUS/CLV3 meristem gro
+  [regulatory] bcsA         promoter_replacement: Cross-kingdom transfer requires full regulatory replacement
+  [assembly  ] bcsA         cassette_built: expression cassette assembled with compatible regulatory elements
+  [regulatory] WUS          promoter_replacement: Regulatory incompatibility detected: promoter_mismatch
+  [codon     ] WUS          codon_optimization: 28 rare codons rewritten for ganoderma (28 conflicts resolved)
+  [assembly  ] WUS          cassette_built: expression cassette assembled with compatible regulatory elements
+  [regulatory] Col1a1       promoter_replacement: Regulatory incompatibility detected: rbs_mismatch
+  [codon     ] Col1a1       codon_optimization: 6 rare codons rewritten for ganoderma (6 conflicts resolved)
+  [assembly  ] Col1a1       cassette_built: expression cassette assembled with compatible regulatory elements
+=================================================================

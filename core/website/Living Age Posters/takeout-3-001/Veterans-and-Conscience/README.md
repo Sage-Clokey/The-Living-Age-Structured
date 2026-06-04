@@ -1,0 +1,3 @@
+# Veterans and Conscience
+
+Honor, sacrifice, and the moral weight of service. This folder contains the Veterans Day series and related images exploring what it truly means to serve — not institutions, not orders, but conscience. "Good soldiers follow conscience" is the governing idea: that genuine military virtue is inseparable from moral courage, and that the highest form of service is the refusal to obey unjust commands. These images honor veterans not through uncritical celebration but through the harder, truer tribute of holding their sacrifice to the standard of conscience. Service without conscience is just obedience. Service with it is nobility.

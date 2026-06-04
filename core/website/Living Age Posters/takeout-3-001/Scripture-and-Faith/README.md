@@ -1,0 +1,3 @@
+# Scripture and Faith
+
+The sacred texts and their living application. This folder holds images that draw directly from the Bible, the Quran, and the broader tradition of Abrahamic faith — not as religious doctrine but as living wisdom literature that speaks to the current moment. Imagery includes meditations on the discipline of death (dying to self as prerequisite for transformation), bioethics seen through a theological lens, the eagle as symbol of divine vision and sovereign flight, and the two lineages — spiritual and biological — that define human identity. These images do not separate faith from reason; they insist the deepest truths require both.

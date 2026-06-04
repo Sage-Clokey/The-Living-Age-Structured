@@ -1,0 +1,213 @@
+{
+  "Chickpea_GenesisKalkee": {
+    "growth_rate_multiplier": 1.197,
+    "stiffness_multiplier": 1.531,
+    "adhesion_multiplier": 0.974,
+    "division_size_multiplier": 0.785,
+    "noise_strength": 0.01332,
+    "anisotropy_vector": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "anisotropy_strength": 0.1131,
+    "scan_count": 45,
+    "sources": [
+      "chickpea"
+    ],
+    "median_features": {
+      "spread_asymm": 0.1971,
+      "height": 26.0663,
+      "width": 12.876,
+      "height_axis": 2.0,
+      "upper_density": 0.1868,
+      "point_count": 50000.0,
+      "hw_ratio": 4.0529
+    }
+  },
+  "Chickpea_ICC5878": {
+    "growth_rate_multiplier": 1.114,
+    "stiffness_multiplier": 1.508,
+    "adhesion_multiplier": 0.951,
+    "division_size_multiplier": 0.767,
+    "noise_strength": 0.01298,
+    "anisotropy_vector": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "anisotropy_strength": 0.1108,
+    "scan_count": 12,
+    "sources": [
+      "chickpea"
+    ],
+    "median_features": {
+      "spread_asymm": 0.1845,
+      "height": 17.1121,
+      "width": 8.1233,
+      "height_axis": 2.0,
+      "upper_density": 0.2367,
+      "point_count": 50000.0,
+      "hw_ratio": 3.8579
+    }
+  },
+  "Chickpea_PBAHattrick": {
+    "growth_rate_multiplier": 1.184,
+    "stiffness_multiplier": 1.521,
+    "adhesion_multiplier": 0.966,
+    "division_size_multiplier": 0.778,
+    "noise_strength": 0.01319,
+    "anisotropy_vector": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "anisotropy_strength": 0.1121,
+    "scan_count": 45,
+    "sources": [
+      "chickpea"
+    ],
+    "median_features": {
+      "spread_asymm": 0.1924,
+      "height": 24.3676,
+      "width": 11.8875,
+      "height_axis": 1.0,
+      "upper_density": 0.2067,
+      "point_count": 50000.0,
+      "hw_ratio": 3.965
+    }
+  },
+  "Chickpea_PBASlasher": {
+    "growth_rate_multiplier": 1.194,
+    "stiffness_multiplier": 1.498,
+    "adhesion_multiplier": 0.971,
+    "division_size_multiplier": 0.776,
+    "noise_strength": 0.01327,
+    "anisotropy_vector": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "anisotropy_strength": 0.1098,
+    "scan_count": 45,
+    "sources": [
+      "chickpea"
+    ],
+    "median_features": {
+      "spread_asymm": 0.1952,
+      "height": 25.6039,
+      "width": 12.5137,
+      "height_axis": 0.0,
+      "upper_density": 0.2124,
+      "point_count": 50000.0,
+      "hw_ratio": 3.7797
+    }
+  },
+  "Chickpea_PUSA76": {
+    "growth_rate_multiplier": 1.118,
+    "stiffness_multiplier": 1.471,
+    "adhesion_multiplier": 0.981,
+    "division_size_multiplier": 0.784,
+    "noise_strength": 0.01342,
+    "anisotropy_vector": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "anisotropy_strength": 0.1071,
+    "scan_count": 12,
+    "sources": [
+      "chickpea"
+    ],
+    "median_features": {
+      "spread_asymm": 0.2007,
+      "height": 17.3961,
+      "width": 9.4354,
+      "height_axis": 1.0,
+      "upper_density": 0.1879,
+      "point_count": 50000.0,
+      "hw_ratio": 3.5739
+    }
+  },
+  "Chickpea_SonSla": {
+    "growth_rate_multiplier": 1.107,
+    "stiffness_multiplier": 1.505,
+    "adhesion_multiplier": 0.982,
+    "division_size_multiplier": 0.752,
+    "noise_strength": 0.01343,
+    "anisotropy_vector": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "anisotropy_strength": 0.1105,
+    "scan_count": 12,
+    "sources": [
+      "chickpea"
+    ],
+    "median_features": {
+      "spread_asymm": 0.2012,
+      "height": 16.4858,
+      "width": 7.8917,
+      "height_axis": 0.5,
+      "upper_density": 0.2798,
+      "point_count": 50000.0,
+      "hw_ratio": 3.8358
+    }
+  },
+  "Maize": {
+    "growth_rate_multiplier": 0.733,
+    "stiffness_multiplier": 1.805,
+    "adhesion_multiplier": 1.081,
+    "division_size_multiplier": 0.77,
+    "noise_strength": 0.01483,
+    "anisotropy_vector": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "anisotropy_strength": 0.1405,
+    "scan_count": 1094,
+    "sources": [
+      "maizefield3d",
+      "pheno4d"
+    ],
+    "median_features": {
+      "spread_asymm": 0.253,
+      "height": 1.8542,
+      "width": 0.5187,
+      "height_axis": 2.0,
+      "upper_density": 0.2283,
+      "organ_ratio": 0.5543,
+      "point_count": 10000.0,
+      "hw_ratio": 6.9608
+    }
+  },
+  "Tomato": {
+    "growth_rate_multiplier": 1.541,
+    "stiffness_multiplier": 1.575,
+    "adhesion_multiplier": 0.994,
+    "division_size_multiplier": 0.788,
+    "noise_strength": 0.01359,
+    "anisotropy_vector": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "anisotropy_strength": 0.1175,
+    "scan_count": 77,
+    "sources": [
+      "pheno4d"
+    ],
+    "median_features": {
+      "spread_asymm": 0.2072,
+      "height": 142.219,
+      "width": 67.9303,
+      "height_axis": 0.0,
+      "upper_density": 0.1763,
+      "organ_ratio": 0.4336,
+      "point_count": 30000.0,
+      "hw_ratio": 4.4348
+    }
+  }
+}

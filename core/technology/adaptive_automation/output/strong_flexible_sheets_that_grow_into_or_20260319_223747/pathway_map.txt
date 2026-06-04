@@ -1,0 +1,38 @@
+PATHWAY MAP
+Which organism contributed which capability and why
+=================================================================
+Target chassis: ganoderma
+
+[bcsA]
+  Source organism : komagataeibacter
+  Capability      : cellulose
+  Promoter used   : TEF1
+  Terminator used : CYC1_term
+  CDS length      : 0bp
+  CAI             : 0.000
+  Confidence      : 0.35
+
+[WUS]
+  Source organism : arabidopsis
+  Capability      : growth
+  Promoter used   : TEF1
+  Terminator used : CYC1_term
+  CDS length      : 1248bp
+  CAI             : 0.651
+  Confidence      : 0.87
+
+[Col1a1]
+  Source organism : mouse
+  Capability      : tensile-strength
+  Promoter used   : TEF1
+  Terminator used : CYC1_term
+  CDS length      : 900bp
+  CAI             : 0.662
+  Confidence      : 0.92
+
+KNOWN CONFLICTS TO MONITOR
+----------------------------------------
+  [HIGH] substrate_competition
+  Resource: ATP
+  4 pathways compete for ATP: Bacterial cellulose synthesis, WUS/CLV3 meristem growth, Sonic hedgehog patterning, Spider silk synthesis. High expression of all simultaneously may exhaust this pool.
+  Resolution: Use inducible promoters to run pathways sequentially, or supplement ATP externally. For UDP-sugar competition: consider separate biosynthesis branches.

@@ -1,0 +1,92 @@
+AM234/BME234 Homework 1 Answers
+
+1(a) The number of parameters needed to fully specify an HMM with m states and k observations
+is m + m^2 + mk. The initial state distribution requires m parameters (one per state), the
+transition matrix requires m^2 parameters (from each of m states to each of m states), and the
+emission matrix requires mk parameters (each of m states can emit one of k observations).
+
+1(b) False. The formula incorrectly conditions each observation on the previous observation,
+P(x_i | x_{i-1}), when it should condition each observation on its corresponding hidden state,
+P(x_i | pi_i). In an HMM, observations are emitted from states, not generated from prior
+observations. The correct formula is:
+P(X, pi) = P(pi_1)P(x_1 | pi_1) * prod_{i=2}^{L} P(pi_i | pi_{i-1})P(x_i | pi_i).
+
+1(c) False. Conditioning on pi_{n-2} does not block all paths between x_n and x_{n-10}. Information
+can still flow through the unobserved hidden states pi_{n-1} and pi_n, since x_n depends on pi_n
+and the state chain pi_{n-2} -> pi_{n-1} -> pi_n remains unblocked. To make x_n conditionally
+independent of x_{n-10}, we would need to condition on a state that separates them in the
+graphical model, such as pi_{n-1}.
+
+1(d) False. Conditioning on x_{n-2} does not block the path between pi_n and pi_{n-10}. The
+hidden states form a chain pi_{n-10} -> ... -> pi_{n-1} -> pi_n, and this path runs entirely
+through hidden states, none of which are observed. Since x_{n-2} is a child of pi_{n-2} rather
+than a node on the hidden state chain itself, observing it does not d-separate pi_n from pi_{n-10}.
+
+1(e) Proof that sum over all sequences of length L equals 1:
+
+We begin with:
+  S = sum_{x_1} sum_{x_2} ... sum_{x_L} P(x_1) prod_{n=2}^{L} P(x_n | x_{n-1})
+
+We evaluate the sums from the inside out, starting with the innermost sum over x_L.
+The only term that depends on x_L is P(x_L | x_{L-1}), so:
+
+  sum_{x_L} P(x_L | x_{L-1}) = 1
+
+since P(x_L | x_{L-1}) is a valid conditional distribution over all possible values of x_L.
+This eliminates the x_L sum and the P(x_L | x_{L-1}) term, leaving:
+
+  S = sum_{x_1} sum_{x_2} ... sum_{x_{L-1}} P(x_1) prod_{n=2}^{L-1} P(x_n | x_{n-1})
+
+We repeat this process. At each step, the innermost sum is over x_j, and the only
+term depending on x_j is P(x_j | x_{j-1}), which sums to 1. Continuing in this manner,
+we peel off each sum from x_L down to x_2, each time obtaining a factor of 1, until
+we are left with:
+
+  S = sum_{x_1} P(x_1) = 1
+
+since P(x_1) is a valid probability distribution over all possible starting states.
+Therefore, the Markov chain defines a valid probability measure over all sequences
+of length L.  QED
+
+2(b) When k = 1, the train accuracy is 0.8798 and the validation accuracy is 0.8834.
+
+2(d) There is a large jump in validation accuracy from k=1 (0.8834) to k=2 (0.9856), followed
+by only marginal gains from k=3 through k=5. This suggests that most of the discriminative
+signal between promoter and negative sequences lies in dinucleotide dependencies — the
+relationship between adjacent bases — which k=1 cannot capture since it only models single
+nucleotide frequencies. Beyond k=2, the model captures longer-range patterns but with
+diminishing returns, as the most important sequence context is already accounted for.
+
+2(e) Two problems with very large k (e.g. k > 20):
+
+1. Overfitting: A large k gives the model enough capacity to memorize the training data,
+   but it will generalize poorly to new sequences since the learned patterns are too specific
+   to the training set.
+
+2. Data sparsity: The number of possible k-mers grows as 4^k, so for k=20 there are over
+   10^12 possible states. Most k-mers will never appear in the training data, leaving the
+   vast majority of transition probabilities unestimated or unreliable.
+
+3(a) The number of SNPs in the filtered chr21 VCF is 190,994. A SNP is defined as a variant
+where both the REF and ALT alleles are single nucleotides (A, C, G, or T). Multi-allelic
+rows with comma-separated ALTs were counted per qualifying allele.
+
+3(b) There are 199,403 allele frequency entries in the VCF. Of these, 164,785 (82.6%) have
+an allele frequency below 1%, indicating the majority of variants are rare. The beeswarm
+plot (problem_3b_*.png) shows every data point, with density encoded by color.
+
+3(c) The VCF contains 2,504 samples (consistent with the 1000 Genomes Project phase 3 cohort).
+On average, each individual carries 11,636.40 distinct variants on chromosome 21, counted
+by checking whether any non-reference allele appears in the individual's genotype.
+
+3(d) dbSNP (Database of Single Nucleotide Polymorphisms) is a public database maintained by
+NCBI that catalogs known short genetic variations, including SNPs, short insertions, deletions,
+and other small variants. Each entry is assigned a unique "rs" identifier (e.g. rs12345),
+allowing researchers to reference and look up whether a variant has been previously observed.
+In this filtered VCF, 0 variants have a dbSNP ID — the ID column contains only ".",
+indicating the file was not annotated against the dbSNP database.
+
+3(e) A Phred quality score quantifies the probability that a base call or variant call is
+incorrect, defined as Q = -10 * log10(P_error). For a Phred score of 45:
+  P_error = 10^(-45/10) = 10^(-4.5) ≈ 0.0000316
+This corresponds to an accuracy of 99.997%, or roughly a 1 in 31,623 chance of error.

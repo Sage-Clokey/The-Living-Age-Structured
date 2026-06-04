@@ -1,0 +1,5 @@
+step	part	change_type	before	after	reason
+pathway	[all parts]	substrate_competition	ATP	flagged	6 pathways compete for ATP: WUS/CLV3 meristem growth, Sonic hedgehog patterning, Piwi regeneration pathway, MMP9 tissue 
+assembly	WUS	cassette_built	separate part	[TEF1][kozak][0bp CDS][CYC1_term]	expression cassette assembled with compatible regulatory elements
+assembly	XM_069620111.1	cassette_built	separate part	[TEF1][kozak][0bp CDS][CYC1_term]	expression cassette assembled with compatible regulatory elements
+assembly	XM_074767098.1	cassette_built	separate part	[TEF1][kozak][0bp CDS][CYC1_term]	expression cassette assembled with compatible regulatory elements

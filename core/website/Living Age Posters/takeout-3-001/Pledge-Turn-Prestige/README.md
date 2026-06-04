@@ -1,0 +1,3 @@
+# Pledge Turn Prestige
+
+The three-act structure of transformation, drawn from the magician's trick in Christopher Nolan's "The Prestige." Every great work — and every life — moves through these three stages: the Pledge (the ordinary world, the commitment made), the Turn (the sacrifice, the disappearance, the death of the old self), and the Prestige (the return, the resurrection, the revelation). This folder holds images organized around this cycle, including fire, water, and spirit as elemental correspondences to each stage. Also here: the serpent and the dove — wisdom and innocence, cunning and purity — as the dual nature required to complete the full arc.

@@ -1,0 +1,3 @@
+# Living Systems vs Machine
+
+The philosophical opposition at the heart of Living Works: organic intelligence versus centralized mechanical control. This folder collects images that frame the tension between living systems — adaptive, distributed, self-organizing — and the Machine paradigm of surveillance, top-down authority, algorithmic control, and industrial monoculture. Imagery includes evolutionary diagrams, manifestos of design freedom, critiques of corporate and governmental overreach, and visions of what human civilization looks like when it organizes around life rather than efficiency. This is the ideological engine room of the project.

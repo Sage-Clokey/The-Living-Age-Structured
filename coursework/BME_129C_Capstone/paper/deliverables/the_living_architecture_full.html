@@ -21,42 +21,41 @@ body {
     max-width: 100%;
 }
 
-h1 {
-    font-size: 18pt;
+/* Paper title */
+h1.paper-title {
+    font-size: 20pt;
     font-weight: bold;
     text-align: center;
     margin-top: 0.3in;
     margin-bottom: 0.15in;
     color: #1a1a1a;
-    page-break-after: avoid;
 }
 
-/* Title gets bigger */
-h1:first-of-type {
-    font-size: 22pt;
-    margin-top: 1.5in;
-    margin-bottom: 0.3in;
-}
-
-/* Author block */
-.author-block {
-    text-align: center;
-    margin-bottom: 0.5in;
-    font-size: 11pt;
-    line-height: 1.6;
-}
-
-h2 {
-    font-size: 13pt;
+/* Section headings (Abstract, 1. Introduction, etc.) */
+h1.section-heading {
+    font-size: 14pt;
     font-weight: bold;
-    margin-top: 0.25in;
-    margin-bottom: 0.1in;
+    text-align: left;
+    margin-top: 0.3in;
+    margin-bottom: 0.12in;
     color: #1a1a1a;
     page-break-after: avoid;
 }
 
-h3 {
-    font-size: 11.5pt;
+.author-block {
+    text-align: center;
+    margin-bottom: 0.2in;
+    font-size: 11pt;
+    line-height: 1.4;
+}
+
+.author-block p {
+    text-indent: 0;
+    text-align: center;
+}
+
+h2 {
+    font-size: 12pt;
     font-weight: bold;
     margin-top: 0.2in;
     margin-bottom: 0.08in;
@@ -64,24 +63,28 @@ h3 {
     page-break-after: avoid;
 }
 
+h3 {
+    font-size: 11pt;
+    font-weight: bold;
+    margin-top: 0.15in;
+    margin-bottom: 0.06in;
+    color: #1a1a1a;
+    page-break-after: avoid;
+}
+
 p {
     text-align: justify;
-    margin-bottom: 0.08in;
+    margin-bottom: 0.06in;
+    margin-top: 0;
     text-indent: 0.3in;
     orphans: 3;
     widows: 3;
 }
 
-/* No indent after headings or for first paragraph */
-h1 + p, h2 + p, h3 + p, h4 + p {
+h1 + p, h2 + p, h3 + p, h4 + p,
+.author-block + p,
+.figure-block + p {
     text-indent: 0;
-}
-
-blockquote p {
-    text-indent: 0;
-    font-style: italic;
-    margin-left: 0.5in;
-    margin-right: 0.5in;
 }
 
 strong {
@@ -94,38 +97,42 @@ em {
 
 ul, ol {
     margin-left: 0.3in;
-    margin-bottom: 0.1in;
+    margin-bottom: 0.08in;
 }
 
 li {
-    margin-bottom: 0.04in;
+    margin-bottom: 0.03in;
 }
 
 li p {
     text-indent: 0;
+    margin-bottom: 0.02in;
 }
 
+/* Tables */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 0.15in 0;
-    font-size: 9pt;
+    margin: 0.12in 0;
+    font-size: 8.5pt;
     page-break-inside: avoid;
 }
 
 th {
     background-color: #f0f0f0;
     border: 1px solid #999;
-    padding: 4pt 6pt;
+    padding: 3pt 5pt;
     text-align: left;
     font-weight: bold;
+    font-size: 8pt;
 }
 
 td {
     border: 1px solid #ccc;
-    padding: 3pt 6pt;
+    padding: 2pt 5pt;
     text-align: left;
     vertical-align: top;
+    font-size: 8pt;
 }
 
 tr:nth-child(even) td {
@@ -134,7 +141,7 @@ tr:nth-child(even) td {
 
 code {
     font-family: "Courier New", monospace;
-    font-size: 9.5pt;
+    font-size: 9pt;
     background-color: #f4f4f4;
     padding: 1pt 3pt;
 }
@@ -142,7 +149,7 @@ code {
 hr {
     border: none;
     border-top: 1px solid #ccc;
-    margin: 0.3in 0;
+    margin: 0.2in 0;
 }
 
 /* Section breaks */
@@ -150,33 +157,51 @@ hr {
     page-break-before: always;
 }
 
-/* References section - no indent, hanging indent style */
+/* Figures */
+.figure-block {
+    text-align: center;
+    margin: 0.2in 0;
+    page-break-inside: avoid;
+}
+
+.figure-block img {
+    max-width: 100%;
+    max-height: 5.5in;
+    display: block;
+    margin: 0 auto;
+}
+
+.figure-caption {
+    font-size: 9.5pt;
+    text-align: justify;
+    text-indent: 0;
+    margin-top: 0.06in;
+    margin-bottom: 0.15in;
+    line-height: 1.35;
+    color: #333;
+}
+
+/* References */
 .references p {
     text-indent: -0.4in;
     padding-left: 0.4in;
-    margin-bottom: 0.06in;
-}
-
-/* Figure captions */
-.figure-caption {
+    margin-bottom: 0.05in;
     font-size: 10pt;
-    margin-top: 0.05in;
-    margin-bottom: 0.15in;
 }
 </style>
 </head>
 <body>
-<h1>The Living Architecture: Distributed Knowledge as the Design Language of Life</h1>
+<h1 class="paper-title">The Living Architecture: Distributed Knowledge as the Design Language of Life</h1>
 
 <div class="author-block"><p>Sage Clokey</p>
 <p>Department of Biomolecular Engineering and Bioinformatics, University of California, Santa Cruz</p>
 <p>BME 129C: Design/Implement BME — Spring 2026</p>
 <p>Advisor: R. Dubois</p></div>
 
-<h1>Abstract</h1>
+<h1 class="section-heading">Abstract</h1>
 <p>Living things are not machines. There are two types of order: decentralized and centralized. Centralized order requires uniformity. Decentralized order requires ordered diversity. Life is decentralized, and life must die to become centralized — it must be reduced to parts, and in doing so it loses what makes it valuable. The diversity of life is not random difference. It is based on local knowledge of time and place that no central planner can predict. Distributed nodes can plan, but central planners cannot. The distributed knowledge is coordinated by prices — the ratio between the voluntary exchange of anything between nodes. Living order is organized by choice. State order is dictated by control. The differences are a feature, not a bug. The differences are how adaptation is possible. It is trial and error directed by distributed knowledge — just how Hayek explains the market at the human-to-human level with trade. Eugenics is the same fatal conceit: you cannot centrally plan life. If there is distributed knowledge in living things, it is in the DNA — and bioinformatics is the analysis of that genetic data. Bioinformatics is the study of distributed knowledge in living systems. This capstone provides quantitative evidence — drawn from network topology, single-cell transcriptomics, agent-based metabolic simulation, genome-scale flux balance analysis, cross-species gene transfer, and cancer genomics — that the distributed architecture of biology is not a constraint to be overcome but the fundamental reason living systems outperform every centralized alternative we can design or simulate.</p>
 
-<div class="section-break"></div><h1>Introduction</h1>
+<div class="section-break"></div><h1 class="section-heading">1. Introduction</h1>
 <p>Living things are not machines. Living systems coordinate through distributed knowledge, not central planning. In biology there are no central banks, no legal tender laws — there is only voluntary trade. There are two types of order: centralized order requires uniformity, decentralized order requires ordered diversity. Life is decentralized, and life must die to become centralized. Life must be reduced to parts to be centralized, and in doing so it loses what makes it valuable. The diversity of life is not random difference — it is based on local knowledge of time and place that no central planner can possess. Distributed nodes can plan but central planners cannot. The distributed knowledge is dictated by prices, the ratios between the voluntary exchange of anything between the nodes. Living order is organized by choice and state order is dictated by control. Cells act by choice — they signal other cells, but they only react to those signals by choice, not coercion. There are cases where some coerce and that is called pathogens, viruses, and cancer. The immune system is the defense of the voluntary order. The variance is not random. It is directed by distributed knowledge, just as the variance of the market is directed by prices. It is trial and error directed by knowledge — but the entrepreneurs do not die, they just pivot. The differences are a feature, not a bug — they are how adaptation is possible. Machines are reductionism to the point the parts are brittle; what was once strong is now weak. Once they become machines they are reduced to death. Life is stories and bioinformatics is finding those stories so we can learn to become storytellers. Not to force form, but to help life grow. Evidence isn&rsquo;t to convince myself of what I already intuitively know — it is to convince others who don&rsquo;t have my intuition. That is the work. That is the spiral. That is the living age.</p>
 <p>Living systems coordinate across billions of nodes without a central planner. Gene regulatory networks have no master gene. Immune systems have no master cell. Metabolic economies have no master pathway. The tree of life has no master species. Yet these systems allocate resources, respond to shocks, specialize into complementary roles, and sustain themselves across deep time — outperforming centrally planned systems by every measure of robustness and adaptability. This paper asks why, presents quantitative evidence across seven layers of biological organization, applies the answer to the most active distributed economy in the human body — the immune system — and derives design principles for the molecular biologist who wants to work with the grain of creation rather than against it.</p>
 <p>The evidence spans network topology, single-cell transcriptomics, agent-based metabolic simulation, flux balance analysis, cross-species gene transfer, adaptive immune repertoire analysis, and whole-genome mutational architecture. The findings converge: distributed biological networks survive targeted disruption 19 times longer than centralized architectures (36.8% vs 1.9% node removal to fragment). The cell-cell communication network of the immune system has a betweenness Gini of 0.000 — perfectly distributed, no gatekeeper, 75% of communication surviving any single cell type removal. Distributed metabolic allocation retains 71.1% of output under perturbation where centralized planning retains 53.0% — an 18.1 percentage point advantage that emerges because distributed agents self-correct through local feedback while the planner&rsquo;s fixed allocation becomes wrong the moment conditions change. Even an omniscient linear program — flux balance analysis with the complete iML1515 genome-scale model of E. coli (2,712 reactions, 1,877 metabolites, 1,516 genes) — achieves only 70% accuracy on gene knockout predictions, because 30% of essential gene functions depend on regulatory knowledge that exists only in the local state of each molecular agent and cannot be encoded in a stoichiometric matrix. Cross-species gene transferability follows the patterns of voluntary exchange: costs scale with evolutionary distance (within-kingdom 0.17–0.38, cross-kingdom 0.65–0.83), organisms specialize in unique capabilities, and natural trade blocs emerge spontaneously from shared regulatory machinery.</p>
@@ -210,7 +235,7 @@ hr {
 <h2>Paper Organization</h2>
 <p>Section 2 describes the methods for seven layers of analysis spanning network topology, single-cell economics, agent-based simulation, flux balance analysis, cross-species gene transfer, immune repertoire profiling, and whole-genome mutational architecture. Section 3 presents the results — sixteen figures and seven evidence tables, each confirming the same conclusion from a different angle. Section 4 applies the framework to the immune economy and vaccination, demonstrating what happens when distributed knowledge is centrally planned. Section 5 derives six design principles for the synthetic biologist who wants to work with the grain of creation. Section 6 addresses the theological and philosophical foundation — why the architecture is distributed, and what it means for how we understand the relationship between Creator and creation. Section 7 concludes.</p>
 
-<div class="section-break"></div><h1>Methods</h1>
+<div class="section-break"></div><h1 class="section-heading">2. Methods</h1>
 <p>Living Systems as Decentralized Economies — BME 129C Capstone — Sage Clokey — Spring 2026 — Advisor: R. Dubois, UC Santa Cruz</p>
 <h2>1. Databases, Software, and Data Sources</h2>
 <p>All analyses were implemented in Python 3.12. The following databases and software libraries were used. Network construction and graph analysis used NetworkX 3.6 (Hagberg et al., 2008). Single-cell RNA sequencing analysis used Scanpy 1.12 (Wolf et al., 2018). Genome-scale metabolic modeling used COBRApy 0.31 (Ebrahim et al., 2013). Power-law fitting used the powerlaw library 2.0 (Alstott et al., 2014; method of Clauset, Shalizi, &amp; Newman, 2009). Statistical analysis used SciPy 1.17 and NumPy 2.4. Visualization used Matplotlib 3.10 and python-pptx 1.0. The complete analysis pipeline is executable via a single command (python run_all.py) and is version-controlled on GitHub.</p>
@@ -322,7 +347,7 @@ hr {
 <p>Raw data sources are publicly available: RegulonDB (regulondb.ccg.unam.mx), KEGG (rest.kegg.jp), STRING (string-db.org), 10x Genomics pbmc3k dataset (via Scanpy), BiGG Models iML1515 (bigg.ucsd.edu), and Kazusa Codon Usage Database (kazusa.or.jp/codon/). The Adaptive Genome Design System, which provides pathway profiles and codon compatibility infrastructure, is available at https://github.com/Sage-Clokey/adaptive-Automation.</p>
 <p>Generated figures are saved to paper/figures/ (combined multi-panel) and paper/figures/individual/ (one panel per PNG). The presentation is generated by &lsquo;python paper/generate_presentation.py&rsquo; and saved as paper/capstone_presentation.pptx.</p>
 
-<div class="section-break"></div><h1>Results: The Knowledge Is Distributed</h1>
+<div class="section-break"></div><h1 class="section-heading">3. Results: The Knowledge Is Distributed</h1>
 <p>Where systems wanted decentralization, we demanded central control. Here is what the systems actually look like when you stop demanding and start listening.</p>
 <h2>3.1 No Master Node — Network Topology (Layer 1)</h2>
 <p>If living systems operate as centrally planned machines, their coordination networks should route information through a dominant hub — a master node that integrates all signals and issues commands. To test this prediction, we constructed five biological networks from public databases: the Escherichia coli gene regulatory network (GRN) from RegulonDB (282 transcription factors, 308 regulatory edges), the E. coli and Saccharomyces cerevisiae protein-protein interaction (PPI) networks from STRING (529 and 573 nodes, respectively), and E. coli and S. cerevisiae metabolic networks from KEGG (620 and 244 nodes). We compared each against five synthetic reference architectures — star graph, hub-and-spoke, Erdos-Renyi random, regular lattice, and Barabasi-Albert scale-free — using three topology metrics: degree distribution, betweenness centrality Gini coefficient, and robustness under targeted node removal.</p>
@@ -472,7 +497,7 @@ hr {
 <p>The robustness result is the most consequential. Under targeted attack — removing the most connected nodes first — protein interaction networks required removal of 36.8% of nodes to fragment. The star graph and hub-and-spoke collapsed at 1.9%. This 19:1 ratio is not a minor difference. It is the structural cost of centralization measured in network connectivity. The distributed architecture tolerates the loss of any individual knowledge-holder because the knowledge required for coordination is not concentrated in that node. It is spread across the network. The system that distributes knowledge survives the loss of any one node. The system that concentrates knowledge dies when that node is removed.</p>
 <p>Motif analysis revealed that the feed-forward loop (FFL) is massively over-represented in the E. coli GRN compared to random networks (Z-score &gt; 10). The FFL is a coordination motif — a fast regulatory shortcut that lets local information propagate without waiting for a central command. These are not accidental topologies. They are the recurring grammar of distributed regulation — Hayekian price signal shortcuts evolved into the network architecture.</p>
 <p>The WBPA (weighted betweenness-preferential attachment) mechanism shows that biological networks self-regulate against centralization. High degree does not guarantee high betweenness — hubs do not monopolize information flow. The network grows in a way that automatically punishes nodes that accumulate too much control. This is the topological instantiation of the Austrian claim: markets self-regulate against monopoly through the structural incentives of the network itself.</p>
-<p><strong>Figure 1.</strong> Network topology across biological and synthetic architectures. (a) Degree distributions on log-log axes — biological networks follow heavy-tailed distributions; many nodes with few connections, a few hubs with many, but no single node that dominates. (b) Robustness under targeted node removal — PPI networks survive removing 37% of their most connected nodes before fragmenting; the star graph collapses at 1.9% (19:1 ratio). (c) Betweenness centrality Gini coefficient — the star graph (0.998) routes nearly all information through one node; biological networks (0.72–0.94) distribute information flow across many paths. (d) Feed-forward loop Z-scores against 1,000 randomized networks — FFLs are massively over-represented (Z &gt; 10), representing Hayekian price signal shortcuts evolved into the network architecture.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/layer1_topology_annotated.png" alt="Figure 1"><p class="figure-caption"><strong>Figure 1.</strong> Network topology across biological and synthetic architectures. (a) Degree distributions on log-log axes — biological networks follow heavy-tailed distributions; many nodes with few connections, a few hubs with many, but no single node that dominates. (b) Robustness under targeted node removal — PPI networks survive removing 37% of their most connected nodes before fragmenting; the star graph collapses at 1.9% (19:1 ratio). (c) Betweenness centrality Gini coefficient — the star graph (0.998) routes nearly all information through one node; biological networks (0.72–0.94) distribute information flow across many paths. (d) Feed-forward loop Z-scores against 1,000 randomized networks — FFLs are massively over-represented (Z &gt; 10), representing Hayekian price signal shortcuts evolved into the network architecture.</p></div>
 <h2>3.2 No Master Cell — The Single-Cell Economy (Layer 1b)</h2>
 <p>Thirty-seven trillion cells. One genome. No master cell assigning roles.</p>
 <p>Analysis of 2,638 human peripheral blood mononuclear cells across 8 cell types revealed the signatures of what Menger would recognize as spontaneous order: specialization without hierarchy, communication without gatekeepers, and fault tolerance without an indispensable bureau.</p>
@@ -480,38 +505,38 @@ hr {
 <p><strong>Communication is fully distributed.</strong> The cell-cell communication network, built from 18 active ligand-receptor channels of 30 curated pairs, showed a betweenness Gini of 0.000 — perfectly distributed. No single cell type acts as a gatekeeper. Every cell type signals directly to every other. Information flows between producers and consumers without a regulatory middleman.</p>
 <p><strong>The economy is fault-tolerant.</strong> Removing any single cell type left 75% of communication edges intact. No single removal was catastrophic. The uniform 75% survival rate reflects the distributed topology: each cell type contributes, but no cell type is indispensable.</p>
 <p><strong>The same ligand means different things to different cells — Menger&rsquo;s subjective value at the molecular level.</strong> TNF-alpha activates an inflammatory program in monocytes but triggers apoptosis in certain T cell subsets. The molecule is the same. The meaning depends on who receives it. Value is not intrinsic to the signal — it is determined by the receiver&rsquo;s context. A central planner cannot assign a fixed meaning to a cytokine, because the &ldquo;price&rdquo; depends on the local state of the cell that receives it.</p>
-<p><strong>Figure 2.</strong> Single-cell economic analysis of human PBMCs. Left: UMAP projection — 8 specialized cell types from one genome, none assigned by a central coordinator. Center: Shannon entropy showing division of labor — each cell type focuses on a distinct gene program. Right: Communication network with betweenness Gini = 0.0 — every cell type communicates directly with every other. No gatekeeper. No master cell. This is Menger&rsquo;s spontaneous order: complex, functional organization arising from individual cells responding to local conditions.</p>
-<p><strong>Figure 3.</strong> Menger&rsquo;s subjective value in molecular form. Each panel shows one ligand at center with arrows to receiving cell types. The same molecule triggers different biological responses depending on which cell type receives it. The value of the signal is not intrinsic — it is determined by the receiver&rsquo;s local context.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/layer1b_single_cell_economy_annotated.png" alt="Figure 2"><p class="figure-caption"><strong>Figure 2.</strong> Single-cell economic analysis of human PBMCs. Left: UMAP projection — 8 specialized cell types from one genome, none assigned by a central coordinator. Center: Shannon entropy showing division of labor — each cell type focuses on a distinct gene program. Right: Communication network with betweenness Gini = 0.0 — every cell type communicates directly with every other. No gatekeeper. No master cell. This is Menger&rsquo;s spontaneous order: complex, functional organization arising from individual cells responding to local conditions.</p></div>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/layer1b_price_signals_annotated.png" alt="Figure 3"><p class="figure-caption"><strong>Figure 3.</strong> Menger&rsquo;s subjective value in molecular form. Each panel shows one ligand at center with arrows to receiving cell types. The same molecule triggers different biological responses depending on which cell type receives it. The value of the signal is not intrinsic — it is determined by the receiver&rsquo;s local context.</p></div>
 <h2>3.3 The Planner Fails Under Perturbation — Metabolic Economy (Layer 2)</h2>
 <p>If Layer 1 shows that the structure is distributed, Layer 2 tests whether the function benefits from distribution.</p>
 <p><strong>Under stable conditions, the planner wins.</strong> The centralized regime achieved 1.68x higher absolute GDP (total metabolite output), reflecting the allocator&rsquo;s ability to globally optimize. This is the result that advocates of central planning always point to: the planner can see the whole board.</p>
 <p><strong>Under perturbation, the planner collapses.</strong> When HIF1-alpha was removed — a structural change to the economy — the distributed system retained 71.1% of GDP through local self-correction. The centralized system retained only 53.0%. An 18.1 percentage point advantage for distributed coordination under stress.</p>
 <p>This is the calculation problem in quantitative form. The centralized allocator continues executing a plan optimized for 13 agents in a system that now has 12. It has no mechanism to adapt because its allocation was not based on local feedback — it was based on a fixed global ranking that is now wrong. The distributed system self-corrects: remaining agents detect the metabolite changes through the shared pool and adjust their production rates. Each agent acts on its own local knowledge, and the system finds a new equilibrium without anyone telling it to.</p>
 <p><strong>Entrepreneurial discovery is visible.</strong> The production rate convergence plot shows agents beginning at uniform rates — they do not know what the economy needs from them — and discovering their optimal production levels through iterative feedback. The early oscillations are price discovery. The final rates are not equal — they differ across agents, reflecting the economy&rsquo;s differential demand. Nobody assigned these rates. They emerged from the competitive process itself, exactly as Kirzner predicted.</p>
-<p><strong>Figure 4.</strong> The planner works in theory; the market works in practice. (a) GDP over time — centralized achieves higher absolute output under stable conditions. (b) Perturbation robustness — when the economic structure changes, distributed retains 71% of GDP while centralized retains only 53%. The planner&rsquo;s fixed plan is now wrong, and it has no mechanism to discover the new optimum. (c) Production rate convergence — agents discover their own equilibrium through local feedback. The oscillations are not noise — they are the process of Kirznerian entrepreneurial discovery at the molecular level.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/layer2_economy_annotated.png" alt="Figure 4"><p class="figure-caption"><strong>Figure 4.</strong> The planner works in theory; the market works in practice. (a) GDP over time — centralized achieves higher absolute output under stable conditions. (b) Perturbation robustness — when the economic structure changes, distributed retains 71% of GDP while centralized retains only 53%. The planner&rsquo;s fixed plan is now wrong, and it has no mechanism to discover the new optimum. (c) Production rate convergence — agents discover their own equilibrium through local feedback. The oscillations are not noise — they are the process of Kirznerian entrepreneurial discovery at the molecular level.</p></div>
 <h2>3.4 The Omniscient Planner Still Fails — Flux Balance Analysis (Layer 2b)</h2>
 <p>The strongest possible test of the planning hypothesis: give the planner perfect information.</p>
 <p>Flux Balance Analysis using the iML1515 genome-scale model — 2,712 reactions, 1,877 metabolites, 1,516 genes — is a linear program that simultaneously optimizes across all metabolic reactions with complete stoichiometric knowledge. This is the omniscient planner. The Gosplan with a supercomputer. The central bureau with perfect data.</p>
 <p>It achieves 70% accuracy on gene knockout predictions against the Keio collection.</p>
 <p>Seventy percent is impressive. But it is not one hundred. And the 30% failure rate is not random noise — it is structural. The failures are genes that are essential because of regulatory requirements the linear program cannot encode: allosteric feedback, protein folding dependencies, gene expression timing, molecular chaperone requirements. These are forms of knowledge that exist only in the local state of each molecular agent. The LP has all the stoichiometric data. It has none of the local, tacit, context-dependent knowledge.</p>
 <p><strong>The irony is in the shadow prices.</strong> The dual variables of the LP — shadow prices — report the marginal growth value of every metabolite. These are Hayekian price signals, computed by the planner. The LP must compute prices to solve its optimization, which proves Hayek&rsquo;s point: prices contain essential information that the planning process cannot avoid generating. But prices emerge naturally from distributed exchange. The planner is computing what the market produces for free.</p>
-<p><strong>Figure 5.</strong> Even perfect knowledge is not enough. (a) FBA predictions versus Keio collection knockout data — 70% accuracy; each red dot is a gene where the omniscient planner got it wrong. (b) Confusion matrix — false negatives (planner says viable, cell dies) represent Hayekian local knowledge the LP cannot encode; false positives (planner says essential, cell reroutes) represent Kirznerian adaptation the LP cannot predict. (c) Shadow prices — the LP&rsquo;s dual variables are Hayekian price signals the planner must compute to solve the optimization, proving that price information is essential for coordination even in a centrally planned system.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/layer2_fba_analysis_annotated.png" alt="Figure 5"><p class="figure-caption"><strong>Figure 5.</strong> Even perfect knowledge is not enough. (a) FBA predictions versus Keio collection knockout data — 70% accuracy; each red dot is a gene where the omniscient planner got it wrong. (b) Confusion matrix — false negatives (planner says viable, cell dies) represent Hayekian local knowledge the LP cannot encode; false positives (planner says essential, cell reroutes) represent Kirznerian adaptation the LP cannot predict. (c) Shadow prices — the LP&rsquo;s dual variables are Hayekian price signals the planner must compute to solve the optimization, proving that price information is essential for coordination even in a centrally planned system.</p></div>
 <p><strong>FBA perturbation analysis sharpens the point.</strong> When the carbon source switches from glucose to acetate, FBA instantly re-optimizes to the new global optimum. Real E. coli shows a diauxic lag — a measurable delay while the cell&rsquo;s distributed regulatory network discovers the new environment through local sensing (CRP-cAMP signaling, inducer exclusion, catabolite repression). The planner assumes instant, costless knowledge transfer. Biology pays the real cost of distributed discovery — but the result is a system that can discover anything, not just what the planner anticipated.</p>
-<p><strong>Figure 6.</strong> Three perturbations, three failures of instant optimization. (a) Glucose-to-acetate (Hayek): FBA re-solves; E. coli shows diauxic lag while distributed sensing discovers the new carbon source. (b) Aerobic-to-anaerobic (Mises): FBA re-solves; E. coli activates ArcAB/FNR regulatory cascades through local oxygen sensing. (c) Nitrogen limitation (Kirzner): FBA predicts the new optimum; E. coli upregulates high-affinity transporters via NtrBC — entrepreneurial alertness at the molecular level. Biology pays the cost of discovery but can discover answers to questions the planner never anticipated.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/layer2_fba_perturbation_annotated.png" alt="Figure 6"><p class="figure-caption"><strong>Figure 6.</strong> Three perturbations, three failures of instant optimization. (a) Glucose-to-acetate (Hayek): FBA re-solves; E. coli shows diauxic lag while distributed sensing discovers the new carbon source. (b) Aerobic-to-anaerobic (Mises): FBA re-solves; E. coli activates ArcAB/FNR regulatory cascades through local oxygen sensing. (c) Nitrogen limitation (Kirzner): FBA predicts the new optimum; E. coli upregulates high-affinity transporters via NtrBC — entrepreneurial alertness at the molecular level. Biology pays the cost of discovery but can discover answers to questions the planner never anticipated.</p></div>
 <h2>3.5 The Price System of the Cell</h2>
 <p>Living systems have a real price system operating at three levels.</p>
 <p><strong>Panel A: Three tiers of molecular prices.</strong> Intracellular metabolite ratios (ATP/ADP, NAD+/NADH, AMP/ATP) function as cost of capital — emerging from the cell&rsquo;s own activity, not set by any authority. Intercellular signals (cytokines, morphogens, growth factors, oxygen tension) function as market prices — carrying tissue-level information that cells read locally. mTOR integrates all prices simultaneously and makes the grow-or-conserve decision — the entrepreneur reading the full local market. Not metaphor — every ratio is quantifiable, every signal has a known receptor.</p>
 <p><strong>Panel B: Menger&rsquo;s subjective value measured.</strong> FBA shadow prices from the iML1515 genome-scale model under four conditions. NADH is cheap on glucose, expensive on acetate. Oxygen is free aerobically, most valuable anaerobically. Ammonium is irrelevant under nitrogen sufficiency, critical under limitation. The molecule does not change — the context does. This IS Menger&rsquo;s subjective value theory (1871), measured in a genome-scale model. Even the omniscient planner must compute these prices to solve its optimization.</p>
 <p><strong>Panel C: Price discovery without a planner.</strong> Metabolite pools oscillate then converge to stable values. Early oscillation is the market discovery phase — supply and demand adjusting through local feedback. Late convergence is equilibrium found without any planner telling the system where to settle. Oversupply causes producers to slow down (price drops); scarcity causes producers to speed up (price rises). This is Hayek&rsquo;s price discovery happening at the molecular level — the invisible hand in a metabolite pool.</p>
 <p><strong>Panel D: Cancer breaks the price system.</strong> Using TCGA PanCancerAtlas data (10,967 samples, 32 cancer types), the most mutated genes map to price system components: TP53 (damage price / apoptosis signal), PIK3CA/PTEN/mTOR (price integrators), EGFR/ERBB2 (growth factor receptors / price readers), NF2 (spatial/contact price). The tissue-specific variation is the finding: TP53 is 96% in ovarian but 1% in thyroid. PIK3CA is 52% in uterine but 3% in ovarian. Different tissues break different price components because different tissues rely on different prices. Cancer is not a gene disease — it is a price system disease. The disease is the calculation problem at the cellular level.</p>
-<p><strong>Figure 8.</strong> The Price System of the Cell — four panels showing molecular prices at three tiers, Menger&rsquo;s subjective value measured in FBA shadow prices, price discovery without a planner via metabolite pool convergence, and cancer as the breakdown of the cellular price system.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/price_system_of_the_cell.png" alt="Figure 8"><p class="figure-caption"><strong>Figure 8.</strong> The Price System of the Cell — four panels showing molecular prices at three tiers, Menger&rsquo;s subjective value measured in FBA shadow prices, price discovery without a planner via metabolite pool convergence, and cancer as the breakdown of the cellular price system.</p></div>
 <h2>3.6 Trade Barriers Are Real — Cross-Species Gene Transfer (Layer 3)</h2>
 <p>No organism does everything. Coral exports biomineralization. Spider exports silk. Bacteria export cellulose. Axolotl exports regeneration. Each was given something the others lack.</p>
 <p>Cross-species analysis of eight organisms across four kingdoms revealed that gene transferability follows the structural patterns of voluntary exchange.</p>
 <p><strong>Trade costs mirror evolutionary distance.</strong> The lowest cost in the dataset is human-to-axolotl (0.169) — shared vertebrate regulatory machinery makes exchange easy. The highest costs are prokaryote-to-eukaryote pairs (0.65–0.83) — fundamental regulatory divergence makes exchange expensive. This is the biological gravity model: the greater the institutional distance, the higher the friction.</p>
 <p><strong>Forced exchange destroys information.</strong> Full codon optimization — replacing every codon with the host&rsquo;s most frequent synonym — is the molecular equivalent of forced trade. It maximizes one metric (codon frequency match) while destroying information encoded in rare codons: translation pausing sites, co-translational folding signals, mRNA secondary structure. Codon harmonization — preserving the original usage pattern while shifting it toward the host — reduces barriers without destroying information. The planner who forces trade destroys local knowledge. The steward who reduces friction preserves it.</p>
 <p><strong>Trade blocs emerge spontaneously.</strong> Louvain community detection identified clusters that map to phylogenetic groupings — the animal cluster (human, axolotl, Acropora), the prokaryotic pair (E. coli, Komagataeibacter). Nobody designed these blocs. They emerged from shared evolutionary history — Menger&rsquo;s spontaneous order at the inter-species level.</p>
-<p><strong>Figure 7.</strong> (a) Cross-species gene exchange network — eight organisms across four kingdoms connected by edges weighted by trade ease; each organism specializes in unique capabilities the others lack (Ricardian comparative advantage at the molecular level). (b) Trade cost heatmap — costs scale with evolutionary distance; within-kingdom pairs (0.17–0.38) trade easily; cross-kingdom pairs (0.65–0.83) face high friction. (c) Comparative advantage table — each organism&rsquo;s exportable specialties.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/layer3_trade_network_annotated.png" alt="Figure 7"><p class="figure-caption"><strong>Figure 7.</strong> (a) Cross-species gene exchange network — eight organisms across four kingdoms connected by edges weighted by trade ease; each organism specializes in unique capabilities the others lack (Ricardian comparative advantage at the molecular level). (b) Trade cost heatmap — costs scale with evolutionary distance; within-kingdom pairs (0.17–0.38) trade easily; cross-kingdom pairs (0.65–0.83) face high friction. (c) Comparative advantage table — each organism&rsquo;s exportable specialties.</p></div>
 <p><strong>Figure 8.</strong> The Rothbardian prediction confirmed. Left: Trade cost versus expression success — lower cost correlates with higher success. Center: Success by compatibility tier. Right: Information destruction — forced codon optimization across high barriers destroys local knowledge encoded in rare codons; codon harmonization preserves it.</p>
 <h2>3.7 The Immune System — Distributed Knowledge in Action (Layer 4)</h2>
 <p>The immune system is the most active demonstration of distributed knowledge in all of biology. The standard model describes V(D)J recombination as &ldquo;random&rdquo; and somatic hypermutation as &ldquo;random&rdquo; — with natural selection filtering the results. The data says otherwise at every level.</p>
@@ -519,46 +544,46 @@ hr {
 <p>Activation-induced cytidine deaminase (AID) drives somatic hypermutation in antibody genes during affinity maturation. If this process were random, mutations would distribute uniformly across the V-region sequence.</p>
 <p>They do not.</p>
 <p>AID targets WRC/GYW hotspot motifs at 5x the rate of SYC/GRS coldspot motifs. Across 200 simulated V-region sequences, hotspot positions accumulated 285 mutations versus 15 at coldspot positions — a 19:1 enrichment. This is not a filter applied to random input. This is directed information — the cell&rsquo;s own mutation machinery knows where to write. It reads the local sequence context and preferentially mutates positions where changes are most likely to improve antibody binding.</p>
-<p><strong>Figure 9.</strong> Somatic hypermutation is directed, not random. Left: Every mutation across 200 antibody sequences as an individual point, colored by motif context; WRC/GYW hotspots (gold) cluster visibly. Center: Mutations per sequence by motif — hotspot positions accumulate far more mutations than coldspots. Right: Observed mutation rate per position — hotspot positions sit 5x above random expectation; coldspot positions sit below.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/immune_shm_hotspots_annotated.png" alt="Figure 9"><p class="figure-caption"><strong>Figure 9.</strong> Somatic hypermutation is directed, not random. Left: Every mutation across 200 antibody sequences as an individual point, colored by motif context; WRC/GYW hotspots (gold) cluster visibly. Center: Mutations per sequence by motif — hotspot positions accumulate far more mutations than coldspots. Right: Observed mutation rate per position — hotspot positions sit 5x above random expectation; coldspot positions sit below.</p></div>
 <h3>3.7.2 V(D)J Segment Usage Is Biased, Not Uniform</h3>
 <p>If V(D)J recombination were truly random, all ~50 functional IGHV segments would be used at approximately 2% each. They are not. IGHV3-23 and IGHV4-34 are used at 10–20x the rate of rare segments like IGHV3-72 or IGHV4-38-2. This bias is reproducible across unrelated individuals — the same V segments dominate in different people (Spearman rho approaching 1.0).</p>
 <p>The same pattern holds for J segments: IGHJ4 and IGHJ6 account for ~65% of all usage. Random prediction: ~17% each.</p>
 <p>This is structure embedded in the recombination machinery itself — in chromatin accessibility, recombination signal sequence strength, three-dimensional locus organization. The machinery carries knowledge about which segments are most useful, and it deploys that knowledge before any antigen is ever encountered.</p>
-<p><strong>Figure 10.</strong> V(D)J recombination is biased — knowledge, not randomness. Left: Every V segment&rsquo;s usage count per individual (5 individuals overlaid). Massive peaks at IGHV3-23 and IGHV4-34, near-zero for rare segments. Center: V usage correlation between individuals — Spearman rho near 1.0; the same bias appears in unrelated people. Right: J segment usage — IGHJ4 and IGHJ6 dominate at ~65% combined versus 17% random expectation.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/immune_vdj_bias_annotated.png" alt="Figure 10"><p class="figure-caption"><strong>Figure 10.</strong> V(D)J recombination is biased — knowledge, not randomness. Left: Every V segment&rsquo;s usage count per individual (5 individuals overlaid). Massive peaks at IGHV3-23 and IGHV4-34, near-zero for rare segments. Center: V usage correlation between individuals — Spearman rho near 1.0; the same bias appears in unrelated people. Right: J segment usage — IGHJ4 and IGHJ6 dominate at ~65% combined versus 17% random expectation.</p></div>
 <h3>3.7.3 Public Clonotypes — Convergent Distributed Discovery</h3>
 <p>The strongest evidence: the same T cell receptor CDR3 amino acid sequences appear in unrelated individuals responding to the same pathogen. The theoretical diversity of the TCR repertoire is approximately 10^15 possible sequences. The probability of the same CDR3 sequence arising independently in two unrelated people by chance is approximately 10^-15. Yet hundreds to thousands of public clonotypes are observed across individuals. In our simulation across 10 individuals with 5,000 clonotypes each, 200 public clonotypes were shared by 2 or more individuals, with some shared by all 10.</p>
 <p>This is convergent distributed discovery. Independent immune systems — with no communication, no shared plan, no central coordinator — independently arrive at the same molecular solution. Each discovers the answer through its own local process. The convergence reflects structural biases in the recombination machinery and shared selective pressures from pathogen epitopes. This is Kirzner&rsquo;s entrepreneurial discovery applied to biology: independent agents, working with local knowledge, discovering the same opportunity because the opportunity is real and the machinery is structured to find it.</p>
-<p><strong>Figure 11.</strong> Independent immune systems converge on the same solutions. Left: Every clonotype as a point — CDR3 length vs number of individuals sharing it; random probability of convergence ~10^-15, observed: 200 shared clonotypes. Center: Sharing distribution — some sequences shared by up to 10/10 individuals. Right: Pairwise overlap — median ~40 shared clonotypes per pair; random expectation: zero.</p>
-<p><strong>Figure 12.</strong> The immune system: distributed knowledge, not random generation. Left: Hotspot/coldspot mutation ratio per sequence — observed ~19:1, random prediction 1:1. Center: V segment usage Gini per individual — observed Gini &gt;&gt; 0, random prediction 0 (uniform). Right: Public clonotype fraction per individual — observed: substantial sharing, random prediction: 0%. Three independent measurements, three rejections of randomness.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/immune_public_clonotypes_annotated.png" alt="Figure 11"><p class="figure-caption"><strong>Figure 11.</strong> Independent immune systems converge on the same solutions. Left: Every clonotype as a point — CDR3 length vs number of individuals sharing it; random probability of convergence ~10^-15, observed: 200 shared clonotypes. Center: Sharing distribution — some sequences shared by up to 10/10 individuals. Right: Pairwise overlap — median ~40 shared clonotypes per pair; random expectation: zero.</p></div>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/immune_distributed_summary_annotated.png" alt="Figure 12"><p class="figure-caption"><strong>Figure 12.</strong> The immune system: distributed knowledge, not random generation. Left: Hotspot/coldspot mutation ratio per sequence — observed ~19:1, random prediction 1:1. Center: V segment usage Gini per individual — observed Gini &gt;&gt; 0, random prediction 0 (uniform). Right: Public clonotype fraction per individual — observed: substantial sharing, random prediction: 0%. Three independent measurements, three rejections of randomness.</p></div>
 <h2>3.8 The Whole Genome — Distributed Knowledge Is Scale-Invariant (Layer 5)</h2>
 <p>The immune system is not an exception. The same three patterns — directed mutation, specialized expression, convergent discovery — appear across the entire genome.</p>
 <h3>3.8.1 Genome-Wide Mutation Hotspots</h3>
 <p>The 96-trinucleotide mutation spectrum reveals that genome-wide mutation rates vary over 40-fold by sequence context. CpG dinucleotides — where cytosine is followed by guanine — mutate at 15–40x the baseline rate due to methylation-driven deamination. CpG C-to-T transitions constitute nearly half of all observed mutations (48.7%) despite CpG sites representing roughly 1% of the genome.</p>
 <p>The transition/transversion ratio is approximately 2:1. Random expectation: 0.5:1 (there are twice as many possible transversions as transitions). The 4-fold enrichment means the mutation machinery preferentially produces substitutions that preserve purine/pyrimidine identity — changes that are more likely to be conservative at the protein level.</p>
 <p>This is not random noise filtered by selection. This is information encoded in the chemistry of DNA itself — in methylation patterns, base-stacking energies, and the error profiles of DNA polymerases. The mutation machinery carries distributed knowledge about which changes are most likely to be tolerable, and it acts on that knowledge at every replication.</p>
-<p><strong>Figure 13.</strong> Genome-wide mutations are context-dependent, not random. Left: All 96 trinucleotide contexts as individual points; CpG C&gt;T contexts tower at 15–40x above baseline. Center: Every observed mutation as a point by CpG/transition status — CpG transitions dominate at 48.7% from ~1% of contexts; Ti/Tv = 2:1 (random = 0.5:1). Right: Mutation rate by context class — CpG C&gt;T median ~25x above non-CpG transversion median.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/genome_mutation_hotspots_annotated.png" alt="Figure 13"><p class="figure-caption"><strong>Figure 13.</strong> Genome-wide mutations are context-dependent, not random. Left: All 96 trinucleotide contexts as individual points; CpG C&gt;T contexts tower at 15–40x above baseline. Center: Every observed mutation as a point by CpG/transition status — CpG transitions dominate at 48.7% from ~1% of contexts; Ti/Tv = 2:1 (random = 0.5:1). Right: Mutation rate by context class — CpG C&gt;T median ~25x above non-CpG transversion median.</p></div>
 <h3>3.8.2 Tissue-Specific Gene Expression — Division of Labor</h3>
 <p>If genes were interchangeable machine parts, every gene would be expressed at similar levels across all tissues. If the genome were a centrally planned factory, the same production schedule would run in every cell.</p>
 <p>Twenty percent of genes show tissue specificity index (tau) above 0.95 — expressed almost exclusively in one tissue. Insulin is produced in beta cells, not neurons. Myosin heavy chain is produced in muscle, not liver. Rhodopsin is produced in retina, not kidney.</p>
 <p>The expression Gini coefficient for tissue-specific genes exceeds 0.8 — extreme inequality in where the gene&rsquo;s product is deployed. Fold enrichment in the top tissue reaches 100–1,000x over the mean. This is not a machine running the same program everywhere. This is an economy with division of labor — each tissue specializing in producing what the organism needs from that location, using local signals to determine what to produce.</p>
-<p><strong>Figure 14.</strong> Gene expression across tissues is specialized, not uniform. Left: Every gene&rsquo;s tissue specificity (tau) as a point, grouped by category; housekeeping genes cluster near tau = 0.4, tissue-specific genes near tau = 1.0. Center: Expression Gini per gene — specific genes have Gini &gt; 0.8; machine model predicts Gini = 0. Right: Fold enrichment scatter — tissue-specific genes reach 100–1,000x enrichment.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/genome_tissue_specialization_annotated.png" alt="Figure 14"><p class="figure-caption"><strong>Figure 14.</strong> Gene expression across tissues is specialized, not uniform. Left: Every gene&rsquo;s tissue specificity (tau) as a point, grouped by category; housekeeping genes cluster near tau = 0.4, tissue-specific genes near tau = 1.0. Center: Expression Gini per gene — specific genes have Gini &gt; 0.8; machine model predicts Gini = 0. Right: Fold enrichment scatter — tissue-specific genes reach 100–1,000x enrichment.</p></div>
 <h3>3.8.3 Convergent Evolution — Same Solutions Across Kingdoms</h3>
 <p>The strongest genome-wide evidence against randomness: the same molecular solutions appear independently in lineages separated by hundreds of millions of years.</p>
 <p>Bats and dolphins diverged 95 million years ago. Both evolved echolocation — and both show the same amino acid substitutions in Prestin (SLC26A5), the motor protein of outer hair cells (14 convergent sites). The same substitutions. In the same protein. In lineages that have not shared a common ancestor since before the dinosaurs went extinct.</p>
 <p>C4 photosynthesis has evolved independently at least 60 times across plant families. Each time, the same core enzymes (PEPC, PPDK) are recruited, and many of the same amino acid changes appear. Antifreeze proteins in Arctic cod and Antarctic notothenioids — fish separated by 40 million years and an entire ocean — converged on the same structural solution. High-altitude hemoglobin adaptations show the same EPAS1 variants in Tibetans, Andeans, and Ethiopian highlanders — three populations that independently adapted to altitude within the last 8,000–70,000 years.</p>
 <p>Across 35 documented convergent events spanning 17 traits and divergence times from 8,000 years to 1.5 billion years, molecular convergence persists at all timescales. If mutations were random and selection the only organizing force, the probability of the same amino acid substitution appearing independently in two lineages would decrease exponentially with divergence time. The observed pattern — convergence persisting across 1.5 billion years — is inconsistent with a purely random mutation model. It is consistent with a model where the solution landscape is structured — where certain solutions are favored by the molecular machinery itself.</p>
-<p><strong>Figure 15.</strong> Same solutions found independently across billions of years. Left: Every convergent event as a point — divergence time vs convergent amino acid sites, spanning 8,000 years to 1.5 billion years. Center: Convergent sites per trait — echolocation, C4 photosynthesis, and warm-bloodedness show the highest counts. Right: Divergence vs convergence with Spearman correlation — weak decline; convergence persists at all timescales.</p>
-<p><strong>Figure 16.</strong> The genome: distributed knowledge at every scale. Left: CpG vs non-CpG mutation rates — CpG enrichment ~10–25x over non-CpG; random prediction: equal rates. Center: Tissue specificity waterfall — every gene sorted by tau; the machine model (tau = 0) is falsified by the entire distribution. Right: Convergent evolution across time — 35 independent convergences across 17 traits spanning 1.5 billion years.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/genome_convergent_evolution_annotated.png" alt="Figure 15"><p class="figure-caption"><strong>Figure 15.</strong> Same solutions found independently across billions of years. Left: Every convergent event as a point — divergence time vs convergent amino acid sites, spanning 8,000 years to 1.5 billion years. Center: Convergent sites per trait — echolocation, C4 photosynthesis, and warm-bloodedness show the highest counts. Right: Divergence vs convergence with Spearman correlation — weak decline; convergence persists at all timescales.</p></div>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/genome_distributed_summary_annotated.png" alt="Figure 16"><p class="figure-caption"><strong>Figure 16.</strong> The genome: distributed knowledge at every scale. Left: CpG vs non-CpG mutation rates — CpG enrichment ~10–25x over non-CpG; random prediction: equal rates. Center: Tissue specificity waterfall — every gene sorted by tau; the machine model (tau = 0) is falsified by the entire distribution. Right: Convergent evolution across time — 35 independent convergences across 17 traits spanning 1.5 billion years.</p></div>
 <h2>3.9 Viruses as Communication Infrastructure</h2>
-<p><strong>Figure 17.</strong> Human genome composition — viral DNA dwarfs protein-coding genes. Endogenous retroviruses (ERVs) constitute 8% of the human genome — more than five times the 1.5% that codes for proteins. Transposable elements of viral origin account for nearly half of all genomic sequence. These are not junk or parasitic remnants. They are the communication infrastructure of the distributed genome — regulatory elements, promoters, enhancers, and structural features co-opted from viral sequences over billions of years of integration.</p>
-<p><strong>Figure 18.</strong> Syncytin — a captured viral gene essential for mammalian pregnancy. Syncytin is a retroviral envelope gene captured by the mammalian genome and placed under purifying selection. It enables placental syncytiotrophoblast fusion — the cell fusion event required for nutrient exchange between mother and fetus. Mammalian pregnancy literally depends on a virus. This is not parasitism. It is co-option — the distributed genome incorporating external information and repurposing it for a function no endogenous gene could perform.</p>
-<p><strong>Figure 19.</strong> The global phage network — the first internet. 10^31 bacteriophages on Earth conduct approximately 10^25 gene transfers per day through transduction. This is horizontal information transfer at a scale that dwarfs all human communication networks combined. Phages move genes between bacteria — antibiotic resistance, metabolic capabilities, toxin production — creating a distributed gene-sharing economy that predates multicellular life by billions of years.</p>
-<p><strong>Figure 20.</strong> The gut virome — distributed population control. The human gut virome is &gt;90% bacteriophages, forming a stable resident community that regulates bacterial populations through lysis and lysogeny. This is not infection — it is distributed population control. Phages keep bacterial populations in check without any central immune authority, maintaining the ecological balance of the gut microbiome through local predator-prey dynamics.</p>
-<p><strong>Figure 21.</strong> ERV-derived regulatory elements — viral DNA as gene switches. Endogenous retroviral long terminal repeats (LTRs) have been co-opted as promoters, enhancers, and insulators across human tissues. Viral DNA became the regulatory infrastructure of the distributed genome — price signals repurposed from an external source.</p>
-<p><strong>Figure 22.</strong> The rise of autoimmune and allergic disease — inverse correlation with infection. As infectious disease exposure has decreased over the past century, autoimmune and allergic conditions have risen dramatically. The immune system evolved as a distributed economy calibrated by continuous microbial input. Removing that input — reducing the price signals the system was designed to read — produces miscalibration.</p>
-<p><strong>Figure 23.</strong> Viral communication across scales — from molecules to ecosystems. Viruses operate as communication channels at every scale of biological organization: molecular co-option (syncytin, ERV regulatory elements), cellular regulation (phage-mediated bacterial population control), organismal adaptation (horizontal gene transfer), and ecosystem-level gene flow (the global virome). They are not just pathogens. They are the postal service of the distributed network of life — moving information between nodes that cannot communicate directly.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/viral_genome_composition.png" alt="Figure 17"><p class="figure-caption"><strong>Figure 17.</strong> Human genome composition — viral DNA dwarfs protein-coding genes. Endogenous retroviruses (ERVs) constitute 8% of the human genome — more than five times the 1.5% that codes for proteins. Transposable elements of viral origin account for nearly half of all genomic sequence. These are not junk or parasitic remnants. They are the communication infrastructure of the distributed genome — regulatory elements, promoters, enhancers, and structural features co-opted from viral sequences over billions of years of integration.</p></div>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/viral_syncytin_conservation.png" alt="Figure 18"><p class="figure-caption"><strong>Figure 18.</strong> Syncytin — a captured viral gene essential for mammalian pregnancy. Syncytin is a retroviral envelope gene captured by the mammalian genome and placed under purifying selection. It enables placental syncytiotrophoblast fusion — the cell fusion event required for nutrient exchange between mother and fetus. Mammalian pregnancy literally depends on a virus. This is not parasitism. It is co-option — the distributed genome incorporating external information and repurposing it for a function no endogenous gene could perform.</p></div>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/viral_phage_network.png" alt="Figure 19"><p class="figure-caption"><strong>Figure 19.</strong> The global phage network — the first internet. 10^31 bacteriophages on Earth conduct approximately 10^25 gene transfers per day through transduction. This is horizontal information transfer at a scale that dwarfs all human communication networks combined. Phages move genes between bacteria — antibiotic resistance, metabolic capabilities, toxin production — creating a distributed gene-sharing economy that predates multicellular life by billions of years.</p></div>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/viral_gut_virome.png" alt="Figure 20"><p class="figure-caption"><strong>Figure 20.</strong> The gut virome — distributed population control. The human gut virome is &gt;90% bacteriophages, forming a stable resident community that regulates bacterial populations through lysis and lysogeny. This is not infection — it is distributed population control. Phages keep bacterial populations in check without any central immune authority, maintaining the ecological balance of the gut microbiome through local predator-prey dynamics.</p></div>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/viral_erv_regulatory.png" alt="Figure 21"><p class="figure-caption"><strong>Figure 21.</strong> ERV-derived regulatory elements — viral DNA as gene switches. Endogenous retroviral long terminal repeats (LTRs) have been co-opted as promoters, enhancers, and insulators across human tissues. Viral DNA became the regulatory infrastructure of the distributed genome — price signals repurposed from an external source.</p></div>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/viral_autoimmune_rise.png" alt="Figure 22"><p class="figure-caption"><strong>Figure 22.</strong> The rise of autoimmune and allergic disease — inverse correlation with infection. As infectious disease exposure has decreased over the past century, autoimmune and allergic conditions have risen dramatically. The immune system evolved as a distributed economy calibrated by continuous microbial input. Removing that input — reducing the price signals the system was designed to read — produces miscalibration.</p></div>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/viral_communication_summary.png" alt="Figure 23"><p class="figure-caption"><strong>Figure 23.</strong> Viral communication across scales — from molecules to ecosystems. Viruses operate as communication channels at every scale of biological organization: molecular co-option (syncytin, ERV regulatory elements), cellular regulation (phage-mediated bacterial population control), organismal adaptation (horizontal gene transfer), and ecosystem-level gene flow (the global virome). They are not just pathogens. They are the postal service of the distributed network of life — moving information between nodes that cannot communicate directly.</p></div>
 
-<div class="section-break"></div><h1>Discussion</h1>
+<div class="section-break"></div><h1 class="section-heading">4. Discussion</h1>
 <h2>Comparison to Published Literature</h2>
 <h3>Uri Alon — Network Motifs (2007, <em>Nature Reviews Genetics</em> 8, 450-461)</h3>
 <p>The Layer 1 motif analysis builds directly on Alon&rsquo;s identification of feed-forward loops (FFLs) as statistically over-represented subgraphs in the E. coli gene regulatory network. Alon characterized FFLs as information-processing circuits — filters, pulse generators, fold-change detectors — and established the triadic census method against degree-preserving randomizations that this capstone replicates. The Z-scores from our analysis are consistent with his original data, confirming that FFLs appear far more often than chance predicts (Z &gt; 10).</p>
@@ -693,7 +718,7 @@ hr {
 <p>The image of God is not a face. It is a function — the function of the sagent: one who combines wisdom (sage) with action (agent). The first sagent was Adam: placed in the garden not to redesign it from above, but to tend it, to listen to it, to work within the living order that was already there.</p>
 <p>The molecular biologist faces the same choice at every design decision: plan from above, or cultivate from within. Hard-code a production rate, or grow a feedback loop. Design a master regulator, or distribute control. Force a cross-kingdom gene transfer, or choose a trade partner with low barriers. Treat the cell as a blank machine to be programmed, or as a living order to be joined.</p>
 <p>The data across seven layers is clear. The sagent outperforms the central planner. Not sometimes. Not under special conditions. Structurally. At every scale. In every kingdom. Over four billion years.</p>
-<h2>Conclusion: The Garden Is Still Growing</h2>
+<h2>5. Conclusion: The Garden Is Still Growing</h2>
 <h3>Evidence Summary</h3>
 <p>Seven layers of evidence answer the same question from different angles:</p>
 <table>
@@ -769,7 +794,7 @@ hr {
 <p>The question is not how to program life. It is how to join the computation — how to lead life to lead itself, and in doing so, grow something that lasts. Not by controlling it. By being part of it. Cultivate conditions, don&rsquo;t command outcomes. Read the price system, don&rsquo;t override it. Reduce trade barriers, don&rsquo;t force trade. Be a node, not a planner.</p>
 <p>That is the Living Age. The bridge from silicon to carbon. From programming to cultivating. From central planning to distributed participation. From using life as a part of a machine to doing things with life as a living network that we join, not command.</p>
 
-<div class="references"><div class="section-break"></div><h1>References</h1>
+<div class="references"><div class="section-break"></div><h1 class="section-heading">References</h1>
 <p>Albert, R., Jeong, H., &amp; Barabasi, A. L. (2000). Error and attack tolerance of complex networks. <em>Nature</em>, 406(6794), 378–382.</p>
 <p>Alexandrov, L. B., et al. (2013). Signatures of mutational processes in human cancer. <em>Nature</em>, 500(7463), 415–421.</p>
 <p>Alon, U. (2007). Network motifs: Theory and experimental approaches. <em>Nature Reviews Genetics</em>, 8, 450–461.</p>

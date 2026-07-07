@@ -1,0 +1,9 @@
+# Large genomic data files (>100MB)
+*.vcf
+*.bw
+*.bam
+*.sam
+*.bed.gz
+*.bigWig
+__pycache__/
+*.pyc

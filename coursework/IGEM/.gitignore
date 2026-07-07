@@ -1,0 +1,4 @@
+# Large zip files
+*.zip
+__pycache__/
+*.pyc

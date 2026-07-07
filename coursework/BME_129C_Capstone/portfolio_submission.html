@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Submission — Reports A &amp; B</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f6f8;
+            color: #1a1a2e;
+            line-height: 1.7;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 820px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            padding: 48px 56px;
+        }
+        h1 {
+            font-size: 1.6rem;
+            color: #16213e;
+            margin-bottom: 4px;
+        }
+        .subtitle {
+            font-size: 0.95rem;
+            color: #6b7280;
+            margin-bottom: 36px;
+        }
+        .field {
+            margin-bottom: 32px;
+        }
+        .field-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #4a5568;
+            margin-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 6px;
+        }
+        .field-content {
+            font-size: 0.98rem;
+            color: #2d3748;
+            text-align: justify;
+        }
+        .field-content p {
+            margin-bottom: 8px;
+        }
+        .inline-row {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 32px;
+        }
+        .inline-row .field {
+            margin-bottom: 0;
+        }
+        .inline-row .field:first-child {
+            flex: 0 0 200px;
+        }
+        .inline-row .field:last-child {
+            flex: 1;
+        }
+        .highlight {
+            background: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95rem;
+        }
+        .attachments {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px 20px;
+        }
+        .attachments ul {
+            list-style: none;
+            padding: 0;
+        }
+        .attachments li {
+            padding: 6px 0;
+            font-size: 0.93rem;
+        }
+        .attachments li::before {
+            content: "\1F4CE ";
+        }
+        .tag {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #3730a3;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 6px;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #e2e8f0;
+            margin: 36px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bioengineering B.S. / Biomolecular Engineering &amp; Bioinformatics B.S. Portfolio</h1>
+        <p class="subtitle">Senior Thesis / Capstone Project (Report A) &mdash; BME 129C, Spring 2026</p>
+
+        <div class="field">
+            <div class="field-label">Briefly describe what problem you were solving</div>
+            <div class="field-content">
+                <p>This report investigates whether living systems &mdash; from gene regulatory networks to cross-species gene exchange &mdash; operate as decentralized economies rather than centrally controlled machines. The project applies Austrian economic theory (Hayek, Mises, Menger) to biological data at three scales: network topology analysis of <em>E. coli</em> and <em>S. cerevisiae</em> regulatory, metabolic, and protein interaction networks; agent-based economic modeling of metabolic pathways; and cross-species gene transferability mapping across eight organisms from four kingdoms.</p>
+                <p>The work demonstrates quantitatively that distributed biological architectures outperform centralized alternatives by a 19:1 robustness ratio, with direct implications for how synthetic biologists should design genetic systems &mdash; as economies, not machines.</p>
+                <p>I chose this problem myself, drawing on my prior work building the Adaptive Genome Design System and my independent study of Austrian economics and biological coordination. The project was developed with guidance from my advisor, R. Dubois.</p>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="field-label">What you had to learn beyond formal coursework</div>
+            <div class="field-content">
+                <p>This project required me to learn Austrian economic theory (Hayek's knowledge problem, Mises' economic calculation problem, Menger's spontaneous order) and translate those frameworks into testable biological hypotheses. I taught myself network science (scale-free topology, motif analysis, robustness simulation), single-cell RNA sequencing analysis using Scanpy, agent-based economic simulation, genome-scale flux balance analysis with COBRApy (iML1515 model), and cancer genomics analysis using TCGA PanCancerAtlas data.</p>
+                <p>I also had to learn how to retrieve and integrate data from multiple biological databases (RegulonDB, KEGG, STRING, CellxGene) into a unified computational pipeline.</p>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="field-label">Your contribution to the project</div>
+            <div class="field-content">
+                <p>I am the sole author and developer. I designed the research question, developed the three-layer analytical framework, wrote all computational code (Python &mdash; NetworkX, Scanpy, COBRApy, custom agent-based simulations), retrieved and processed all biological datasets, generated all figures, and wrote the full capstone paper. My advisor R. Dubois provided guidance on capstone structure and presentation.</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="inline-row">
+            <div class="field">
+                <div class="field-label">Faculty Advisor</div>
+                <div class="field-content highlight">R. Dubois</div>
+            </div>
+            <div class="field">
+                <div class="field-label">Title of Report</div>
+                <div class="field-content highlight">Living Systems as Decentralized Economies: Why the Molecular Biologist Should Be an Entrepreneur, Not a Central Planner</div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="field">
+            <div class="field-label">PDF Attachments</div>
+            <div class="attachments">
+                <ul>
+                    <li>Capstone Report &mdash; <code>paper/deliverables/capstone_paper_v3.pdf</code> <span class="tag">Report</span></li>
+                    <li>Capstone Slides &mdash; <code>paper/presentations/BME129C_slides_051126.pdf</code> <span class="tag">Slides</span></li>
+                    <li>Capstone Poster &mdash; <code>paper/deliverables/capstone_poster.pdf</code> <span class="tag">Poster</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- REPORT B — BME 230A Computational Genomics                 -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+
+    <div class="container" style="margin-top: 48px;">
+        <h1>Bioengineering B.S. / Biomolecular Engineering &amp; Bioinformatics B.S. Portfolio</h1>
+        <p class="subtitle">Class Project Report (Report B) &mdash; BME 230A: Computational Genomics, Winter 2025</p>
+
+        <div class="field">
+            <div class="field-label">Briefly describe what problem you were solving</div>
+            <div class="field-content">
+                <p>This project involved computational analysis of single-cell RNA sequencing data to address two core bioinformatics challenges: (1) detecting and removing technical doublets from scRNA-seq libraries using Bayesian nearest-neighbor scoring, and (2) constructing weighted gene co-expression networks (WGCNA) to identify co-regulated gene modules and hub genes.</p>
+                <p>Using mouse scRNA-seq data (GEO: GSE186078, Illumina NovaSeq 6000), I implemented doublet simulation by summing randomly chosen transcriptomes, KNN-based doublet scoring with Bayesian estimation and standard error computation, and threshold-based filtering at multiple percentiles (90th, 95th, 99th). I then built gene co-expression networks using Pearson correlation, soft-thresholding power optimization, Topological Overlap Matrices (TOM), and hierarchical clustering to identify gene modules across CD4 and CD8 T cell populations.</p>
+                <p>Additional coursework included count distribution modeling &mdash; fitting Poisson and negative binomial distributions via maximum likelihood estimation to InDrops negative control data (Klein et al. 2015) to characterize technical vs. biological zeros in UMI count matrices.</p>
+                <p>The problems were assigned by the instructor as part of BME 230A: Computational Genomics. This topic demonstrates my engineering abilities in computational pipeline development, statistical modeling of high-dimensional biological data, and network analysis applied to real genomic datasets.</p>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="field-label">What you had to learn beyond formal coursework</div>
+            <div class="field-content">
+                <p>This project required me to learn the mathematics of doublet detection in droplet-based scRNA-seq &mdash; Poisson loading models for microfluidic encapsulation, Bayesian doublet scoring formulas with nearest-neighbor classification, and standard error estimation for doublet likelihood scores. I also learned weighted gene co-expression network analysis (WGCNA), including soft-thresholding power selection for scale-free topology, Topological Overlap Measures (TOM), and hierarchical module detection with dendrogram cutting.</p>
+                <p>I had to become proficient with Scanpy, AnnData, and the h5ad data format for single-cell analysis, as well as maximum likelihood estimation for negative binomial count distributions using L-BFGS-B optimization applied to UMI count matrices. The WGCNA analysis additionally required learning Pearson correlation-based adjacency construction, clustering coefficient computation, and pathway enrichment testing for identified gene modules.</p>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="field-label">Your contribution to the project</div>
+            <div class="field-content">
+                <p>I am the sole author of all submitted work. I implemented all computational analyses in Python (NumPy, SciPy, Scanpy, scikit-learn, NetworkX, matplotlib), wrote the doublet detection pipeline from the mathematical formulations provided in the assignment, built the WGCNA pipeline including correlation matrices, soft-thresholded adjacency computation, TOM calculation, and hierarchical clustering with module identification, and completed all count distribution modeling problems with MLE parameter fitting for Poisson and negative binomial models.</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="field">
+            <div class="field-label">PDF Attachments</div>
+            <div class="attachments">
+                <ul>
+                    <li>Doublet Detection &amp; WGCNA Notebook &mdash; <code>doublet_detection_scrna_seq.ipynb</code> <span class="tag">Report</span></li>
+                    <li>Count Distribution Modeling Notebook &mdash; <code>count_distribution_modeling.ipynb</code> <span class="tag">Report</span></li>
+                    <li>RNA Distance Metrics Notebook &mdash; <code>rna_modeling_distance_metrics.ipynb</code> <span class="tag">Report</span></li>
+                    <li>Project Abstract &mdash; <code>project_ Abstract_ (1).pdf</code> <span class="tag">Abstract</span></li>
+                    <li>Presentation &mdash; <code>AI_Driven_Growth_Concise_Presentation.pptx</code> <span class="tag">Slides &mdash; needs PDF</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

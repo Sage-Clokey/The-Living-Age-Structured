@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Overview Responses</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f6f8;
+            color: #1a1a2e;
+            line-height: 1.7;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 820px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            padding: 48px 56px;
+        }
+        h1 {
+            font-size: 1.6rem;
+            color: #16213e;
+            margin-bottom: 4px;
+        }
+        .subtitle {
+            font-size: 0.95rem;
+            color: #6b7280;
+            margin-bottom: 36px;
+        }
+        .field {
+            margin-bottom: 32px;
+        }
+        .field-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #4a5568;
+            margin-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 6px;
+        }
+        .field-content {
+            font-size: 0.98rem;
+            color: #2d3748;
+            text-align: justify;
+        }
+        .field-content p {
+            margin-bottom: 8px;
+        }
+        .team-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+        }
+        .team-table th, .team-table td {
+            text-align: left;
+            padding: 8px 12px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.93rem;
+        }
+        .team-table th {
+            background: #f8fafc;
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .report-tag {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #3730a3;
+            font-size: 0.82rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 4px;
+            margin-right: 6px;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #e2e8f0;
+            margin: 36px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bioengineering B.S. / Biomolecular Engineering &amp; Bioinformatics B.S. Portfolio</h1>
+        <p class="subtitle">Overview Responses</p>
+
+        <div class="field">
+            <div class="field-label">Which report best reflects ability to function on multidisciplinary teams?</div>
+            <div class="field-content">
+                <p><span class="report-tag">Report A</span> This project integrated biology, economics, computer science, and mathematics into a unified analysis. Direct participants:</p>
+                <table class="team-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Major / Discipline</th>
+                            <th>Level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sage Clokey</td>
+                            <td>Bioengineering / Biomolecular Engineering &amp; Bioinformatics</td>
+                            <td>Undergraduate</td>
+                        </tr>
+                        <tr>
+                            <td>R. Dubois</td>
+                            <td>BME Department</td>
+                            <td>Faculty Member</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="field">
+            <div class="field-label">Which report best demonstrates application of knowledge from the sciences? Which best demonstrates application of mathematical principles?</div>
+            <div class="field-content">
+                <p><span class="report-tag">Report A</span> Report A required deep understanding of molecular biology (gene regulatory networks, metabolic pathways, protein interactions, single-cell transcriptomics, cancer genomics) and economic theory (Austrian economics, spontaneous order, price theory). Report A also used extensive mathematical analysis: network topology metrics (power-law degree distributions, betweenness centrality, clustering coefficients), robustness simulation under targeted node removal, agent-based economic modeling with Nash equilibrium convergence, genome-scale flux balance analysis (linear programming over 2,712 reactions), and statistical motif analysis (Z-scores against 1,000 randomized networks).</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="field">
+            <div class="field-label">Which report best reflects ability to communicate in writing? Which included oral or poster presentation?</div>
+            <div class="field-content">
+                <p><span class="report-tag">Report A</span> I presented this material orally during BME 129C weekly progress presentations and the final capstone presentation at UC Santa Cruz, Spring 2026.</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="field">
+            <div class="field-label">Which report best reflects concern for global, social, or environmental issues?</div>
+            <div class="field-content">
+                <p><span class="report-tag">Report A</span> The project argues that synthetic biology's dominant command-and-control approach &mdash; centrally engineering every genetic component &mdash; is structurally fragile and wasteful. By demonstrating that distributed biological architectures outperform centralized alternatives by a 19:1 robustness ratio, the work provides a framework for designing more resilient, sustainable engineered biological systems. This has direct implications for sustainable materials, biomanufacturing, and agricultural biotechnology &mdash; fields where robust, self-correcting genetic designs could reduce resource waste and environmental impact.</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="field">
+            <div class="field-label">Please provide a list of the tools and techniques you used to produce your projects</div>
+            <div class="field-content">
+                <p><span class="report-tag">Report A</span> <strong>For Report A (BME 129C Capstone),</strong> I used Python (NetworkX, Scanpy, COBRApy, NumPy, SciPy, matplotlib) for all computational analysis. Network topology analysis used RegulonDB, KEGG REST API, and STRING database for biological network construction, with custom robustness simulation and motif analysis (triadic census against 1,000 randomized networks). Single-cell analysis used Scanpy with pre-processed PBMC data from CellxGene in h5ad/AnnData format. Metabolic modeling used a custom agent-based economic simulation and genome-scale flux balance analysis with COBRApy on the iML1515 <em>E. coli</em> model (2,712 reactions, 1,877 metabolites). Cancer genomics analysis used TCGA PanCancerAtlas data via cBioPortal. Cross-species trade mapping used codon usage tables from the Kazusa database and gene sequences from UCSC Genome Browser and NCBI Entrez. Figures were generated with matplotlib and presentations built in PowerPoint.</p>
+                <p><span class="report-tag">Report B</span> <strong>For Report B (BME 230A Computational Genomics),</strong> I used Python (NumPy, SciPy, Scanpy, scikit-learn, NetworkX, matplotlib) in Jupyter notebooks. Doublet detection used KNN classification (scikit-learn NearestNeighbors), Bayesian scoring, and UMAP visualization via Scanpy on mouse scRNA-seq data (GEO: GSE186078, AnnData/h5ad format). Gene co-expression network analysis (WGCNA) used Pearson correlation, soft-thresholding power optimization, Topological Overlap Matrix computation, and hierarchical clustering (SciPy linkage/dendrogram). Count distribution modeling used maximum likelihood estimation with L-BFGS-B optimization (SciPy) to fit Poisson and negative binomial models to InDrops UMI count data.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

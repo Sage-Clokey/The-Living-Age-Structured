@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Capstone Poster — Living Systems as Decentralized Economies</title>
+    <style>
+        @page { size: 48in 36in; margin: 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html {
+            background: #111;
+        }
+        body {
+            width: 48in;
+            min-height: 36in;
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #0a0a0a;
+            color: #e8e8e8;
+            overflow: visible;
+            transform-origin: top left;
+            transform: scale(var(--poster-scale, 0.3));
+            margin: 0 auto;
+        }
+        @media screen {
+            html { overflow: auto; }
+        }
+        @media print {
+            body { transform: none; }
+        }
+
+        /* ── HEADER ── */
+        .header {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 40%, #0d1a0d 70%, #0a0a0a 100%);
+            border-bottom: 6px solid #22c55e;
+            padding: 0.5in 0.8in 0.4in;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header-left { flex: 1; }
+        .header h1 {
+            font-size: 62pt;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.15;
+            letter-spacing: -0.5px;
+        }
+        .header h1 span { color: #a855f7; }
+        .header h2 {
+            font-size: 28pt;
+            font-weight: 400;
+            color: #22c55e;
+            margin-top: 8px;
+            font-style: italic;
+        }
+        .header-right {
+            text-align: right;
+            padding-left: 0.5in;
+        }
+        .header-right p {
+            font-size: 22pt;
+            color: #d4d4d4;
+            line-height: 1.5;
+        }
+        .header-right .name {
+            font-size: 28pt;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        .header-right .dept {
+            font-size: 20pt;
+            color: #a3a3a3;
+        }
+
+        /* ── MAIN GRID ── */
+        .poster-body {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr 1.3fr 1fr;
+            grid-template-rows: auto 1fr;
+            gap: 0.25in;
+            padding: 0.3in 0.4in 0.4in;
+            height: calc(36in - 2.2in);
+        }
+
+        /* ── PANELS ── */
+        .panel {
+            background: rgba(168,85,247,0.04);
+            border: 2px solid rgba(168,85,247,0.2);
+            border-radius: 16px;
+            padding: 0.3in;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .panel-title {
+            font-size: 24pt;
+            font-weight: 700;
+            color: #22c55e;
+            margin-bottom: 12px;
+            border-bottom: 3px solid rgba(34,197,94,0.3);
+            padding-bottom: 8px;
+        }
+        .panel-title .num {
+            display: inline-block;
+            background: #a855f7;
+            color: #ffffff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-size: 20pt;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .panel p, .panel li {
+            font-size: 16pt;
+            line-height: 1.45;
+            color: #d4d4d4;
+            margin-bottom: 10px;
+        }
+        .panel ul {
+            padding-left: 28px;
+        }
+        .panel li { margin-bottom: 6px; }
+        .panel img {
+            width: 100%;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 1px solid rgba(168,85,247,0.2);
+        }
+        .panel .figure-caption {
+            font-size: 13pt;
+            color: #8b8b8b;
+            font-style: italic;
+            margin-top: 4px;
+        }
+        .stat {
+            display: inline-block;
+            background: rgba(34,197,94,0.12);
+            border: 1px solid rgba(34,197,94,0.35);
+            border-radius: 8px;
+            padding: 4px 12px;
+            font-weight: 600;
+            color: #22c55e;
+            font-size: 16pt;
+        }
+        .stat-red {
+            background: rgba(168,85,247,0.12);
+            border-color: rgba(168,85,247,0.35);
+            color: #c084fc;
+        }
+        .stat-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .highlight-box {
+            background: rgba(168,85,247,0.06);
+            border-left: 4px solid #a855f7;
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 10px 0;
+        }
+        .highlight-box p {
+            color: #e5e5e5;
+            font-size: 15pt;
+            margin-bottom: 0;
+        }
+        .vs {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 10px 0;
+        }
+        .vs-label {
+            font-size: 14pt;
+            color: #8b8b8b;
+            font-weight: 600;
+        }
+        em { color: #c084fc; font-style: italic; }
+        strong { color: #ffffff; }
+
+        /* ── ABSTRACT spans full width on first row ── */
+        .abstract-bar {
+            grid-column: 1 / -1;
+            background: rgba(34,197,94,0.04);
+            border: 2px solid rgba(34,197,94,0.15);
+            border-radius: 16px;
+            padding: 0.25in 0.4in;
+            display: flex;
+            gap: 0.5in;
+            align-items: flex-start;
+        }
+        .abstract-bar .abs-text {
+            flex: 2;
+        }
+        .abstract-bar .abs-text p {
+            font-size: 17pt;
+            line-height: 1.5;
+            color: #d4d4d4;
+        }
+        .abstract-bar .abs-question {
+            flex: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .abstract-bar .abs-question .big-q {
+            font-size: 30pt;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.3;
+        }
+        .abstract-bar .abs-question .big-q span { color: #a855f7; }
+        .abstract-bar .abs-question .sub-q {
+            font-size: 16pt;
+            color: #22c55e;
+            margin-top: 8px;
+        }
+
+        /* Conclusion panel styling */
+        .conclusion-list li {
+            font-size: 15pt;
+            margin-bottom: 10px;
+        }
+        .conclusion-list li strong {
+            color: #22c55e;
+        }
+        .refs p {
+            font-size: 12pt;
+            color: #8b8b8b;
+            line-height: 1.4;
+            margin-bottom: 2px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ════════ HEADER ════════ -->
+<div class="header">
+    <div class="header-left">
+        <h1>Living Systems as <span>Decentralized Economies</span></h1>
+        <h2>Why the Molecular Biologist Should Be an Entrepreneur, Not a Central Planner</h2>
+    </div>
+    <div class="header-right">
+        <p class="name">Sage Clokey</p>
+        <p>Department of Bioengineering</p>
+        <p class="dept">University of California, Santa Cruz</p>
+        <p class="dept">BME 129C &mdash; Spring 2026 &bull; Advisor: R. Dubois</p>
+    </div>
+</div>
+
+<!-- ════════ BODY ════════ -->
+<div class="poster-body">
+
+    <!-- ── ABSTRACT BAR ── -->
+    <div class="abstract-bar">
+        <div class="abs-text">
+            <p>Synthetic biology follows the central planning model: the engineer specifies every promoter, ribosome binding site, and codon &mdash; commanding the system from above. This study argues that the engineer should instead work like an <strong>entrepreneur</strong> &mdash; setting conditions for distributed coordination, respecting local knowledge, and designing systems that self-correct. We ground this argument in Austrian economics (Hayek, Mises, Menger, Rothbard, Kirzner) and test it with biological data at three scales: <strong>network topology</strong>, <strong>agent-based metabolic modeling</strong>, and <strong>cross-species gene trade</strong>. Every layer shows the same result: distributed architectures outperform centralized alternatives. Build economies, not machines.</p>
+        </div>
+        <div class="abs-question">
+            <div class="big-q">Are living systems literally<br><span>decentralized economies?</span></div>
+            <div class="sub-q">Not as metaphor &mdash; as measurable,<br>structurally equivalent systems.</div>
+        </div>
+    </div>
+
+    <!-- ── COL 1: INTRODUCTION + FRAMEWORK ── -->
+    <div class="panel">
+        <div class="panel-title"><span class="num">1</span> The Problem &amp; Framework</div>
+        <p>Every living system on Earth coordinates without a central controller. No master gene runs your body. No forester runs a forest. Yet these systems allocate resources, respond to shocks, and adapt to change more robustly than anything industrial civilization has built.</p>
+        <p>Economics has a word for this: <strong>decentralized market</strong>. This project asks whether the analogy is literal.</p>
+
+        <div class="highlight-box">
+            <p><strong>Hayek's Knowledge Problem:</strong> The knowledge required for coordination is dispersed among agents and cannot be aggregated by any central authority. The price system solves this by transmitting information through distributed signals.</p>
+        </div>
+        <div class="highlight-box">
+            <p><strong>Mises' Calculation Problem:</strong> Central planning is not just hard &mdash; it is structurally broken. Without prices, a planner cannot determine rational allocation.</p>
+        </div>
+        <div class="highlight-box">
+            <p><strong>Menger's Spontaneous Order:</strong> Complex institutions (money, prices, markets) arise from uncoordinated individual actions &mdash; not design. ATP emerged as the cell's universal currency the same way.</p>
+        </div>
+
+        <img src="../figures/layer1_motif_analysis.png" alt="Motif analysis">
+        <p class="figure-caption">Fig 1. Feed-forward loops (030T) are massively over-represented in the <em>E. coli</em> GRN vs. 1,000 randomized networks &mdash; evolved coordination motifs that propagate local information without central command.</p>
+
+        <img src="../figures/layer1_self_regulation.png" alt="Self-regulation analysis">
+        <p class="figure-caption">Fig 2. Degree vs. betweenness centrality: biological networks self-regulate against centralization. High degree does NOT guarantee high betweenness &mdash; the invisible hand in topology.</p>
+
+        <p style="margin-top:auto; font-size:14pt; color:#94a3b8;">Every claim is falsifiable. If the <em>E. coli</em> GRN had a star topology, the planner would be right.</p>
+    </div>
+
+    <!-- ── COL 2: LAYER 1 ── -->
+    <div class="panel">
+        <div class="panel-title"><span class="num">2</span> Layer 1: Network Topology &amp; Single-Cell Economy</div>
+        <p>Gene regulatory, metabolic, and protein interaction networks in <em>E. coli</em> and <em>S. cerevisiae</em> exhibit scale-free degree distributions with no single controlling node.</p>
+
+        <img src="../figures/layer1_topology_annotated.png" alt="Network topology analysis">
+        <p class="figure-caption">Fig 3. Degree distribution, robustness curves, and centrality comparison across biological vs. synthetic architectures.</p>
+
+        <div class="stat-row">
+            <span class="stat">19:1 robustness ratio</span>
+            <span class="stat">37% node loss tolerated</span>
+            <span class="stat-red stat">Star: collapses at 1.9%</span>
+        </div>
+
+        <p>Same genome, different output. PBMC single-cell RNA sequencing reveals 8 distinct cell types &mdash; no master cell assigned roles. Each cell differentiated in response to local signals. Division of labor emerged from individual cells reading local conditions and making local decisions.</p>
+
+        <img src="../figures/layer1b_single_cell_economy_annotated.png" alt="Single-cell economy">
+        <p class="figure-caption">Fig 4. UMAP of PBMC cell types, Shannon entropy (specialization), and communication network topology &mdash; cells as specialized economic agents.</p>
+
+        <img src="../figures/layer1b_robustness_comparison.png" alt="Robustness comparison">
+        <p class="figure-caption">Fig 5. Distributed (green) vs. centralized (red) communication robustness after cell-type removal. 75% communication survival after any single removal.</p>
+
+        <img src="../figures/layer1b_price_signals_annotated.png" alt="Price signals">
+        <p class="figure-caption">Fig 6. The same ligand is received differently by different cell types &mdash; Menger's subjective value at the molecular level. The value of a signal depends on who receives it.</p>
+    </div>
+
+    <!-- ── COL 3: LAYER 2 ── -->
+    <div class="panel">
+        <div class="panel-title"><span class="num">3</span> Layer 2: The Distributed Economy Outperforms the Planner</div>
+        <p>13 metabolic pathway agents share a metabolite pool with no central allocator. Production rates oscillate early &mdash; the system discovering prices &mdash; then converge to stable equilibrium through local feedback alone. No planner needed. The invisible hand finds equilibrium.</p>
+
+        <img src="../figures/layer2_economy_annotated.png" alt="Economic modeling results">
+        <p class="figure-caption">Fig 7. GDP over time, perturbation robustness, and production rate convergence &mdash; distributed vs. centralized allocation.</p>
+
+        <div class="stat-row">
+            <span class="stat">Distributed: 71.1% GDP retained</span>
+            <span class="stat-red stat">Centralized: 53.0% GDP retained</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat">2.9x lower variance</span>
+            <span class="stat">No planner needed</span>
+        </div>
+
+        <p>FBA using the genome-scale iML1515 model (2,712 reactions, 1,877 metabolites, 1,516 genes) is the omniscient planner &mdash; a linear program with perfect stoichiometric knowledge. It achieves 70% accuracy on real Keio knockout data. The 30% failure rate is structural: knowledge encoded in allosteric feedback, protein folding, and expression timing exists only in the local state of each molecular agent.</p>
+
+        <img src="../figures/layer2_fba_analysis_annotated.png" alt="FBA analysis">
+        <p class="figure-caption">Fig 8. FBA vs. Keio knockout predictions, confusion matrix, and shadow prices &mdash; even the omniscient planner must compute prices to solve its optimization.</p>
+
+        <img src="../figures/price_system_of_the_cell.png" alt="Price system of the cell">
+        <p class="figure-caption">Fig 9. The Price System of the Cell &mdash; metabolite ratios as cost of capital, intercellular signals as market prices, mTOR as the entrepreneur. Cancer mutations target these price components (TCGA PanCancerAtlas, 10,967 samples).</p>
+    </div>
+
+    <!-- ── COL 4: LAYER 3 + CONCLUSIONS ── -->
+    <div class="panel">
+        <div class="panel-title"><span class="num">4</span> Layer 3: Cross-Species Trade</div>
+        <p>Gene transferability between 8 organisms follows the patterns of voluntary exchange. Codon distance = trade friction. Each organism contributes unique comparative advantage. Coral exports biomineralization. Spider exports silk. Bacteria export cellulose. No organism does everything &mdash; Ricardian comparative advantage at the molecular level.</p>
+
+        <img src="../figures/layer3_trade_network_annotated.png" alt="Trade network">
+        <p class="figure-caption">Fig 10. Cross-species trade network. Edge weight = codon compatibility. Trade blocs emerge spontaneously via Louvain community detection.</p>
+
+        <div class="stat-row">
+            <span class="stat">Within-kingdom: 0.17&ndash;0.38</span>
+            <span class="stat-red stat">Cross-kingdom: 0.65&ndash;0.83</span>
+        </div>
+
+        <img src="../figures/layer3_voluntary_exchange_annotated.png" alt="Voluntary exchange">
+        <p class="figure-caption">Fig 11. Trade cost vs. success: voluntary exchange (compatible organisms) works; forced exchange (high barriers) destroys biological information &mdash; Rothbard's argument that coercion destroys value.</p>
+
+        <div class="panel-title" style="margin-top: 20px; border-color: rgba(168,85,247,0.3); color: #c084fc;">Conclusions</div>
+        <ul class="conclusion-list">
+            <li><strong>Network topology:</strong> No master node. 19:1 robustness advantage over centralized architectures. Feed-forward loops are evolved price signals.</li>
+            <li><strong>Single-cell economy:</strong> 8 specialized cell types, communication Gini = 0.0, 75% survival after any cell-type removal. Subjective value at the molecular level.</li>
+            <li><strong>Metabolic allocation:</strong> Distributed retains 71% GDP under perturbation vs. 53% for the planner. Even the omniscient FBA planner fails 30% of the time.</li>
+            <li><strong>Cross-species trade:</strong> Voluntary exchange succeeds; forced exchange destroys information. Trade blocs emerge spontaneously.</li>
+        </ul>
+        <div class="highlight-box" style="margin-top: auto;">
+            <p><strong>For the practicing molecular biologist:</strong> Design distributed feedback architectures, not command hierarchies. Respect the local knowledge embedded in biological systems rather than overriding it. Build economies, not machines. The entrepreneur outperforms the central planner &mdash; in the cell, in the tissue, in the organism, and in the lab.</p>
+        </div>
+
+        <div class="refs" style="margin-top: 16px;">
+            <p>Hayek (1945) <em>AER</em>; Mises (1920); Menger (1871); Rothbard (1962); Kirzner (1973); Barabasi &amp; Oltvai (2004) <em>Nat Rev Genet</em>; Kitano (2004) <em>Nat Rev Genet</em>; Salgado et al. (2013) <em>NAR</em>; Kanehisa &amp; Goto (2000) <em>NAR</em>; Szklarczyk et al. (2023) <em>NAR</em>; Monk et al. (2017) <em>Nat Biotech</em>; Shen-Orr et al. (2002) <em>Nat Genet</em></p>
+        </div>
+    </div>
+
+</div><!-- /poster-body -->
+
+<script>
+    function scalePoster() {
+        var bodyW = document.body.scrollWidth;
+        var winW = window.innerWidth;
+        var scale = winW / bodyW;
+        document.body.style.setProperty('--poster-scale', scale);
+        // adjust html height so scrollbar works if needed
+        document.documentElement.style.height = (document.body.scrollHeight * scale) + 'px';
+    }
+    window.addEventListener('load', scalePoster);
+    window.addEventListener('resize', scalePoster);
+</script>
+</body>
+</html>

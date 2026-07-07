@@ -2,7 +2,7 @@
 
 **Submitted by:** Sage Arthur Jordan Clokey
 **Role:** State Director, Students For Liberty — California
-**Date:** May 2026
+**Date:** June 2026
 
 ---
 
@@ -48,6 +48,8 @@ This is not metaphor. This is peer-reviewed biology reframed in the language of 
 
 A bioinformatics toolkit (genome analysis, protein interaction mapping, living systems design) that demonstrates voluntary order is not only natural but designable. Built on real APIs: UCSC Genome Browser, NCBI Entrez, ESM-3 protein language models, AlphaFold.
 
+The science is deeper than metaphor. James Shapiro's work on natural genetic engineering (Shapiro, 2005) shows that genomes don't evolve through random character-by-character mutation — they restructure themselves by rearranging existing functional modules in new combinations, activated by stress, regulated by the cell itself. The genome operates like a decentralized ledger: no central controller, distributed consensus across cells, self-rewriting protocols, and fork events that create new species the way a blockchain hard fork creates a new chain. Bret Weinstein's work on lineage selection and telomeric dynamics reinforces the same principle from the ecological side — organisms are stewards of genomes, not owners, and selection operates across multiple levels, not just the selfish gene. Life doesn't wait for a central authority to approve a mutation. It engineers its own adaptation from the bottom up.
+
 The technology arm proves that the distributed, entrepreneurial components of biology — local, adaptive, signal-responsive — are the designable ones. The centralized, hub-dependent components are brittle. This is the data that makes the philosophical argument undeniable.
 
 ---
@@ -58,7 +60,7 @@ Students For Liberty is uniquely positioned to host this project because:
 
 1. **Cross-campus reach.** The Living Age needs to connect biology students, engineering students, philosophy students, and economics students across California and beyond. SFL's campus network is the mycelium that connects these roots.
 
-2. **Interdisciplinary credibility.** SFL events framed as "Is Nature Libertarian?" or "How Does a Forest Think?" draw audiences that would never attend a political meeting. The science framing opens doors that ideology closes.
+2. **Interdisciplinary credibility.** SFL events framed as "Is Nature Libertarian?" or "How Does a Forest Think?" draw audiences that would never attend a political meeting. The science framing opens doors that ideology closes. Liberty students already know Bret Weinstein from DarkHorse Podcast — his work on evolutionary stewardship and emergent order is a familiar entry point into the deeper biology. The Living Age takes that intuition and gives it molecular evidence.
 
 3. **Pipeline for builders.** SFL campuses are full of students who hold libertarian values but see no path from their STEM degree to meaningful liberty-aligned work. The Living Age gives them one — bioengineering, regenerative systems, open-source tools, decentralized technology. Not everyone who resonates with liberty wants to go into politics. Most of them want to make things.
 
@@ -114,6 +116,10 @@ Students For Liberty is uniquely positioned to host this project because:
 | SFL chapters adopting the Socratic event format | 3+ outside California |
 | Published essays / content pieces | 10+ |
 | Open-source tools released | 2+ |
+
+### Beyond the First Cycle
+
+The Living Age is designed to outlast any single funding period. Event templates are replicable — any SFL chapter can run "Is Nature Libertarian?" with the materials we publish. The content compounds: every essay, video, and visualization becomes a permanent resource. The mycelium network of STEM-liberty students, once connected, sustains itself laterally. The first cycle plants the roots. The network grows from there.
 
 ---
 
@@ -176,4 +182,4 @@ Approve The Living Age as an official SFL Impact Project. Provide the platform, 
 
 *Sage Arthur Jordan Clokey*
 *State Director, Students For Liberty — California*
-*May 2026*
+*June 2026*

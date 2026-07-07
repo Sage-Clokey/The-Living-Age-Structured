@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <style>
+@page {
+    size: letter;
+    margin: 0.75in 0.75in 0.75in 0.75in;
+    @bottom-center {
+        content: counter(page);
+        font-size: 9pt;
+        color: #555;
+    }
+}
+
+body {
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 9.5pt;
+    line-height: 1.3;
+    color: #1a1a1a;
+    max-width: 100%;
+}
+
+h1 {
+    font-size: 15pt;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 0.15in;
+    margin-bottom: 0.08in;
+    color: #1a1a1a;
+}
+
+h2 {
+    font-size: 10.5pt;
+    font-weight: bold;
+    margin-top: 0.12in;
+    margin-bottom: 0.05in;
+    color: #1a1a1a;
+    page-break-after: avoid;
+}
+
+h3 {
+    font-size: 9.5pt;
+    font-weight: bold;
+    margin-top: 0.08in;
+    margin-bottom: 0.03in;
+    color: #1a1a1a;
+    page-break-after: avoid;
+}
+
+/* Author block */
+h1 + p, h1 + p + p, h1 + p + p + p {
+    text-align: center;
+    text-indent: 0;
+    margin-bottom: 0.02in;
+    font-size: 9.5pt;
+}
+
+p {
+    text-align: justify;
+    margin-bottom: 0.03in;
+    margin-top: 0;
+    text-indent: 0.25in;
+    orphans: 3;
+    widows: 3;
+}
+
+h1 + p, h2 + p, h3 + p,
+.figure-block + p {
+    text-indent: 0;
+}
+
+strong {
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.06in 0;
+    font-size: 7.5pt;
+    page-break-inside: avoid;
+}
+
+th {
+    background-color: #f0f0f0;
+    border: 1px solid #999;
+    padding: 1.5pt 3pt;
+    text-align: left;
+    font-weight: bold;
+    font-size: 7pt;
+}
+
+td {
+    border: 1px solid #ccc;
+    padding: 1pt 3pt;
+    text-align: left;
+    vertical-align: top;
+    font-size: 7pt;
+}
+
+tr:nth-child(even) td {
+    background-color: #fafafa;
+}
+
+/* Figures */
+.figure-block {
+    text-align: center;
+    margin: 0.1in 0;
+    page-break-inside: avoid;
+}
+
+.figure-block img {
+    max-width: 100%;
+    max-height: 3.2in;
+    display: block;
+    margin: 0 auto;
+}
+
+.figure-caption {
+    font-size: 8.5pt;
+    text-align: justify;
+    text-indent: 0;
+    margin-top: 0.04in;
+    margin-bottom: 0.08in;
+    line-height: 1.25;
+    color: #333;
+}
+
+/* References */
+.references p {
+    text-indent: -0.35in;
+    padding-left: 0.35in;
+    margin-bottom: 0.02in;
+    font-size: 8pt;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 0.08in 0;
+}
+</style>
+</head>
+<body>
+<h1>The Living Architecture: Distributed Knowledge as the Design Language of Life</h1>
+<p>Sage Clokey</p>
+<p>Department of Biomolecular Engineering and Bioinformatics, University of California, Santa Cruz</p>
+<p>BME 129C: Design/Implement BME — Spring 2026 — Advisor: R. Dubois</p>
+<h2>Abstract</h2>
+<p>Living things are not machines. There are two types of order: decentralized and centralized. Centralized order requires uniformity. Decentralized order requires ordered diversity. Life is decentralized, and life must die to become centralized — it must be reduced to parts, and in doing so it loses what makes it valuable. The diversity of life is not random difference. It is based on local knowledge of time and place that no central planner can predict. Distributed nodes can plan, but central planners cannot. The distributed knowledge is coordinated by prices — the ratio between the voluntary exchange of anything between nodes. Living order is organized by choice. State order is dictated by control. The differences are a feature, not a bug. The differences are how adaptation is possible. It is trial and error directed by distributed knowledge — just how Hayek explains the market at the human-to-human level with trade. Eugenics is the same fatal conceit: you cannot centrally plan life. If there is distributed knowledge in living things, it is in the DNA — and bioinformatics is the analysis of that genetic data. Bioinformatics is the study of distributed knowledge in living systems. This capstone provides quantitative evidence — drawn from network topology, single-cell transcriptomics, agent-based metabolic simulation, genome-scale flux balance analysis, cross-species gene transfer, and cancer genomics — that the distributed architecture of biology is not a constraint to be overcome but the fundamental reason living systems outperform every centralized alternative we can design or simulate.</p>
+<h2>1. Introduction</h2>
+<p>Modern synthetic biology assumes the engineer can gather enough knowledge to design a living system from above — pick the promoter, optimize the codons, calculate the ratios, assemble the parts. This is central planning applied to molecular biology. And it fails at roughly the same rate and for roughly the same reasons that central planning fails in human economies. Kwok (2010) documented that most designed genetic circuits fail on the first attempt; Purnick and Weiss (2009) showed complexity hits a wall beyond a handful of components.</p>
+<p>This paper argues the problem is structural. The knowledge required to coordinate a living system exists only in distributed form — scattered across thousands of molecular agents responding to local conditions no external observer can access. The Austrian school of economics identified this principle first: Hayek (1945) showed coordination knowledge never exists in concentrated form; Mises (1920) proved rational calculation is impossible without prices; Menger (1871) demonstrated complex institutions arise spontaneously from individual action. Every principle they discovered about human cooperation, life discovered first — and wrote it in DNA.</p>
+<p>This capstone tests the distributed knowledge hypothesis across seven layers of biological organization, from network topology to whole-genome architecture, and derives design principles for the molecular biologist who wants to work with the grain of creation rather than against it.</p>
+<h2>2. Methods</h2>
+<p>Seven layers of analysis were implemented in Python 3.12 using public databases and established bioinformatics tools.</p>
+<p><strong>Layer 1 — Network Topology.</strong> Five biological networks (E. coli GRN from RegulonDB, E. coli and yeast PPI from STRING, E. coli and yeast metabolic from KEGG) were compared against five synthetic architectures (star, hub-and-spoke, random, lattice, scale-free) using degree distribution, betweenness Gini, and robustness under targeted node removal. Motif analysis followed Alon et al. (2002); self-regulation assessed via WBPA (Topirceanu et al., 2018).</p>
+<p><strong>Layer 1b — Single-Cell Economics.</strong> 2,638 human PBMCs (Scanpy pbmc3k) across 8 cell types analyzed for specialization (Shannon entropy), communication centralization (betweenness Gini of ligand-receptor network), and fault tolerance (single cell-type removal).</p>
+<p><strong>Layer 2 — Agent-Based Simulation.</strong> 13 metabolic pathway agents compared under distributed (local feedback), centralized (global ranking), and centralized-smart (real-time re-optimization) allocation regimes across 200 time steps with perturbation at step 100.</p>
+<p><strong>Layer 2b — Flux Balance Analysis.</strong> iML1515 genome-scale model (2,712 reactions, 1,877 metabolites, 1,516 genes) via COBRApy. Single-gene knockouts compared to Keio collection phenotypes. Shadow prices extracted as Hayekian price signals.</p>
+<p><strong>Layer 3 — Cross-Species Trade.</strong> Codon usage distance (Kazusa RSCU tables) and trade cost computed across 8 organisms spanning 4 kingdoms. Trade blocs detected via Louvain community detection.</p>
+<p><strong>Layer 4 — Immune Repertoire.</strong> Somatic hypermutation modeled with AID hotspot targeting (WRC/GYW at 5x base rate). V(D)J segment usage across 5 simulated individuals (10,000 B cells each). Public clonotype analysis across 10 individuals (5,000 TCR clonotypes each).</p>
+<p><strong>Layer 5 — Whole Genome.</strong> 96-trinucleotide mutation spectrum from COSMIC signatures. Tissue-specific expression (tau index) across 5,000 genes and 20 tissues. 35 convergent evolution events curated across 17 traits.</p>
+<h2>3. Results</h2>
+<p><strong>No master node (Layer 1).</strong> All biological networks showed heavy-tailed degree distributions (alpha = 2.0–2.5). Under targeted attack, PPI networks required 36.8% node removal to fragment; the star graph collapsed at 1.9% — a 19:1 robustness ratio. Feed-forward loops were over-represented (Z &gt; 10), functioning as Hayekian price signal shortcuts. The WBPA mechanism confirmed networks self-regulate against centralization.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/layer1_topology_annotated.png" alt="Figure 1"><p class="figure-caption"><strong>Figure 1.</strong> Network topology across biological and synthetic architectures — degree distributions, robustness under targeted removal (19:1 ratio), betweenness centrality, and feed-forward loop enrichment.</p></div>
+<p><strong>No master cell (Layer 1b).</strong> Eight cell types specialized without hierarchy (Shannon entropy 0.852–0.915). Communication betweenness Gini = 0.000 — perfectly distributed, no gatekeeper. 75% of communication survived any single cell-type removal.</p>
+<p><strong>Distributed outperforms centralized (Layer 2).</strong> Under stable conditions the planner achieved 1.68x higher GDP. Under perturbation, distributed retained 71.1% of GDP through local self-correction; centralized retained only 53.0% — an 18.1 percentage point advantage.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/layer2_economy_annotated.png" alt="Figure 2"><p class="figure-caption"><strong>Figure 2.</strong> Distributed vs centralized metabolic allocation — GDP over time, perturbation robustness (71% vs 53%), and production rate convergence via Kirznerian price discovery.</p></div>
+<p><strong>The omniscient planner still fails (Layer 2b).</strong> FBA with perfect stoichiometric knowledge achieved 70% accuracy on gene knockouts. The 30% failure was structural — allosteric feedback, protein folding, expression timing exist only in local molecular state. The LP must compute shadow prices — computing what the market produces for free.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/layer2_fba_analysis_annotated.png" alt="Figure 3"><p class="figure-caption"><strong>Figure 3.</strong> FBA predictions vs Keio collection — 70% accuracy ceiling, confusion matrix showing structural failures, and shadow prices as Hayekian price signals.</p></div>
+<p><strong>Trade follows economic rules (Layer 3).</strong> Costs scaled with evolutionary distance (within-kingdom 0.17–0.38, cross-kingdom 0.65–0.83). Forced codon optimization destroyed information in rare codons. Trade blocs emerged spontaneously from shared evolutionary history.</p>
+<p><strong>Immune generation is directed (Layer 4).</strong> AID targeted WRC/GYW hotspots at 19:1 over coldspots. V segment usage was biased 10–20x toward preferred segments with near-perfect cross-individual correlation (Spearman rho approaching 1.0). Public clonotypes appeared in unrelated individuals at rates exceeding random expectation by 10^15-fold — convergent distributed discovery.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/immune_distributed_summary_annotated.png" alt="Figure 4"><p class="figure-caption"><strong>Figure 4.</strong> Immune distributed knowledge — hotspot/coldspot mutation ratio (~19:1), V segment usage Gini, and public clonotype sharing across unrelated individuals.</p></div>
+<p><strong>Genome-wide distributed knowledge (Layer 5).</strong> CpG C&gt;T mutations occurred at 15–40x baseline from ~1% of contexts (Ti/Tv = 2:1 vs random 0.5:1). Twenty percent of genes showed tissue specificity tau &gt; 0.95. Thirty-five convergent evolution events across 17 traits reproduced the same amino acid substitutions in lineages separated by up to 1.5 billion years.</p>
+<div class="figure-block"><img src="file:///mnt/c/Users/SajcS/Desktop/The%20Living%20Age%20Structured/coursework/BME_129C_Capstone/paper/figures/genome_distributed_summary_annotated.png" alt="Figure 5"><p class="figure-caption"><strong>Figure 5.</strong> Genome-wide distributed knowledge — CpG mutation hotspots, tissue specificity waterfall, and convergent evolution across 1.5 billion years.</p></div>
+<h2>4. Discussion</h2>
+<p>The convergence across seven independent layers is the central finding. At every scale — trinucleotides, genes, cells, pathways, organisms, species — the same pattern repeats: knowledge is distributed, coordination emerges from local agents acting on local signals, and the machinery itself carries information about what to do and where to do it.</p>
+<p>The Layer 1 results extend Barabasi and Oltvai (2004), who established scale-free topology in biological networks. This capstone adds the WBPA self-regulation mechanism and the economic interpretation: distributed architecture is the structural requirement for coordination through local knowledge. The motif analysis builds on Alon (2007), reframing feed-forward loops not as engineering design patterns but as Hayekian price signal shortcuts — local regulatory motifs that propagate information without central command.</p>
+<p><strong>Design Principles.</strong> The data yields six principles for the molecular biologist: (1) Read the economy before entering it — use FBA shadow prices as Hayekian signals; (2) Build feedback loops, not fixed rates — 71% vs 53% GDP retention; (3) Distribute control across the pathway — 19:1 robustness ratio; (4) Harmonize codons, don&rsquo;t optimize them — preserve local knowledge; (5) Let the system evolve — Kirznerian discovery at the molecular level; (6) Design consortia, not monoliths — Gini = 0.0, 75% fault tolerance.</p>
+<p><strong>Evidence Summary</strong></p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Question</th>
+<th>Finding</th>
+<th>Principle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1: Topology</td>
+<td>Is there a master node?</td>
+<td>No. 19:1 robustness advantage</td>
+<td>Hayek: knowledge is dispersed</td>
+</tr>
+<tr>
+<td>1b: Single-cell</td>
+<td>Is there a master cell?</td>
+<td>No. Gini = 0.0, 75% survival</td>
+<td>Menger: spontaneous order</td>
+</tr>
+<tr>
+<td>2: Economy</td>
+<td>Distributed &gt; centralized?</td>
+<td>Yes. 71% vs 53% GDP</td>
+<td>Mises: calculation problem</td>
+</tr>
+<tr>
+<td>2b: FBA</td>
+<td>Perfect knowledge solves it?</td>
+<td>No. 70% accuracy, 30% structural</td>
+<td>Hayek: structural limit</td>
+</tr>
+<tr>
+<td>3: Trade</td>
+<td>Forced exchange works?</td>
+<td>No. Destroys information</td>
+<td>Rothbard: coercion destroys value</td>
+</tr>
+<tr>
+<td>4: Immune</td>
+<td>Immune generation random?</td>
+<td>No. 19:1 hotspots, rho = 1.0</td>
+<td>Distributed knowledge</td>
+</tr>
+<tr>
+<td>5: Genome</td>
+<td>Mutation random?</td>
+<td>No. CpG hotspots, convergent evolution</td>
+<td>Knowledge in the machinery</td>
+</tr>
+</tbody>
+</table>
+<p>The cell is not a chassis waiting to be programmed. It is a running economy — 4,400 genes coordinating through distributed feedback. The question is not how to program life. It is how to join it.</p>
+<div class="references"><h2>References</h2>
+<p>Albert, R., Jeong, H., &amp; Barabasi, A. L. (2000). Error and attack tolerance of complex networks. <em>Nature</em>, 406, 378–382.</p>
+<p>Alon, U. (2007). Network motifs: Theory and experimental approaches. <em>Nature Reviews Genetics</em>, 8, 450–461.</p>
+<p>Baba, T., et al. (2006). Construction of <em>E. coli</em> K-12 single-gene knockout mutants: the Keio collection. <em>Molecular Systems Biology</em>, 2, 2006.0008.</p>
+<p>Barabasi, A. L., &amp; Oltvai, Z. N. (2004). Network biology: Understanding the cell&rsquo;s functional organization. <em>Nature Reviews Genetics</em>, 5, 101–113.</p>
+<p>Clauset, A., Shalizi, C. R., &amp; Newman, M. E. J. (2009). Power-law distributions in empirical data. <em>SIAM Review</em>, 51(4), 661–703.</p>
+<p>Hayek, F. A. (1945). The use of knowledge in society. <em>American Economic Review</em>, 35(4), 519–530.</p>
+<p>Hayek, F. A. (1988). <em>The Fatal Conceit: The Errors of Socialism</em>. University of Chicago Press.</p>
+<p>Kirzner, I. M. (1973). <em>Competition and Entrepreneurship</em>. University of Chicago Press.</p>
+<p>Kwok, R. (2010). Five hard truths for synthetic biology. <em>Nature</em>, 463, 288–290.</p>
+<p>Menger, C. (1871). <em>Principles of Economics</em>.</p>
+<p>Mises, L. von. (1920). Economic calculation in the socialist commonwealth. <em>Archiv fur Sozialwissenschaft</em>, 47, 86–121.</p>
+<p>Monk, J. M., et al. (2017). iML1515, a knowledgebase that computes <em>E. coli</em> traits. <em>Nature Biotechnology</em>, 35, 904–908.</p>
+<p>Purnick, P. E. M., &amp; Weiss, R. (2009). The second wave of synthetic biology. <em>Nature Reviews Molecular Cell Biology</em>, 10, 410–422.</p>
+<p>Rothbard, M. N. (1962). <em>Man, Economy, and State</em>. D. Van Nostrand.</p>
+<p>Topirceanu, A., et al. (2018). Weighted betweenness preferential attachment. <em>Scientific Reports</em>, 8, 10871.</p>
+<p>Wolf, F. A., et al. (2018). SCANPY: Large-scale single-cell gene expression data analysis. <em>Genome Biology</em>, 19, 15.</p></div>
+</body>
+</html>

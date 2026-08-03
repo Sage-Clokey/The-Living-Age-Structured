@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merch Ideas — The Living Age</title>
+<style>
+  @media print {
+    body { margin: 0; background: white; }
+    .page { box-shadow: none !important; margin: 0 !important; }
+    .no-print { display: none !important; }
+    @page { margin: 0.5in; size: letter; }
+    .category { break-inside: avoid; }
+  }
+
+  @media screen {
+    body {
+      background: #0a0a0f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: #1a1410;
+    line-height: 1.7;
+  }
+
+  .no-print {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .no-print button {
+    background: #c9a84c;
+    color: #1a1410;
+    border: none;
+    padding: 0.7rem 2.5rem;
+    font-size: 1rem;
+    font-family: 'Georgia', serif;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .no-print button:hover { background: #d4b85c; }
+
+  .page {
+    background: #fdf8f0;
+    width: 8.5in;
+    padding: 0.7in 1in;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(160, 130, 80, 0.3);
+  }
+
+  .header h1 {
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #3a2a15;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+  }
+
+  .header .subtitle {
+    font-size: 0.82rem;
+    color: #8a7a60;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .intro {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #5a4a30;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .category {
+    margin-bottom: 1.6rem;
+  }
+
+  .cat-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #3a2a15;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid rgba(160, 130, 80, 0.25);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .cat-icon {
+    font-size: 1.1rem;
+    opacity: 0.6;
+  }
+
+  .item {
+    margin-bottom: 0.8rem;
+    padding-left: 0.3rem;
+  }
+
+  .item-name {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #2a2015;
+  }
+
+  .item-desc {
+    font-size: 0.85rem;
+    color: #4a3a25;
+    margin-top: 0.1rem;
+  }
+
+  .item-quote {
+    font-size: 0.84rem;
+    color: #6a5a40;
+    font-style: italic;
+    margin-top: 0.15rem;
+    padding-left: 0.8rem;
+    border-left: 2px solid rgba(160, 130, 80, 0.25);
+  }
+
+  .item-details {
+    font-size: 0.82rem;
+    color: #7a6a50;
+    margin-top: 0.1rem;
+  }
+
+  .divider {
+    text-align: center;
+    color: rgba(160, 130, 80, 0.35);
+    margin: 1.2rem 0;
+    letter-spacing: 0.5em;
+    font-size: 0.9rem;
+  }
+
+  .color-swatch {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    vertical-align: middle;
+    margin-right: 3px;
+    border: 1px solid rgba(0,0,0,0.15);
+  }
+
+  .notes {
+    font-size: 0.83rem;
+    color: #5a4a30;
+    margin-top: 1.5rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(160, 130, 80, 0.2);
+  }
+
+  .notes h3 {
+    font-size: 0.88rem;
+    color: #3a2a15;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.06em;
+  }
+
+  .notes ul {
+    margin-left: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .notes li {
+    margin-bottom: 0.2rem;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding-top: 0.8rem;
+    border-top: 2px solid rgba(160, 130, 80, 0.3);
+    font-size: 0.72rem;
+    color: #a09080;
+    letter-spacing: 0.1em;
+  }
+</style>
+</head>
+<body>
+
+<div class="no-print">
+  <button onclick="window.print()">Print / Save as PDF</button>
+</div>
+
+<div class="page">
+
+  <div class="header">
+    <h1>Merch Ideas</h1>
+    <div class="subtitle">The Living Age &bull; Clokey Productions</div>
+  </div>
+
+  <p class="intro">Every product should carry the philosophy. Nothing is just a logo slap&mdash;each piece teaches, provokes, or plants a seed.</p>
+
+  <!-- ═══════════════════════════════════════ -->
+  <div class="category">
+    <div class="cat-title">Apparel</div>
+
+    <div class="item">
+      <div class="item-name">The Green Flame Tee</div>
+      <div class="item-desc">Green flame with Fibonacci spiral on the chest. Minimal. No text on front.</div>
+      <div class="item-details">Back print: <em>"Things that are built break. Things that grow naturally return."</em></div>
+      <div class="item-details">Colorways: black, charcoal, forest green</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">"The Gate Has No Fence" Tee</div>
+      <div class="item-desc">Text only. Serif font, centered. Gold on black fabric.</div>
+      <div class="item-details">Clean, cryptic, conversation-starting. People will ask what it means.</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">Media to Show Why / Technology to Show How Tee</div>
+      <div class="item-desc">Split design&mdash;left side: film reel or clay hands (media). Right side: DNA helix or spiral code (technology). Text runs across the chest.</div>
+      <div class="item-details">Colorways: deep purple with gold text, black with green flame accent</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">The Living Spiral Hoodie</div>
+      <div class="item-desc">Large Fibonacci spiral across the back, built from the four family callings: Film, Agriculture, Music, Faith. Each arm of the spiral labeled subtly.</div>
+      <div class="item-details">Front left chest: small green flame. Premium heavyweight hoodie.</div>
+      <div class="item-details">Colors: <span class="color-swatch" style="background:#1a0a2a"></span>deep purple, <span class="color-swatch" style="background:#0a0a0f"></span>midnight black</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">Covenant Pledge Longsleeve</div>
+      <div class="item-desc">Down the left sleeve: "Truth before power. Justice before advantage. Creation before conquest. Service before authority."</div>
+      <div class="item-details">Front: green flame. Back: "The Living Republic is not a place. It is a people."</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">"Clay to Code" Tee</div>
+      <div class="item-desc">Gumby-green clay texture transitioning into digital code/DNA sequence. The Clokey legacy in one image.</div>
+      <div class="item-details">Back: "The Living Age" in small serif text</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">The Spiral Steward Cap</div>
+      <div class="item-desc">Embroidered green flame on front. Adjustable. Unstructured dad hat style.</div>
+      <div class="item-details">Colors: black, olive, washed clay brown</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <div class="category">
+    <div class="cat-title">Prints &amp; Posters</div>
+
+    <div class="item">
+      <div class="item-name">The Declaration Print</div>
+      <div class="item-desc">Full text of the Declaration of the True Living Republic of Conscience on aged parchment stock. Museum-quality print.</div>
+      <div class="item-details">Sizes: 18x24" and 11x17". Gold ink on cream or black on parchment.</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">The Living Spiral Poster</div>
+      <div class="item-desc">Four generations of the Clokey calling visualized as a growing spiral. Art Clokey &rarr; Joe Clokey &rarr; Joseph Walden Clokey &rarr; Joseph Parkander. Film, Agriculture, Music, Faith converging.</div>
+      <div class="item-details">18x24". Deep purple background with gold and green.</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">"The Gate Has No Fence" Letterpress Print</div>
+      <div class="item-desc">Single line on heavy cotton stock. Actual letterpress or high-quality digital letterpress effect. Limited runs.</div>
+      <div class="item-details">8x10". Numbered editions.</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">Quote Poster Series</div>
+      <div class="item-desc">A collection of minimalist posters, each featuring one key line:</div>
+      <div class="item-quote">"Every invention first exists as a story."</div>
+      <div class="item-quote">"Freedom is not the absence of order. Freedom is the possibility of living order."</div>
+      <div class="item-quote">"Conscience is the invisible hand of God."</div>
+      <div class="item-quote">"The future is imagined before it is constructed."</div>
+      <div class="item-quote">"A camera, a microphone, a keyboard, and a conscience can reach farther than many institutions once imagined."</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <div class="category">
+    <div class="cat-title">Stickers &amp; Patches</div>
+
+    <div class="item">
+      <div class="item-name">Green Flame Sticker</div>
+      <div class="item-desc">Die-cut green flame with Fibonacci spiral. Weatherproof vinyl. 3" tall.</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">"The Gate Has No Fence" Bumper Sticker</div>
+      <div class="item-desc">Gold serif text on matte black. 8" wide.</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">Covenant Pledge Sticker Pack</div>
+      <div class="item-desc">Four stickers, one for each pledge: Truth / Justice / Creation / Service. Each with a small flame icon.</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">Spiral Steward Patch</div>
+      <div class="item-desc">Embroidered iron-on patch. Green flame with gold border. For jackets, bags, hats.</div>
+      <div class="item-details">3" circular or shield-shaped</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">Living Age Enamel Pin</div>
+      <div class="item-desc">Small green flame pin with gold metal finish. Subtle enough for daily wear. Recognizable to those who know.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <div class="category">
+    <div class="cat-title">Books &amp; Printed Matter</div>
+
+    <div class="item">
+      <div class="item-name">The Living Book Trilogy</div>
+      <div class="item-desc">The full trilogy in physical print. Premium binding. Green flame embossed on spine.</div>
+      <div class="item-details">Individual volumes and boxed set.</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">The Sagent Creed (Pocket Edition)</div>
+      <div class="item-desc">Small format (4x6") pocket book. Core philosophy in a form you can carry. Leather-look soft cover, gold foil flame.</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">Declaration Broadsheet</div>
+      <div class="item-desc">The Declaration printed as a single large-format broadsheet, like historical proclamations. Folded and sealed with a wax stamp.</div>
+      <div class="item-details">Heavy uncoated stock. Limited edition.</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">Living Age Field Notebook</div>
+      <div class="item-desc">Moleskine-style notebook with green flame debossed on cover. Dot grid pages. Back cover printed with the four covenant pledges.</div>
+      <div class="item-details">"The future is imagined before it is constructed." printed inside front cover.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <div class="category">
+    <div class="cat-title">Practical Goods</div>
+
+    <div class="item">
+      <div class="item-name">Living Age Coffee Mug</div>
+      <div class="item-desc">Matte black ceramic. Green flame on one side. "Media to show why. Technology to show how." on the other.</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">Spiral Steward Candle</div>
+      <div class="item-desc">Hand-poured soy candle in a dark glass jar. Scent: cedar, sage, and earth. Gold label with flame icon.</div>
+      <div class="item-details">The Living Age is about real things. Light a real flame.</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">Clay Gumby Kit</div>
+      <div class="item-desc">Real modeling clay with a simple guide to making your own Gumby. Honors Art Clokey's craft. Practical creation over digital consumption.</div>
+      <div class="item-details">Includes card: "My grandfather created Gumby from clay. What will you create?"</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">"Things That Grow" Seed Kit</div>
+      <div class="item-desc">Small packet of heirloom seeds (herbs or wildflowers) with Living Age card. Honors Joe Clokey's agricultural vision.</div>
+      <div class="item-details">Card reads: "Things that are built break. Things that grow naturally return."</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">Living Age Tote Bag</div>
+      <div class="item-desc">Heavy canvas tote. Green flame screen-printed. Carry your books, your tools, your work.</div>
+      <div class="item-details">Natural canvas or black</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <div class="category">
+    <div class="cat-title">Digital &amp; Media</div>
+
+    <div class="item">
+      <div class="item-name">Living Age Wallpaper Pack</div>
+      <div class="item-desc">Phone and desktop wallpapers. Green flame on dark purple gradient. Quote variants. High-res downloads.</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">Clokey Productions Short Films (USB Drive)</div>
+      <div class="item-desc">Original short films and behind-the-scenes footage on a custom USB shaped like a green flame or clay block. Physical media for a digital age.</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">Living Age Soundtrack</div>
+      <div class="item-desc">Original music composed for the Living Age. Real instruments. Real voices. Available on vinyl, CD, and digital. Album art features the spiral.</div>
+    </div>
+  </div>
+
+  <div class="divider">&bull; &bull; &bull; &bull; &bull;</div>
+
+  <div class="notes">
+    <h3>Brand Guidelines</h3>
+    <ul>
+      <li><strong>Colors:</strong> <span class="color-swatch" style="background:#32cd32"></span>Living green, <span class="color-swatch" style="background:#c9a84c"></span>gold, <span class="color-swatch" style="background:#1a0a2a"></span>deep purple, <span class="color-swatch" style="background:#0a0a0f"></span>midnight black, <span class="color-swatch" style="background:#fdf8f0"></span>parchment cream</li>
+      <li><strong>Typography:</strong> Georgia or similar serif. Never sans-serif for primary text. The voice is grounded, not corporate.</li>
+      <li><strong>Symbols:</strong> Green flame, Fibonacci spiral, clay texture, DNA helix</li>
+      <li><strong>Philosophy:</strong> Every product should be real, practical, and carry meaning. No empty logo merch. If someone picks it up, they should learn something or feel something.</li>
+    </ul>
+
+    <h3>Priority Tiers</h3>
+    <ul>
+      <li><strong>Start here:</strong> Green Flame stickers, "Gate Has No Fence" tee, Field Notebook, Enamel Pin</li>
+      <li><strong>Next wave:</strong> Living Spiral Hoodie, Declaration Print, Quote Poster Series, Coffee Mug</li>
+      <li><strong>Premium / Limited:</strong> Declaration Broadsheet, Clay Gumby Kit, Seed Kit, Trilogy boxed set</li>
+    </ul>
+
+    <h3>Print-on-Demand Options</h3>
+    <ul>
+      <li>Apparel &amp; mugs: Printful, Printify, or Gooten (integrates with Shopify)</li>
+      <li>Stickers: StickerMule, StickerGiant</li>
+      <li>Posters &amp; prints: Printful or local print shop for premium runs</li>
+      <li>Notebooks &amp; books: Lulu, BookBaby, or KDP for print-on-demand</li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    CLOKEY PRODUCTIONS &nbsp;&bull;&nbsp; THE LIVING AGE &nbsp;&bull;&nbsp; MERCH CATALOG
+  </div>
+
+</div>
+
+</body>
+</html>

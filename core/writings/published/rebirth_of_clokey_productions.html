@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Rebirth of Clokey Productions</title>
+<style>
+  @media print {
+    body { margin: 0; }
+    .page { box-shadow: none !important; margin: 0 !important; padding: 0.8in 1.25in !important; }
+    .no-print { display: none !important; }
+    @page { margin: 0; size: letter; }
+  }
+
+  @media screen {
+    body {
+      background: #0a0a0f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: #1a1410;
+    line-height: 1.8;
+  }
+
+  .no-print {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .no-print button {
+    background: #c9a84c;
+    color: #1a1410;
+    border: none;
+    padding: 0.7rem 2.5rem;
+    font-size: 1rem;
+    font-family: 'Georgia', serif;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .no-print button:hover { background: #d4b85c; }
+
+  .page {
+    background: #fdf8f0;
+    width: 8.5in;
+    min-height: 11in;
+    padding: 0.8in 1.25in;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    position: relative;
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 0.5in;
+    left: 0.5in;
+    right: 0.5in;
+    bottom: 0.5in;
+    border: 1px solid rgba(160, 130, 80, 0.15);
+    pointer-events: none;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 1.8rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 2px solid rgba(160, 130, 80, 0.3);
+  }
+
+  .header .flame-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .header .flame-icon {
+    width: 50px;
+    height: 70px;
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #3a2a15;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+    line-height: 1.4;
+  }
+
+  .header .subtitle {
+    font-size: 0.85rem;
+    color: #8a7a60;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .section-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #3a2a15;
+    letter-spacing: 0.06em;
+    margin-top: 1.6rem;
+    margin-bottom: 0.7rem;
+    text-align: center;
+  }
+
+  .section-title::before,
+  .section-title::after {
+    content: ' \2014 ';
+    color: rgba(160, 130, 80, 0.4);
+  }
+
+  p {
+    font-size: 0.93rem;
+    color: #2a2015;
+    margin-bottom: 0.6rem;
+    text-align: justify;
+  }
+
+  .preamble {
+    font-style: italic;
+    font-size: 0.98rem;
+    margin-bottom: 1.5rem;
+    color: #2a2015;
+  }
+
+  .legacy-item {
+    margin-bottom: 0.4rem;
+    padding-left: 1.2rem;
+    position: relative;
+    font-size: 0.93rem;
+  }
+
+  .legacy-item::before {
+    content: '\2022';
+    position: absolute;
+    left: 0;
+    color: #8a7a60;
+  }
+
+  .legacy-name {
+    font-weight: 600;
+    color: #3a2a15;
+  }
+
+  .emphasis-line {
+    text-align: center;
+    font-size: 0.95rem;
+    color: #3a2a15;
+    margin: 0.35rem 0;
+    font-weight: 600;
+  }
+
+  .emphasis-italic {
+    text-align: center;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: #3a2a15;
+    margin: 0.35rem 0;
+  }
+
+  .separator {
+    text-align: center;
+    color: rgba(160, 130, 80, 0.4);
+    margin: 1rem 0;
+    font-size: 1.2rem;
+    letter-spacing: 0.5em;
+  }
+
+  .gate {
+    text-align: center;
+    font-size: 1.05rem;
+    color: #3a2a15;
+    font-style: italic;
+    font-weight: 600;
+    margin: 1.2rem 0;
+    letter-spacing: 0.04em;
+  }
+
+  .closing {
+    text-align: center;
+    margin-top: 1.8rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(160, 130, 80, 0.2);
+  }
+
+  .closing p {
+    text-align: center;
+    font-size: 0.95rem;
+    color: #3a2a15;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .closing .sub {
+    font-weight: 400;
+    font-style: italic;
+    color: #6a5a40;
+    font-size: 0.9rem;
+  }
+
+  .final-pledge {
+    margin-top: 1.2rem;
+    font-size: 0.9rem;
+    text-align: justify;
+    color: #2a2015;
+    font-style: italic;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 1.8rem;
+    padding-top: 0.8rem;
+    border-top: 2px solid rgba(160, 130, 80, 0.3);
+    font-size: 0.75rem;
+    color: #a09080;
+    letter-spacing: 0.1em;
+  }
+</style>
+</head>
+<body>
+
+<div class="no-print">
+  <button onclick="window.print()">Print / Save as PDF</button>
+</div>
+
+<div class="page">
+
+  <div class="header">
+    <div class="flame-wrap">
+      <svg class="flame-icon" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 15 C92 45,68 75,55 105 C42 135,28 160,25 185 C22 210,28 235,38 252 C48 268,62 278,78 284 C88 288,95 290,100 290 C105 290,112 288,122 284 C138 278,152 268,162 252 C172 235,178 210,175 185 C172 160,158 135,145 105 C132 75,108 45,100 15Z" fill="none" stroke="#8a7a60" stroke-width="2" opacity="0.5"/>
+        <path d="M100 60 C94 85,78 115,68 145 C58 175,48 200,48 220 C48 245,58 265,72 275 C82 282,92 286,100 288 C108 286,118 282,128 275 C142 265,152 245,152 220 C152 200,142 175,132 145 C122 115,106 85,100 60Z" fill="none" stroke="#8a7a60" stroke-width="1.5" opacity="0.35"/>
+        <path d="M100 220 C100 220,88 220,88 208 C88 196,100 196,100 196 C100 196,116 196,116 180 C116 164,100 164,100 164 C100 164,76 164,76 140 C76 116,100 116,100 116 C100 116,132 116,132 140" fill="none" stroke="#8a7a60" stroke-width="1.2" opacity="0.3"/>
+      </svg>
+    </div>
+    <h1>The Rebirth of<br>Clokey Productions</h1>
+    <div class="subtitle">A Manifesto for the Living Age</div>
+  </div>
+
+  <p class="preamble">There comes a time when every generation must decide whether it will merely preserve the past or create the future. We inherit stories, technologies, traditions, and institutions, but we are not called simply to maintain them unchanged. We are called to breathe life into them, refine them, and carry them forward. That time has come.</p>
+
+  <div class="section-title">The Inheritance</div>
+
+  <p>It began with those who came before me.</p>
+
+  <p>My grandfather, Art Clokey, created Gumby from clay. My father, Joe Clokey, devoted his life to carrying that creative vision forward. Around them grew a collection of seemingly different works, yet I see them as expressions of a common purpose.</p>
+
+  <p>There are certain callings that have run through my family, each expressing a different part of what it means to live and create:</p>
+
+  <p class="legacy-item"><span class="legacy-name">Film &mdash; Art Clokey.</span> Through Gumby, he showed that media could be created through real craftsmanship: clay, sets, practical effects, and imagination made tangible.</p>
+
+  <p class="legacy-item"><span class="legacy-name">Agriculture &mdash; Joe Clokey.</span> Through San Luis Video Publishing, he worked to preserve and spread practical knowledge about agriculture and stewardship of the land.</p>
+
+  <p class="legacy-item"><span class="legacy-name">Education &amp; Music &mdash; Joseph Walden Clokey.</span> As a professor of classical music, he devoted his life to teaching, cultivating excellence, and passing culture from one generation to the next.</p>
+
+  <p class="legacy-item"><span class="legacy-name">Religion &mdash; Joseph Parkander.</span> As a Lutheran pastor at Augustana, he dedicated his life to conscience, faith, and the relationship between humanity and God.</p>
+
+  <p>These are all fields that have increasingly been overtaken by the machine. Yet each of these men sought to practice them in a living, human way&mdash;the way of the spiral rather than the block.</p>
+
+  <p>Together they point toward a single vision.</p>
+
+  <div class="section-title">The Fall and the Pattern</div>
+
+  <p>There was a time when these ideas still existed together. Then they became scattered. Some works changed ownership. Some lost their original direction. Some simply faded from public attention. What had once been a unified creative vision became fragmented.</p>
+
+  <p>The pieces remained. The unity was lost.</p>
+
+  <p>This fragmentation follows a recurring pattern. A living creation is born. It flourishes. It enters systems that preserve it. Over time those systems forget the purpose for which it was created. The form survives. The spirit becomes hidden.</p>
+
+  <p>Then comes the call to restoration.</p>
+
+  <div class="section-title">The Return</div>
+
+  <p>It is time for Clokey Productions to rise again from the ashes&mdash;renewed for a new age.</p>
+
+  <p>Its purpose is not simply to make entertainment. Its purpose is to create living media.</p>
+
+  <p>Clokey Productions exists to create media grounded in reality.</p>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <p class="emphasis-line">Real voices.</p>
+  <p class="emphasis-line">Real instruments.</p>
+  <p class="emphasis-line">Real performers.</p>
+  <p class="emphasis-line">Real craftsmanship.</p>
+  <p class="emphasis-line">Real practical effects.</p>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <p>Technology is not the enemy. Technology is a tool. It should extend reality, not replace it.</p>
+
+  <p>Digital sound can help composers experiment. Artificial intelligence can help organize ideas. Computers can help artists prototype worlds that have never existed before. But the final work should be brought back into the physical world whenever possible. The purpose of technology is to serve human creativity, not substitute for it.</p>
+
+  <p>This is what Clokey Productions stands for: practical media made by real people.</p>
+
+  <div class="section-title">Media and Technology</div>
+
+  <p>Clokey Productions is the media wing of the Living Age.</p>
+
+  <p>The Living Age has two complementary callings. One is media, which asks <em>why</em>. The other is technology, which answers <em>how</em>. They strengthen one another in a continual cycle.</p>
+
+  <p>Media inspires people to imagine a future that does not yet exist. Technology gives humanity the tools to build it. The new technologies then become the inspiration for new stories, and those stories inspire another generation of creators and inventors.</p>
+
+  <p>Media and technology are not competitors. They are partners in creation.</p>
+
+  <div class="gate">Media to show why. Technology to show how.</div>
+
+  <p>Stories shape the imagination. The imagination shapes invention. Invention reshapes reality.</p>
+
+  <p>The future has never been changed primarily by politics. Politics usually follows culture rather than leading it. Culture is shaped by media. Media inspires technology. Technology transforms daily life. Daily life changes culture.</p>
+
+  <p>That is the true cycle that moves civilization.</p>
+
+  <div class="section-title">The Mission</div>
+
+  <p>Clokey Productions exists to create media that reminds people what it means to be alive.</p>
+
+  <p class="emphasis-italic">To celebrate practical craftsmanship.</p>
+  <p class="emphasis-italic">To celebrate imagination.</p>
+  <p class="emphasis-italic">To celebrate conscience.</p>
+  <p class="emphasis-italic">To celebrate real music, real storytelling, real people, real creation.</p>
+
+  <p>The Living Age calls artists and technologists to work together. Technology expands what humanity can build. Media expands what humanity believes it can build. One gives the world new tools. The other gives the world new dreams.</p>
+
+  <p>Civilizations require both.</p>
+
+  <div class="section-title">The Foundation</div>
+
+  <p>When you realize that the thing you are called to do may eventually cost you everything, it does not mean you should abandon it. It means you should begin with principle.</p>
+
+  <p>First comes separation. Then comes preparation. Only afterward comes the return. The foundation must be firm before the rise.</p>
+
+  <p>A person who has principles that cannot be purchased, no matter the price, is dangerous to anyone who depends upon buying loyalty instead of earning trust. When you see what someone refuses to sell, you begin to understand what they truly value.</p>
+
+  <p>That is the foundation of Clokey Productions.</p>
+
+  <div class="closing">
+    <p>The future belongs not merely to those who seek power,</p>
+    <p>but to those who create with wisdom, responsibility, and conscience.</p>
+    <p style="margin-top: 0.6rem;">Every invention first exists as a story.</p>
+    <p>Every civilization first exists as an idea.</p>
+    <p>Every transformation begins in the human mind.</p>
+    <p class="sub" style="margin-top: 0.8rem;">That is the calling of the Living Age.</p>
+  </div>
+
+  <p class="final-pledge">The Living Age does not seek to rule people's minds through propaganda. It seeks to inspire people through beauty, craftsmanship, wonder, and conscience. Together, media and technology help humanity imagine&mdash;and then build&mdash;a better world.</p>
+
+  <div class="footer">
+    CLOKEY PRODUCTIONS &nbsp;&bull;&nbsp; THE LIVING AGE
+  </div>
+
+</div>
+
+</body>
+</html>

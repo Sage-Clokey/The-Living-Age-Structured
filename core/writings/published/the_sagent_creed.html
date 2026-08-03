@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Sagent Creed</title>
+<style>
+  @media print {
+    body { margin: 0; background: white; }
+    .page { box-shadow: none !important; margin: 0 !important; }
+    .no-print { display: none !important; }
+    @page { margin: 0.4in; size: letter; }
+    .page-break { page-break-before: always; }
+  }
+
+  @media screen {
+    body {
+      background: #060b06;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+    .page + .page { margin-top: 2rem; }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: #1a1410;
+    line-height: 1.75;
+  }
+
+  .no-print {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .no-print button {
+    background: #c9a84c;
+    color: #1a1410;
+    border: none;
+    padding: 0.7rem 2.5rem;
+    font-size: 1rem;
+    font-family: 'Georgia', serif;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .no-print button:hover { background: #d4b85c; }
+
+  .page {
+    background: #fdf8f0;
+    width: 8.5in;
+    padding: 0.7in 1.1in;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    position: relative;
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 0.45in;
+    left: 0.45in;
+    right: 0.45in;
+    bottom: 0.45in;
+    border: 1px solid rgba(160, 130, 80, 0.12);
+    pointer-events: none;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    margin-bottom: 1.8rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 2px solid rgba(160, 130, 80, 0.3);
+  }
+
+  .header .flame-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.8rem;
+  }
+
+  .header .flame-icon { width: 45px; height: 65px; }
+
+  .header h1 {
+    font-size: 1.6rem;
+    font-weight: 400;
+    font-style: italic;
+    color: #3a2a15;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.15rem;
+  }
+
+  .header .subtitle {
+    font-size: 0.82rem;
+    color: #8a7a60;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ── CREED DISPLAY ── */
+  .creed-display {
+    text-align: center;
+    margin: 1.5rem 1rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid rgba(138, 106, 16, 0.25);
+  }
+
+  .creed-line {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #8a6a10;
+    line-height: 2;
+  }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 1.3rem; }
+
+  .section-num {
+    font-family: 'Courier New', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    color: #8a6a10;
+    text-transform: uppercase;
+    margin-bottom: 0.1rem;
+  }
+
+  .section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #3a2a15;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.4rem;
+  }
+
+  p {
+    font-size: 0.88rem;
+    color: #2a2015;
+    margin-bottom: 0.5rem;
+    text-align: justify;
+  }
+
+  .emphasis {
+    font-style: italic;
+    color: #3a2a15;
+    font-weight: 600;
+  }
+
+  /* ── PART HEADERS ── */
+  .part-header {
+    text-align: center;
+    margin: 1.6rem 0 1rem;
+    padding: 0.5rem 0;
+    border-top: 1px solid rgba(160, 130, 80, 0.2);
+    border-bottom: 1px solid rgba(160, 130, 80, 0.2);
+  }
+
+  .part-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #8a6a10;
+    margin-bottom: 0.15rem;
+  }
+
+  .part-title {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: #3a2a15;
+    font-weight: 400;
+  }
+
+  .part-sub {
+    font-size: 0.78rem;
+    color: #8a7a60;
+    margin-top: 0.15rem;
+  }
+
+  /* ── PILLAR LIST ── */
+  .pillar {
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+    position: relative;
+    font-size: 0.87rem;
+  }
+
+  .pillar::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    width: 6px;
+    height: 6px;
+    background: #8a6a10;
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+
+  .pillar strong { color: #3a2a15; }
+  .pillar em { color: #6a5a40; }
+
+  /* ── CHAPTER LIST ── */
+  .chapter-list {
+    margin: 0.3rem 0;
+  }
+
+  .ch-item {
+    display: flex;
+    font-size: 0.84rem;
+    padding: 0.18rem 0;
+    border-bottom: 1px dotted rgba(160, 130, 80, 0.15);
+  }
+
+  .ch-num {
+    min-width: 1.8rem;
+    color: #8a7a60;
+    font-style: italic;
+  }
+
+  .ch-title {
+    flex: 1;
+    color: #2a2015;
+  }
+
+  /* ── QUOTES ── */
+  .pull-quote {
+    text-align: center;
+    font-style: italic;
+    font-size: 0.93rem;
+    color: #3a2a15;
+    margin: 1rem 0.5rem;
+    padding: 0.5rem 0;
+    border-top: 1px solid rgba(160, 130, 80, 0.2);
+    border-bottom: 1px solid rgba(160, 130, 80, 0.2);
+  }
+
+  .pull-quote cite {
+    display: block;
+    font-size: 0.75rem;
+    color: #8a7a60;
+    margin-top: 0.25rem;
+    font-style: normal;
+  }
+
+  blockquote {
+    margin: 0.5rem 1rem;
+    padding-left: 0.7rem;
+    border-left: 2px solid rgba(138, 106, 16, 0.3);
+    font-style: italic;
+    font-size: 0.86rem;
+    color: #5a4a30;
+  }
+
+  /* ── SEPARATOR ── */
+  .separator {
+    text-align: center;
+    color: rgba(160, 130, 80, 0.35);
+    margin: 0.8rem 0;
+    letter-spacing: 0.5em;
+    font-size: 0.9rem;
+  }
+
+  /* ── KEY TEACHING BOX ── */
+  .teaching-box {
+    background: rgba(138, 106, 16, 0.05);
+    border: 1px solid rgba(138, 106, 16, 0.18);
+    padding: 0.6rem 0.8rem;
+    margin: 0.6rem 0;
+  }
+
+  .teaching-box p {
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .teaching-box .teach-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8a6a10;
+    margin-bottom: 0.2rem;
+  }
+
+  /* ── PRAYER ── */
+  .prayer {
+    text-align: center;
+    font-style: italic;
+    font-size: 0.9rem;
+    line-height: 2;
+    color: #5a4a30;
+    margin: 1rem 1.5rem;
+    padding: 0.6rem;
+    border-top: 1px solid rgba(160, 130, 80, 0.2);
+    border-bottom: 1px solid rgba(160, 130, 80, 0.2);
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    margin-top: 1.2rem;
+    padding-top: 0.6rem;
+    border-top: 2px solid rgba(160, 130, 80, 0.3);
+    font-size: 0.72rem;
+    color: #a09080;
+    letter-spacing: 0.1em;
+  }
+</style>
+</head>
+<body>
+
+<div class="no-print">
+  <button onclick="window.print()">Print / Save as PDF</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- PAGE 1 — TITLE & OVERVIEW -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page">
+
+  <div class="header">
+    <div class="flame-wrap">
+      <svg class="flame-icon" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 15 C92 45,68 75,55 105 C42 135,28 160,25 185 C22 210,28 235,38 252 C48 268,62 278,78 284 C88 288,95 290,100 290 C105 290,112 288,122 284 C138 278,152 268,162 252 C172 235,178 210,175 185 C172 160,158 135,145 105 C132 75,108 45,100 15Z" fill="none" stroke="#8a7a60" stroke-width="2" opacity="0.5"/>
+        <path d="M100 60 C94 85,78 115,68 145 C58 175,48 200,48 220 C48 245,58 265,72 275 C82 282,92 286,100 288 C108 286,118 282,128 275 C142 265,152 245,152 220 C152 200,142 175,132 145 C122 115,106 85,100 60Z" fill="none" stroke="#8a7a60" stroke-width="1.5" opacity="0.35"/>
+        <path d="M100 220 C100 220,88 220,88 208 C88 196,100 196,100 196 C100 196,116 196,116 180 C116 164,100 164,100 164 C100 164,76 164,76 140 C76 116,100 116,100 116 C100 116,132 116,132 140" fill="none" stroke="#8a7a60" stroke-width="1.2" opacity="0.3"/>
+      </svg>
+    </div>
+    <h1>The Sagent Creed</h1>
+    <div class="subtitle">A Philosophy of Conscience, Liberty, and Living Order</div>
+  </div>
+
+  <div class="creed-display">
+    <div class="creed-line">Truth is Law.</div>
+    <div class="creed-line">Conscience is Crown.</div>
+    <div class="creed-line">Every Soul is Sovereign.</div>
+  </div>
+
+  <!-- WHO IS THE SAGENT -->
+  <div class="section">
+    <div class="section-num">The Sagent</div>
+    <div class="section-title">Sage + Agent. One who acts from wisdom.</div>
+    <p>The Sagent is not a title claimed but a path walked. It is the one who gathers the light of many lamps into one flame&mdash;who teaches that truth is not owned but revealed, not ruled but lived.</p>
+    <p>The Sagent's fearlessness flows from surrender&mdash;acceptance of death under God's sovereignty. It brings clarity, peace, and courage. It is the opposite of the narcissist's fearlessness, which flows from ego, denial of limits, and intoxication with the self.</p>
+    <p>A Sagent acts according to conscience rather than according to special interests. A person who has principles that cannot be purchased, no matter the price, is dangerous to anyone who depends upon buying loyalty instead of earning trust.</p>
+  </div>
+
+  <!-- DEDICATION -->
+  <div class="pull-quote">
+    For every soul that ever whispered "this is not right"&mdash;<br>and dared to remember why.
+  </div>
+
+  <!-- ABOUT THE AUTHOR -->
+  <div class="section">
+    <div class="section-num">The Author</div>
+    <div class="section-title">Sage Arthur Jordan Clokey</div>
+    <p>Philosopher, storyteller, and seeker of divine wisdom&mdash;heir to a lineage of dreamsmiths and truth-tellers. Grandson of Art Clokey, creator of Gumby. Founder of The Spiral Steward and LivingWorks&mdash;a life-based design platform replacing industrial block-thinking with regenerative, spiral-based design.</p>
+    <p>His work spans philosophy, biology, economics, architecture, and the deep grammar of living systems. His mission is to restore the Republic of the Heart&mdash;a world without rulers, where wisdom governs through love and every soul stands sovereign before Heaven.</p>
+  </div>
+
+  <!-- PROLOGUE -->
+  <div class="section">
+    <div class="section-num">Prologue</div>
+    <div class="section-title">The Circle Without a Crown</div>
+    <p>The journey through the Eight Pillars of wisdom reveals a single law spoken in many tongues. From faith to philosophy, from East to West, every tradition bears witness: authority belongs not to rulers but to truth itself.</p>
+    <p>When conscience reigns, no man need be king. The circle completes&mdash;each pillar reflecting the same light. In this harmony of wisdom, the True Republic arises: a realm of hearts, self-governed by love, united by the law written within.</p>
+    <p class="emphasis">"When every heart becomes a throne, no crown is needed."</p>
+  </div>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <!-- PART I -->
+  <div class="part-header">
+    <div class="part-label">Part One</div>
+    <div class="part-title">The Eight Pillars of Wisdom</div>
+    <div class="part-sub">One truth spoken in eight tongues</div>
+  </div>
+
+  <div class="pillar"><strong>I. Islamic Economics</strong> &mdash; Wealth as stewardship under God. The prohibition of usury. Shared risk over guaranteed profit. <em>"Wealth is not owned; it is held in trust."</em></div>
+
+  <div class="pillar"><strong>II. The Law of Defense</strong> &mdash; Force under conscience. The right to self-defense belongs equally to all. Violence is moral only when used to defend life, liberty, and property. <em>"No badge grants extra moral privilege."</em></div>
+
+  <div class="pillar"><strong>III. Judaism</strong> &mdash; Kingship and covenant. Law is higher than the king. The prophets confront power with truth. The Jubilee restores economic freedom every generation. <em>"No accumulation can be permanent."</em></div>
+
+  <div class="pillar"><strong>IV. Christianity</strong> &mdash; Grace and stewardship. Authority redeemed through service. The shepherd risks everything for the flock. The cross transforms power into sacrifice. <em>"Whoever would be great among you must be your servant."</em></div>
+
+  <div class="pillar"><strong>V. Hinduism</strong> &mdash; Dharma and liberation. Each being has a unique duty aligned with truth. Action without attachment to reward. True freedom comes from unity with the divine. <em>"Better one's own duty, though imperfect, than another's done well."</em></div>
+
+  <div class="pillar"><strong>VI. Buddhism</strong> &mdash; Awareness and compassion. All suffering arises from ignorance and attachment. The Middle Way between extremes. The Bodhisattva delays personal liberation to assist all beings. <em>"Hatred is never ended by hatred."</em></div>
+
+  <div class="pillar"><strong>VII. Taoism</strong> &mdash; Natural order. The Tao governs without command. Harmony arises from alignment, not control. Wu Wei&mdash;effortless action in accordance with the nature of things. <em>"The more laws, the more thieves."</em></div>
+
+  <div class="pillar"><strong>VIII. Confucianism</strong> &mdash; Virtue and harmony. Order begins in the heart and extends outward. The Junzi is defined by character, not birth. Self-cultivation is the foundation of governance. <em>"If the ruler is upright, all will be upright."</em></div>
+
+  <div class="teaching-box">
+    <div class="teach-label">Common Essence</div>
+    <p>Across all eight pillars, the same law emerges: Do not initiate harm. Respect the freedom of others. Defend life, but never dominate. Order flows from conscience, not coercion.</p>
+  </div>
+
+  <div class="footer">
+    THE SAGENT CREED &nbsp;&bull;&nbsp; THE LIVING AGE &nbsp;&bull;&nbsp; PAGE 1
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- PAGE 2 — PARTS II, III, IV -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page page-break">
+
+  <!-- PART II -->
+  <div class="part-header">
+    <div class="part-label">Part Two</div>
+    <div class="part-title">Manifesto of the True Republic</div>
+    <div class="part-sub">The Living Covenant</div>
+  </div>
+
+  <div class="section">
+    <p>The True Republic is not a government. It is a principle: that legitimate authority rests upon conscience, not coercion. Every soul is sovereign before God. No institution, no majority, no crown can overrule the law written in the heart.</p>
+
+    <div class="chapter-list">
+      <div class="ch-item"><span class="ch-num">9.</span><span class="ch-title">The Call to Conscience</span></div>
+      <div class="ch-item"><span class="ch-num">10.</span><span class="ch-title">The False Republics of Man</span></div>
+      <div class="ch-item"><span class="ch-num">11.</span><span class="ch-title">The Meaning of Res Publica</span></div>
+      <div class="ch-item"><span class="ch-num">12.</span><span class="ch-title">Natural Law and the Sovereign Soul</span></div>
+      <div class="ch-item"><span class="ch-num">13.</span><span class="ch-title">The Ethics of Force</span></div>
+      <div class="ch-item"><span class="ch-num">14.</span><span class="ch-title">The Economy of Freedom</span></div>
+      <div class="ch-item"><span class="ch-num">15.</span><span class="ch-title">The Republic Without Rulers</span></div>
+      <div class="ch-item"><span class="ch-num">16.</span><span class="ch-title">The Higher Allegiance &amp; Vision</span></div>
+    </div>
+
+    <blockquote>The health of a republic is measured not by the strength of its rulers, but by the freedom, responsibility, and conscience of its people.</blockquote>
+
+    <p>The True Republic recognizes that every person possesses knowledge that no one else possesses. Every conscience encounters circumstances that no distant ruler can fully understand. If authority becomes too centralized, that local knowledge is lost, and decisions become detached from reality.</p>
+
+    <p>The Kingdom of Conscience is a decentralized republic. Every individual is an agent capable of moral judgment. Truth is not manufactured by hierarchy but discovered through faithful action.</p>
+  </div>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <!-- PART III -->
+  <div class="part-header">
+    <div class="part-label">Part Three</div>
+    <div class="part-title">The Path of the Sagent</div>
+    <div class="part-sub">True Strength, Compassion, and the Illusion of Conflict</div>
+  </div>
+
+  <div class="section">
+    <div class="chapter-list">
+      <div class="ch-item"><span class="ch-num">17.</span><span class="ch-title">True Strength</span></div>
+      <div class="ch-item"><span class="ch-num">18.</span><span class="ch-title">The Illusion of Conflict</span></div>
+      <div class="ch-item"><span class="ch-num">19.</span><span class="ch-title">Compassion as Power</span></div>
+    </div>
+
+    <p>The Sagent's path is not conquest but creation. True strength is not the ability to dominate but the refusal to be dominated&mdash;internally or externally. The Sagent acts from conscience, not from anger. Yields where yielding serves truth. Stands where standing serves life.</p>
+
+    <p>Like Jedi guided by balance, Sagents act only to protect life and restore harmony, never to conquer. The strongest declaration of liberty is not merely to resist what is wrong, but to create what is right.</p>
+
+    <blockquote>The first duty of free people is not conquest but creation; not destruction but renewal.</blockquote>
+  </div>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <!-- PART IV -->
+  <div class="part-header">
+    <div class="part-label">Part Four</div>
+    <div class="part-title">The Living Order</div>
+    <div class="part-sub">Essays on Life, Design, and the Shape of Freedom</div>
+  </div>
+
+  <div class="section">
+    <div class="chapter-list">
+      <div class="ch-item"><span class="ch-num">20.</span><span class="ch-title">Spirals Remember. Blocks Forget.</span></div>
+      <div class="ch-item"><span class="ch-num">21.</span><span class="ch-title">The Tree of Time</span></div>
+      <div class="ch-item"><span class="ch-num">22.</span><span class="ch-title">Bioinformatics as Stewardship</span></div>
+      <div class="ch-item"><span class="ch-num">23.</span><span class="ch-title">The Sword and the Coin</span></div>
+    </div>
+
+    <p>Life spirals. Empires block. The spiral stores wisdom in its form, its pattern, its recursive self-similarity. DNA remembers billions of years of evolutionary problem-solving. A healthy forest remembers every drought, every fire, every season of abundance. The spiral's memory is distributed and alive. The block's memory is centralized and brittle.</p>
+
+    <p>The genome is the written law of the organism. Natural genetic engineering is the continual revision of that written law. Conscience is the invisible hand of God that guides living systems toward God's concept of a plan while preserving the free will of the living.</p>
+
+    <p>Freedom is not the absence of order. Freedom is the possibility of living order.</p>
+
+    <div class="teaching-box">
+      <div class="teach-label">The Core Insight</div>
+      <p>Biology reveals that life is not engineered from the top down but grows through distributed adaptation. Theology reveals that God does not rule through coercion but through conscience. Economics reveals that spontaneous order emerges from voluntary action. All three point to the same truth: living order is the highest order.</p>
+    </div>
+  </div>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <!-- EPILOGUE -->
+  <div class="section">
+    <div class="section-num">Epilogue</div>
+    <div class="section-title">The Creed of the True Republic</div>
+    <p>The Kingdom of Heaven is not defined by land but by the people who live as agents of God. The Kingdom of Heaven is a creed of Sagents.</p>
+    <p>There are three transformations of Zion. The first is transformation by water&mdash;the flood, the famine, the parting of the sea. The second is transformation by fire&mdash;the fire of Elijah, the refining of what is corrupt from what is living. The third is transformation by spirit&mdash;the realization that Zion is not a place but a people.</p>
+  </div>
+
+  <div class="prayer">
+    Truth before power.<br>
+    Justice before advantage.<br>
+    Creation before conquest.<br>
+    Service before authority.<br><br>
+    When every heart becomes a throne,<br>
+    no crown is needed.
+  </div>
+
+  <div class="creed-display" style="margin-bottom:0.8rem;">
+    <div class="creed-line">Truth is Law.</div>
+    <div class="creed-line">Conscience is Crown.</div>
+    <div class="creed-line">Every Soul is Sovereign.</div>
+  </div>
+
+  <p style="text-align:center; font-size:0.82rem; color:#6a5a40; font-style:italic;">Sage Arthur Jordan Clokey &nbsp;&bull;&nbsp; The Spiral Steward &nbsp;&bull;&nbsp; 2026</p>
+
+  <div class="footer">
+    THE SAGENT CREED &nbsp;&bull;&nbsp; THE LIVING AGE &nbsp;&bull;&nbsp; PAGE 2
+  </div>
+
+</div>
+
+</body>
+</html>

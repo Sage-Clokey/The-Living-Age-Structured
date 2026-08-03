@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Business Card — Print Export</title>
+<style>
+  body {
+    margin: 0; padding: 2rem;
+    background: #222;
+    font-family: 'Georgia', serif;
+    display: flex; flex-direction: column; align-items: center; gap: 2rem;
+  }
+  .instructions {
+    color: #ccc; font-size: 0.85rem; max-width: 600px; text-align: center; line-height: 1.6;
+  }
+  .instructions b { color: #c9a84c; }
+  .instructions code { background: #333; padding: 0.15rem 0.4rem; border-radius: 3px; color: #90ee90; }
+  canvas { border: 1px solid #444; cursor: pointer; }
+  .btn {
+    background: #c9a84c; color: #0a0a0f; border: none; padding: 0.7rem 2rem;
+    font-size: 1rem; font-family: inherit; cursor: pointer; border-radius: 4px;
+    font-weight: 600; letter-spacing: 0.05em;
+  }
+  .btn:hover { background: #d4b85c; }
+  .row { display: flex; gap: 1rem; align-items: center; }
+</style>
+</head>
+<body>
+
+<div class="instructions">
+  <b>Business Card Print Export</b><br>
+  Standard size: 3.5" x 2" at 300 DPI = 1050 x 600 pixels<br>
+  With bleed (0.125"): 1125 x 675 pixels<br><br>
+  Click the buttons below to download each side as a PNG.
+</div>
+
+<div class="row">
+  <button class="btn" onclick="downloadCard('front')">Download Front</button>
+  <button class="btn" onclick="downloadCard('back')">Download Back</button>
+  <button class="btn" onclick="downloadCard('both')">Download Both</button>
+</div>
+
+<canvas id="canvas" width="1125" height="675"></canvas>
+
+<script>
+const W = 1125, H = 675;
+// Bleed offset
+const BX = 37, BY = 37;
+const CW = 1050, CH = 600;
+
+function drawFront(ctx) {
+  // Background with purple gradient
+  const bg = ctx.createRadialGradient(W*0.3, H*0.5, 0, W*0.3, H*0.5, W*0.7);
+  bg.addColorStop(0, '#1a0a2a');
+  bg.addColorStop(0.3, '#0f0820');
+  bg.addColorStop(0.7, '#0a0a0f');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Draw the green flame
+  drawFlame(ctx, 220, H/2, 1.0);
+
+  // Text area
+  const tx = 380;
+
+  // LIVING AGE
+  ctx.fillStyle = '#c9a84c';
+  ctx.font = '600 52px Georgia';
+  ctx.letterSpacing = '6px';
+  ctx.fillText('LIVING AGE', tx, 200);
+
+  // Clokey Productions
+  ctx.fillStyle = '#5a5545';
+  ctx.font = '400 18px Georgia';
+  ctx.letterSpacing = '5px';
+  ctx.fillText('CLOKEY PRODUCTIONS', tx, 232);
+
+  // Sage Clokey
+  ctx.fillStyle = '#d4c9a8';
+  ctx.font = '600 34px Georgia';
+  ctx.letterSpacing = '1px';
+  ctx.fillText('Sage Clokey', tx, 310);
+
+  // Spiral Steward
+  ctx.fillStyle = '#8a7e65';
+  ctx.font = 'italic 22px Georgia';
+  ctx.fillText('Spiral Steward', tx, 342);
+
+  // Divider
+  const divGrad = ctx.createLinearGradient(tx, 0, tx + 120, 0);
+  divGrad.addColorStop(0, '#c9a84c');
+  divGrad.addColorStop(1, 'transparent');
+  ctx.fillStyle = divGrad;
+  ctx.fillRect(tx, 375, 120, 2);
+
+  // Tagline
+  ctx.fillStyle = '#8a7e65';
+  ctx.font = 'italic 26px Georgia';
+  ctx.fillText('Media to show why.', tx, 420);
+  ctx.fillText('Technology to show how.', tx, 454);
+}
+
+function drawFlame(ctx, cx, cy, scale) {
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.scale(scale, scale);
+
+  // Ambient glow
+  const ambGlow = ctx.createRadialGradient(0, 80, 0, 0, 80, 120);
+  ambGlow.addColorStop(0, 'rgba(50,205,50,0.15)');
+  ambGlow.addColorStop(1, 'rgba(50,205,50,0)');
+  ctx.fillStyle = ambGlow;
+  ctx.fillRect(-150, -20, 300, 200);
+
+  // Outer flame
+  const outerGrad = ctx.createRadialGradient(0, 60, 10, 0, 40, 200);
+  outerGrad.addColorStop(0, 'rgba(96,224,96,1)');
+  outerGrad.addColorStop(0.3, 'rgba(64,192,64,0.9)');
+  outerGrad.addColorStop(0.6, 'rgba(45,143,45,0.7)');
+  outerGrad.addColorStop(1, 'rgba(13,61,13,0)');
+
+  ctx.beginPath();
+  ctx.moveTo(0, -230);
+  ctx.bezierCurveTo(-15, -185, -55, -130, -72, -80);
+  ctx.bezierCurveTo(-90, -30, -110, 10, -115, 50);
+  ctx.bezierCurveTo(-120, 90, -110, 130, -95, 155);
+  ctx.bezierCurveTo(-75, 180, -55, 195, -30, 205);
+  ctx.bezierCurveTo(-10, 212, 0, 215, 0, 215);
+  ctx.bezierCurveTo(0, 215, 10, 212, 30, 205);
+  ctx.bezierCurveTo(55, 195, 75, 180, 95, 155);
+  ctx.bezierCurveTo(110, 130, 120, 90, 115, 50);
+  ctx.bezierCurveTo(110, 10, 90, -30, 72, -80);
+  ctx.bezierCurveTo(55, -130, 15, -185, 0, -230);
+  ctx.closePath();
+  ctx.fillStyle = outerGrad;
+  ctx.fill();
+
+  // Left lick
+  ctx.globalAlpha = 0.5;
+  ctx.beginPath();
+  ctx.moveTo(-42, -90);
+  ctx.bezierCurveTo(-60, -115, -72, -140, -68, -160);
+  ctx.bezierCurveTo(-65, -175, -55, -165, -50, -148);
+  ctx.bezierCurveTo(-46, -130, -44, -110, -42, -90);
+  ctx.closePath();
+  ctx.fillStyle = '#2d8f2d';
+  ctx.fill();
+
+  // Right lick
+  ctx.globalAlpha = 0.45;
+  ctx.beginPath();
+  ctx.moveTo(45, -95);
+  ctx.bezierCurveTo(58, -120, 70, -145, 67, -165);
+  ctx.bezierCurveTo(64, -178, 55, -168, 52, -150);
+  ctx.bezierCurveTo(49, -132, 46, -112, 45, -95);
+  ctx.closePath();
+  ctx.fillStyle = '#2d8f2d';
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  // Mid flame
+  const midGrad = ctx.createRadialGradient(0, 40, 5, 0, 20, 160);
+  midGrad.addColorStop(0, 'rgba(160,255,160,1)');
+  midGrad.addColorStop(0.4, 'rgba(80,224,80,0.9)');
+  midGrad.addColorStop(1, 'rgba(45,143,45,0)');
+
+  ctx.beginPath();
+  ctx.moveTo(0, -200);
+  ctx.bezierCurveTo(-10, -165, -35, -115, -50, -60);
+  ctx.bezierCurveTo(-65, -5, -78, 30, -78, 65);
+  ctx.bezierCurveTo(-78, 110, -62, 150, -42, 170);
+  ctx.bezierCurveTo(-25, 185, -10, 195, 0, 200);
+  ctx.bezierCurveTo(10, 195, 25, 185, 42, 170);
+  ctx.bezierCurveTo(62, 150, 78, 110, 78, 65);
+  ctx.bezierCurveTo(78, 30, 65, -5, 50, -60);
+  ctx.bezierCurveTo(35, -115, 10, -165, 0, -200);
+  ctx.closePath();
+  ctx.fillStyle = midGrad;
+  ctx.globalAlpha = 0.85;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  // Inner bright core
+  const innerGrad = ctx.createRadialGradient(0, 20, 5, 0, 10, 120);
+  innerGrad.addColorStop(0, 'rgba(255,255,255,1)');
+  innerGrad.addColorStop(0.2, 'rgba(224,255,224,0.95)');
+  innerGrad.addColorStop(0.5, 'rgba(128,255,128,0.7)');
+  innerGrad.addColorStop(1, 'rgba(80,224,80,0)');
+
+  ctx.beginPath();
+  ctx.moveTo(0, -160);
+  ctx.bezierCurveTo(-6, -125, -28, -70, -33, -20);
+  ctx.bezierCurveTo(-38, 30, -36, 75, -28, 110);
+  ctx.bezierCurveTo(-18, 145, -7, 165, 0, 175);
+  ctx.bezierCurveTo(7, 165, 18, 145, 28, 110);
+  ctx.bezierCurveTo(36, 75, 38, 30, 33, -20);
+  ctx.bezierCurveTo(28, -70, 6, -125, 0, -160);
+  ctx.closePath();
+  ctx.fillStyle = innerGrad;
+  ctx.globalAlpha = 0.8;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  // Hottest wisp
+  ctx.beginPath();
+  ctx.moveTo(0, -100);
+  ctx.bezierCurveTo(-5, -50, -18, 10, -15, 60);
+  ctx.bezierCurveTo(-12, 105, -5, 140, 0, 160);
+  ctx.bezierCurveTo(5, 140, 12, 105, 15, 60);
+  ctx.bezierCurveTo(18, 10, 5, -50, 0, -100);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(255,255,255,0.4)';
+  ctx.fill();
+
+  // Fibonacci spiral
+  ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+  ctx.lineWidth = 2.5;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  // Start from bottom center, spiral outward
+  ctx.moveTo(0, 100);
+  // Quarter arc 1 (smallest)
+  ctx.bezierCurveTo(-8, 100, -15, 93, -15, 85);
+  // Quarter arc 2
+  ctx.bezierCurveTo(-15, 72, -2, 62, 10, 62);
+  // Quarter arc 3
+  ctx.bezierCurveTo(30, 62, 42, 78, 42, 95);
+  // Quarter arc 4
+  ctx.bezierCurveTo(42, 120, 22, 140, 0, 140);
+  // Quarter arc 5
+  ctx.bezierCurveTo(-35, 140, -58, 112, -58, 78);
+  // Quarter arc 6
+  ctx.bezierCurveTo(-58, 30, -25, -10, 15, -10);
+  // Quarter arc 7
+  ctx.bezierCurveTo(65, -10, 100, 35, 100, 85);
+  ctx.stroke();
+
+  // Inner spiral detail
+  ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(0, 100);
+  ctx.bezierCurveTo(-4, 98, -7, 95, -7, 92);
+  ctx.bezierCurveTo(-7, 88, -3, 85, 2, 85);
+  ctx.bezierCurveTo(8, 85, 12, 90, 12, 95);
+  ctx.stroke();
+
+  // Base ember
+  const emberGrad = ctx.createRadialGradient(0, 210, 5, 0, 210, 60);
+  emberGrad.addColorStop(0, 'rgba(50,205,50,0.3)');
+  emberGrad.addColorStop(0.5, 'rgba(26,107,26,0.15)');
+  emberGrad.addColorStop(1, 'rgba(201,168,76,0)');
+  ctx.fillStyle = emberGrad;
+  ctx.fillRect(-70, 200, 140, 30);
+
+  ctx.restore();
+}
+
+function drawBack(ctx) {
+  // Background with purple gradient
+  const bg = ctx.createRadialGradient(W*0.5, H*0.3, 0, W*0.5, H*0.3, W*0.6);
+  bg.addColorStop(0, '#1a0a2a');
+  bg.addColorStop(0.3, '#0f0820');
+  bg.addColorStop(0.7, '#0a0a0f');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Mini flame
+  drawFlame(ctx, W/2, 170, 0.4);
+
+  // Contact info
+  ctx.textAlign = 'center';
+  const cy = 340;
+  const spacing = 55;
+
+  // Phone
+  ctx.fillStyle = '#c9a84c';
+  ctx.font = '400 18px Georgia';
+  ctx.fillText('TEL', W/2, cy);
+  ctx.fillStyle = '#b8ad94';
+  ctx.font = '400 24px Georgia';
+  ctx.fillText('805-459-2396', W/2, cy + 28);
+
+  // Email
+  ctx.fillStyle = '#c9a84c';
+  ctx.font = '400 18px Georgia';
+  ctx.fillText('EMAIL', W/2, cy + spacing + 20);
+  ctx.fillStyle = '#b8ad94';
+  ctx.font = '400 24px Georgia';
+  ctx.fillText('clokeyd.sage@gmail.com', W/2, cy + spacing + 48);
+
+  // Web
+  ctx.fillStyle = '#c9a84c';
+  ctx.font = '400 18px Georgia';
+  ctx.fillText('WEB', W/2, cy + spacing*2 + 40);
+  ctx.fillStyle = '#b8ad94';
+  ctx.font = '400 24px Georgia';
+  ctx.fillText('sage-clokey.github.io', W/2, cy + spacing*2 + 68);
+
+  // Bottom quote
+  ctx.fillStyle = '#8a7e65';
+  ctx.font = 'italic 21px Georgia';
+  ctx.fillText('Things that are built break. Things that grow naturally return.', W/2, H - 40);
+
+  ctx.textAlign = 'left';
+}
+
+function downloadCard(which) {
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  if (which === 'both') {
+    // Download front
+    ctx.clearRect(0, 0, W, H);
+    drawFront(ctx);
+    downloadCanvas(canvas, 'living_age_card_front.png');
+
+    // Download back
+    setTimeout(() => {
+      ctx.clearRect(0, 0, W, H);
+      drawBack(ctx);
+      downloadCanvas(canvas, 'living_age_card_back.png');
+    }, 500);
+    return;
+  }
+
+  ctx.clearRect(0, 0, W, H);
+  if (which === 'front') {
+    drawFront(ctx);
+    downloadCanvas(canvas, 'living_age_card_front.png');
+  } else {
+    drawBack(ctx);
+    downloadCanvas(canvas, 'living_age_card_back.png');
+  }
+}
+
+function downloadCanvas(canvas, filename) {
+  const link = document.createElement('a');
+  link.download = filename;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+// Initial preview: draw front
+const ctx = document.getElementById('canvas').getContext('2d');
+drawFront(ctx);
+</script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Economy of Stewardship</title>
+<style>
+  @media print {
+    body { margin: 0; background: white; }
+    .page { box-shadow: none !important; margin: 0 !important; }
+    .no-print { display: none !important; }
+    @page { margin: 0.4in; size: letter; }
+    .page-break { page-break-before: always; }
+  }
+
+  @media screen {
+    body {
+      background: #0a0a0f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+    .page + .page { margin-top: 2rem; }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: #1a1410;
+    line-height: 1.75;
+  }
+
+  .no-print {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .no-print button {
+    background: #c9a84c;
+    color: #1a1410;
+    border: none;
+    padding: 0.7rem 2.5rem;
+    font-size: 1rem;
+    font-family: 'Georgia', serif;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .no-print button:hover { background: #d4b85c; }
+
+  .page {
+    background: #fdf8f0;
+    width: 8.5in;
+    padding: 0.7in 1.1in;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    position: relative;
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 0.45in;
+    left: 0.45in;
+    right: 0.45in;
+    bottom: 0.45in;
+    border: 1px solid rgba(160, 130, 80, 0.12);
+    pointer-events: none;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 2px solid rgba(160, 130, 80, 0.3);
+  }
+
+  .header .flame-icon { width: 45px; height: 65px; display: block; margin: 0 auto 0.8rem; }
+
+  .header h1 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    font-style: italic;
+    color: #3a2a15;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.15rem;
+  }
+
+  .header .subtitle {
+    font-size: 0.82rem;
+    color: #8a7a60;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 1.2rem; }
+
+  .section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #3a2a15;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.45rem;
+    text-align: center;
+  }
+
+  .section-title::before,
+  .section-title::after {
+    content: ' \2014 ';
+    color: rgba(160, 130, 80, 0.4);
+  }
+
+  p {
+    font-size: 0.88rem;
+    color: #2a2015;
+    margin-bottom: 0.5rem;
+    text-align: justify;
+  }
+
+  .emphasis {
+    text-align: center;
+    font-style: italic;
+    font-weight: 600;
+    color: #3a2a15;
+    font-size: 0.92rem;
+    margin: 0.35rem 0;
+  }
+
+  /* ── PULL QUOTE ── */
+  .pull-quote {
+    margin: 0.7rem 0.8rem;
+    padding: 0.45rem 0.7rem;
+    border-left: 3px solid rgba(138, 106, 16, 0.3);
+    font-style: italic;
+    font-size: 0.88rem;
+    color: #4a3a20;
+    background: rgba(138, 106, 16, 0.04);
+  }
+
+  /* ── CONTRAST BOXES ── */
+  .contrast {
+    display: flex;
+    gap: 0.8rem;
+    margin: 0.7rem 0;
+  }
+
+  .contrast-box {
+    flex: 1;
+    padding: 0.55rem 0.65rem;
+    border: 1px solid rgba(160, 130, 80, 0.2);
+  }
+
+  .contrast-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.15rem;
+  }
+
+  .contrast-dead .contrast-label { color: #8a4a4a; }
+  .contrast-living .contrast-label { color: #4a8a4a; }
+
+  .contrast-box p {
+    font-size: 0.83rem;
+    margin-bottom: 0.25rem;
+  }
+
+  /* ── PRINCIPLE LIST ── */
+  .principle {
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+    position: relative;
+    font-size: 0.88rem;
+  }
+
+  .principle::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 5px;
+    height: 5px;
+    background: #8a6a10;
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+
+  .principle strong { color: #3a2a15; }
+
+  /* ── SEPARATOR ── */
+  .separator {
+    text-align: center;
+    color: rgba(160, 130, 80, 0.35);
+    margin: 0.7rem 0;
+    letter-spacing: 0.5em;
+    font-size: 0.9rem;
+  }
+
+  /* ── CLOSING ── */
+  .closing {
+    text-align: center;
+    margin-top: 1rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(160, 130, 80, 0.2);
+  }
+
+  .closing p {
+    text-align: center;
+    font-size: 0.92rem;
+    color: #3a2a15;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+  }
+
+  .closing .sub {
+    font-weight: 400;
+    font-style: italic;
+    color: #6a5a40;
+    font-size: 0.85rem;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    margin-top: 1rem;
+    padding-top: 0.6rem;
+    border-top: 2px solid rgba(160, 130, 80, 0.3);
+    font-size: 0.72rem;
+    color: #a09080;
+    letter-spacing: 0.1em;
+  }
+</style>
+</head>
+<body>
+
+<div class="no-print">
+  <button onclick="window.print()">Print / Save as PDF</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- PAGE 1 -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page">
+
+  <div class="header">
+    <svg class="flame-icon" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+      <path d="M100 15 C92 45,68 75,55 105 C42 135,28 160,25 185 C22 210,28 235,38 252 C48 268,62 278,78 284 C88 288,95 290,100 290 C105 290,112 288,122 284 C138 278,152 268,162 252 C172 235,178 210,175 185 C172 160,158 135,145 105 C132 75,108 45,100 15Z" fill="none" stroke="#8a7a60" stroke-width="2" opacity="0.5"/>
+      <path d="M100 60 C94 85,78 115,68 145 C58 175,48 200,48 220 C48 245,58 265,72 275 C82 282,92 286,100 288 C108 286,118 282,128 275 C142 265,152 245,152 220 C152 200,142 175,132 145 C122 115,106 85,100 60Z" fill="none" stroke="#8a7a60" stroke-width="1.5" opacity="0.35"/>
+      <path d="M100 220 C100 220,88 220,88 208 C88 196,100 196,100 196 C100 196,116 196,116 180 C116 164,100 164,100 164 C100 164,76 164,76 140 C76 116,100 116,100 116 C100 116,132 116,132 140" fill="none" stroke="#8a7a60" stroke-width="1.2" opacity="0.3"/>
+    </svg>
+    <h1>The Economy of Stewardship</h1>
+    <div class="subtitle">On Ownership, Family, and the Living Order</div>
+  </div>
+
+  <!-- THE QUESTION -->
+  <div class="section">
+    <p>The purpose of an economy is not to maximize valuations.</p>
+    <p class="emphasis">The purpose of an economy is to create, maintain, and pass on real wealth.</p>
+    <p>Modern financial systems often confuse symbols for reality. Companies are valued according to stock prices. Success is measured by market capitalization. Ownership is divided into shares and traded through exchanges. Financial claims are bought and sold while becoming increasingly detached from the productive activity that originally created them.</p>
+    <p>The result is an economy focused on valuation rather than stewardship.</p>
+    <p>A living economy begins with a different question:</p>
+    <p class="emphasis">What is actually being created?</p>
+  </div>
+
+  <!-- REAL WEALTH -->
+  <div class="section">
+    <div class="section-title">Real Wealth</div>
+    <p>Real wealth is not a number on a trading screen. Real wealth consists of productive assets, useful goods, valuable services, healthy families, skilled individuals, and thriving communities.</p>
+    <p>The purpose of enterprise is therefore not to maximize valuation but to generate sustainable cash flow through the creation of genuine value.</p>
+    <p>Cash flow represents something real. It reflects the willingness of customers to voluntarily exchange resources for a product or service. It is a direct signal that value has been created.</p>
+
+    <div class="contrast">
+      <div class="contrast-box contrast-dead">
+        <div class="contrast-label">The Valuation Economy</div>
+        <p>Seeks rapid expansion through debt.</p>
+        <p>Depends on lenders and outside investors.</p>
+        <p>Measures success by market capitalization.</p>
+        <p>Growth detached from production.</p>
+      </div>
+      <div class="contrast-box contrast-living">
+        <div class="contrast-label">The Living Economy</div>
+        <p>Grows through retained earnings.</p>
+        <p>Relies on the trust of customers.</p>
+        <p>Measures success by value created.</p>
+        <p>Growth grounded in reality.</p>
+      </div>
+    </div>
+
+    <p>Rather than seeking rapid expansion through debt, businesses grow through retained earnings. Rather than depending on lenders or outside investors, they rely upon the trust of customers and the quality of their work. Each stage of growth is supported by the success of the previous stage.</p>
+
+    <p class="emphasis">The enterprise becomes rooted in service rather than finance.</p>
+  </div>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <!-- OWNERSHIP IS STEWARDSHIP -->
+  <div class="section">
+    <div class="section-title">Ownership Is Stewardship</div>
+    <p>This principle reflects a broader philosophy of ownership.</p>
+    <p>Ownership is not merely control. Ownership is stewardship. To own something is to accept responsibility for it, maintain it, improve it, and pass it on in better condition than it was received.</p>
+    <p>The strongest economic institutions are those that keep ownership close to responsibility. When decision-makers directly experience the consequences of their decisions, incentives remain aligned with long-term health. When ownership becomes increasingly distant from responsibility, institutions become vulnerable to short-term pressures and conflicting interests.</p>
+
+    <div class="pull-quote">A healthy economy seeks to reconnect ownership with stewardship, production with responsibility, and enterprise with family life.</div>
+
+    <div class="principle"><strong>The goal is not endless expansion.</strong> The goal is resilience.</div>
+    <div class="principle"><strong>The goal is not dependence on outside capital.</strong> The goal is self-sustaining growth.</div>
+    <div class="principle"><strong>The goal is not valuation.</strong> The goal is value.</div>
+  </div>
+
+  <!-- THE TREE -->
+  <div class="section">
+    <div class="section-title">Growth Like a Tree</div>
+    <p>A living economy grows like a tree. Each ring is supported by the growth that came before it. Each season builds upon the previous season. Its strength comes not from borrowed foundations but from roots that run deeper with time.</p>
+    <p>The most durable prosperity is not created through speculation. It is created through service, savings, reinvestment, stewardship, and the patient accumulation of real value.</p>
+    <p>The economy flourishes when people invest first in their abilities, their work, their families, and the communities around them.</p>
+    <p class="emphasis">True wealth is not measured by the price others place upon you. It is measured by the value you are able to create, sustain, and pass on.</p>
+  </div>
+
+  <div class="footer">
+    THE ECONOMY OF STEWARDSHIP &nbsp;&bull;&nbsp; THE LIVING AGE &nbsp;&bull;&nbsp; PAGE 1
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- PAGE 2 -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page page-break">
+
+  <!-- OWNERSHIP, FAMILY, AND THE LIVING ORDER -->
+  <div class="section">
+    <div class="section-title">Ownership, Family, and the Living Order</div>
+    <p>The modern economy is built upon abstractions. Ownership is divided into shares. Shares are traded through markets. Markets value corporations. Corporations own assets. Individuals own fractions of corporations that own fractions of other corporations.</p>
+    <p>At each step, ownership becomes increasingly detached from the actual things being owned. The result is an economy in which people often possess claims on distant entities rather than direct responsibility for tangible property, productive activity, and family life.</p>
+    <p>A living economy begins from a different premise.</p>
+  </div>
+
+  <!-- THE FAMILY -->
+  <div class="section">
+    <div class="section-title">The Family as Economic Foundation</div>
+
+    <p class="emphasis">The fundamental unit of society is not the corporation. It is the family.</p>
+
+    <p>Before there were corporations, there were families. Before there were stock exchanges, there were households. Before there were multinational organizations, there were husbands, wives, children, farms, workshops, and communities.</p>
+
+    <div class="principle">Life reproduces through families.</div>
+    <div class="principle">Civilization is transmitted through families.</div>
+    <div class="principle">Responsibility is learned through families.</div>
+
+    <p>The family is the most natural economic unit because it joins ownership, responsibility, production, and future generations into a single relationship.</p>
+
+    <p>Under this view, economic activity should be directed primarily toward the flourishing of families rather than the expansion of impersonal institutions.</p>
+
+    <p class="emphasis">The purpose of work is not merely to maximize shareholder value. The purpose of work is to provide, create, build, and pass something worthwhile to future generations.</p>
+  </div>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <!-- THE PROBLEM WITH PUBLIC CORPORATIONS -->
+  <div class="section">
+    <div class="section-title">The Separation of Ownership and Stewardship</div>
+
+    <p>Public corporations create a separation between ownership and stewardship. Those who make decisions often do not bear the full consequences of those decisions. Ownership is dispersed among countless shareholders whose interests change continually. Control shifts according to market pressures rather than long-term responsibility.</p>
+
+    <p>The institution becomes an entity unto itself. It develops goals, incentives, and priorities distinct from the people who compose it. The corporation becomes increasingly abstract while the individuals connected to it become increasingly disconnected from the productive assets upon which they depend.</p>
+
+    <div class="pull-quote">Don't invest in others. Invest in yourself. The point of a business endeavor is not to have a high valuation&mdash;it is to create cash flow. Use your sales to invest in yourself instead of using others' sales to invest in you.</div>
+  </div>
+
+  <!-- THE LIVING ECONOMY -->
+  <div class="section">
+    <div class="section-title">The Living Economy</div>
+
+    <p>A living economy seeks the opposite. It seeks to reunite ownership with responsibility. It seeks to connect people directly to the things they create, maintain, and pass on.</p>
+
+    <p>Rather than investing primarily in distant institutions, individuals invest in their skills, their families, their communities, their tools, their land, their businesses, and their relationships.</p>
+
+    <div class="principle"><strong>The strongest institutions are not those held together by contracts alone.</strong> They are those held together by loyalty, trust, shared purpose, and love.</div>
+
+    <p>The living order begins not with the corporation but with the household. Not with abstraction but with reality. Not with ownership dispersed among anonymous interests, but with stewardship rooted in human relationships.</p>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="closing">
+    <p>The future of a healthy society is not found</p>
+    <p>in making people servants of institutions.</p>
+    <p style="margin-top:0.5rem;">It is found in making institutions</p>
+    <p>servants of people, families,</p>
+    <p>and the generations yet to come.</p>
+    <p class="sub" style="margin-top:0.6rem;">A healthy economy is one in which ownership remains connected to responsibility, responsibility remains connected to family, and family remains connected to future generations.</p>
+  </div>
+
+  <div class="footer">
+    THE ECONOMY OF STEWARDSHIP &nbsp;&bull;&nbsp; THE LIVING AGE &nbsp;&bull;&nbsp; CLOKEY PRODUCTIONS
+  </div>
+
+</div>
+
+</body>
+</html>

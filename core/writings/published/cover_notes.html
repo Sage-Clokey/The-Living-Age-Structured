@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ready-to-Send Emails — Living Age Contacts</title>
+<style>
+  @media print {
+    body { margin: 0; background: white; }
+    .container { box-shadow: none !important; max-width: 100%; }
+    .no-print { display: none !important; }
+    @page { margin: 0.5in; size: letter; }
+    .email-card { break-inside: avoid; }
+  }
+
+  @media screen {
+    body {
+      background: #0a0a0f;
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    color: #222;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .no-print {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .no-print h1 {
+    font-family: 'Georgia', serif;
+    font-size: 1.3rem;
+    color: #c9a84c;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
+
+  .no-print p {
+    color: #8a7e65;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  .no-print button {
+    background: #c9a84c;
+    color: #1a1410;
+    border: none;
+    padding: 0.6rem 2rem;
+    font-size: 0.9rem;
+    font-family: inherit;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+
+  .no-print button:hover { background: #d4b85c; }
+
+  /* ── EMAIL CARD ── */
+  .email-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+
+  .email-header {
+    background: #f7f5f0;
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid #e5e0d5;
+    font-size: 0.82rem;
+    color: #555;
+  }
+
+  .email-field {
+    display: flex;
+    margin-bottom: 0.25rem;
+  }
+
+  .email-label {
+    min-width: 70px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    padding-top: 0.1rem;
+  }
+
+  .email-value {
+    flex: 1;
+    color: #333;
+    font-size: 0.85rem;
+  }
+
+  .email-value.subject {
+    font-weight: 600;
+    color: #1a1410;
+  }
+
+  .email-value a {
+    color: #2a6496;
+    text-decoration: none;
+  }
+
+  .email-body {
+    padding: 1rem 1.2rem;
+    font-size: 0.9rem;
+    color: #222;
+    line-height: 1.75;
+    cursor: text;
+    user-select: text;
+  }
+
+  .email-body p {
+    margin-bottom: 0.7rem;
+  }
+
+  .email-sig {
+    color: #555;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #eee;
+  }
+
+  .email-sig strong { color: #333; }
+
+  .email-attach {
+    background: #f0ede5;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid #e5e0d5;
+    font-size: 0.78rem;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .attach-icon {
+    font-size: 1rem;
+  }
+
+  .email-tip {
+    background: #fffbe6;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid #f0e8c0;
+    font-size: 0.78rem;
+    color: #8a7530;
+    font-style: italic;
+  }
+
+  .copy-btn {
+    float: right;
+    background: #e8e4da;
+    border: 1px solid #ccc;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.72rem;
+    cursor: pointer;
+    border-radius: 3px;
+    font-family: inherit;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+  }
+
+  .copy-btn:hover { background: #d4cfc5; }
+  .copy-btn.copied { background: #c9e6c9; color: #2a6a2a; border-color: #a0c8a0; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="no-print">
+  <h1>Ready-to-Send Emails</h1>
+  <p>Click "Copy" on any email to copy the full body to your clipboard. Then paste into Gmail/Outlook.</p>
+  <button onclick="window.print()">Print / Save as PDF</button>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- 1. RANDY BLOSIL -->
+<!-- ═══════════════════════════════════════ -->
+<div class="email-card">
+  <div class="email-header">
+    <div class="email-field"><span class="email-label">To:</span><span class="email-value"><a href="mailto:randy@alpinegoldexchange.com">randy@alpinegoldexchange.com</a></span></div>
+    <div class="email-field"><span class="email-label">Subject:</span><span class="email-value subject">Following up from FreedomFest — Real Wealth over Abstraction</span></div>
+  </div>
+  <div class="email-body" id="email-1">
+    <button class="copy-btn no-print" onclick="copyEmail('email-1', this)">Copy</button>
+    <p>Randy,</p>
+    <p>Great meeting you at FreedomFest. I wanted to follow up with a couple of short pieces I've written that touch on things we talked about.</p>
+    <p>The Economy of Stewardship is about real wealth versus financial abstraction — ownership as stewardship, cash flow over valuation, and why the family is the natural economic unit. I think you'll see a lot of overlap with what Alpine Gold represents: tangible value that people can hold, not numbers on a screen.</p>
+    <p>I'm also working on a larger project called the Living Age that connects media, technology, and philosophy around the idea that living systems organize better than controlled ones. I'd love to continue the conversation when it makes sense.</p>
+    <div class="email-sig">
+      <strong>Sage Clokey</strong><br>
+      Clokey Productions / The Living Age<br>
+      805-459-2396<br>
+      clokeyd.sage@gmail.com<br>
+      sage-clokey.github.io
+    </div>
+  </div>
+  <div class="email-attach"><span class="attach-icon">&#128206;</span> The Economy of Stewardship (PDF) &middot; Declaration of the Living Republic (PDF)</div>
+  <div class="email-tip">Also send to Ronnie (ronnie@alpinegoldexchange.com) — same email, add "Randy suggested I reach out" at the top.</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- 2. ADAM JACOBSEN & MIKE SCHULTE -->
+<!-- ═══════════════════════════════════════ -->
+<div class="email-card">
+  <div class="email-header">
+    <div class="email-field"><span class="email-label">To:</span><span class="email-value"><a href="mailto:AdamJacobsenICA@gmail.com">AdamJacobsenICA@gmail.com</a></span></div>
+    <div class="email-field"><span class="email-label">CC:</span><span class="email-value"><a href="mailto:MikeSchulteICA@gmail.com">MikeSchulteICA@gmail.com</a></span></div>
+    <div class="email-field"><span class="email-label">Subject:</span><span class="email-value subject">FreedomFest follow-up — The Economy of Stewardship</span></div>
+  </div>
+  <div class="email-body" id="email-2">
+    <button class="copy-btn no-print" onclick="copyEmail('email-2', this)">Copy</button>
+    <p>Adam (and Mike),</p>
+    <p>Good connecting at FreedomFest. I've attached a short essay called The Economy of Stewardship that I think speaks to what you're doing with the International Coin Alliance — the idea that real wealth is ownership of real things, not claims on abstractions.</p>
+    <p>The piece argues that the strongest economic institutions keep ownership close to responsibility, and that growth should be funded by previous production rather than debt. Commodity-based wealth is exactly that principle in practice.</p>
+    <p>I'm building something called the Living Age — media and technology rooted in the same philosophy. Would enjoy staying in touch.</p>
+    <div class="email-sig">
+      <strong>Sage Clokey</strong><br>
+      Clokey Productions / The Living Age<br>
+      805-459-2396<br>
+      clokeyd.sage@gmail.com<br>
+      sage-clokey.github.io
+    </div>
+  </div>
+  <div class="email-attach"><span class="attach-icon">&#128206;</span> The Economy of Stewardship (PDF)</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- 3. PAUL MEANY -->
+<!-- ═══════════════════════════════════════ -->
+<div class="email-card">
+  <div class="email-header">
+    <div class="email-field"><span class="email-label">To:</span><span class="email-value"><a href="mailto:pmeany@cato.org">pmeany@cato.org</a></span></div>
+    <div class="email-field"><span class="email-label">Subject:</span><span class="email-value subject">Conscience, Hayek, and Living Order — following up from FreedomFest</span></div>
+  </div>
+  <div class="email-body" id="email-3">
+    <button class="copy-btn no-print" onclick="copyEmail('email-3', this)">Copy</button>
+    <p>Paul,</p>
+    <p>It was a pleasure meeting you at FreedomFest. I've been working on a philosophical project called the Living Age that I think intersects meaningfully with the kind of intellectual history work you do at Cato.</p>
+    <p>I've attached three short pieces. The Declaration draws on the natural rights tradition to argue for voluntary association and peaceful separation from corrupted institutions. The Sagent Creed finds a common thread across eight spiritual and philosophical traditions — all pointing toward conscience over coercion. The Living Spiral explores how distributed order (biological, economic, political) outperforms centralized control, drawing on Hayek and living systems.</p>
+    <p>I'm also the grandson of Art Clokey, the creator of Gumby, and I'm working on reviving Clokey Productions as the media wing of this project. I'd welcome any thoughts you have, and I'd be glad to discuss whether any of this material might be worth exploring through libertarianism.org or Cato's publishing channels.</p>
+    <div class="email-sig">
+      <strong>Sage Clokey</strong><br>
+      Clokey Productions / The Living Age<br>
+      805-459-2396<br>
+      clokeyd.sage@gmail.com<br>
+      sage-clokey.github.io
+    </div>
+  </div>
+  <div class="email-attach"><span class="attach-icon">&#128206;</span> Declaration of the Living Republic (PDF) &middot; The Sagent Creed (PDF) &middot; The Living Spiral (PDF)</div>
+  <div class="email-tip">Paul is an intellectual history editor — the Hayek connection in The Living Spiral is your strongest hook.</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- 4. MARK SKOUSEN -->
+<!-- ═══════════════════════════════════════ -->
+<div class="email-card">
+  <div class="email-header">
+    <div class="email-field"><span class="email-label">To:</span><span class="email-value"><a href="mailto:mskousen@chapman.edu">mskousen@chapman.edu</a></span></div>
+    <div class="email-field"><span class="email-label">Subject:</span><span class="email-value subject">The Living Age — Gumby legacy meets living economics (FreedomFest follow-up)</span></div>
+  </div>
+  <div class="email-body" id="email-4">
+    <button class="copy-btn no-print" onclick="copyEmail('email-4', this)">Copy</button>
+    <p>Dr. Skousen,</p>
+    <p>Thank you for creating FreedomFest — it's exactly the kind of gathering where ideas like these find their audience.</p>
+    <p>I'm Sage Clokey, a bioinformatics graduate and the grandson of Art Clokey, who created Gumby. I'm working on a project called the Living Age that brings together media, philosophy, and biotechnology around a single thesis: life organizes better than control systems.</p>
+    <p>I've attached three pieces. The Economy of Stewardship argues for cash flow over valuation, retained earnings over debt, and family over corporation — I think you'll find resonance with your Gross Output work challenging GDP orthodoxy. The Business Plan outlines the technology side: an AI platform for designing with living systems, targeting a $45B+ market. And the Rebirth of Clokey Productions describes the media side: practical, real-craftsmanship media rising from the Gumby legacy.</p>
+    <p>I'd be honored to explore speaking or presenting at a future FreedomFest, or to discuss how the Living Age might connect with your work at Chapman.</p>
+    <div class="email-sig">
+      <strong>Sage Clokey</strong><br>
+      Clokey Productions / The Living Age<br>
+      805-459-2396<br>
+      clokeyd.sage@gmail.com<br>
+      sage-clokey.github.io
+    </div>
+  </div>
+  <div class="email-attach"><span class="attach-icon">&#128206;</span> The Economy of Stewardship (PDF) &middot; Living Age Business Plan (PDF) &middot; Rebirth of Clokey Productions (PDF)</div>
+  <div class="email-tip">Ask for a specific thing: a speaking slot, a panel, or an introduction. He responds to initiative.</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- 5. DREW ENDY -->
+<!-- ═══════════════════════════════════════ -->
+<div class="email-card">
+  <div class="email-header">
+    <div class="email-field"><span class="email-label">To:</span><span class="email-value">drew.endy@stanford.edu (verify via Stanford Bioengineering)</span></div>
+    <div class="email-field"><span class="email-label">Subject:</span><span class="email-value subject">Living things as localizers — following up from SynBioBeta</span></div>
+  </div>
+  <div class="email-body" id="email-5">
+    <button class="copy-btn no-print" onclick="copyEmail('email-5', this)">Copy</button>
+    <p>Dr. Endy,</p>
+    <p>We crossed paths briefly at SynBioBeta. Your point about living things as natural localizers for supply chains stayed with me — it connects directly to something I've been building.</p>
+    <p>The Living Age is a project that pairs media with biotechnology around the thesis that life organizes better than control systems. The Living Spiral essay explores that principle across biology, economics, and governance — spirals vs. blocks, Hayek meets gene regulatory networks. The Business Plan describes the technology platform: an AI-driven design environment for biological systems, from genome to living architecture.</p>
+    <p>I recently graduated in bioinformatics from UCSC and built a LivingWorks engine that retrieves genes from 220+ genomes, checks cross-species compatibility, and outputs synthesis-ready constructs. I'd welcome any chance to continue the conversation about decentralized biological design.</p>
+    <div class="email-sig">
+      <strong>Sage Clokey</strong><br>
+      Clokey Productions / The Living Age<br>
+      805-459-2396<br>
+      clokeyd.sage@gmail.com<br>
+      sage-clokey.github.io
+    </div>
+  </div>
+  <div class="email-attach"><span class="attach-icon">&#128206;</span> The Living Spiral (PDF) &middot; Living Age Business Plan (PDF)</div>
+  <div class="email-tip">Lead with the biology, not the philosophy. The Hoover connection makes the liberty angle relevant too.</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- 6. DR. THOMAS COLLIN -->
+<!-- ═══════════════════════════════════════ -->
+<div class="email-card">
+  <div class="email-header">
+    <div class="email-field"><span class="email-label">To:</span><span class="email-value"><a href="mailto:thomas.collin@frontiersin.org">thomas.collin@frontiersin.org</a></span></div>
+    <div class="email-field"><span class="email-label">Subject:</span><span class="email-value subject">SynBioBeta follow-up — Publishing cross-species genome design pipeline with Frontiers</span></div>
+  </div>
+  <div class="email-body" id="email-6">
+    <button class="copy-btn no-print" onclick="copyEmail('email-6', this)">Copy</button>
+    <p>Dr. Collin,</p>
+    <p>Good to connect at SynBioBeta. I wanted to follow up on our conversation about publishing my BME 129C capstone work with Frontiers.</p>
+    <p>The paper describes a computational pipeline for cross-species genome design — retrieving real genes from 220+ genomes, checking codon bias and regulatory compatibility, and assembling optimized constructs. It's part of a larger platform I'm building called Living Works, which aims to create the first design environment for biological systems at the architectural scale.</p>
+    <p>Could you point me toward the right submission process for Frontiers in Systems Biology or Frontiers in Bioinformatics? I'd be happy to share the draft when it's polished.</p>
+    <div class="email-sig">
+      <strong>Sage Clokey</strong><br>
+      Clokey Productions / The Living Age<br>
+      805-459-2396<br>
+      clokeyd.sage@gmail.com<br>
+      sage-clokey.github.io
+    </div>
+  </div>
+  <div class="email-attach"><span class="attach-icon">&#128206;</span> Capstone paper (when ready)</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- 7. ANDREW HESSEL -->
+<!-- ═══════════════════════════════════════ -->
+<div class="email-card">
+  <div class="email-header">
+    <div class="email-field"><span class="email-label">To:</span><span class="email-value">Via LinkedIn: <a href="https://linkedin.com/in/andrewhessel">linkedin.com/in/andrewhessel</a></span></div>
+    <div class="email-field"><span class="email-label">Subject:</span><span class="email-value subject">Living things aren't machines — following up from SynBioBeta</span></div>
+  </div>
+  <div class="email-body" id="email-7">
+    <button class="copy-btn no-print" onclick="copyEmail('email-7', this)">Copy</button>
+    <p>Andrew,</p>
+    <p>Really enjoyed our conversation at SynBioBeta about the bottlenecks in synbio that come from treating living things as machines. That insight is at the core of what I'm building.</p>
+    <p>The Living Age is a philosophy-and-technology project based on the premise that life organizes better than control systems. The platform I'm developing — Living Works — is an AI-driven design environment for biological systems that works with life's own principles rather than against them.</p>
+    <p>I've attached a short essay (The Living Spiral) that lays out the philosophical foundation, and a 3-page business plan that covers the technology, market, and roadmap. Would love to stay connected as the project grows.</p>
+    <div class="email-sig">
+      <strong>Sage Clokey</strong><br>
+      Clokey Productions / The Living Age<br>
+      805-459-2396<br>
+      clokeyd.sage@gmail.com<br>
+      sage-clokey.github.io
+    </div>
+  </div>
+  <div class="email-attach"><span class="attach-icon">&#128206;</span> The Living Spiral (PDF) &middot; Living Age Business Plan (PDF)</div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+function copyEmail(id, btn) {
+  const el = document.getElementById(id);
+  // Get just the text content, skip the copy button
+  const clone = el.cloneNode(true);
+  const buttons = clone.querySelectorAll('.copy-btn');
+  buttons.forEach(b => b.remove());
+  const text = clone.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>

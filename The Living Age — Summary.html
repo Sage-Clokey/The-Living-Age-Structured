@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Living Age — Summary</title>
+<style>
+  @media print {
+    body { margin: 0; background: white; }
+    .page { box-shadow: none !important; margin: 0 !important; }
+    .no-print { display: none !important; }
+    @page { margin: 0.4in; size: letter; }
+    .page-break { page-break-before: always; }
+  }
+
+  @media screen {
+    body {
+      background: #060b06;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+    .page + .page { margin-top: 2rem; }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: #1a1410;
+    line-height: 1.8;
+  }
+
+  .no-print {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .no-print button {
+    background: #c9a84c;
+    color: #1a1410;
+    border: none;
+    padding: 0.7rem 2.5rem;
+    font-size: 1rem;
+    font-family: 'Georgia', serif;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .no-print button:hover { background: #d4b85c; }
+
+  .page {
+    background: #fdf8f0;
+    width: 8.5in;
+    min-height: 11in;
+    padding: 1in 1.2in;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    position: relative;
+  }
+
+  /* Title Page */
+  .title-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .title-page .ornament {
+    color: #c9a84c;
+    font-size: 2rem;
+    letter-spacing: 0.6em;
+    margin-bottom: 2rem;
+  }
+
+  .title-page h1 {
+    font-size: 2.6rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: #1a1410;
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+  }
+
+  .title-page .subtitle {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: #6b5c3e;
+    margin-bottom: 3rem;
+    letter-spacing: 0.03em;
+  }
+
+  .title-page .rule {
+    width: 3in;
+    height: 1px;
+    background: #c9a84c;
+    margin-bottom: 3rem;
+  }
+
+  .title-page .epigraph {
+    font-size: 1.05rem;
+    font-style: italic;
+    color: #3a3226;
+    max-width: 5in;
+    line-height: 1.9;
+  }
+
+  .title-page .author {
+    margin-top: 3rem;
+    font-size: 0.95rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #6b5c3e;
+  }
+
+  /* Content Pages */
+  h2 {
+    font-size: 1.35rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: #2d4a2d;
+    margin-top: 2rem;
+    margin-bottom: 0.8rem;
+    border-bottom: 1px solid #d6c9a8;
+    padding-bottom: 0.4rem;
+  }
+
+  h2:first-child {
+    margin-top: 0;
+  }
+
+  .section-number {
+    color: #c9a84c;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    margin-right: 0.3em;
+  }
+
+  p {
+    font-size: 0.95rem;
+    margin-bottom: 1.1rem;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .lead {
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 1.8rem;
+    line-height: 1.9;
+    color: #2d2418;
+  }
+
+  .blockquote {
+    border-left: 3px solid #c9a84c;
+    padding: 1rem 1.4rem;
+    margin: 1.8rem 0;
+    background: #f7f0e3;
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1.9;
+    color: #2d2418;
+  }
+
+  .blockquote strong {
+    font-style: italic;
+  }
+
+  em {
+    font-style: italic;
+    color: #3a3226;
+  }
+
+  .closing {
+    margin-top: 2rem;
+    font-style: italic;
+    text-align: center;
+    color: #6b5c3e;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    line-height: 2;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 0.6in;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #b0a48a;
+    letter-spacing: 0.1em;
+  }
+
+  .ornament-divider {
+    text-align: center;
+    color: #c9a84c;
+    font-size: 1.2rem;
+    letter-spacing: 0.5em;
+    margin: 1.6rem 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="no-print">
+  <button onclick="window.print()">Save as PDF</button>
+</div>
+
+<!-- PAGE 1: Title Page -->
+<div class="page title-page">
+  <div class="ornament">- - -</div>
+  <h1>The Living Age</h1>
+  <div class="subtitle">A Summary of the Work</div>
+  <div class="rule"></div>
+  <p class="epigraph">
+    Life organizes itself. It always has.<br>
+    The modern world forgot this &mdash; and that forgetting<br>
+    is the root of nearly every crisis we face.
+  </p>
+  <p class="author">Sage Clokey</p>
+  <div class="footer">The Living Age</div>
+</div>
+
+<!-- PAGE 2: The Three Lenses -->
+<div class="page page-break">
+
+  <p class="lead">
+    Every essay, every trilogy chapter, every creed entry circles back to one insight expressed through three lenses:
+  </p>
+
+  <h2><span class="section-number">I.</span> Philosophy &mdash; The Sagent Creed</h2>
+  <p>
+    The first job was gardener, not king. Authority doesn't flow down from institutions &mdash; it flows out from conscience. A true republic is not a government but a covenant among free people who steward, not dominate. The Sagent is someone who has internalized this: wisdom and agency, never coercion.
+  </p>
+
+  <h2><span class="section-number">II.</span> Story &mdash; The Spiral and the Block</h2>
+  <p>
+    Every great myth already knows this. Star Wars, Lord of the Rings, Avatar, The Matrix, Assassin's Creed &mdash; they all encode the same truth: centralized power corrupts and collapses; distributed, conscience-driven order endures. The spiral (organic, growing, emergent) always outlives the block (rigid, imposed, mechanical). Stories carry this truth because propositions can be censored &mdash; parables pass through every checkpoint.
+  </p>
+
+  <h2><span class="section-number">III.</span> Biology &mdash; The Spiral Steward</h2>
+  <p>
+    This isn't metaphor &mdash; it's data. Gene regulatory networks are decentralized. The immune system has no gatekeeper. Cells coordinate without a king. Cancer <em>is</em> central planning at the cellular level. Austrian economics &mdash; Hayek's knowledge problem, spontaneous order, price signals &mdash; maps directly onto molecular biology: morphogen gradients, metabolite ratios, gene expression. Life is linguistic, not mechanical &mdash; it's read, expressed, transcribed, not executed.
+  </p>
+
+  <div class="footer">The Living Age</div>
+</div>
+
+<!-- PAGE 3: The Bridge & Synthesis -->
+<div class="page page-break">
+
+  <h2><span class="section-number">IV.</span> The Bridge &mdash; Bioinformatics</h2>
+  <p>
+    Bioinformatics is not just a discipline &mdash; it's the bridge between the philosophy and the technology. The reason for studying it was never to become an engineer of life, but to learn how life already engineers itself. What molecular biology reveals is that living systems coordinate trillions of actors without blueprints, without factories, without central command. They do it through language &mdash; genes are read, expressed, transcribed &mdash; not assembled on a line.
+  </p>
+  <p>
+    That insight is what makes the Living Age possible. If life is linguistic, then the way to work with it is to learn its language, not to treat it as raw material. The English-to-Protein bridge, genome design, adaptive automation &mdash; these aren't manufacturing tools. They're ways of speaking to biology in its own tongue, cultivating outcomes instead of commanding them. Bioinformatics is the proof that the philosophy works &mdash; because life has been doing it for four billion years.
+  </p>
+
+  <div class="ornament-divider">- - -</div>
+
+  <h2>The Synthesis</h2>
+
+  <div class="blockquote">
+    <strong>Life is a self-organizing, distributed intelligence that operates through conscience, not command &mdash; and the proof is written in biology, encoded in myth, and lived through stewardship.</strong>
+  </div>
+
+  <p>
+    The "Living Age" is what happens when humanity remembers this and builds accordingly. Media plants the seed (the <em>why</em>). Technology grows the tree (the <em>how</em>). The Sagent tends the garden (the <em>who</em>).
+  </p>
+
+  <p>
+    The enemy across all of this writing is never a person &mdash; it's an assumption: that order requires control. That life is a machine. That someone has to be in charge. This work argues that assumption is not just philosophically wrong but biologically disproven, narratively exposed in every story worth telling, and practically destructive everywhere it's applied &mdash; from cancer to central banking to Hollywood gatekeeping.
+  </p>
+
+  <p class="closing">
+    The correction isn't revolution. It's succession &mdash;<br>
+    the way a forest becomes a forest.<br>
+    Seeds, soil, patience, and hands that know<br>
+    the difference between building and growing.
+  </p>
+
+  <div class="footer">The Living Age</div>
+</div>
+
+</body>
+</html>

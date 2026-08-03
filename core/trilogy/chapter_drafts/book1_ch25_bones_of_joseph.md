@@ -162,7 +162,35 @@ Worldly kingdoms return to the dust. The Kingdom of Heaven endures in the consci
 
 ---
 
-## X. The Green Flame
+## X. The Josephs on the Map
+
+I have two great-grandfathers named Joseph. Professor Joseph Waddell Clokey, Jr. — the classical music composer who adopted Art, the man who would not overcharge for a cabin because the cabin had not improved. And Joseph Parkander — the Lutheran pastor at Augustana, the man who devoted his life to conscience, faith, and the relationship between humanity and God. One gave Art beauty. The other gave Art's wife faith. Both carried the name of the patriarch who made his people swear an oath before he died.
+
+Behind the professor stands his father — my great-great-grandfather, Rev. Joseph Waddell Clokey, Sr., a Presbyterian minister who served twenty-five years at First Presbyterian Church in New Albany, Indiana — the same town where his son was born. The Reverend was born in 1839 and died in 1919 at the age of eighty. He is buried at Ferncliff Cemetery in Springfield, Ohio.
+
+The professor was born in New Albany, studied mathematics at Miami University in Ohio, then music at the Cincinnati Conservatory. He composed two symphonies, five operas, and over a hundred published choral works. He taught organ at Miami University and then at Pomona College in Claremont, California, where he adopted a nine-year-old orphan from Detroit and gave him his name. He died on September 14, 1960, in Covina, California. He was cremated. His ashes were carried back to Ohio and buried on October 30, 1960, in the family plot at Ferncliff Cemetery — the same cemetery, the same ground as his father the Reverend. No individual marker. Just the family name in the earth.
+
+My father Joe was also cremated. Three generations returned to ash. The professor, and the son who carried his mission. For dust you are, and to dust you shall return.
+
+The Josephs are not only in the bloodline. They are in the ground. And the ground keeps calling me back.
+
+In the summer of 2025, I traveled to Tampa, Florida, for the Turning Point USA Student Action Summit — a gathering of young people committed to the ideas of liberty. While I was there, I learned that Joseph Parkander is buried in St. Petersburg, Florida — thirty minutes from where I stood. I had not planned it. I did not know before I arrived. I went to do the work of conscience, and the bones of Joseph were already there.
+
+On the way home, a storm delayed my flight. The airline rerouted me through Newark, New Jersey. That flight was delayed — ten hours on the runway. The airline changed my route again, this time flying me to San Francisco before connecting to San Luis Obispo. The flight from Newark to San Francisco passed directly over Chicago and Rock Island, Illinois — the two cities where Joseph Parkander had lived and served at Augustana.
+
+The storm traced his life in reverse. I had been near the place where he was buried. The reroute flew me over the places where he had worked. His death, then his life. Backward. I did not choose the route. The storms chose it for me.
+
+One year later — the summer of 2026 — I traveled to Cincinnati, Ohio, for YALCON, another gathering for liberty. And both Joseph Waddell Clokeys — the Reverend and the Professor, my great-great-grandfather and my great-grandfather — are buried together at Ferncliff Cemetery in Springfield, Ohio. An hour from where I stand. The man who preached conscience for twenty-five years and the man who turned music into a theology of beauty and adopted an orphan and gave him the name that became Gumby — both in the same ground, both waiting.
+
+I did not plan either trip around these graves. I went to both cities for the work — for the mission of conscience and liberty that the Josephs planted generations before I was born. And both times, the ground where a Joseph rests was waiting nearby. Tampa brought me to Parkander. The storm flew me over the places where Parkander had worked. Cincinnati brought me to both Clokeys at once — the father and the son, the minister and the composer, side by side in the Ohio earth.
+
+As if the promise does not only live in the conscience of the living. As if it also marks the earth, and the earth remembers, and the spiral brings the heir back to the place where the seed was laid down.
+
+The bones of Joseph returned to the dust. But the dust knows where they are. And it keeps pulling me back to prove that the promise did not return with them.
+
+---
+
+## XI. The Green Flame
 
 Being pushed out is not the end — it is the beginning. Where God is King, order grows. Where men claim the throne, order must be enforced.
 

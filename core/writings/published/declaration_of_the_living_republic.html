@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Declaration of the True Living Republic of Conscience</title>
+<style>
+  @media print {
+    body { margin: 0; }
+    .page { box-shadow: none !important; margin: 0 !important; padding: 1in 1.25in !important; }
+    .no-print { display: none !important; }
+    @page { margin: 0; size: letter; }
+  }
+
+  @media screen {
+    body {
+      background: #2a2520;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: #1a1410;
+    line-height: 1.8;
+  }
+
+  .no-print {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .no-print button {
+    background: #c9a84c;
+    color: #1a1410;
+    border: none;
+    padding: 0.7rem 2.5rem;
+    font-size: 1rem;
+    font-family: 'Georgia', serif;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .no-print button:hover { background: #d4b85c; }
+
+  .page {
+    background: #fdf8f0;
+    width: 8.5in;
+    min-height: 11in;
+    padding: 1in 1.25in;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    position: relative;
+  }
+
+  /* Subtle parchment border */
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 0.6in;
+    left: 0.6in;
+    right: 0.6in;
+    bottom: 0.6in;
+    border: 1px solid rgba(160, 130, 80, 0.2);
+    pointer-events: none;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid rgba(160, 130, 80, 0.3);
+  }
+
+  .header .flame-icon {
+    width: 60px;
+    height: 80px;
+    margin: 0 auto 1rem;
+    display: block;
+  }
+
+  .header h1 {
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #3a2a15;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+    line-height: 1.4;
+  }
+
+  .header .subtitle {
+    font-size: 0.85rem;
+    color: #8a7a60;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .preamble {
+    font-size: 1.02rem;
+    color: #2a2015;
+    margin-bottom: 1.8rem;
+    text-align: justify;
+    font-style: italic;
+  }
+
+  .article-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #3a2a15;
+    letter-spacing: 0.06em;
+    margin-top: 1.8rem;
+    margin-bottom: 0.8rem;
+    text-align: center;
+  }
+
+  .article-title::before,
+  .article-title::after {
+    content: ' \2014 ';
+    color: rgba(160, 130, 80, 0.4);
+  }
+
+  p {
+    font-size: 0.95rem;
+    color: #2a2015;
+    margin-bottom: 0.7rem;
+    text-align: justify;
+    text-indent: 0;
+  }
+
+  .indent {
+    margin-left: 1.5rem;
+  }
+
+  .signs p {
+    margin-bottom: 0.35rem;
+    padding-left: 0.8rem;
+    text-indent: 0;
+    position: relative;
+  }
+
+  .signs p::before {
+    content: '\2022';
+    position: absolute;
+    left: 0;
+    color: #8a7a60;
+  }
+
+  .covenant-pledge {
+    text-align: center;
+    font-style: italic;
+    margin: 0.5rem 0;
+  }
+
+  .closing {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(160, 130, 80, 0.2);
+  }
+
+  .closing .republic-line {
+    font-size: 1.05rem;
+    color: #3a2a15;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+  }
+
+  .closing .republic-sub {
+    font-size: 0.9rem;
+    color: #6a5a40;
+    font-style: italic;
+  }
+
+  .final-pledge {
+    margin-top: 1.5rem;
+    font-size: 0.92rem;
+    text-align: justify;
+    color: #2a2015;
+  }
+
+  .gate {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #3a2a15;
+    font-style: italic;
+    font-weight: 600;
+    margin: 1.5rem 0;
+    letter-spacing: 0.05em;
+  }
+
+  .separator {
+    text-align: center;
+    color: rgba(160, 130, 80, 0.4);
+    margin: 1.2rem 0;
+    font-size: 1.2rem;
+    letter-spacing: 0.5em;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 2px solid rgba(160, 130, 80, 0.3);
+    font-size: 0.75rem;
+    color: #a09080;
+    letter-spacing: 0.1em;
+  }
+</style>
+</head>
+<body>
+
+<div class="no-print">
+  <button onclick="window.print()">Print / Save as PDF</button>
+</div>
+
+<div class="page">
+
+  <div class="header">
+    <svg class="flame-icon" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+      <path d="M100 15 C92 45,68 75,55 105 C42 135,28 160,25 185 C22 210,28 235,38 252 C48 268,62 278,78 284 C88 288,95 290,100 290 C105 290,112 288,122 284 C138 278,152 268,162 252 C172 235,178 210,175 185 C172 160,158 135,145 105 C132 75,108 45,100 15Z" fill="none" stroke="#8a7a60" stroke-width="2" opacity="0.5"/>
+      <path d="M100 60 C94 85,78 115,68 145 C58 175,48 200,48 220 C48 245,58 265,72 275 C82 282,92 286,100 288 C108 286,118 282,128 275 C142 265,152 245,152 220 C152 200,142 175,132 145 C122 115,106 85,100 60Z" fill="none" stroke="#8a7a60" stroke-width="1.5" opacity="0.35"/>
+      <!-- Spiral -->
+      <path d="M100 220 C100 220,88 220,88 208 C88 196,100 196,100 196 C100 196,116 196,116 180 C116 164,100 164,100 164 C100 164,76 164,76 140 C76 116,100 116,100 116 C100 116,132 116,132 140" fill="none" stroke="#8a7a60" stroke-width="1.2" opacity="0.3"/>
+    </svg>
+    <h1>The Declaration of the<br>True Living Republic of Conscience</h1>
+    <div class="subtitle">Clokey Productions</div>
+  </div>
+
+  <p class="preamble">When, in the course of human events, institutions cease to serve the people from whom they arise, and instead seek to govern conscience rather than protect it, it becomes the duty of free people to declare the principles by which they shall live. Respect for truth and for our fellow human beings requires that we plainly state the causes which compel such a declaration.</p>
+
+  <div class="article-title">Article II &mdash; The First Principles</div>
+
+  <p>We hold these truths to be discovered through conscience and confirmed by experience: that every human being is created with equal dignity before the Creator; that each person is endowed by the Creator with inherent rights that no earthly power may rightly take away. Among these are life, liberty, conscience, and the freedom to create, to speak truthfully, to associate voluntarily, and to enjoy the fruits of honest labor.</p>
+
+  <p>These rights do not proceed from governments, kings, legislatures, or majorities. They arise from the order of creation itself and therefore exist before every human institution.</p>
+
+  <p>Communities establish institutions not to grant these rights but to recognize and protect them. Every institution is just only insofar as it remains the servant of conscience rather than its master, and its authority rests solely upon the continuing voluntary consent of those it serves.</p>
+
+  <p>Whenever any institution claims authority over conscience, destroys voluntary association, or substitutes coercion for justice, it abandons its rightful purpose and forfeits its moral legitimacy.</p>
+
+  <div class="article-title">Article III &mdash; Prudence and Peaceful Separation</div>
+
+  <p>Prudence teaches that institutions long established should not be abandoned for light or temporary causes. Experience shows that people are more willing to endure hardship than to dissolve familiar arrangements.</p>
+
+  <p>Yet no institution exists for its own sake. Every institution exists to serve living people, and every generation bears the responsibility to examine whether it remains faithful to justice and conscience.</p>
+
+  <p>When an institution persistently elevates power above truth, compels what conscience forbids, or forbids what conscience requires, it ceases to deserve voluntary allegiance.</p>
+
+  <p>The first duty of free people is not conquest but creation; not destruction but renewal.</p>
+
+  <p>Where reform is possible, let reform be pursued. Where peaceful departure is possible, let peaceful departure be chosen. Where new and better institutions can be built, let them be built.</p>
+
+  <p>The strongest declaration of liberty is not merely to resist what is wrong, but to create what is right until the old ways are left behind by those who freely choose a better path.</p>
+
+  <p>Thus a people guided by conscience do not seek dominion over others. They seek only the freedom to live truthfully, to cooperate voluntarily, and to leave behind every institution that no longer serves justice.</p>
+
+  <div class="article-title">Article IV &mdash; The Signs of Corruption</div>
+
+  <p>We have observed throughout history that institutions lose their legitimacy not in a single moment, but through repeated departures from conscience:</p>
+
+  <div class="signs">
+    <p>When they claim authority over truth rather than seek it.</p>
+    <p>When they reward obedience above integrity.</p>
+    <p>When they replace voluntary cooperation with coercion.</p>
+    <p>When they centralize knowledge that belongs among free people.</p>
+    <p>When they value power above justice.</p>
+    <p>When they make themselves indispensable rather than remaining servants.</p>
+    <p>When they teach fear instead of responsibility.</p>
+    <p>When they persuade people that dependence is freedom.</p>
+    <p>When they silence honest disagreement rather than answer it with reason.</p>
+    <p>When they measure success by control instead of human flourishing.</p>
+    <p>When they protect themselves before they protect the people they were created to serve.</p>
+    <p>When they ask individuals to violate conscience for the sake of convenience, ideology, ambition, or institution.</p>
+  </div>
+
+  <p>These are not merely the failures of governments. They are the temptations of every institution, every generation, and every human heart.</p>
+
+  <p>Therefore, let every person first examine himself, every family strengthen itself, every community govern itself with justice, and every institution remember that it exists to serve the living rather than to rule them.</p>
+
+  <p>The health of a republic is measured not by the strength of its rulers, but by the freedom, responsibility, and conscience of its people.</p>
+
+  <div class="article-title">Article V &mdash; The Right of Peaceful Separation</div>
+
+  <p>Therefore, whenever an institution no longer serves justice, those who remain faithful to conscience possess the natural right to withdraw their voluntary support and to establish new associations founded upon truth, responsibility, and mutual consent.</p>
+
+  <p>No person is born to serve an institution. Institutions exist to serve living people.</p>
+
+  <p>The freedom to depart is the guardian of every voluntary relationship. Without the right to leave, consent becomes compulsion, and cooperation becomes submission.</p>
+
+  <p>Let no one seek domination over another. Let persuasion replace coercion, example replace force, and creation replace conquest.</p>
+
+  <p>A free people need not capture every institution that has lost its way. They may instead build better ones, invite others by their example, and allow truth to spread through the voluntary choices of free men and women.</p>
+
+  <div class="gate">The gate has no fence.</div>
+
+  <p>No earthly power can imprison a conscience that refuses to surrender truth, nor can any institution prevent free people from creating what is just, beautiful, and good.</p>
+
+  <p>Thus the Living Republic is not founded upon territory or rulers, but upon the shared commitment of people who freely choose to live according to conscience under the authority of the Creator.</p>
+
+  <div class="article-title">Article VI &mdash; The Covenant of Conscience</div>
+
+  <p>With humble gratitude to the Creator, and with confidence that truth requires no coercion, we therefore affirm these principles as the foundation of the Living Republic.</p>
+
+  <p>We pledge ourselves not to the rule of men, but to the rule of conscience under God.</p>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <p class="covenant-pledge">We shall seek truth before power.</p>
+  <p class="covenant-pledge">Justice before advantage.</p>
+  <p class="covenant-pledge">Creation before conquest.</p>
+  <p class="covenant-pledge">Service before authority.</p>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <p>We will neither compel another to violate conscience nor surrender our own for comfort, fear, or reward.</p>
+
+  <p>We will build where others destroy. We will persuade where others command. We will cooperate where others divide.</p>
+
+  <p>We will leave every institution that demands the sacrifice of truth, and we will devote our labor to building those that honor life, liberty, responsibility, and voluntary fellowship.</p>
+
+  <p>Knowing that this path may demand sacrifice, misunderstanding, or loss, we nevertheless choose it freely.</p>
+
+  <p>For the Kingdom of God is not established by force, but received through faithful hearts.</p>
+
+  <div class="closing">
+    <p class="republic-line">The Living Republic is not a place.</p>
+    <p class="republic-line">It is a people.</p>
+    <p class="republic-line" style="margin-top: 0.5rem;">It is not sustained by power.</p>
+    <p class="republic-line">It is sustained by conscience.</p>
+  </div>
+
+  <p class="final-pledge">And to these principles we freely pledge our lives, our work, our honor, and our hope, trusting not in princes, whose breath returns to the dust, but in the eternal Author of life, whose truth endures forever.</p>
+
+  <div class="footer">
+    THE LIVING AGE &nbsp;&bull;&nbsp; CLOKEY PRODUCTIONS
+  </div>
+
+</div>
+
+</body>
+</html>

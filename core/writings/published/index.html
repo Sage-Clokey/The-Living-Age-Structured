@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Living Age — Writings</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: #0a0a0f;
+    color: #f0ebe0;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .header svg {
+    width: 60px;
+    height: 85px;
+    margin-bottom: 1.2rem;
+  }
+
+  .header h1 {
+    font-size: 1.8rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #f0ebe0;
+    margin-bottom: 0.3rem;
+  }
+
+  .header .subtitle {
+    font-size: 0.85rem;
+    color: #8a7a60;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .header .tagline {
+    font-style: italic;
+    color: #c9a84c;
+    font-size: 0.95rem;
+    margin-top: 1rem;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #c9a84c, transparent);
+    margin: 2rem auto;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: rgba(253, 248, 240, 0.04);
+    border: 1px solid rgba(201, 168, 76, 0.15);
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .card:hover {
+    background: rgba(201, 168, 76, 0.08);
+    border-color: rgba(201, 168, 76, 0.35);
+    transform: translateX(4px);
+  }
+
+  .card-num {
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: #c9a84c;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f0ebe0;
+    margin-bottom: 0.25rem;
+  }
+
+  .card-desc {
+    font-size: 0.85rem;
+    color: #8a7e65;
+    line-height: 1.6;
+  }
+
+  .card-pages {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.3rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    color: #5a5545;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── SECTION LABELS ── */
+  .section-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #5a5545;
+    margin-top: 2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.12);
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(201, 168, 76, 0.15);
+  }
+
+  .footer .contact {
+    font-size: 0.82rem;
+    color: #8a7e65;
+    margin-bottom: 0.2rem;
+  }
+
+  .footer .brand {
+    font-size: 0.7rem;
+    color: #5a5545;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 0.8rem;
+  }
+
+  .footer .quote {
+    font-style: italic;
+    color: #c9a84c;
+    font-size: 0.85rem;
+    margin-top: 1rem;
+  }
+
+  @media print {
+    body { background: white; color: #1a1410; }
+    .card { border-color: #ccc; }
+    .card:hover { transform: none; }
+    .card-title { color: #1a1410; }
+    .card-desc { color: #4a4a4a; }
+    .header h1 { color: #1a1410; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="fg" cx="50%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#60e060"/>
+          <stop offset="50%" stop-color="#2d8f2d"/>
+          <stop offset="100%" stop-color="#0d3d0d" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <path d="M100 15 C92 45,68 75,55 105 C42 135,28 160,25 185 C22 210,28 235,38 252 C48 268,62 278,78 284 C88 288,95 290,100 290 C105 290,112 288,122 284 C138 278,152 268,162 252 C172 235,178 210,175 185 C172 160,158 135,145 105 C132 75,108 45,100 15Z" fill="url(#fg)" opacity="0.7"/>
+      <path d="M100 60 C94 85,78 115,68 145 C58 175,48 200,48 220 C48 245,58 265,72 275 C82 282,92 286,100 288 C108 286,118 282,128 275 C142 265,152 245,152 220 C152 200,142 175,132 145 C122 115,106 85,100 60Z" fill="url(#fg)" opacity="0.5"/>
+      <!-- Spiral -->
+      <path d="M100 220 C100 220,88 220,88 208 C88 196,100 196,100 196 C100 196,116 196,116 180 C116 164,100 164,100 164 C100 164,76 164,76 140 C76 116,100 116,100 116 C100 116,132 116,132 140" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <h1>The Living Age</h1>
+    <div class="subtitle">Clokey Productions</div>
+    <div class="tagline">Media to show why. Technology to show how.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ── PHILOSOPHY ── -->
+  <div class="section-label">Philosophy &amp; Vision</div>
+
+  <a class="card" href="declaration_of_the_living_republic.html">
+    <div class="card-pages">1 page</div>
+    <div class="card-num">I</div>
+    <div class="card-title">The Declaration of the True Living Republic of Conscience</div>
+    <div class="card-desc">When institutions cease to serve the people, it becomes the duty of free people to declare the principles by which they shall live.</div>
+  </a>
+
+  <a class="card" href="the_sagent_creed.html">
+    <div class="card-pages">2 pages</div>
+    <div class="card-num">II</div>
+    <div class="card-title">The Sagent Creed</div>
+    <div class="card-desc">Truth is Law. Conscience is Crown. Every Soul is Sovereign. A philosophy drawn from eight spiritual traditions, the True Republic, and the living order.</div>
+  </a>
+
+  <a class="card" href="the_living_spiral.html">
+    <div class="card-pages">2 pages</div>
+    <div class="card-num">III</div>
+    <div class="card-title">The Living Spiral</div>
+    <div class="card-desc">On the two ways to build a world — the Block and the Spiral — the four family callings, and the architecture of freedom.</div>
+  </a>
+
+  <a class="card" href="the_economy_of_stewardship.html">
+    <div class="card-pages">2 pages</div>
+    <div class="card-num">IV</div>
+    <div class="card-title">The Economy of Stewardship</div>
+    <div class="card-desc">On ownership, family, and the living order. Real wealth over fiat abstractions. Cash flow over valuation. The family as the fundamental economic unit.</div>
+  </a>
+
+  <!-- ── LEGACY ── -->
+  <div class="section-label">Legacy &amp; Story</div>
+
+  <a class="card" href="the_exodus_of_gumby.html">
+    <div class="card-pages">2 pages</div>
+    <div class="card-num">V</div>
+    <div class="card-title">The Exodus of Gumby</div>
+    <div class="card-desc">An allegory of creation, captivity, and return. The Prestige of clay — Arthur creates, Joseph preserves, Jordan restores.</div>
+  </a>
+
+  <a class="card" href="rebirth_of_clokey_productions.html">
+    <div class="card-pages">1 page</div>
+    <div class="card-num">VI</div>
+    <div class="card-title">The Rebirth of Clokey Productions</div>
+    <div class="card-desc">A manifesto for practical media. Real voices, real instruments, real craftsmanship. The media wing of the Living Age rises again.</div>
+  </a>
+
+  <!-- ── BUSINESS ── -->
+  <div class="section-label">Business &amp; Strategy</div>
+
+  <a class="card" href="living_age_business_plan.html">
+    <div class="card-pages">3 pages</div>
+    <div class="card-num">VII</div>
+    <div class="card-title">The Living Age — Business Plan</div>
+    <div class="card-desc">Mission, market ($45B+), technology stack, revenue model, 7-phase roadmap from genome design to living houses. The next civilization will grow with living systems.</div>
+  </a>
+
+  <a class="card" href="merch_ideas_living_age.html">
+    <div class="card-pages">1 page</div>
+    <div class="card-num">VIII</div>
+    <div class="card-title">Merch Ideas</div>
+    <div class="card-desc">Apparel, prints, stickers, books, practical goods, and digital media — every product carries the philosophy.</div>
+  </a>
+
+  <div class="divider"></div>
+
+  <div class="footer">
+    <div class="contact"><strong>Sage Clokey</strong> &middot; Spiral Steward</div>
+    <div class="contact">805-459-2396 &middot; clokeyd.sage@gmail.com</div>
+    <div class="contact">sage-clokey.github.io</div>
+    <div class="quote">"Things that are built break. Things that grow naturally return."</div>
+    <div class="brand">Clokey Productions &middot; The Living Age</div>
+  </div>
+
+</div>
+
+</body>
+</html>

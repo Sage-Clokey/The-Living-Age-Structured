@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Plan — The Living Age</title>
+<style>
+  @media print {
+    body { margin: 0; background: white; }
+    .page { box-shadow: none !important; margin: 0 !important; }
+    .no-print { display: none !important; }
+    @page { margin: 0.4in; size: letter; }
+    .category { break-inside: avoid; }
+    .page-break { page-break-before: always; }
+  }
+
+  @media screen {
+    body {
+      background: #0a0a0f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+    .page + .page { margin-top: 2rem; }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: #1a1410;
+    line-height: 1.7;
+  }
+
+  .no-print {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .no-print button {
+    background: #c9a84c;
+    color: #1a1410;
+    border: none;
+    padding: 0.7rem 2.5rem;
+    font-size: 1rem;
+    font-family: 'Georgia', serif;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .no-print button:hover { background: #d4b85c; }
+
+  .page {
+    background: #fdf8f0;
+    width: 8.5in;
+    padding: 0.65in 1in;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    position: relative;
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 0.4in;
+    left: 0.4in;
+    right: 0.4in;
+    bottom: 0.4in;
+    border: 1px solid rgba(160, 130, 80, 0.12);
+    pointer-events: none;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(160, 130, 80, 0.3);
+  }
+
+  .header .flame-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.8rem;
+  }
+
+  .header .flame-icon {
+    width: 45px;
+    height: 65px;
+  }
+
+  .header h1 {
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #3a2a15;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.15rem;
+  }
+
+  .header .subtitle {
+    font-size: 0.82rem;
+    color: #8a7a60;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ── SECTIONS ── */
+  .section-num {
+    font-family: 'Courier New', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: #c9a84c;
+    text-transform: uppercase;
+    margin-bottom: 0.15rem;
+  }
+
+  .section-title {
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: #3a2a15;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .section {
+    margin-bottom: 1.4rem;
+  }
+
+  p {
+    font-size: 0.88rem;
+    color: #2a2015;
+    margin-bottom: 0.5rem;
+    text-align: justify;
+  }
+
+  .emphasis {
+    font-style: italic;
+    color: #3a2a15;
+    font-weight: 600;
+  }
+
+  /* ── TABLES ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.6rem 0;
+    font-size: 0.82rem;
+  }
+
+  th {
+    text-align: left;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8a7a60;
+    padding: 0.35rem 0.5rem;
+    border-bottom: 2px solid rgba(160, 130, 80, 0.3);
+  }
+
+  td {
+    padding: 0.35rem 0.5rem;
+    border-bottom: 1px solid rgba(160, 130, 80, 0.12);
+    color: #2a2015;
+    vertical-align: top;
+  }
+
+  td:first-child {
+    font-weight: 600;
+    color: #3a2a15;
+  }
+
+  .price {
+    font-family: 'Courier New', monospace;
+    color: #3a6a3a;
+    font-weight: 600;
+  }
+
+  .market-num {
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    color: #3a6a3a;
+    font-weight: 700;
+  }
+
+  /* ── TWO COLUMNS ── */
+  .two-col {
+    display: flex;
+    gap: 1.2rem;
+    margin: 0.6rem 0;
+  }
+
+  .two-col > div {
+    flex: 1;
+  }
+
+  .col-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: #c9a84c;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+  }
+
+  .col-title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #3a2a15;
+    margin-bottom: 0.3rem;
+  }
+
+  .col-box {
+    background: rgba(160, 130, 80, 0.06);
+    border: 1px solid rgba(160, 130, 80, 0.15);
+    padding: 0.6rem 0.7rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── LISTS ── */
+  .tech-list {
+    margin: 0.4rem 0 0.4rem 0;
+  }
+
+  .tech-item {
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+    position: relative;
+    font-size: 0.86rem;
+  }
+
+  .tech-item::before {
+    content: '\25B8';
+    position: absolute;
+    left: 0;
+    color: #8a7a60;
+  }
+
+  .tech-item strong {
+    color: #3a2a15;
+  }
+
+  /* ── PHASE TIMELINE ── */
+  .phase {
+    display: flex;
+    gap: 0.7rem;
+    margin-bottom: 0.6rem;
+    align-items: flex-start;
+  }
+
+  .phase-marker {
+    min-width: 56px;
+    text-align: center;
+    padding: 0.25rem 0.3rem;
+    background: rgba(160, 130, 80, 0.1);
+    border: 1px solid rgba(160, 130, 80, 0.2);
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: #8a7a60;
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+
+  .phase-marker .status {
+    display: block;
+    font-size: 0.6rem;
+    color: #3a6a3a;
+    font-weight: 600;
+    margin-top: 0.1rem;
+  }
+
+  .phase-body {
+    flex: 1;
+    font-size: 0.86rem;
+  }
+
+  .phase-body strong {
+    color: #3a2a15;
+  }
+
+  /* ── QUOTE ── */
+  .pull-quote {
+    text-align: center;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: #3a2a15;
+    margin: 1rem 0;
+    padding: 0.6rem 1rem;
+    border-top: 1px solid rgba(160, 130, 80, 0.2);
+    border-bottom: 1px solid rgba(160, 130, 80, 0.2);
+  }
+
+  /* ── DIVIDER ── */
+  .separator {
+    text-align: center;
+    color: rgba(160, 130, 80, 0.35);
+    margin: 1rem 0;
+    letter-spacing: 0.5em;
+    font-size: 0.9rem;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    margin-top: 1.2rem;
+    padding-top: 0.6rem;
+    border-top: 2px solid rgba(160, 130, 80, 0.3);
+    font-size: 0.72rem;
+    color: #a09080;
+    letter-spacing: 0.1em;
+  }
+
+  .contact-line {
+    font-size: 0.78rem;
+    color: #6a5a40;
+    margin-bottom: 0.15rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="no-print">
+  <button onclick="window.print()">Print / Save as PDF</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- PAGE 1 -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page">
+
+  <div class="header">
+    <div class="flame-wrap">
+      <svg class="flame-icon" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 15 C92 45,68 75,55 105 C42 135,28 160,25 185 C22 210,28 235,38 252 C48 268,62 278,78 284 C88 288,95 290,100 290 C105 290,112 288,122 284 C138 278,152 268,162 252 C172 235,178 210,175 185 C172 160,158 135,145 105 C132 75,108 45,100 15Z" fill="none" stroke="#8a7a60" stroke-width="2" opacity="0.5"/>
+        <path d="M100 60 C94 85,78 115,68 145 C58 175,48 200,48 220 C48 245,58 265,72 275 C82 282,92 286,100 288 C108 286,118 282,128 275 C142 265,152 245,152 220 C152 200,142 175,132 145 C122 115,106 85,100 60Z" fill="none" stroke="#8a7a60" stroke-width="1.5" opacity="0.35"/>
+        <path d="M100 220 C100 220,88 220,88 208 C88 196,100 196,100 196 C100 196,116 196,116 180 C116 164,100 164,100 164 C100 164,76 164,76 140 C76 116,100 116,100 116 C100 116,132 116,132 140" fill="none" stroke="#8a7a60" stroke-width="1.2" opacity="0.3"/>
+      </svg>
+    </div>
+    <h1>The Living Age</h1>
+    <div class="subtitle">Business Plan &bull; Clokey Productions</div>
+  </div>
+
+  <!-- MISSION -->
+  <div class="section">
+    <div class="section-num">01 &mdash; Mission</div>
+    <div class="section-title">Build the tools that let humanity design with living systems.</div>
+    <p>The Living Age is a unified philosophy-and-technology project proving that life organizes better than control systems&mdash;and building the tools to act on that truth.</p>
+    <p>Every living system on Earth&mdash;from gene regulatory networks to forests to immune systems&mdash;self-organizes through distributed intelligence, local signals, and emergent order. No master gene runs your body. No forester runs a forest. Yet these systems are resilient, adaptive, and beautiful.</p>
+    <p>Industrial civilization does the opposite: centralized control, top-down management, engineered rigidity. The result is brittleness, constant maintenance, and environmental destruction.</p>
+    <p class="emphasis">The Living Age asks: what happens when you stop controlling life and start working with it?</p>
+  </div>
+
+  <!-- TWO WINGS -->
+  <div class="section">
+    <div class="section-num">02 &mdash; The Two Wings</div>
+    <div class="section-title">Media plants the seed. Technology grows the tree.</div>
+
+    <div class="two-col">
+      <div class="col-box">
+        <div class="col-label">Wing 1 &mdash; Media (The Why)</div>
+        <div class="col-title">Clokey Productions</div>
+        <p style="font-size:0.84rem;">YouTube channel with five interlocking series: True Republic, Sagent Creed, Media Mythology, Eight Pillars, and Bridge Episodes. Philosophical writings, the Living Book Trilogy, and a portfolio website. Media creates the audience that becomes customers.</p>
+      </div>
+      <div class="col-box">
+        <div class="col-label">Wing 2 &mdash; Technology (The How)</div>
+        <div class="col-title">Living Works Platform</div>
+        <p style="font-size:0.84rem;">AI-driven platform for designing biological systems, organisms, and living materials. LivingWorks Engine takes English descriptions and outputs designed DNA sequences. 3D Morphogenesis Engine simulates biological growth. Technology fulfills the demand that media creates.</p>
+      </div>
+    </div>
+
+    <p class="pull-quote">Media to show why. Technology to show how.<br>Neither is complete without the other.</p>
+  </div>
+
+  <!-- THE PROBLEM -->
+  <div class="section">
+    <div class="section-num">03 &mdash; The Problem</div>
+    <div class="section-title">Civilization still builds with blocks.</div>
+    <p>Modern construction, manufacturing, and infrastructure are based on industrial-age engineering&mdash;assemble rigid components, consume massive energy, replace when broken. The $10 trillion global construction industry builds dead things that decay.</p>
+    <p>Meanwhile, living systems self-assemble, self-repair, adapt, and grow without centralized control. Our current tools only allow us to <em>analyze</em> biology. We have no design interface for working with life as a creative medium.</p>
+    <p class="emphasis">That is the gap Living Works fills.</p>
+  </div>
+
+  <!-- MARKET -->
+  <div class="section">
+    <div class="section-num">04 &mdash; Market Opportunity</div>
+    <div class="section-title">$45B+ addressable across four converging industries.</div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Market</th>
+          <th>Size</th>
+          <th>Opportunity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Synthetic Biology</td>
+          <td class="price">$20B+</td>
+          <td>AI-driven organism engineering for pharmaceuticals, agriculture, and manufacturing</td>
+        </tr>
+        <tr>
+          <td>AI Drug Design</td>
+          <td class="price">$10B+</td>
+          <td>Generative models for proteins and therapeutic molecules</td>
+        </tr>
+        <tr>
+          <td>Bioinformatics Software</td>
+          <td class="price">$15B+</td>
+          <td>Enterprise tools managing biological research data and pipelines</td>
+        </tr>
+        <tr>
+          <td>Programmable Living Materials</td>
+          <td class="price">Emerging</td>
+          <td>Bio-grown buildings, carbon-absorbing cities, self-repairing materials&mdash;no dominant design platform yet</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Living Works is positioned as the first mover in living materials design&mdash;a market that does not yet have a standard platform.</p>
+  </div>
+
+  <div class="footer">
+    CLOKEY PRODUCTIONS &nbsp;&bull;&nbsp; THE LIVING AGE &nbsp;&bull;&nbsp; PAGE 1
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- PAGE 2 -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page page-break">
+
+  <!-- TECHNOLOGY -->
+  <div class="section">
+    <div class="section-num">05 &mdash; Technology Stack</div>
+    <div class="section-title">Four core technologies building a new design paradigm.</div>
+
+    <div class="tech-list">
+      <div class="tech-item"><strong>Morphogenesis Engine.</strong> 3D simulation of biological growth: branching systems, nutrient diffusion, biomechanical forces, cellular rules. The form emerges from the simulation, not from a blueprint.</div>
+
+      <div class="tech-item"><strong>Natural Language Bio Design.</strong> Describe a biological structure in plain English. The system generates growth algorithms, gene pathway suggestions, and structural simulations. Powered by Claude + ESM-3.</div>
+
+      <div class="tech-item"><strong>BioCAD Environment.</strong> Unified workspace for organism blueprinting, gene network visualization, tissue architecture modeling, and ecosystem design.</div>
+
+      <div class="tech-item"><strong>Living Materials Library.</strong> Curated database of biological building blocks&mdash;mycelium, plant scaffolds, bacterial cellulose, coral mineralization&mdash;each with encoded growth rules.</div>
+    </div>
+
+    <div class="tech-list">
+      <div class="tech-item"><strong>LivingWorks Engine (Built).</strong> Retrieves real genes from 220+ genomes (UCSC, NCBI). Checks cross-species compatibility (codon bias, regulatory signals, pathway conflicts). Assembles optimized constructs with insulator elements. Outputs synthesis-ready FASTA, pathway maps, and modification logs.</div>
+    </div>
+  </div>
+
+  <!-- NORTH STAR -->
+  <div class="section">
+    <div class="section-num">06 &mdash; The North Star</div>
+    <div class="section-title">Living Houses.</div>
+    <p>Not a single organism&mdash;a chimeric living system where multiple organisms cooperate:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Biological Source</th>
+          <th>Function</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Load-bearing structure</td><td>Mycelium</td><td>Structural network that grows into form</td></tr>
+        <tr><td>Hard surfaces</td><td>Coral-derived mineralization</td><td>Calcium carbonate deposition from environment</td></tr>
+        <tr><td>Flexible membranes</td><td>Bacterial cellulose</td><td>Self-assembling thin films and barriers</td></tr>
+        <tr><td>Tensile reinforcement</td><td>Spider silk proteins</td><td>Stronger than steel by weight</td></tr>
+        <tr><td>Directional growth</td><td>Phototropism circuits</td><td>Light-responsive orientation</td></tr>
+        <tr><td>Self-repair</td><td>Planaria pathways</td><td>Regeneration from damage</td></tr>
+        <tr><td>Stress signaling</td><td>Bioluminescence</td><td>Visual indicator of structural health</td></tr>
+      </tbody>
+    </table>
+
+    <p class="emphasis">Communities growing their own shelter from organisms that restore the ecosystems they stand in.</p>
+  </div>
+
+  <!-- REVENUE MODEL -->
+  <div class="section">
+    <div class="section-num">07 &mdash; Revenue Model</div>
+    <div class="section-title">Three streams: SaaS, services, IP licensing.</div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Stream</th>
+          <th>Target Customers</th>
+          <th>Pricing</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Academic SaaS</td>
+          <td>Universities, synthetic biology labs</td>
+          <td class="price">$50&ndash;$200/mo</td>
+        </tr>
+        <tr>
+          <td>Startup SaaS</td>
+          <td>Biotech companies, materials startups</td>
+          <td class="price">$500/mo</td>
+        </tr>
+        <tr>
+          <td>Enterprise SaaS</td>
+          <td>Architecture firms, pharmaceutical companies</td>
+          <td class="price">$2,000+/mo</td>
+        </tr>
+        <tr>
+          <td>AI Design Services</td>
+          <td>Materials companies, construction firms</td>
+          <td class="price">Project-based</td>
+        </tr>
+        <tr>
+          <td>IP Licensing</td>
+          <td>Growth algorithm patents, organism systems</td>
+          <td class="price">Recurring royalties</td>
+        </tr>
+        <tr>
+          <td>Media &amp; Merch</td>
+          <td>Audience, supporters, movement builders</td>
+          <td class="price">Direct sales</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>The design software funds the research. The media creates the audience that becomes customers. The moonshot delivers living structures.</p>
+  </div>
+
+  <div class="footer">
+    CLOKEY PRODUCTIONS &nbsp;&bull;&nbsp; THE LIVING AGE &nbsp;&bull;&nbsp; PAGE 2
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- PAGE 3 -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page page-break">
+
+  <!-- ROADMAP -->
+  <div class="section">
+    <div class="section-num">08 &mdash; Roadmap</div>
+    <div class="section-title">From prototype to ecosystem.</div>
+
+    <div class="phase">
+      <div class="phase-marker">Found-<br>ation<span class="status">Built</span></div>
+      <div class="phase-body"><strong>Genome retrieval, compatibility engine, assembly.</strong> LivingWorks Engine retrieves real genes from 220+ genomes, checks cross-species compatibility, and outputs synthesis-ready constructs.</div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-marker">Phase 1<span class="status">Next</span></div>
+      <div class="phase-body"><strong>English-to-Protein Bridge.</strong> Natural language interface powered by Claude + ESM-3. Describe what you want in plain English, receive designed protein sequences. Capstone project.</div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-marker">Phase 2<span class="status">Planned</span></div>
+      <div class="phase-body"><strong>Regulatory prediction + visual interface.</strong> Enformer integration for predicting gene expression from sequence. First version of the BioCAD workspace.</div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-marker">Phase 3<span class="status">Planned</span></div>
+      <div class="phase-body"><strong>Gene regulatory network design.</strong> Design complete gene circuits: sensors, logic gates, and output pathways. Move from individual genes to systems.</div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-marker">Phase 4<span class="status">Planned</span></div>
+      <div class="phase-body"><strong>Full morphogenesis engine.</strong> 3D growth simulation with nutrient diffusion, biomechanical forces, and cellular rules. Design living forms that emerge from biological principles.</div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-marker">Phase 5<span class="status">Planned</span></div>
+      <div class="phase-body"><strong>Living Architecture Design Studio.</strong> Web platform combining all tools into a unified design environment. Launch SaaS tiers. Partner with architecture firms and materials companies.</div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-marker">Phase 6<span class="status">Planned</span></div>
+      <div class="phase-body"><strong>Physical living prototypes.</strong> Lab validation. First biological structures grown from designed organisms. Proof that the software produces real, living results.</div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-marker">Phase 7<span class="status">Destination</span></div>
+      <div class="phase-body"><strong>Living houses.</strong> Communities growing their own shelter from organisms that restore ecosystems. The platform becomes the standard design environment for biological systems across industries.</div>
+    </div>
+  </div>
+
+  <!-- CULTURAL ENGINE -->
+  <div class="section">
+    <div class="section-num">09 &mdash; The Cultural Engine</div>
+    <div class="section-title">Technology and philosophy reinforce each other.</div>
+
+    <p>A person who watches the channel long enough should eventually ask: <em>"Okay&mdash;I understand this. How do I live this way?"</em> The technology is the answer.</p>
+
+    <p>A person who encounters the technology should eventually ask: <em>"Why does this exist? Why design with life instead of against it?"</em> The media is the answer.</p>
+
+    <div class="two-col">
+      <div class="col-box">
+        <div class="col-label">Media Engine</div>
+        <p style="font-size:0.84rem;">The Sagent Creed videos, True Republic series, Media Mythology episodes, and Eight Pillars series create cultural demand for biological design&mdash;the same way "Think Different" created demand for personal computers before people understood why they needed them.</p>
+      </div>
+      <div class="col-box">
+        <div class="col-label">Technology Engine</div>
+        <p style="font-size:0.84rem;">The platform enables biological design across scales&mdash;from genome to architecture. SaaS subscriptions, enterprise services, and IP licensing create revenue. Real-world solutions: living buildings, carbon-negative materials, programmable ecosystems.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- UNITY TABLE -->
+  <div class="section">
+    <div class="section-num">10 &mdash; The Unity</div>
+    <div class="section-title">Every piece points at the same truth from a different angle.</div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Scale</th>
+          <th>Medium</th>
+          <th>What It Shows</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Molecular</td><td>Code</td><td>DNA is decentralized code</td></tr>
+        <tr><td>Cellular</td><td>Code</td><td>Cells coordinate without a master</td></tr>
+        <tr><td>Ecological</td><td>Philosophy</td><td>Forests organize without foresters</td></tr>
+        <tr><td>Political</td><td>Philosophy</td><td>True Republic &gt; Empire</td></tr>
+        <tr><td>Spiritual</td><td>Media</td><td>Every tradition points to the living order</td></tr>
+        <tr><td>Narrative</td><td>Media</td><td>Stories encode the pattern</td></tr>
+        <tr><td>Personal</td><td>Story</td><td>The Sagent's path through generations</td></tr>
+        <tr><td>Physical</td><td>Technology</td><td>Living houses&mdash;architecture as organism</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <!-- FOUNDER -->
+  <div class="section">
+    <div class="section-num">11 &mdash; Founder</div>
+    <div class="section-title">Sage Clokey &mdash; Spiral Steward</div>
+    <p>Bioinformatics graduate (UCSC). Third-generation Clokey&mdash;grandson of Art Clokey, creator of Gumby. The inheritance is not the character but the ability to create stories and tools that awaken imagination. Clay to code. Story to system.</p>
+    <p>Clokey Productions is the media wing. Living Works is the technology wing. Together they form the Living Age.</p>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="section" style="text-align:center; margin-bottom:0.5rem;">
+    <div class="contact-line"><strong>Sage Clokey</strong> &nbsp;&bull;&nbsp; Clokey Productions</div>
+    <div class="contact-line">805-459-2396 &nbsp;&bull;&nbsp; clokeyd.sage@gmail.com</div>
+    <div class="contact-line">sage-clokey.github.io</div>
+  </div>
+
+  <p class="pull-quote" style="margin-bottom:0;">Industrial civilization built with blocks.<br>The next civilization will grow with living systems.</p>
+
+  <div class="footer">
+    CLOKEY PRODUCTIONS &nbsp;&bull;&nbsp; THE LIVING AGE &nbsp;&bull;&nbsp; PAGE 3
+  </div>
+
+</div>
+
+</body>
+</html>

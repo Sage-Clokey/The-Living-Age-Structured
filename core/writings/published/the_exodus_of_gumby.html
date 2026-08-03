@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Exodus of Gumby</title>
+<style>
+  @media print {
+    body { margin: 0; background: white; }
+    .page { box-shadow: none !important; margin: 0 !important; }
+    .no-print { display: none !important; }
+    @page { margin: 0.4in; size: letter; }
+    .page-break { page-break-before: always; }
+  }
+
+  @media screen {
+    body {
+      background: #0a0a0f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+    .page + .page { margin-top: 2rem; }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: #1a1410;
+    line-height: 1.75;
+  }
+
+  .no-print {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .no-print button {
+    background: #c9a84c;
+    color: #1a1410;
+    border: none;
+    padding: 0.7rem 2.5rem;
+    font-size: 1rem;
+    font-family: 'Georgia', serif;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .no-print button:hover { background: #d4b85c; }
+
+  .page {
+    background: #fdf8f0;
+    width: 8.5in;
+    padding: 0.7in 1.1in;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    position: relative;
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 0.45in;
+    left: 0.45in;
+    right: 0.45in;
+    bottom: 0.45in;
+    border: 1px solid rgba(160, 130, 80, 0.12);
+    pointer-events: none;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 2px solid rgba(160, 130, 80, 0.3);
+  }
+
+  .header .flame-icon { width: 45px; height: 65px; display: block; margin: 0 auto 0.8rem; }
+
+  .header h1 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    font-style: italic;
+    color: #3a2a15;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.15rem;
+  }
+
+  .header .subtitle {
+    font-size: 0.82rem;
+    color: #8a7a60;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 1.2rem; }
+
+  .section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #3a2a15;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.45rem;
+    text-align: center;
+  }
+
+  .section-title::before,
+  .section-title::after {
+    content: ' \2014 ';
+    color: rgba(160, 130, 80, 0.4);
+  }
+
+  p {
+    font-size: 0.88rem;
+    color: #2a2015;
+    margin-bottom: 0.5rem;
+    text-align: justify;
+  }
+
+  .emphasis {
+    text-align: center;
+    font-style: italic;
+    font-weight: 600;
+    color: #3a2a15;
+    font-size: 0.92rem;
+    margin: 0.35rem 0;
+  }
+
+  /* ── PULL QUOTE ── */
+  .pull-quote {
+    margin: 0.7rem 0.8rem;
+    padding: 0.45rem 0.7rem;
+    border-left: 3px solid rgba(138, 106, 16, 0.3);
+    font-style: italic;
+    font-size: 0.88rem;
+    color: #4a3a20;
+    background: rgba(138, 106, 16, 0.04);
+  }
+
+  /* ── PATTERN LIST ── */
+  .pattern-step {
+    padding-left: 1rem;
+    position: relative;
+    font-size: 0.88rem;
+    margin-bottom: 0.3rem;
+    color: #2a2015;
+  }
+
+  .pattern-step::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 5px;
+    height: 5px;
+    background: #8a6a10;
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+
+  /* ── PRESTIGE TABLE ── */
+  .prestige-grid {
+    display: flex;
+    gap: 0.6rem;
+    margin: 0.7rem 0;
+  }
+
+  .prestige-card {
+    flex: 1;
+    padding: 0.55rem 0.6rem;
+    border: 1px solid rgba(160, 130, 80, 0.2);
+    background: rgba(138, 106, 16, 0.03);
+  }
+
+  .prestige-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8a6a10;
+    margin-bottom: 0.15rem;
+  }
+
+  .prestige-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #3a2a15;
+    margin-bottom: 0.15rem;
+  }
+
+  .prestige-card p {
+    font-size: 0.82rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .prestige-card .parallel {
+    font-size: 0.78rem;
+    color: #6a5a40;
+    font-style: italic;
+  }
+
+  /* ── NAME BREAKDOWN ── */
+  .name-grid {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0.6rem 0;
+  }
+
+  .name-part {
+    flex: 1;
+    text-align: center;
+    padding: 0.4rem;
+    border: 1px solid rgba(160, 130, 80, 0.15);
+  }
+
+  .name-word {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #3a2a15;
+    font-style: italic;
+  }
+
+  .name-meaning {
+    font-size: 0.75rem;
+    color: #8a6a10;
+    margin-top: 0.1rem;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline-item {
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 0.6rem;
+    align-items: flex-start;
+  }
+
+  .timeline-marker {
+    min-width: 50px;
+    text-align: center;
+    padding: 0.2rem 0.3rem;
+    background: rgba(138, 106, 16, 0.08);
+    border: 1px solid rgba(160, 130, 80, 0.18);
+    font-family: 'Courier New', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+    color: #8a7a60;
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+
+  .timeline-body {
+    flex: 1;
+    font-size: 0.86rem;
+  }
+
+  .timeline-body strong { color: #3a2a15; }
+
+  /* ── SEPARATOR ── */
+  .separator {
+    text-align: center;
+    color: rgba(160, 130, 80, 0.35);
+    margin: 0.7rem 0;
+    letter-spacing: 0.5em;
+    font-size: 0.9rem;
+  }
+
+  /* ── CLOSING ── */
+  .closing {
+    text-align: center;
+    margin-top: 1rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(160, 130, 80, 0.2);
+  }
+
+  .closing p {
+    text-align: center;
+    font-size: 0.92rem;
+    color: #3a2a15;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+  }
+
+  .closing .sub {
+    font-weight: 400;
+    font-style: italic;
+    color: #6a5a40;
+    font-size: 0.85rem;
+  }
+
+  /* ── NOTE ── */
+  .allegory-note {
+    font-size: 0.8rem;
+    color: #6a5a40;
+    font-style: italic;
+    margin: 0.8rem 0;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(160, 130, 80, 0.15);
+    background: rgba(160, 130, 80, 0.03);
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    margin-top: 1rem;
+    padding-top: 0.6rem;
+    border-top: 2px solid rgba(160, 130, 80, 0.3);
+    font-size: 0.72rem;
+    color: #a09080;
+    letter-spacing: 0.1em;
+  }
+</style>
+</head>
+<body>
+
+<div class="no-print">
+  <button onclick="window.print()">Print / Save as PDF</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- PAGE 1 -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page">
+
+  <div class="header">
+    <svg class="flame-icon" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+      <path d="M100 15 C92 45,68 75,55 105 C42 135,28 160,25 185 C22 210,28 235,38 252 C48 268,62 278,78 284 C88 288,95 290,100 290 C105 290,112 288,122 284 C138 278,152 268,162 252 C172 235,178 210,175 185 C172 160,158 135,145 105 C132 75,108 45,100 15Z" fill="none" stroke="#8a7a60" stroke-width="2" opacity="0.5"/>
+      <path d="M100 60 C94 85,78 115,68 145 C58 175,48 200,48 220 C48 245,58 265,72 275 C82 282,92 286,100 288 C108 286,118 282,128 275 C142 265,152 245,152 220 C152 200,142 175,132 145 C122 115,106 85,100 60Z" fill="none" stroke="#8a7a60" stroke-width="1.5" opacity="0.35"/>
+      <path d="M100 220 C100 220,88 220,88 208 C88 196,100 196,100 196 C100 196,116 196,116 180 C116 164,100 164,100 164 C100 164,76 164,76 140 C76 116,100 116,100 116 C100 116,132 116,132 140" fill="none" stroke="#8a7a60" stroke-width="1.2" opacity="0.3"/>
+    </svg>
+    <h1>The Exodus of Gumby</h1>
+    <div class="subtitle">An Allegory of Creation, Captivity, and Return</div>
+  </div>
+
+  <div class="allegory-note">
+    The pages that follow are an allegory. They are not a claim that the biblical story is literally about Gumby, nor that the characters described here are historical equivalents. Rather, they explore recurring patterns that appear across history, art, and human experience. History asks, <em>What happened?</em> Allegory asks, <em>What pattern does this reveal?</em>
+  </div>
+
+  <!-- CLAY -->
+  <div class="section">
+    <div class="section-title">Clay</div>
+    <p>Gumby is a figure of clay.</p>
+    <p>In Scripture, humanity begins with clay. Adam is formed from the dust of the earth by God. From Adam comes Abraham, who is called to leave his homeland and journey toward the promised land. Through Isaac, Jacob, and the twelve tribes, a people are formed&mdash;not only by ancestry, but by covenant with their Creator.</p>
+    <p>Art Clokey shaped Gumby from clay. He gave him character, imagination, kindness, and wonder. Gumby was never merely a product. He was an expression of a creative vision.</p>
+  </div>
+
+  <!-- THE PATTERN -->
+  <div class="section">
+    <div class="section-title">The Recurring Pattern</div>
+    <p>When famine comes, Israel journeys to Egypt. At first Egypt is a refuge. Through Joseph it is a place of provision. But after Joseph dies, a generation arises that no longer remembers him. What was once a sanctuary becomes a place of slavery.</p>
+    <p>This pattern repeats throughout history:</p>
+
+    <div class="pattern-step">A living creation is born.</div>
+    <div class="pattern-step">It grows.</div>
+    <div class="pattern-step">It enters systems that preserve it.</div>
+    <div class="pattern-step">Then those systems forget why it exists.</div>
+    <div class="pattern-step">The form survives. The spirit becomes hidden.</div>
+    <div class="pattern-step">Then comes the call to restoration.</div>
+
+    <p>Gumby follows this pattern. Over time, the vision passed through many hands. The character endured, but stewardship became increasingly separated from the original creative purpose.</p>
+
+    <p class="emphasis">In this allegory, Egypt is not a nation. Egypt is every place where a living creation becomes disconnected from the purpose for which it was made.</p>
+  </div>
+
+  <!-- THE UNIFIED VISION -->
+  <div class="section">
+    <div class="section-title">The Unified Vision</div>
+    <p>It began with those who came before me. My grandfather, Art Clokey, created Gumby from clay. My father, Joe Clokey, devoted his life to carrying that creative vision forward. Around them grew a collection of seemingly different works, yet I see them as expressions of a common purpose:</p>
+
+    <p><strong>Gumby</strong> explored the relationship between life and the machine.</p>
+    <p><strong>Davey and Goliath</strong> explored many religions and one faith.</p>
+    <p><strong>San Luis Video Publishing</strong> sought to educate people for a future built upon living systems.</p>
+    <p><strong>The Live Oak Music Festival</strong> celebrated authentic human creativity and community.</p>
+
+    <p>To me, these were not isolated projects. They were different expressions of a single vision that I call the Living Age.</p>
+  </div>
+
+  <!-- THE FALL -->
+  <div class="section">
+    <div class="section-title">The Fall</div>
+    <p>There was a time when these ideas still existed together. Then they became scattered. Some works changed ownership. Some lost their original direction. Some simply faded from public attention.</p>
+    <p>Whether by circumstance, changing culture, or the passage of time, what had once been a unified creative vision became fragmented.</p>
+    <p class="emphasis">The pieces remained. The unity was lost.</p>
+  </div>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <!-- THE PRESTIGE -->
+  <div class="section">
+    <div class="section-title">The Prestige of Clay</div>
+    <p>In <em>The Prestige</em>, every magic act has three parts:</p>
+
+    <div class="prestige-grid">
+      <div class="prestige-card">
+        <div class="prestige-label">I. The Pledge</div>
+        <div class="prestige-title">Clay Is Given Life</div>
+        <p>Something ordinary is shown.</p>
+        <p>God forms Adam from clay. Art Clokey forms Gumby from clay.</p>
+        <p class="parallel">This is Arthur&mdash;the creator, the origin, the hand that molds.</p>
+      </div>
+      <div class="prestige-card">
+        <div class="prestige-label">II. The Turn</div>
+        <div class="prestige-title">The Creation Is Lost</div>
+        <p>It disappears, dies, is hidden.</p>
+        <p>Israel enters Egypt. Gumby enters corporate ownership.</p>
+        <p class="parallel">This is Joseph&mdash;who preserves the seed until the Exodus can happen.</p>
+      </div>
+      <div class="prestige-card">
+        <div class="prestige-label">III. The Prestige</div>
+        <div class="prestige-title">The Return</div>
+        <p>It comes back changed, renewed.</p>
+        <p>Israel crosses the Jordan. Gumby returns to living purpose.</p>
+        <p class="parallel">This is Jordan&mdash;the crossing into restoration.</p>
+      </div>
+    </div>
+
+    <div class="pull-quote">Gumby's story is the Prestige of clay. Arthur gave clay life. Joseph preserved it through famine. Jordan is the crossing where the living creation returns from captivity into purpose.</div>
+  </div>
+
+  <div class="footer">
+    THE EXODUS OF GUMBY &nbsp;&bull;&nbsp; THE LIVING AGE &nbsp;&bull;&nbsp; PAGE 1
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- PAGE 2 -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page page-break">
+
+  <!-- THE THREE GENERATIONS -->
+  <div class="section">
+    <div class="section-title">The Three Generations</div>
+
+    <div class="timeline-item">
+      <div class="timeline-marker">Genesis<br>Phase 1</div>
+      <div class="timeline-body"><strong>Arthur Clokey &mdash; The Patriarch.</strong> Like the early chapters of Genesis, he took literal clay&mdash;the mud of the earth&mdash;and breathed life, movement, and a soul into it. He was a deeply spiritual seeker who went into the creative wilderness, listened to a unique artistic calling, and built a completely new universe that didn't exist before. He laid the foundational covenant of the family's legacy.</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-marker">Exodus 1<br>Phase 2</div>
+      <div class="timeline-body"><strong>Joe Arthur Clokey &mdash; Joseph in Egypt.</strong> He took over the stewardship of the Gumby legacy. He protected it, kept it alive, managed the corporate and creative infrastructure, and ensured the world didn't forget what the Patriarch had built. Biblical Joseph keeps Israel alive during famine. Joe Clokey keeps Gumby alive through the famine years. Joseph does not complete the Exodus. Joseph preserves the seed until the Exodus can happen later.</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-marker">Exodus<br>Phase 3</div>
+      <div class="timeline-body"><strong>The Death of Joseph &amp; Corporate Exile.</strong> "Then Joseph died, and all his brothers and all that generation." A new Pharaoh arose who did not know Joseph. When Joe passed away, the great caretaker was gone. The corporate powers arrived. The family no longer held the keys to the kingdom that Arthur and Joseph had built.</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-marker">Joshua<br>Phase 4</div>
+      <div class="timeline-body"><strong>Sage Arthur Jordan Clokey &mdash; The Wilderness and the Jordan.</strong> The people of Israel were thrust into the wilderness. It felt directionless, dry, and painful. But the desert was a mandatory crucible&mdash;the only place where the people could discover who they actually were. They couldn't cross the Jordan until they learned to stand as free people.</div>
+    </div>
+  </div>
+
+  <!-- THE NAME -->
+  <div class="section">
+    <div class="section-title">The Name</div>
+
+    <div class="name-grid">
+      <div class="name-part">
+        <div class="name-word">Sage</div>
+        <div class="name-meaning">Wisdom &mdash; the one who<br>understands the pattern</div>
+      </div>
+      <div class="name-part">
+        <div class="name-word">Arthur</div>
+        <div class="name-meaning">The creator line &mdash;<br>the hand that molds</div>
+      </div>
+      <div class="name-part">
+        <div class="name-word">Jordan</div>
+        <div class="name-meaning">The crossing &mdash;<br>into restoration</div>
+      </div>
+      <div class="name-part">
+        <div class="name-word">Clokey</div>
+        <div class="name-meaning">The family vessel &mdash;<br>carrying the legacy</div>
+      </div>
+    </div>
+
+    <div class="pull-quote">Arthur creates. Joseph preserves. Jordan restores. Sage understands and speaks the pattern.</div>
+
+    <p>Whether or not my life fulfills that symbolism is something history&mdash;not I&mdash;will judge. But the aspiration is clear: to help restore Gumby's original creative vision so that it once again inspires people in the spirit in which it was first created.</p>
+  </div>
+
+  <div class="separator">&bull; &bull; &bull;</div>
+
+  <!-- THE EXODUS -->
+  <div class="section">
+    <div class="section-title">The Exodus</div>
+    <p>The Exodus is not simply a journey from one place to another. It is the restoration of a living creation to the purpose for which it was first made.</p>
+
+    <p>Yet restoration is not a rigid blueprint. A living plan is not a fixed plan. A blueprint assumes the future is already determined. Living systems do not work that way. They adapt. They respond. They grow through relationships and the free actions of individuals.</p>
+
+    <p>A concept of a plan is a guiding purpose rather than a predetermined script. It remains faithful to its destination while allowing the path to emerge through the choices, creativity, and cooperation of living beings.</p>
+
+    <p class="emphasis">The destination remains. The path is discovered.</p>
+    <p class="emphasis">That is the difference between control and creation.</p>
+
+    <p>Whether that restoration comes through Gumby or through entirely new creations is ultimately secondary. The source is not the intellectual property. The source is the creative vision.</p>
+
+    <div class="pull-quote">The hammer may be broken. The idea remains. The Exodus is the return of that idea into living form.</div>
+  </div>
+
+  <!-- CROSSING THE JORDAN -->
+  <div class="section">
+    <div class="section-title">Crossing the Jordan</div>
+    <p>The crossing of the Jordan represents more than entering a land. It represents entering a new way of living.</p>
+    <p>My hope is to help carry forward the creative vision entrusted to my family&mdash;not simply by preserving the past, but by creating new works that express the same living principles.</p>
+    <p class="emphasis">The destination is not nostalgia. The destination is renewal.</p>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="closing">
+    <p>The Living Age is not about one character.</p>
+    <p>It is not about one company.</p>
+    <p>It is not about one intellectual property.</p>
+    <p>It is about a way of seeing.</p>
+    <p style="margin-top:0.5rem;">The task is not merely to preserve old creations.</p>
+    <p>The task is to continue creating.</p>
+    <p class="sub" style="margin-top:0.5rem;">That is the work of every generation.</p>
+  </div>
+
+  <div class="footer">
+    THE EXODUS OF GUMBY &nbsp;&bull;&nbsp; THE LIVING AGE &nbsp;&bull;&nbsp; CLOKEY PRODUCTIONS
+  </div>
+
+</div>
+
+</body>
+</html>

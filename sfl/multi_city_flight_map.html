@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SFL Multi-City Flight Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #0a0a1a; color: #e0e0e0; }
+
+        #map { width: 100%; height: 50vh; border-bottom: 3px solid #2a6e4a; }
+
+        .header {
+            background: linear-gradient(135deg, #0d1b2a, #1b2d45);
+            padding: 20px 30px;
+            border-bottom: 2px solid #2a6e4a;
+        }
+        .header h1 { font-size: 1.6em; color: #7ec8a0; margin-bottom: 4px; }
+        .header p { font-size: 0.95em; color: #8899aa; }
+        .header .dates { font-size: 0.85em; color: #667788; margin-top: 4px; }
+        .header .total-cost {
+            display: inline-block;
+            margin-top: 8px;
+            background: #1a3a2a;
+            border: 1px solid #2a6e4a;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            color: #4ae68a;
+            font-weight: 700;
+        }
+
+        .itinerary {
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            padding: 20px 10px;
+            flex-wrap: wrap;
+            gap: 0;
+        }
+
+        .stop {
+            background: #111b2a;
+            border: 2px solid #2a6e4a;
+            border-radius: 12px;
+            padding: 12px 14px;
+            min-width: 160px;
+            max-width: 180px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .stop.home { border-color: #8866cc; }
+        .stop .number {
+            display: inline-block;
+            background: #2a6e4a;
+            color: #fff;
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            line-height: 24px;
+            font-weight: bold;
+            font-size: 0.75em;
+            margin-bottom: 5px;
+        }
+        .stop.home .number { background: #8866cc; }
+        .stop .event { font-size: 0.95em; font-weight: 600; color: #7ec8a0; }
+        .stop.home .event { color: #bb99ee; }
+        .stop .city { font-size: 0.8em; color: #aabbcc; margin-top: 3px; }
+        .stop .date { font-size: 0.75em; color: #e6c84a; margin-top: 5px; font-weight: 600; }
+        .stop .time { font-size: 0.7em; color: #99aabb; margin-top: 2px; }
+        .stop .airport { font-size: 0.7em; color: #667788; margin-top: 3px; font-style: italic; }
+
+        .flight {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+            min-width: 65px;
+        }
+        .flight .plane { font-size: 1.1em; color: #4a9e6e; }
+        .flight .leg-date { font-size: 0.65em; color: #e6c84a; margin-top: 2px; font-weight: 600; }
+        .flight .leg-time { font-size: 0.6em; color: #99aabb; }
+        .flight .cost { font-size: 0.7em; color: #4ae68a; font-weight: 700; margin-top: 2px; }
+        .flight .dist { font-size: 0.6em; color: #556677; margin-top: 1px; }
+        .flight .mode { font-size: 0.55em; color: #667788; }
+
+        .schedule {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 10px 20px 20px;
+        }
+        .schedule h2 { color: #7ec8a0; font-size: 1.1em; margin-bottom: 12px; text-align: center; }
+        .schedule table { width: 100%; border-collapse: collapse; }
+        .schedule th {
+            background: #1b2d45;
+            color: #7ec8a0;
+            padding: 8px 10px;
+            text-align: left;
+            font-size: 0.8em;
+            border-bottom: 2px solid #2a6e4a;
+        }
+        .schedule td {
+            padding: 7px 10px;
+            border-bottom: 1px solid #1a2a3a;
+            font-size: 0.8em;
+        }
+        .schedule tr:hover { background: #111b2a; }
+        .schedule .flight-row { color: #4a9e6e; }
+        .schedule .event-row { color: #e6c84a; }
+        .schedule .free-row { color: #556677; font-style: italic; }
+        .schedule .cost-cell { color: #4ae68a; font-weight: 600; text-align: right; }
+
+        .cost-summary {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 5px 20px 20px;
+        }
+        .cost-summary h2 { color: #7ec8a0; font-size: 1em; margin-bottom: 10px; text-align: center; }
+        .cost-summary table { width: 100%; border-collapse: collapse; }
+        .cost-summary td {
+            padding: 5px 10px;
+            border-bottom: 1px solid #1a2a3a;
+            font-size: 0.85em;
+        }
+        .cost-summary .label { color: #aabbcc; }
+        .cost-summary .price { color: #4ae68a; text-align: right; font-weight: 600; }
+        .cost-summary .total-row td {
+            border-top: 2px solid #2a6e4a;
+            border-bottom: none;
+            font-size: 1em;
+            padding-top: 8px;
+        }
+        .cost-summary .total-row .label { color: #7ec8a0; font-weight: 700; }
+        .cost-summary .total-row .price { color: #4ae68a; font-size: 1.1em; }
+        .cost-summary .range { color: #556677; font-size: 0.75em; text-align: center; padding: 8px 0 0; }
+
+        .notes {
+            text-align: center;
+            padding: 5px 20px 20px;
+            color: #556677;
+            font-size: 0.75em;
+        }
+        .notes strong { color: #7ec8a0; }
+
+        @media (max-width: 900px) {
+            .itinerary { flex-direction: column; align-items: center; gap: 4px; }
+            .flight { transform: rotate(90deg); padding: 8px 0; }
+            .stop { max-width: 280px; min-width: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>SFL Multi-City Flight Route</h1>
+    <p>SLO &rarr; Phoenix &rarr; Sedona &rarr; DC &rarr; Cincinnati &rarr; SLO</p>
+    <div class="dates">July 17 &ndash; July 31, 2026</div>
+    <div class="total-cost">Est. Total Travel: ~$790</div>
+</div>
+
+<div id="map"></div>
+
+<div class="itinerary">
+    <div class="stop home">
+        <div class="number">H</div>
+        <div class="event">Home</div>
+        <div class="city">San Luis Obispo, CA</div>
+        <div class="date">Depart Jul 17</div>
+        <div class="time">Depart 7-11 AM</div>
+        <div class="airport">SBP</div>
+    </div>
+
+    <div class="flight">
+        <div class="plane">---&gt;</div>
+        <div class="leg-date">Thu Jul 17</div>
+        <div class="leg-time">7-11 AM</div>
+        <div class="cost">~$150</div>
+        <div class="dist">~340 mi</div>
+        <div class="mode">Nonstop ~1.5h</div>
+    </div>
+
+    <div class="stop">
+        <div class="number">P</div>
+        <div class="event">PHX + Shuttle</div>
+        <div class="city">Phoenix, AZ</div>
+        <div class="date">Thu Jul 17</div>
+        <div class="time">Arrive PHX by noon</div>
+        <div class="airport">PHX &rarr; Sedona</div>
+    </div>
+
+    <div class="flight">
+        <div class="plane">---&gt;</div>
+        <div class="leg-date">Thu Jul 17</div>
+        <div class="cost">~$60</div>
+        <div class="dist">~120 mi</div>
+        <div class="mode">Groome ~2h</div>
+    </div>
+
+    <div class="stop">
+        <div class="number">1</div>
+        <div class="event">Approaching Humanity</div>
+        <div class="city">Sedona, AZ</div>
+        <div class="date">Fri Jul 18</div>
+        <div class="time">10:00 AM - 5:00 PM</div>
+        <div class="airport">Event</div>
+    </div>
+
+    <div class="flight">
+        <div class="plane">---&gt;</div>
+        <div class="leg-date">Sat Jul 19</div>
+        <div class="leg-time">6-8 AM</div>
+        <div class="cost">~$60</div>
+        <div class="dist">~120 mi</div>
+        <div class="mode">Groome ~2h</div>
+    </div>
+
+    <div class="stop">
+        <div class="number">P</div>
+        <div class="event">PHX</div>
+        <div class="city">Phoenix, AZ</div>
+        <div class="date">Sat Jul 19</div>
+        <div class="time">Arrive PHX by 10 AM</div>
+        <div class="airport">PHX</div>
+    </div>
+
+    <div class="flight">
+        <div class="plane">---&gt;</div>
+        <div class="leg-date">Sat Jul 19</div>
+        <div class="leg-time">12-3 PM</div>
+        <div class="cost">~$175</div>
+        <div class="dist">~2,000 mi</div>
+        <div class="mode">Nonstop ~4.5h</div>
+    </div>
+
+    <div class="stop">
+        <div class="number">2</div>
+        <div class="event">FEE</div>
+        <div class="city">Maryland / DC</div>
+        <div class="date">Jul 20 - 24</div>
+        <div class="time">Starts 4:00 PM Jul 20</div>
+        <div class="airport">DCA &bull; Arrive by 9 PM ET</div>
+    </div>
+
+    <div class="flight">
+        <div class="plane">---&gt;</div>
+        <div class="leg-date">Fri Jul 25</div>
+        <div class="leg-time">10 AM-4 PM</div>
+        <div class="cost">~$115</div>
+        <div class="dist">~410 mi</div>
+        <div class="mode">Nonstop ~1.5h</div>
+    </div>
+
+    <div class="stop">
+        <div class="number">3</div>
+        <div class="event">YALCon</div>
+        <div class="city">Cincinnati, OH</div>
+        <div class="date">Jul 28 - 30</div>
+        <div class="time">Arrive by 5:30 PM</div>
+        <div class="airport">CVG</div>
+    </div>
+
+    <div class="flight">
+        <div class="plane">---&gt;</div>
+        <div class="leg-date">Thu Jul 31</div>
+        <div class="leg-time">8 AM-12 PM</div>
+        <div class="cost">~$230</div>
+        <div class="dist">~2,050 mi</div>
+        <div class="mode">1 stop ~6h</div>
+    </div>
+
+    <div class="stop home">
+        <div class="number">H</div>
+        <div class="event">Home</div>
+        <div class="city">San Luis Obispo, CA</div>
+        <div class="date">Arrive Thu Jul 31</div>
+        <div class="time">By 3 PM PT</div>
+        <div class="airport">SBP</div>
+    </div>
+</div>
+
+<div class="schedule">
+    <h2>Day-by-Day Itinerary</h2>
+    <table>
+        <tr><th>Date</th><th>Activity</th><th>Details</th><th style="text-align:right">Cost</th></tr>
+        <tr class="flight-row"><td>Thu Jul 17</td><td>Flight: SBP &rarr; PHX</td><td>Depart 7-11 AM, American nonstop ~1.5 hrs. Arrive PHX by noon.</td><td class="cost-cell">~$150</td></tr>
+        <tr class="flight-row"><td>Thu Jul 17</td><td>Shuttle: PHX &rarr; Sedona</td><td>Groome Transportation, ~2 hrs. Arrive Sedona by afternoon. Settle in.</td><td class="cost-cell">~$60</td></tr>
+        <tr class="event-row"><td>Fri Jul 18</td><td>Approaching Humanity</td><td>10:00 AM - 5:00 PM, Sedona, AZ</td><td class="cost-cell">&mdash;</td></tr>
+        <tr class="flight-row"><td>Sat Jul 19</td><td>Shuttle: Sedona &rarr; PHX</td><td>Depart 6-8 AM, arrive PHX by 10 AM.</td><td class="cost-cell">~$60</td></tr>
+        <tr class="flight-row"><td>Sat Jul 19</td><td>Flight: PHX &rarr; DCA</td><td>Depart 12-3 PM, nonstop ~4.5 hrs. Arrive DCA by 9 PM ET.</td><td class="cost-cell">~$175</td></tr>
+        <tr class="event-row"><td>Sun Jul 20</td><td>FEE Begins</td><td>Starts at 4:00 PM. Free morning to explore DC.</td><td class="cost-cell">&mdash;</td></tr>
+        <tr class="event-row"><td>Mon Jul 21</td><td>FEE</td><td>Full day</td><td class="cost-cell">&mdash;</td></tr>
+        <tr class="event-row"><td>Tue Jul 22</td><td>FEE</td><td>Full day</td><td class="cost-cell">&mdash;</td></tr>
+        <tr class="event-row"><td>Wed Jul 23</td><td>FEE</td><td>Full day</td><td class="cost-cell">&mdash;</td></tr>
+        <tr class="event-row"><td>Thu Jul 24</td><td>FEE Ends</td><td>Final day</td><td class="cost-cell">&mdash;</td></tr>
+        <tr class="flight-row"><td>Fri Jul 25</td><td>Flight: DCA &rarr; CVG</td><td>Depart 10 AM-4 PM, nonstop ~1.5 hrs. Arrive CVG by 5:30 PM.</td><td class="cost-cell">~$115</td></tr>
+        <tr class="free-row"><td>Sat Jul 26</td><td>Free Day</td><td>Explore Cincinnati</td><td class="cost-cell">&mdash;</td></tr>
+        <tr class="free-row"><td>Sun Jul 27</td><td>Free Day</td><td>Explore Cincinnati</td><td class="cost-cell">&mdash;</td></tr>
+        <tr class="event-row"><td>Mon Jul 28</td><td>YALCon Begins</td><td>Full day, Cincinnati, OH</td><td class="cost-cell">&mdash;</td></tr>
+        <tr class="event-row"><td>Tue Jul 29</td><td>YALCon</td><td>Full day</td><td class="cost-cell">&mdash;</td></tr>
+        <tr class="event-row"><td>Wed Jul 30</td><td>YALCon Ends</td><td>Final day</td><td class="cost-cell">&mdash;</td></tr>
+        <tr class="flight-row"><td>Thu Jul 31</td><td>Flight: CVG &rarr; SBP</td><td>Depart 8 AM-12 PM, 1 stop ~6 hrs. Arrive SBP by 3 PM PT.</td><td class="cost-cell">~$230</td></tr>
+    </table>
+</div>
+
+<div class="cost-summary">
+    <h2>Travel Cost Summary</h2>
+    <table>
+        <tr><td class="label">SBP &rarr; PHX (flight)</td><td class="price">~$150</td></tr>
+        <tr><td class="label">PHX &rarr; Sedona (shuttle)</td><td class="price">~$60</td></tr>
+        <tr><td class="label">Sedona &rarr; PHX (shuttle)</td><td class="price">~$60</td></tr>
+        <tr><td class="label">PHX &rarr; DCA (flight)</td><td class="price">~$175</td></tr>
+        <tr><td class="label">DCA &rarr; CVG (flight)</td><td class="price">~$115</td></tr>
+        <tr><td class="label">CVG &rarr; SBP (flight)</td><td class="price">~$230</td></tr>
+        <tr class="total-row"><td class="label">Estimated Total</td><td class="price">~$790</td></tr>
+    </table>
+    <div class="range">Range: $650 (low) &ndash; $1,070 (high) depending on booking time and airline</div>
+</div>
+
+<div class="notes">
+    <strong>Airports:</strong> SBP (San Luis Obispo) &bull; PHX (Phoenix Sky Harbor) &bull; DCA (Reagan National) &bull; CVG (Cincinnati)<br>
+    <strong>Alt option:</strong> Rent a car at PHX (~$43/day) instead of shuttles for more flexibility around Sedona.
+</div>
+
+<script>
+    const stops = [
+        { name: "Home (SLO)", city: "San Luis Obispo, CA", lat: 35.2371, lon: -120.6418, airport: "SBP", airLat: 35.2368, airLon: -120.6424 },
+        { name: "PHX (for Sedona)", city: "Phoenix, AZ", lat: 33.4484, lon: -112.0740, airport: "PHX", airLat: 33.4373, airLon: -112.0078 },
+        { name: "Approaching Humanity", city: "Sedona, AZ", lat: 34.8697, lon: -111.7610, airport: "Drive from PHX", airLat: 34.8697, airLon: -111.7610 },
+        { name: "FEE", city: "Washington, D.C.", lat: 38.9072, lon: -77.0369, airport: "DCA", airLat: 38.8512, airLon: -77.0402 },
+        { name: "YALCon", city: "Cincinnati, OH", lat: 39.1031, lon: -84.5120, airport: "CVG", airLat: 39.0489, airLon: -84.6678 }
+    ];
+
+    const map = L.map('map').setView([37.5, -97], 4);
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap &copy; CARTO',
+        maxZoom: 18
+    }).addTo(map);
+
+    const markerColors = ['#bb99ee', '#e6884a', '#4ae68a', '#4ac8e6', '#e6a44a'];
+
+    stops.forEach((stop, i) => {
+        const icon = L.divIcon({
+            className: 'custom-marker',
+            html: `<div style="
+                background: ${markerColors[i]};
+                width: 18px; height: 18px;
+                border-radius: 50%;
+                border: 3px solid #fff;
+                box-shadow: 0 0 12px ${markerColors[i]}88;
+            "></div>`,
+            iconSize: [18, 18],
+            iconAnchor: [9, 9]
+        });
+
+        L.marker([stop.lat, stop.lon], { icon })
+            .addTo(map)
+            .bindPopup(`<strong style="font-size:1.1em">${stop.name}</strong><br>${stop.city}<br><em>${stop.airport}</em>`);
+    });
+
+    function getCurvedPath(start, end, numPoints = 50) {
+        const points = [];
+        const lonDist = Math.abs(end[1] - start[1]);
+        const arcHeight = Math.min(lonDist * 0.06, 3);
+        for (let i = 0; i <= numPoints; i++) {
+            const t = i / numPoints;
+            const lat = start[0] + (end[0] - start[0]) * t;
+            const lon = start[1] + (end[1] - start[1]) * t;
+            const arc = Math.sin(Math.PI * t) * arcHeight;
+            points.push([lat + arc, lon]);
+        }
+        return points;
+    }
+
+    // Flight legs (curved arcs)
+    const flightLegs = [
+        { from: [35.2368, -120.6424], to: [33.4373, -112.0078], color: '#bb99ee', label: 'SBP→PHX ~$150' },
+        { from: [33.4373, -112.0078], to: [38.8512, -77.0402], color: '#e6884a', label: 'PHX→DCA ~$175' },
+        { from: [38.8512, -77.0402], to: [39.0489, -84.6678], color: '#4ac8e6', label: 'DCA→CVG ~$115' },
+        { from: [39.0489, -84.6678], to: [35.2368, -120.6424], color: '#e6a44a', label: 'CVG→SBP ~$230' },
+    ];
+
+    flightLegs.forEach(leg => {
+        const path = getCurvedPath(leg.from, leg.to);
+        L.polyline(path, {
+            color: leg.color,
+            weight: 2.5,
+            opacity: 0.8,
+            dashArray: '8 6'
+        }).addTo(map);
+    });
+
+    // Drive leg: PHX to Sedona (solid line, not dashed)
+    const drivePath = [
+        [33.4373, -112.0078],
+        [33.7, -111.95],
+        [34.1, -111.85],
+        [34.5, -111.80],
+        [34.8697, -111.7610]
+    ];
+    L.polyline(drivePath, {
+        color: '#e6884a',
+        weight: 2,
+        opacity: 0.6,
+        dashArray: '4 8'
+    }).addTo(map);
+
+    // Label for the drive
+    L.marker([34.15, -111.85], {
+        icon: L.divIcon({
+            className: 'drive-label',
+            html: '<div style="color:#e6884a;font-size:11px;white-space:nowrap;text-shadow:0 0 4px #000">Shuttle ~$60/way</div>',
+            iconSize: [100, 20],
+            iconAnchor: [50, 10]
+        })
+    }).addTo(map);
+
+    const bounds = L.latLngBounds(stops.map(s => [s.lat, s.lon]));
+    map.fitBounds(bounds.pad(0.2));
+</script>
+
+</body>
+</html>

@@ -23,6 +23,7 @@ All themes from the 874-page raw notes (Google Keep) have been written into tril
 - [x] Chapter 26 - The Demon Breaker
 - [x] Chapter 27 - The Army of God
 - [x] Chapter 28 - The Guardian's Covenant
+- [x] Chapter 35 - Be Principled Even When It Costs You [new — 2026-08-02]
 
 ### Book II — The Spiral and the Block (14 new, all Part 2: Mythology of Media)
 - [x] Chapter 27 - The Captain of Conscience (Captain America)
@@ -57,7 +58,7 @@ All themes from the 874-page raw notes (Google Keep) have been written into tril
 
 ## Updated Chapter Counts
 
-- **Book I — The Sagent Creed**: 23 original + 10 new = **33 chapters**
+- **Book I — The Sagent Creed**: 23 original + 11 new = **35 chapters**
 - **Book II — The Spiral and the Block**: 35 original + 14 new = **49 chapters**
 - **Book III — The Spiral Steward**: 28 original + 5 new = **33 chapters**
 - **Total trilogy**: **115 chapters** (+ Prologue & Epilogue for Book III)

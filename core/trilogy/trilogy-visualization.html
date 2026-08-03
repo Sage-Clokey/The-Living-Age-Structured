@@ -824,7 +824,7 @@ body {
   <div class="hero-content">
     <div class="hero-label">the living book trilogy</div>
     <h1>The Living Age</h1>
-    <div class="hero-subtitle">126 Chapters &middot; Three Books &middot; One Truth</div>
+    <div class="hero-subtitle" id="heroSubtitle">Chapters &middot; Three Books &middot; One Truth</div>
     <div class="hero-epigraph">
       "We work in the dark to serve the light.<br>We are <em>Sagents</em>."
     </div>
@@ -1267,6 +1267,7 @@ function computeStats() {
 // ===================== RENDER STATS =====================
 (function renderStats() {
   const stats = computeStats();
+  document.getElementById('heroSubtitle').innerHTML = `${stats.total} Chapters &middot; Three Books &middot; One Truth`;
   const grid = document.getElementById('statsGrid');
 
   grid.innerHTML = `

@@ -32,7 +32,7 @@ After my grandfather Art died, my father inherited both the mission and the resi
 
 That film was a direct challenge to the architecture of conflict. Not through protest. Not through political argument. Through a children's stop-motion special about a boy and his dog. And the architecture noticed.
 
-During the making of that film, conflicts arose that had not existed before. Pressures materialized from directions that made no sense unless you understood what the film was saying and who did not want it said. Those pressures contributed to the dissolution of my parents' marriage. My father remarried someone who did not share his vision for Gumby, who did not understand the stakes of the industrial complexes he was fighting against. But he kept going.
+During the making of that film, conflicts arose that had not existed before. Pressures materialized from directions that made no sense unless you understood what the film was saying and who did not want it said. Those pressures contributed to the dissolution of my parents' marriage. My father remarried. But he kept going.
 
 For fourteen years after Art's death, Joe kept trying. Classic Media held the license and produced nothing. The Jim Henson partnership could not find co-production. Amazon fell through. A comic line was cancelled after three issues. Every door opened just enough to keep him walking toward it, and closed just before he could step through. He was not rejected outright. He was strung along — which is worse, because rejection at least gives you the dignity of knowing where you stand.
 
@@ -66,7 +66,7 @@ But I know what I witnessed.
 
 I witnessed a man who continued creating despite repeated obstacles. Who believed in bringing life, creativity, and conscience into the world. Who never stopped trying to bring back a green clay figure that taught children they could reshape reality. Who carried the flame through fourteen years of darkness and never set it down.
 
-I witnessed a man who was strung along by an industry that had no intention of letting him succeed, who watched his marriage dissolve under pressures that arrived alongside his most principled work, who remarried into a household that did not understand what he was fighting for or why it mattered — and who kept going anyway.
+I witnessed a man who was strung along by an industry that had no intention of letting him succeed, who watched his marriage dissolve under pressures that arrived alongside his most principled work, and who kept going anyway.
 
 And I witnessed him die. A brain hemorrhagic stroke. One month from the moment he was closest to bringing Gumby back. Fifty-six years old.
 

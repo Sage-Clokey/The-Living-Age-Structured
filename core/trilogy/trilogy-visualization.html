@@ -1732,7 +1732,6 @@ let chapterContent = {};
   let currentIndex = -1;
 
   function formatChapterContent(rawHTML, meta) {
-    // Build the chapter opening header
     const numDisplay = meta.num === 'P' ? 'Prologue' : meta.num === 'E' ? 'Epilogue' : `Chapter ${meta.num}`;
     const opening = `
       <div class="chapter-opening">
@@ -1744,85 +1743,69 @@ let chapterContent = {};
       </div>
     `;
 
-    // Parse the raw HTML and transform it
     const temp = document.createElement('div');
     temp.innerHTML = rawHTML;
     const elements = Array.from(temp.children);
 
     let processed = '';
     let firstBodyParagraph = true;
-    let lastWasSection = false;
+    const headerPatterns = /^(book\s+i|part\s+(one|two|three|four|five|\d)|chapter\s+\d|prologue|epilogue|the\s+sagent\s+creed|the\s+spiral\s+(and|steward)|sheep\s+among|the\s+shaken|the\s+name|the\s+architecture|the\s+fibonacci|the\s+mythology|the\s+true\s+republic|living\s+algorithms|how\s+a\s+forest|livingworks|a\s+note\s+before|the\s+industrial)/i;
 
     for (let i = 0; i < elements.length; i++) {
       const el = elements[i];
       const text = el.textContent.trim();
-
-      // Skip empty elements
       if (!text) continue;
 
-      // Skip the chapter title / book / part lines (already in header)
-      if (i < 4) {
-        const lower = text.toLowerCase();
-        if (lower.includes('book i') || lower.includes('book ii') || lower.includes('book iii') ||
-            lower.includes('part ') || lower.includes('chapter ') || lower.includes('prologue') ||
-            lower.includes('epilogue') || lower.includes('sagent creed') || lower.includes('spiral and') ||
-            lower.includes('spiral steward')) continue;
-      }
+      // Skip pure header/metadata lines
+      if (headerPatterns.test(text) && text.length < 120) continue;
 
-      // Skip "The Living Age Trilogy" footer
+      // "The Living Age Trilogy" footer
       if (text === 'The Living Age Trilogy') {
-        processed += `<p class="footer-line">${el.innerHTML}</p>`;
+        processed += `<p class="footer-line">The Living Age Trilogy</p>`;
         continue;
       }
 
-      // Detect section headings (Roman numerals like "I. Title" or "II. Title")
+      // Section headings — Roman numeral patterns
       const sectionMatch = text.match(/^([IVXL]+)\.\s+(.+)/);
-      if (el.tagName === 'H3' || (el.tagName === 'P' && sectionMatch)) {
-        if (sectionMatch) {
+      if (el.tagName === 'H3' || sectionMatch) {
+        if (sectionMatch || (el.tagName === 'H3' && text.length < 120)) {
           processed += `<div class="section-divider"><span>${text}</span></div>`;
-          lastWasSection = true;
-          firstBodyParagraph = true;
-          continue;
-        }
-        // Other h3 — treat as section heading if short
-        if (text.length < 100) {
-          processed += `<div class="section-divider"><span>${el.innerHTML}</span></div>`;
-          lastWasSection = true;
           firstBodyParagraph = true;
           continue;
         }
       }
 
-      // Regular paragraphs
       if (el.tagName === 'P') {
-        // Detect italic closing lines (starts and ends with italic markers or is near the end)
-        const isItalicLine = el.querySelector('em') && el.children.length === 1 && el.children[0].tagName === 'EM';
+        const isFullItalic = el.querySelector('em') && el.children.length === 1 && el.children[0].tagName === 'EM';
 
-        if (isItalicLine && i > elements.length - 8) {
+        // Italic paragraphs near the end = closing creed
+        if (isFullItalic && i > elements.length - 10) {
           processed += `<p class="closing">${el.innerHTML}</p>`;
           continue;
         }
 
-        // First paragraph after chapter opening or section heading gets a drop cap
-        if (firstBodyParagraph && text.length > 40) {
+        // Italic paragraphs near the start (after headers skipped) = epigraph
+        if (isFullItalic && firstBodyParagraph) {
+          processed += `<p class="epigraph">${el.innerHTML}</p>`;
+          continue;
+        }
+
+        // First body paragraph gets drop cap
+        if (firstBodyParagraph && text.length > 40 && !isFullItalic) {
           processed += `<p class="drop-cap no-indent">${el.innerHTML}</p>`;
           firstBodyParagraph = false;
-          lastWasSection = false;
           continue;
         }
 
         processed += `<p>${el.innerHTML}</p>`;
         firstBodyParagraph = false;
-        lastWasSection = false;
         continue;
       }
 
-      // Everything else passes through
       processed += el.outerHTML;
     }
 
     processed += '<div class="chapter-end">&#x2736; &#x2736; &#x2736;</div>';
-
     return opening + processed;
   }
 

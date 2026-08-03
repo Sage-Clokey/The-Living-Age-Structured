@@ -190,7 +190,29 @@ The bones of Joseph returned to the dust. But the dust knows where they are. And
 
 ---
 
-## XI. The Green Flame
+## XI. The Naming
+
+My father was named Joseph after both of his grandfathers — a living testament to the legacy passed down from both sides. Joseph, the name that carries the weight of prophecy. The Joseph of the Bible had prophetic dreams that let him see beyond the veil of time and circumstance. He endured betrayal, imprisonment, and exile, and rose to become the one who could help when the world needed it most. His story is a reminder of the power of vision and perseverance — and of the truth that the one who carries the promise may not be understood until the famine arrives.
+
+My brother Shasta's middle name is Joseph. My sister Sequoia's middle name is Joe. But mine is Arthur Jordan — after my grandfather. Not Joseph. Arthur.
+
+There is a pattern in the names, and I did not see it until I traced the line.
+
+The Arthurs create. Arthur Clokey created Gumby — formed something from nothing, built a world from clay and vision after a childhood of abandonment. He was the builder after the Ragnarok, the one who rises from the ashes and makes something new. His adoptive father Joseph gave him the name, the home, the beauty that made the creation possible. Joseph preserved and cultivated. Arthur created.
+
+Then the cycle turned. Art's son was Joseph — my father, Joe Clokey. Joseph again. The one who continues, who carries, who preserves the flame through the darkness. Joe did not create Gumby. He protected Gumby. He fought for eight years to keep the seed alive in soil that refused to receive it. He was the Joseph — the steward, the keeper, the one who endures until he is taken.
+
+And then me. Not Joseph. Arthur. Sage Arthur Jordan Clokey. The name flipped again. The Arthur generation — the one that creates after the fall.
+
+The Arthurs rise after the Ragnarok, forging new beginnings from the ashes. The Josephs continue, ever steadfast, until their time comes to be taken in the great cataclysm. Arthur, then Joseph. Creation, then continuation. The forge, then the flame-keeper. And when the flame-keeper falls, the next Arthur rises — not to repeat the old creation, but to make a new one from everything the Josephs preserved.
+
+My father preserved. I am meant to create.
+
+The cycle may change, but the essence remains. The legacy endures. Through the names, the stories unfold — an ancient dance of creation and destruction, of prophecy and purpose. The Josephs dream and endure. The Arthurs wake and build. And the spiral turns.
+
+---
+
+## XII. The Green Flame
 
 Being pushed out is not the end — it is the beginning. Where God is King, order grows. Where men claim the throne, order must be enforced.
 

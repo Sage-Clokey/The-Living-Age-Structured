@@ -55,8 +55,15 @@
 ## 4. Statistical Mechanics / Self-Organization / Complexity
 
 ### Free Courses
-- **[Santa Fe Institute — Introduction to Complexity](https://www.complexityexplorer.org/courses/11)** — Free. No prerequisites. Covers dynamics, chaos, fractals, information theory, self-organization, agent-based modeling, and networks. 5–12 weeks. **Best single resource for the complexity side of your work.**
-- [Complexity Explorer](https://www.complexityexplorer.org/) — Full platform with additional courses on fractals, nonlinear dynamics, agent-based modeling.
+- **[Santa Fe Institute — Introduction to Complexity](https://www.complexityexplorer.org/courses)** — Free, self-paced, open for enrollment now. No prerequisites. Covers dynamics, chaos, fractals, information theory, self-organization, agent-based modeling, and networks. Instructor: Melanie Mitchell. **Best single resource for the complexity side of your work.**
+- [Complexity Explorer](https://www.complexityexplorer.org/) — Full platform with additional self-paced courses currently open:
+  - Introduction to Dynamical Systems and Chaos
+  - Fractals and Scaling
+  - Nonlinear Dynamics: Mathematical and Computational Approaches
+  - Computation in Complex Systems
+  - Origins of Life
+  - Tutorials on Information Theory, Game Theory, Machine Learning
+- **Mitchell, M. (2009). *Complexity: A Guided Tour*.** Oxford. Won the Phi Beta Kappa Science Book Award. Accessible companion to the course — same ideas, no heavy math.
 
 ### Videos
 - [Leonard Susskind — Statistical Mechanics Lecture 9](https://www.youtube.com/watch?v=AT4_S9vQJgc) — Develops the Ising model and phase transitions. Stanford Continuing Studies series. Clear, physical intuition.

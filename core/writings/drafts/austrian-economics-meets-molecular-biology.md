@@ -305,6 +305,122 @@ This is the biological fatal conceit: assuming you can design a genome better th
 
 ---
 
+## 13. The Cantillon Effect (Cantillon)
+
+**The economic principle:** Newly created money does not enter the economy uniformly. It enters at specific points — typically banks and government contractors — who spend it at current prices before the inflation reaches the rest of the economy. The result is a transfer of real wealth from those furthest from the money creation (ordinary citizens, savers) to those closest to it (banks, connected firms). The price distortion spreads outward from the injection point like a wave, enriching those who ride the front of the wave and impoverishing those who drown in its wake.
+
+**The biological parallel: The Warburg effect in cancer.**
+
+Otto Warburg (1956) observed that cancer cells ferment glucose even in the presence of oxygen — aerobic glycolysis. A healthy cell runs oxidative phosphorylation: 36 ATP per glucose. A cancer cell runs glycolysis: 2 ATP per glucose. It burns fuel at eighteen times lower efficiency and compensates by consuming glucose at extraordinary rates.
+
+The cancer cell's corrupted signaling (mutations in p53, Ras, mTOR, AMPK) is the biological equivalent of counterfeit price signals. The cell acts as if resources are unlimited — it has broken the feedback loops that would constrain a healthy cell's consumption. It commandeers the local blood supply through angiogenesis (growing new vessels to feed itself, the way a politically connected firm secures government contracts). The surrounding healthy cells — the "ordinary citizens" of the tissue economy — are starved. Real resources (glucose, amino acids, oxygen) are redirected from productive tissue to the tumor.
+
+This is the Cantillon effect at the cellular level. The tumor is closest to the "money creation" (its own growth signals, produced internally by oncogenic mutations). It spends first. The tissue around it pays the inflation tax.
+
+**Data sources:**
+- **Warburg effect datasets** — Glucose uptake and lactate production in cancer vs. normal tissue. FDG-PET imaging data showing tumor glucose consumption.
+- **TCGA metabolomics** — Metabolite profiles in tumor vs. adjacent normal tissue across cancer types.
+- **Angiogenesis data** — VEGF expression and microvessel density measurements in TCGA tumors.
+
+**Figure: "The Cantillon Effect in Tissue"**
+- Panel A: FDG-PET image showing a tumor lit up with glucose consumption while surrounding tissue is dark. Annotate: "The tumor spends first."
+- Panel B: Metabolite comparison — glucose, lactate, and ATP levels in tumor vs. adjacent normal tissue. The tumor consumes glucose and produces lactate; the normal tissue is depleted.
+- Panel C: VEGF expression gradient radiating from a tumor — the tumor signals for blood vessel growth (angiogenesis), redirecting the blood supply to itself. Map to Cantillon: money flows to the connected, resources flow to the tumor.
+
+---
+
+## 14. Free Trade and Comparative Advantage (Ricardo / Mises)
+
+**The economic principle:** Trade between parties with different comparative advantages produces greater total output than autarky. Even if one party is better at everything in absolute terms, trade based on relative advantage benefits both.
+
+**The biological parallel: Horizontal gene transfer as free trade.**
+
+Horizontal gene transfer — the movement of functional genetic sequences between unrelated organisms — is free trade at the molecular level. An organism that can acquire a pre-tested, functional gene from another organism that has already solved a particular environmental challenge gains an advantage — just as a firm that can license proven technology gains an advantage over one developing everything in-house.
+
+The bdelloid rotifers (Gladyshev et al., 2008) have acquired up to 10% of their genome from non-animal donors — bacteria, fungi, plants. They compensate for the absence of sexual recombination by trading genes directly with their environment. Carl Woese (2004) argued that horizontal gene transfer is so pervasive in prokaryotic evolution that life is not a tree but a web — a network of genetic exchange in which sequences flow between lineages the way goods flow between firms in a market.
+
+The "price" of acquisition is the metabolic cost of uptake, integration, and expression. The "profit" is the fitness gain from the new capability. The "market" is the environment in which both organisms operate.
+
+**Data sources:**
+- **NCBI HGT databases** — Documented cases of horizontal gene transfer across all three domains of life.
+- **Bdelloid rotifer genomes** — Gladyshev et al. (2008), *Science*; Eyres et al. (2015), *BMC Biology*.
+- **Soucy, Huang & Gogarten (2015)** — *Nature Reviews Genetics* review of HGT across the tree of life.
+
+**Figure: "Genetic Free Trade"**
+- Panel A: Phylogenetic network (not tree) showing HGT events between bacterial lineages — edges represent gene transfer events. Compare to a trade network between nations.
+- Panel B: Bdelloid rotifer genome composition — pie chart showing percentage of genome from animal vs. non-animal donors. Annotate: "10% of the genome acquired through trade, not inheritance."
+- Panel C: Fitness comparison — organism with acquired gene vs. without, in the relevant environmental condition (e.g., antibiotic resistance gene in antibiotic-containing environment).
+
+---
+
+## 15. Entrepreneurial Innovation and Creative Destruction (Schumpeter / Kirzner)
+
+**The economic principle:** Entrepreneurs create new combinations — new products, new methods, new markets. Their innovations disrupt existing structures (creative destruction) and generate new value where none existed.
+
+**The biological parallel: Transposable elements as entrepreneurs.**
+
+Transposable elements — mobile DNA sequences that constitute 45% of the human genome — are the genome's entrepreneurs. They enter new genomic neighborhoods (insert at new loci), bring capital from elsewhere (carry regulatory sequences), and restructure local production (alter gene expression).
+
+Chuong et al. (2016) showed that ancient endogenous retroviruses were co-opted to build the mammalian innate immune system — interferon-gamma responsive enhancers derived from viral insertions. Syncytin, the protein essential for placental development, is derived from a retroviral envelope gene. These elements entered the genome as parasites (failed businesses), were repurposed by the host economy, and became essential infrastructure.
+
+Barbara McClintock called them "controlling elements" in her 1984 Nobel lecture. They are the innovation layer of the genome — not junk, but the agents of creative destruction and recombination that drive cis-regulatory evolution.
+
+**Data sources:**
+- **RepeatMasker / Dfam** (dfam.org) — Transposable element annotation across genomes. Shows TE density, age, and family distribution.
+- **Chuong et al. (2016)** — *Science*. ERV-derived enhancers in the interferon response.
+- **Bourque et al. (2018)** — *Genome Biology*. Review of TE contributions to genome innovation.
+
+**Figure: "The Genome's Entrepreneurs"**
+- Panel A: Human genome composition — pie chart showing 45% TEs, labeled by family (LINE, SINE, DNA transposons, LTR retrotransposons). Annotate: "The largest 'sector' of the genome economy."
+- Panel B: Example of TE co-option — the interferon enhancer network, showing ERV-derived regulatory elements controlling innate immune genes. The parasite became infrastructure.
+- Panel C: Conservation of TE-derived regulatory elements — show that certain ancient TE insertions are more conserved than surrounding sequence, indicating strong purifying selection. These "entrepreneurs" are now essential.
+
+---
+
+## 16. Quorum Sensing as Price Discovery
+
+**The economic principle:** Price discovery is the process by which markets aggregate dispersed information into a single signal that coordinates the behavior of millions of agents. No one sets the price. It emerges from the aggregate actions of all participants.
+
+**The biological parallel: Bacterial quorum sensing.**
+
+Bacteria produce and detect small signaling molecules called autoinducers. Each bacterium secretes autoinducers and simultaneously measures local concentration. When the concentration crosses a threshold — indicating sufficient population density — gene expression shifts collectively: biofilm formation, virulence factor production, bioluminescence.
+
+No bacterium surveys the population. Each reads a single local price (autoinducer concentration) and makes a binary decision. The collective behavior emerges from millions of individual agents reading the same distributed price and responding independently. This is Hayek's price system operating at the microbial scale — four billion years before "The Use of Knowledge in Society."
+
+**Data sources:**
+- **Quorum sensing databases** — QSdb, SigMol database of quorum sensing molecules.
+- **Miller & Bassler (2001)** — *Annual Review of Microbiology*. Comprehensive review.
+- **Vibrio fischeri bioluminescence data** — lux operon expression as a function of cell density.
+
+**Figure: "Price Discovery Without a Market Maker"**
+- Panel A: Autoinducer concentration as a function of cell density — the "price" emerging from aggregate behavior. Overlay the gene expression threshold: below threshold = individual behavior; above threshold = collective response.
+- Panel B: *Pseudomonas aeruginosa* multi-signal system — Las, Rhl, PQS interacting hierarchically. Multiple prices, multiple thresholds, different behavioral outputs at each level. Map to a multi-commodity market.
+- Panel C: Structural parallel diagram — Hayek's price system (dispersed information → aggregate price signal → coordinated action) next to quorum sensing (dispersed autoinducer secretion → aggregate concentration → coordinated gene expression). Same architecture.
+
+---
+
+## 17. Epigenetics as Local Regulation
+
+**The economic principle:** A firm adjusts its production schedule without rewriting its articles of incorporation. Short-term regulatory decisions do not require constitutional change — they require responsive, reversible adjustment to current conditions. Institutional knowledge, passed through generations of practice, carries market intelligence that formal records cannot capture.
+
+**The biological parallel: Epigenetic regulation and transgenerational inheritance.**
+
+DNA methylation, histone modification, and chromatin remodeling allow cells to adjust gene expression without changing the DNA sequence — production changes without constitutional amendment. A gene silenced by methylation is shelved, not deleted. A gene activated by histone acetylation is brought to the factory floor.
+
+Transgenerational epigenetic inheritance extends this: environmental responses acquired by one generation can be transmitted to offspring as inherited price intelligence. A plant exposed to drought produces offspring with epigenetic marks pre-adapting them to drought — without any DNA sequence change. The parent paid the metabolic cost of information acquisition; the offspring inherit it cheaply. This is how institutional knowledge works in a family business — and how it is lost in a corporation that replaces leadership every four years.
+
+**Data sources:**
+- **Roadmap Epigenomics** — Chromatin state maps across cell types and developmental stages.
+- **Jablonka & Raz (2009)** — *Quarterly Review of Biology*. Comprehensive review of transgenerational epigenetic inheritance across taxa.
+- **Heard & Martienssen (2014)** — *Cell*. Mechanisms and myths of transgenerational epigenetic inheritance.
+
+**Figure: "Regulation Without Rewriting"**
+- Panel A: Same genomic locus in three cell types — open chromatin (expressed), partially open (poised), closed (silenced). The genome is the constitution; the epigenome is the regulatory apparatus interpreting it in context.
+- Panel B: Transgenerational inheritance example — drought stress in parent generation → epigenetic marks in offspring → pre-adapted gene expression without sequence change. Map to family business knowledge transmission.
+- Panel C: Epigenetic "memory" decay — how quickly epigenetic marks are lost across generations without reinforcement. Compare to institutional knowledge decay in organizations with high turnover.
+
+---
+
 ## Summary Table
 
 | Austrian Principle | Biological Parallel | Primary Data Source | Figure Type |

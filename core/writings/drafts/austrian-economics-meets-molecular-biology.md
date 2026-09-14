@@ -437,6 +437,11 @@ Transgenerational epigenetic inheritance extends this: environmental responses a
 | Division of labor | Cell differentiation, tissue specialization | GTEx, Roadmap Epigenomics | Expression heatmap, chromatin maps |
 | Voluntary exchange | Symbiosis, endosymbiosis, microbiome | Coral transcriptomics, HMP, MitoMap | Metabolite exchange diagrams, Sankey |
 | Fatal conceit | Synbio failures, refactored T7 | T7 fitness data, iGEM Registry | Genome map comparison, performance scatter |
+| Cantillon effect | Warburg effect in cancer | TCGA metabolomics, FDG-PET, VEGF data | PET image, metabolite comparison, VEGF gradient |
+| Free trade / comparative advantage | Horizontal gene transfer | NCBI HGT databases, bdelloid rotifer genomes | Phylogenetic network, genome composition, fitness comparison |
+| Creative destruction | Transposable elements as entrepreneurs | RepeatMasker/Dfam, Chuong et al. 2016 | Genome composition pie, TE co-option network, conservation plot |
+| Price discovery | Quorum sensing | QSdb, Miller & Bassler 2001 | Autoinducer threshold, multi-signal system, structural parallel |
+| Local regulation | Epigenetic regulation, transgenerational inheritance | Roadmap Epigenomics, Jablonka & Raz 2009 | Chromatin state comparison, inheritance diagram, memory decay |
 
 ---
 
